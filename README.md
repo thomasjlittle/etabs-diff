@@ -4,6 +4,8 @@ Visual diff for ETABS models. Point it at two exports of the same model (`.e2k`,
 
 # Quick Start
 
+To see the UI, run `just ui` from the repo root (needs node and npm). It installs the UI dependencies if needed, starts the dev server and prints the URL, http://127.0.0.1:5173. Ctrl+C stops it.
+
 Needs Python 3.9+ (stdlib only). The viewer loads three.js from a CDN, so it needs internet. Everything serves on 127.0.0.1 only.
 
 With [just](https://github.com/casey/just), from the repo root:

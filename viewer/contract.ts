@@ -11,7 +11,7 @@ export type Change = { field: string; before: unknown; after: unknown; affects: 
 
 export type ElementDiff = {
   key: string;                          // geometric match key: level-relative (story, x, y, dz), tolerance-rounded; never a label
-  kind: 'point' | 'frame' | 'area';     // points: only those with a restraint, spring, or load
+  kind: 'point' | 'frame' | 'area';     // points: those with a restraint, spring, mass, or load, or whose assigns changed
   subtype: 'beam' | 'column' | 'brace' | 'floor' | 'wall' | 'other' | 'joint';
   label: string;                        // display only, so people can find it in ETABS (B's label, A's when removed)
   story: string;                        // story the element is tied to (B's, A's when removed)
@@ -39,6 +39,7 @@ export type DiffOutput = {
     stories: TableDiff; materials: TableDiff; frameSections: TableDiff;
     shellSections: TableDiff; pointSprings: TableDiff; loadPatterns: TableDiff;
     loadCases?: TableDiff; combos?: TableDiff; massSource?: TableDiff;  // one change per load term, e.g. "LOADPAT:Live"
+    diaphragms?: TableDiff; functions?: TableDiff; analysisOptions?: TableDiff;  // diaphragm defs, spectrum / time history functions, PDELTA
   };
   summary: Record<ElementDiff['status'], number>;
 };

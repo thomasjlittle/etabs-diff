@@ -34,11 +34,6 @@ class Element(TypedDict):
     cmp: List[XYZ]  # B ends against A's level elevations, filled in by the moved pass for added frames
 
 
-def _reportable_point(props: Props) -> bool:
-    """Points are listed only when they carry a support, spring, or mass (or a load, checked separately)."""
-    return any(k == "RESTRAINT" or "SPRING" in k or "MASS" in k for k in props)
-
-
 def levels(model: Model) -> List[Level]:
     """Levels bottom to top: [{name, elevation, height}]. The file lists them top down, base last."""
     rows = list(reversed(model["stories"]))
@@ -90,16 +85,16 @@ def elements(model: Model) -> List[Element]:
             continue
         out.append(_element("area", area["type"], label, story, ends, props, model["area_loads"]))
 
-    keys = sorted(set(model["point_assigns"]) | set(model["point_loads"]))
-    for label, story in keys:
-        props = model["point_assigns"].get((label, story), {})
-        if not _reportable_point(props) and (label, story) not in model["point_loads"]:
-            continue
+    # Every joint, bare ones included, so a joint that gains or loses an assign still matches its
+    # other side. diff.py decides which of them are listed.
+    assigned = set(model["point_assigns"]) | set(model["point_loads"])
+    joints = {(end_["point"], end_["level"]) for e in out for end_ in e["ends"]}
+    for label, story in sorted(assigned | joints):
         if label not in model["points"] or story not in index:
             log.warning("point assign without a point or story: %s @ %s", label, story)
             continue
-        ends = [end(label, story)]
-        out.append(_element("point", "POINT", label, story, ends, props, model["point_loads"]))
+        props = model["point_assigns"].get((label, story), {})
+        out.append(_element("point", "POINT", label, story, [end(label, story)], props, model["point_loads"]))
     return out
 
 

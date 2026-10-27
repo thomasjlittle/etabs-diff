@@ -71,11 +71,11 @@ Each change is `{ field, before, after, affects }`:
 
 ### Which points are included
 
-Not every joint. Only points that carry something of their own: a support (restraint), a spring, or a point load. Plain joints where members meet are left out because the frames already show them.
+Not every joint. Only points that carry something of their own (a support, a spring, a mass, or a point load), plus any joint where something assigned to it changed, such as a joint newly tied to a diaphragm. Plain joints where members meet are left out because the frames already show them.
 
 ## `tables`
 
-Definitions that aren't elements in space: `stories`, `materials`, `frameSections`, `shellSections`, `pointSprings`, `loadPatterns`, plus `loadCases`, `combos` and `massSource` when the engine compares them. Each one is:
+Definitions that aren't elements in space: `stories`, `materials`, `frameSections`, `shellSections`, `pointSprings`, `loadPatterns`, plus `loadCases`, `combos`, `massSource`, `diaphragms`, `functions` (response spectrum and time history) and `analysisOptions` (the global P-delta setting) when the engine compares them. Each one is:
 
 - `added`: names only in B.
 - `removed`: names only in A.
@@ -83,7 +83,7 @@ Definitions that aren't elements in space: `stories`, `materials`, `frameSection
 
 These are the upstream causes behind `affected` elements. The viewer lists them in its side panel.
 
-Load cases, combos and the mass source are lists of load terms, so each term is its own change: `field` is `LOADPAT:Live` (a pattern in a case or the mass source), `LOADCASE:Dead` or `LOADCOMBO:1.4D` (a term in a combo), and `before` / `after` is its scale factor, `null` when the term is missing on that side. They don't make any element `affected`.
+Load cases, combos and the mass source are lists of load terms, so each term is its own change: `field` is `LOADPAT:Live` (a pattern in a case or the mass source), `LOADCASE:Dead` or `LOADCOMBO:1.4D` (a term in a combo), and `before` / `after` is its scale factor, `null` when the term is missing on that side. They don't make any element `affected`. Load patterns list their auto seismic and wind inputs one field each, like `SEISMIC:R` or `WIND:VB`. A diaphragm edit does make its floors and joints `affected`, with `via` set to `["diaphragm:D1"]`.
 
 ## `summary`
 

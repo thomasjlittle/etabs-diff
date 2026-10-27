@@ -14,7 +14,7 @@ from diff_engine.serve import make_server
 
 
 class ServeTest(unittest.TestCase):
-    def test_serves_viewer_and_diff_then_stops(self):
+    def test_serves_viewer_and_diff_then_stops(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             diff_path = Path(tmp) / "out.json"
             diff_path.write_text(json.dumps({"summary": {"added": 1}}), encoding="utf-8")

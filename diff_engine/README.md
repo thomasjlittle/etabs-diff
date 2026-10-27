@@ -24,7 +24,7 @@ result = diff_files("before.e2k", "after.e2k", tolerance=None, move_tolerance=36
 
 `parse_text` / `diff_models` do the same from strings, which is what the tests use.
 
-Tests: `python -m unittest discover -s diff_engine/tests -t .` from the repo root.
+Tests: `python -m unittest discover -s diff_engine/tests -t .` from the repo root. Type check: `pyright` from the repo root (strict, see `pyrightconfig.json`); every function and the parsed model are typed, and `just test` runs both.
 
 ## How Elements Are Matched
 

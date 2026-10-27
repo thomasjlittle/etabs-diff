@@ -1,6 +1,9 @@
 """The property table rows each change is tagged with, and which assign keys belong to which row."""
 
 import re
+from typing import Dict, List, Optional
+
+from .contract import Affect
 
 # Row numbers follow the property table: 1 members added/removed, 2 moved (incl. story elevation),
 # 3 section reassigned, 4 section definition, 5 material, 6 property modifiers,
@@ -15,7 +18,7 @@ _ROW7_EXACT = {"ANG", "LENOFFI", "LENOFFJ", "RIGIDZONE", "TRANSFORMSTIFFNESSFORO
 _ROW7_PREFIX = ("RELEASE", "PARTIALFIX", "OFFSET", "LOCALAXIS")
 
 
-_ROW_AFFECTS = {
+_ROW_AFFECTS: Dict[Optional[int], List[Affect]] = {
     1: ["geometry", "stiffness", "mass"],
     2: ["geometry"],
     3: ["stiffness", "mass"],
@@ -29,14 +32,14 @@ _ROW_AFFECTS = {
 }
 
 
-def affects(row, key=""):
+def affects(row: Optional[int], key: str = "") -> List[Affect]:
     """What a change touches, for the contract's `affects` list."""
     if key == "WEIGHTPERVOLUME" or key in ("MMOD", "WMOD"):
         return ["mass"]
     return list(_ROW_AFFECTS.get(row, []))
 
 
-def assign_row(key):
+def assign_row(key: str) -> Optional[int]:
     """Row for one per-element assign key (LINEASSIGN, AREAASSIGN, POINTASSIGN)."""
     if key in ("SECTION", "MATERIALOVERWRITE"):
         return 3
@@ -51,7 +54,7 @@ def assign_row(key):
     return None
 
 
-def definition_row(kind, key):
+def definition_row(kind: str, key: str) -> int:
     """Row for one key of a definition: modifiers on a section are row 6, the rest row 4."""
     if kind == "material":
         return 5

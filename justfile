@@ -18,6 +18,10 @@ demo:
 example:
     python3 -m diff_engine.serve viewer/example-diff.json
 
-# run the diff engine tests
-test:
+# type-check diff_engine with pyright in strict mode (pyrightconfig.json)
+typecheck:
+    pyright
+
+# type-check, then run the diff engine tests
+test: typecheck
     python3 -m unittest discover -s diff_engine/tests -t .

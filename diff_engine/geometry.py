@@ -1,42 +1,71 @@
 """Turn a parsed model into levels and story-placed elements with level-tied geometry."""
 
 import logging
+from typing import Dict, List, Optional, TypedDict
+
+from .contract import Kind
+from .parser import XYZ, Model, ObjectKey, Props
 
 log = logging.getLogger(__name__)
 
 
-def _reportable_point(props):
+class Level(TypedDict):
+    name: str
+    elevation: float  # inches
+    height: Optional[float]
+
+
+class End(TypedDict):
+    point: str
+    level: str  # level the end is tied to
+    dz: float  # offset below that level
+    xyz: XYZ  # global, for drawing and the moved pass
+
+
+class Element(TypedDict):
+    kind: Kind
+    type: str  # ETABS object type: BEAM, COLUMN, FLOOR, POINT, ...
+    label: str
+    story: str
+    ends: List[End]
+    props: Props
+    loads: List[Props]
+    nodes: List[int]  # node ids, filled in by match.match_elements
+    cmp: List[XYZ]  # B ends against A's level elevations, filled in by the moved pass for added frames
+
+
+def _reportable_point(props: Props) -> bool:
     """Points are listed only when they carry a support, spring, or mass (or a load, checked separately)."""
     return any(k == "RESTRAINT" or "SPRING" in k or "MASS" in k for k in props)
 
 
-def levels(model):
+def levels(model: Model) -> List[Level]:
     """Levels bottom to top: [{name, elevation, height}]. The file lists them top down, base last."""
     rows = list(reversed(model["stories"]))
-    out = []
+    out: List[Level] = []
     for i, story in enumerate(rows):
         if i == 0:
             elev = story.get("ELEV", 0.0)
         else:
             elev = out[-1]["elevation"] + story.get("HEIGHT", 0.0)
-        out.append({"name": story["name"], "elevation": elev, "height": story.get("HEIGHT")})
+        out.append(Level(name=story["name"], elevation=elev, height=story.get("HEIGHT")))
     return out
 
 
-def elements(model):
+def elements(model: Model) -> List[Element]:
     """Every frame, area, and point object placed at a story. Labels are carried as info only."""
     lv = levels(model)
     index = {level["name"]: i for i, level in enumerate(lv)}
 
-    def end(point, story, below=0):
+    def end(point: str, story: str, below: int = 0) -> End:
         i = index[story] - below
         if i < 0:
             raise ValueError(f"object runs below the base level from {story}")
         x, y, dz = model["points"][point]
         level = lv[i]
-        return {"point": point, "level": level["name"], "dz": dz, "xyz": (x, y, level["elevation"] - dz)}
+        return End(point=point, level=level["name"], dz=dz, xyz=(x, y, level["elevation"] - dz))
 
-    out = []
+    out: List[Element] = []
     for (label, story), props in model["line_assigns"].items():
         line = model["lines"].get(label)
         if line is None or story not in index:
@@ -74,13 +103,10 @@ def elements(model):
     return out
 
 
-def _element(kind, etype, label, story, ends, props, loads):
-    return {
-        "kind": kind,
-        "type": etype,
-        "label": label,
-        "story": story,
-        "ends": ends,
-        "props": props,
-        "loads": loads.get((label, story), []),
-    }
+def _element(
+    kind: Kind, etype: str, label: str, story: str, ends: List[End], props: Props, loads: Dict[ObjectKey, List[Props]]
+) -> Element:
+    return Element(
+        kind=kind, type=etype, label=label, story=story, ends=ends, props=props,
+        loads=loads.get((label, story), []), nodes=[], cmp=[],
+    )

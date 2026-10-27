@@ -1,30 +1,21 @@
-import { useEffect, useState } from 'react'
+import { useState, useMemo } from 'react'
 import type { Model, Diff } from './types'
+import modelAData from '../../fixtures/model-a.json'
+import modelBData from '../../fixtures/model-b.json'
+import diffData from '../../fixtures/diff.json'
 
 function App() {
-  const [data, setData] = useState<{ modelA: Model; modelB: Model; diff: Diff } | null>(null)
-  const [error, setError] = useState<string | null>(null)
+  const [error] = useState<string | null>(null)
 
-  useEffect(() => {
-    const loadFixtures = async () => {
-      try {
-        const [modelARes, modelBRes, diffRes] = await Promise.all([
-          fetch('/fixtures/model-a.json'),
-          fetch('/fixtures/model-b.json'),
-          fetch('/fixtures/diff.json'),
-        ])
-
-        const modelA = (await modelARes.json()) as unknown as Model
-        const modelB = (await modelBRes.json()) as unknown as Model
-        const diff = (await diffRes.json()) as unknown as Diff
-
-        setData({ modelA, modelB, diff })
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load fixtures')
-      }
+  const data = useMemo(() => {
+    try {
+      const modelA = modelAData as unknown as Model
+      const modelB = modelBData as unknown as Model
+      const diff = diffData as unknown as Diff
+      return { modelA, modelB, diff }
+    } catch (err) {
+      return null
     }
-
-    loadFixtures()
   }, [])
 
   if (error) {

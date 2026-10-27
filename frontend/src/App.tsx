@@ -12,9 +12,9 @@ export function Shell({ vm }: { vm: ViewModel }) {
   return (
     <UiProvider>
       <div className="grid min-h-0 flex-1 grid-cols-[18rem_18rem_1fr]">
-        <SummarySection meta={vm.meta} summary={vm.summary} />
-        <CategorySection categories={vm.categories} />
-        <ElementSection rows={vm.rows} groups={vm.summary.groups} />
+        <SummarySection meta={vm.meta} summary={vm.summary} rows={vm.rows} />
+        <CategorySection categories={vm.categories} groups={vm.summary.groups} rows={vm.rows} />
+        <ElementSection rows={vm.rows} groups={vm.summary.groups} categories={vm.categories} />
       </div>
     </UiProvider>
   )

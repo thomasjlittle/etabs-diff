@@ -1,4 +1,4 @@
-// Vantage result schema (UI-only, "vantage-0.1"). Separate from types.ts, which mirrors backend schema.py.
+// keepTABS result schema (UI-only, "keeptabs-0.1"). Separate from types.ts, which mirrors backend schema.py.
 // an adapter from engine output to this shape comes later. All mock data is synthetic.
 
 export type Vec3 = [number, number, number];

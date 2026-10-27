@@ -1,7 +1,7 @@
 // Summary list, detail panel and change table. All three read the same selectedId and call the
 // same onSelect, so a click in any of them selects the same change everywhere.
 import { useEffect, useRef, useState } from 'react';
-import type { Change, Result } from './vantageTypes';
+import type { Change, Result } from './keeptabsTypes';
 import {
   byExtent, describeChange, fmt, headlineCounts, memberMap, memberName, storyChangeCounts, unitFor,
 } from './data';

@@ -26,7 +26,7 @@ async function post(model: File, rev: Revision): Promise<string> {
   for (const [k, v] of Object.entries(rev)) for (const s of [v].flat()) body.append(k, s);
   let res: Response;
   try {
-    res = await fetch(SAVE_ROUTE, { method: 'POST', body, headers: { 'x-vantage-compare': '1' } });
+    res = await fetch(SAVE_ROUTE, { method: 'POST', body, headers: { 'x-keeptabs-local': '1' } });
   } catch {
     throw new Error('The local dev server did not answer. Start it from frontend/ with: npm run dev');
   }

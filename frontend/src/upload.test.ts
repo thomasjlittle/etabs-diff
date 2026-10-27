@@ -34,7 +34,7 @@ describe('compareModels', () => {
     expect(r).toEqual(await loadScenario('hack-models', { original: 'Hack_v01a', second: 'Hack_v04' }));
     const [url, init] = fetch.mock.calls[0] as unknown as [string, RequestInit];
     expect(url).toBe('/local/compare');
-    expect((init.headers as Record<string, string>)['x-vantage-compare']).toBe('1');
+    expect((init.headers as Record<string, string>)['x-keeptabs-local']).toBe('1');
     const body = init.body as FormData;
     expect([(body.get('a') as File).name, (body.get('b') as File).name]).toEqual(['Hack_v01a.e2k', 'Hack_v04.e2k']);
   });

@@ -10,7 +10,7 @@ import type { Plugin } from 'vite';
 
 export const COMPARE_ROUTE = '/local/compare';
 // Required on every request: a custom header makes the browser preflight, so another site can't post here.
-export const COMPARE_HEADER = 'x-vantage-compare';
+export const COMPARE_HEADER = 'x-keeptabs-local';
 const BACKEND = fileURLToPath(new URL('../backend', import.meta.url));
 export const MAX_BYTES = 200 * 1024 * 1024;
 
@@ -24,7 +24,7 @@ function safeName(name: string): string {
 
 /** Run the engine CLI on two models. Uploads go to a temp folder that is removed afterwards. */
 export async function compareE2k(a: Upload, b: Upload): Promise<string> {
-  const dir = await mkdtemp(join(tmpdir(), 'vantage-compare-'));
+  const dir = await mkdtemp(join(tmpdir(), 'keeptabs-compare-'));
   try {
     // a/ and b/ so two uploads with the same name don't overwrite each other
     const [pathA, pathB] = await Promise.all(([['a', a], ['b', b]] as const).map(async ([sub, f]) => {
@@ -100,4 +100,4 @@ export function localRoute(name: string, route: string, handle: (req: Request) =
   };
 }
 
-export const compareE2kPlugin = () => localRoute('vantage-compare-e2k', COMPARE_ROUTE, handleCompare);
+export const compareE2kPlugin = () => localRoute('keeptabs-compare-e2k', COMPARE_ROUTE, handleCompare);

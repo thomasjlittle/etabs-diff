@@ -167,6 +167,7 @@ def _stem(file: str) -> str:
 
 
 def _git(root: Path, *args: str, capture: bool = True) -> "subprocess.CompletedProcess[str]":
+    sys.stdout.flush()  # keep egit's lines ahead of git's when git writes straight to the terminal
     try:
         return subprocess.run(["git", *args], cwd=root, text=True, capture_output=capture, check=False)
     except FileNotFoundError as exc:

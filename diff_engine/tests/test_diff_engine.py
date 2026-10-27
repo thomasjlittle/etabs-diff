@@ -4,7 +4,7 @@ Run from the repo root: python -m unittest discover -s diff_engine/tests -t .
 """
 
 import unittest
-from typing import Dict, List, Optional, Sequence, Tuple, cast
+from typing import Any, Dict, List, Optional, Sequence, Tuple, cast
 
 from diff_engine import DiffOutput, diff_models, parse_text
 from diff_engine.contract import ElementDiff, TableDiff
@@ -172,7 +172,7 @@ class DiffEngineTest(unittest.TestCase):
         ])
         result = diff_models(model(), edited)
         rows = {c.get("row") for e in result["elements"] for c in e["changes"]}
-        self.assertEqual(rows, {3, 7, 8, 9})
+        self.assertEqual(rows, {2, 6, 8, 9})
         self.assertEqual(statuses(result, "point"), ["modified", "unchanged"])
 
     def test_cases_combos_and_mass_source_compare_by_term(self) -> None:
@@ -204,7 +204,96 @@ $ MASS SOURCE
         assert "combos" in tables and "massSource" in tables
         self.assertEqual([c["field"] for c in tables["combos"]["modified"]["ULS"]], ["LOADCASE:Q"])
         mass = tables["massSource"]["modified"]["MsSrc1"]
-        self.assertEqual([(c["field"], c["affects"], c.get("row")) for c in mass], [("LOADPAT:Q", ["mass"], 10)])
+        self.assertEqual([(c["field"], c["affects"], c.get("row")) for c in mass], [("LOADPAT:Q", ["mass"], 11)])
+
+    def column_angle_changes(self, before: str, after: str) -> List[Tuple[str, str, str, Any, Any, Optional[int]]]:
+        """Changes on column C1 when its L1 assign gains `before` and then `after` (e.g. ' ANG 30')."""
+        assign = 'LINEASSIGN  "C1"  "L1"  SECTION "COL"'
+        a = model(replace=[(assign, assign + before)])
+        b = model(replace=[(assign, assign + after)])
+        result = diff_models(a, b)
+        return [(e["subtype"], e["label"], c["field"], c["before"], c["after"], c.get("row"))
+                for e in result["elements"] for c in e["changes"]]
+
+    def test_column_rotated_by_a_non_90_angle(self) -> None:
+        self.assertEqual(self.column_angle_changes("", " ANG 30"), [("column", "C1", "ANG", 0.0, 30.0, 6)])
+        self.assertEqual(self.column_angle_changes(" ANG 45", " ANG -30"), [("column", "C1", "ANG", 45.0, -30.0, 6)])
+
+    def test_column_angle_compares_modulo_360(self) -> None:
+        self.assertEqual(self.column_angle_changes(" ANG 0", " ANG 360"), [])
+        self.assertEqual(self.column_angle_changes("", " ANG 360"), [])
+        self.assertEqual(self.column_angle_changes(" ANG 270", " ANG -90"), [])
+        self.assertEqual(self.column_angle_changes(" ANG 90", " ANG 90.0004"), [])
+
+    def test_member_modifiers_and_length_offsets(self) -> None:
+        assign = 'LINEASSIGN  "C1"  "L1"  SECTION "COL"'
+        edited = model(replace=[(assign, assign + " PROPMODI33 0.7 PROPMODM 0.9 LENGTHOFFI 0.1")])
+        changes = {c["field"]: c for e in diff_models(model(), edited)["elements"] for c in e["changes"]}
+        self.assertEqual({k: (c.get("row"), c["affects"]) for k, c in changes.items()}, {
+            "PROPMODI33": (5, ["stiffness", "mass"]), "PROPMODM": (5, ["mass"]), "LENGTHOFFI": (6, ["stiffness"])})
+        self.assertAlmostEqual(changes["LENGTHOFFI"]["after"], 0.1 / 0.0254)  # m to in
+
+    def test_node_listed_when_its_assign_changes_and_bare_joints_stay_out(self) -> None:
+        # Point 3 at L1 is a bare floor corner. A diaphragm assign on it lists it as a modified node.
+        edited = model(replace=[("$ LINE ASSIGNS", '  POINTASSIGN  "3"  "L1"  DIAPH "D1"\n$ LINE ASSIGNS')])
+        result = diff_models(model(), edited)
+        self.assertEqual([(e["kind"], e["label"], e["status"], [c["field"] for c in e["changes"]], e["changes"][0].get("row"))
+                          for e in not_unchanged(result)], [("point", "3", "modified", ["DIAPH"], 16)])
+        self.assertEqual(len(result["elements"]), 7)  # the 6 from the identical case plus that node
+        # A support taken off a joint leaves it bare: a modified node, not a removed one.
+        unpinned = model(replace=[('POINTASSIGN  "2"  "BASE"  RESTRAINT "UX UY UZ RX RY RZ"', "")])
+        node = not_unchanged(diff_models(model(), unpinned))
+        self.assertEqual([(e["label"], e["status"], e["changes"][0]["after"]) for e in node], [("2", "modified", None)])
+
+    def test_diaphragm_definition_reaches_its_users(self) -> None:
+        text = BASE.format(**LABELS).replace('SECTION "SLAB"', 'SECTION "SLAB"  DIAPH "D1"')
+        text += '$ DIAPHRAGM NAMES\n  DIAPHRAGM "D1"    TYPE RIGID\n'
+        result = diff_models(parse_text(text), parse_text(text.replace("TYPE RIGID", "TYPE SEMIRIGID")))
+        assert "diaphragms" in result["tables"]
+        self.assertEqual([(c["field"], c.get("row")) for c in result["tables"]["diaphragms"]["modified"]["D1"]], [("TYPE", 16)])
+        affected = [(e["label"], e.get("via")) for e in result["elements"] if e["status"] == "affected"]
+        self.assertEqual(affected, [("F1", ["diaphragm:D1"])])
+
+    def test_auto_lateral_inputs_compare_field_by_field(self) -> None:
+        patterns = """
+$ LOAD PATTERNS
+  LOADPATTERN "EQX"  TYPE  "Seismic"  SELFWEIGHT  0
+  SEISMIC "EQX"  "ASCE 7-16"    DIR "X"  ECC 0.05  TOPSTORY "L1"    BOTTOMSTORY "BASE"  R 8  SS 1.2
+  SEISMIC "EQX"  ECCOVERWRITE "L1"  "D1"  0.5
+  LOADPATTERN "WX"  TYPE  "Wind"  SELFWEIGHT  0
+  WIND "WX"  "EUROCODE1 2005"  EXPOSUREFROM "DIAPHRAGMS"    WINDWARDCP 0.8  LEEWARDCP 0.5  VB 35
+  WINDEXPOSURE "WX"  "SET"  "1"  ANGLE 0
+"""
+        text = BASE.format(**LABELS) + patterns
+        parsed = parse_text(text)
+        eqx, wx = parsed["load_patterns"]["EQX"], parsed["load_patterns"]["WX"]
+        # The ECCOVERWRITE line must not replace the main seismic line (it used to).
+        self.assertEqual((eqx["SEISMIC:CODE"], eqx["SEISMIC:R"]), ("ASCE 7-16", 8.0))
+        self.assertAlmostEqual(eqx["SEISMIC:ECCOVERWRITE:L1:D1"], 0.5 / 0.0254)
+        self.assertEqual((wx["WIND:VB"], wx["WINDEXPOSURE:SET:1:ANGLE"]), (35.0, 0.0))
+        edited = text.replace("R 8", "R 6").replace("VB 35", "VB 40").replace('"D1"  0.5', '"D1"  0.6')
+        tables = diff_models(parsed, parse_text(edited))["tables"]["loadPatterns"]["modified"]
+        self.assertEqual({k: sorted((c["field"], c.get("row")) for c in v) for k, v in tables.items()}, {
+            "EQX": [("SEISMIC:ECCOVERWRITE:L1:D1", 12), ("SEISMIC:R", 12)], "WX": [("WIND:VB", 12)]})
+
+    def test_functions_and_p_delta(self) -> None:
+        extra = """
+$ FUNCTIONS
+  FUNCTION "RS"  FUNCTYPE "SPECTRUM"  DAMPRATIO 0.05  SPECTYPE "USER"
+  FUNCTION "RS"  TIMEVAL "0  0.4  1  1"
+  FUNCTION "RS"  TIMEVAL "2  0.5"
+$ ANALYSIS OPTIONS
+  PDELTA  METHOD "NONE"
+"""
+        text = BASE.format(**LABELS) + extra
+        parsed = parse_text(text)
+        self.assertEqual(parsed["functions"]["RS"]["TIMEVAL"], [0.0, 0.4, 1.0, 1.0, 2.0, 0.5])  # lines join
+        edited = text.replace('"2  0.5"', '"2  0.6"').replace('"NONE"', '"OTHER"')
+        tables = diff_models(parsed, parse_text(edited))["tables"]
+        assert "functions" in tables and "analysisOptions" in tables
+        self.assertEqual([(c["field"], c.get("row")) for c in tables["functions"]["modified"]["RS"]], [("TIMEVAL", 17)])
+        self.assertEqual([(c["field"], c.get("row")) for c in tables["analysisOptions"]["modified"]["PDELTA"]],
+                         [("METHOD", 13)])
 
 
 if __name__ == "__main__":

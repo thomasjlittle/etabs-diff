@@ -61,7 +61,11 @@ DIMENSIONS: Dict[str, Mapping[str, Dims]] = {
     "LINESPRING": dict.fromkeys(["U1", "U2", "U3"], F_L2) | {"R1": F},
     "AREASPRING": dict.fromkeys(["U1", "U2", "U3"], F_L3),
     "LINEASSIGN": dict.fromkeys(
-        ["LENOFFI", "LENOFFJ", "MAXSTASPC", "OFFSETXI", "OFFSETYI", "OFFSETZI", "OFFSETXJ", "OFFSETYJ", "OFFSETZJ"], L
+        [
+            "LENOFFI", "LENOFFJ", "LENGTHOFFI", "LENGTHOFFJ", "MAXSTASPC",
+            "OFFSETXI", "OFFSETYI", "OFFSETZI", "OFFSETXJ", "OFFSETYJ", "OFFSETZJ",
+        ],
+        L,
     )
     | dict.fromkeys(["LIMITTENSION", "LIMITCOMPRESSION"], F),
     "AREAASSIGN": {"MAXMESHSIZE": L},
@@ -75,6 +79,7 @@ DIMENSIONS: Dict[str, Mapping[str, Dims]] = {
     "AREALOAD": {"FVAL": F_L2},
     "SHELLUNIFORMLOADSET": {"VALUE": F_L2},
     "LOADCASE": {"DISPLMAG": L},
+    "SEISMIC": {"ECCOVERWRITE": L},  # user diaphragm eccentricity, a distance
     # Response spectrum scale factor is an acceleration (g in the file's length units).
     "LOADCASE:ACCEL": {"SF": L},
 }

@@ -37,6 +37,10 @@ class DemoPairTest(unittest.TestCase):
         )
         self.assertEqual(got, expected)
 
+    def test_every_list_row_is_seeded(self) -> None:
+        # Rows 1 to 17 of the change list. Row 10 (additional mass) has no confirmed e2k keyword yet.
+        self.assertEqual({c["row"] for c in self.seeded["changes"]}, set(range(1, 18)) - {10})
+
     def test_tables_are_exactly_the_seeded_ones(self) -> None:
         expected: Dict[str, Dict[str, Any]] = {}
         for change in self.seeded["changes"]:

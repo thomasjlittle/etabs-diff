@@ -14,7 +14,7 @@ StrPath = Union[str, os.PathLike[str]]
 TokenValue = Union[float, str]
 Token = Tuple[TokenValue, bool]  # (value, quoted)
 # Raw keyword values off one record: floats, strings, True for a lone key, lists for REPEATING keys,
-# nested dicts for SEISMIC and load case terms. Genuinely untyped, so Any.
+# nested dicts for load case terms. Genuinely untyped, so Any.
 Props = Dict[str, Any]
 ObjectKey = Tuple[str, str]  # (label, story)
 XYZ = Tuple[float, float, float]
@@ -22,7 +22,8 @@ AssignTable = Literal["point_assigns", "line_assigns", "area_assigns"]
 LoadTable = Literal["point_loads", "line_loads", "area_loads"]
 DefTable = Literal[
     "materials", "frame_sections", "shell_props", "point_springs", "line_springs", "area_springs",
-    "load_patterns", "mass_source", "load_cases", "combos", "load_sets",
+    "load_patterns", "mass_source", "load_cases", "combos", "load_sets", "diaphragms", "functions",
+    "analysis",
 ]
 
 
@@ -64,6 +65,9 @@ class Model(TypedDict):
     load_cases: Dict[str, Props]
     combos: Dict[str, Props]
     load_sets: Dict[str, Props]
+    diaphragms: Dict[str, Props]
+    functions: Dict[str, Props]
+    analysis: Dict[str, Props]  # analysis options by record keyword (PDELTA)
     skipped: Dict[str, int]  # record keyword -> lines not compared
 
 
@@ -72,6 +76,10 @@ TOKEN = re.compile(r'"((?:[^"]|"")*)"|(\S+)')
 
 # Keys that may repeat on one record; repeats are kept as a list.
 REPEATING = {"MESHAT", "STRAIN", "STRESS", "POINTID"}
+# Quoted lists of numbers that may continue over several lines of one definition; kept as one float list.
+NUMBER_LISTS = {"TIMEVAL"}
+# Auto lateral load records. Each belongs to the load pattern it names, flattened as RECORD:KEY.
+AUTO_LATERAL = {"SEISMIC", "WIND", "WINDEXPOSURE"}
 
 # Plan objects and their per-story records.
 ASSIGNS: Dict[str, AssignTable] = {
@@ -88,6 +96,8 @@ DEFINITIONS: Dict[str, DefTable] = {
     "AREASPRING": "area_springs",
     "LOADPATTERN": "load_patterns",
     "MASSSOURCE": "mass_source",
+    "DIAPHRAGM": "diaphragms",
+    "FUNCTION": "functions",
 }
 # Definitions where each repeated line adds one term (a load and its factor) instead of more keys.
 # A term line is NAME TERMKEY "target" [SF x ...]; it is stored under "TERMKEY:target".
@@ -119,7 +129,10 @@ def key_values(tokens: List[Token], record: str, fac: Factors, into: Optional[Pr
             into[key] = True
             break
         value = scale(record, key, tokens[i + 1][0], fac)
-        if key in REPEATING:
+        if key in NUMBER_LISTS and isinstance(value, str):
+            prior = into.get(key)
+            into[key] = (prior if isinstance(prior, list) else []) + [float(v) for v in value.split()]
+        elif key in REPEATING:
             prior = into.get(key)
             into[key] = (prior if isinstance(prior, list) else []) + [value]
         else:
@@ -142,6 +155,7 @@ def parse_text(text: str) -> Model:
         point_loads=defaultdict(list), line_loads=defaultdict(list), area_loads=defaultdict(list),
         materials={}, frame_sections={}, shell_props={}, point_springs={}, line_springs={}, area_springs={},
         load_patterns={}, mass_source={}, load_cases={}, combos={}, load_sets={},
+        diaphragms={}, functions={}, analysis={},
         skipped=defaultdict(int),
     )
     fac: Factors = (1.0, 1.0, 1.0)
@@ -186,10 +200,10 @@ def _record(model: Model, kw: str, rest: List[Token], fac: Factors) -> None:
         model["program"] = {"name": rest[0][0], **key_values(rest[1:], kw, fac)}
     elif kw == "PREFERENCE":
         model["merge_tol"] = key_values(rest, kw, fac).get("MERGETOL", model["merge_tol"])
-    elif kw == "SEISMIC":
-        # Auto lateral load parameters belong to the load pattern they name.
-        pattern = model["load_patterns"].setdefault(_name(rest[0]), {})
-        pattern["SEISMIC"] = {"CODE": rest[1][0], **key_values(rest[2:], kw, fac)}
+    elif kw in AUTO_LATERAL:
+        _auto_lateral(model["load_patterns"].setdefault(_name(rest[0]), {}), kw, rest[1:], fac)
+    elif kw == "PDELTA":
+        model["analysis"]["PDELTA"] = key_values(rest, kw, fac)
     elif kw == "STORY":
         model["stories"].append({"name": rest[0][0], **key_values(rest[1:], kw, fac)})
     elif kw == "POINT":
@@ -237,6 +251,29 @@ def _record(model: Model, kw: str, rest: List[Token], fac: Factors) -> None:
         model["load_sets"].setdefault(_name(rest[0]), {})[kv["LOADPAT"]] = kv["VALUE"]
     else:
         model["skipped"][kw] += 1
+
+
+def _auto_lateral(pattern: Props, kw: str, rest: List[Token], fac: Factors) -> None:
+    """Fold one auto lateral line into its load pattern as flat RECORD:KEY fields.
+
+    SEISMIC "EQX" "ASCE 7-16" DIR "X" R 6       -> SEISMIC:CODE, SEISMIC:DIR, SEISMIC:R
+    SEISMIC "EQX" ECCOVERWRITE "L2" "D1" 6.58   -> SEISMIC:ECCOVERWRITE:L2:D1
+    WIND "WX" "ASCE 7-16" VB 115                -> WIND:CODE, WIND:VB
+    WINDEXPOSURE "WX" "SET" "1" ANGLE 0         -> WINDEXPOSURE:SET:1:ANGLE
+    """
+    if kw in ("SEISMIC", "WIND") and rest[0][1]:
+        pattern[f"{kw}:CODE"] = rest[0][0]
+        fields = key_values(rest[1:], kw, fac)
+    elif kw == "SEISMIC":
+        # Positional: SEISMIC "pattern" KEY "story" "diaphragm" value
+        key = str(rest[0][0]).upper()
+        fields = {":".join([key, *(str(t[0]) for t in rest[1:-1])]): scale(kw, key, rest[-1][0], fac)}
+    else:
+        # Positional path of quoted words, then KEY VALUE pairs.
+        n = next((i for i, t in enumerate(rest) if not t[1]), len(rest))
+        fields = {":".join([*(str(t[0]) for t in rest[:n]), k]): v for k, v in key_values(rest[n:], kw, fac).items()}
+    for key, value in fields.items():
+        pattern[f"{kw}:{key}"] = value
 
 
 def _joint_ref(tokens: List[Token]) -> List[Token]:

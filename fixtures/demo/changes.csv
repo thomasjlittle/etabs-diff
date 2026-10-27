@@ -1,83 +1,95 @@
 table,key,kind,subtype,label,story,status,field,before,after,affects,row,via
-elements,beam|Roof|1800|0|0~Roof|1800|3000|0,frame,beam,B32,Roof,affected,frameSection:W12X26.I3MOD,1.0,1.4,stiffness mass,6,frameSection:W12X26
-elements,beam|Roof|1800|3000|0~Roof|1800|6000|0,frame,beam,B33,Roof,affected,frameSection:W12X26.I3MOD,1.0,1.4,stiffness mass,6,frameSection:W12X26
-elements,beam|Roof|1800|6000|0~Roof|1800|9000|0,frame,beam,B34,Roof,affected,frameSection:W12X26.I3MOD,1.0,1.4,stiffness mass,6,frameSection:W12X26
-elements,beam|Roof|5400|0|0~Roof|5400|3000|0,frame,beam,B35,Roof,affected,frameSection:W12X26.I3MOD,1.0,1.4,stiffness mass,6,frameSection:W12X26
-elements,beam|Roof|5400|3000|0~Roof|5400|6000|0,frame,beam,B36,Roof,affected,frameSection:W12X26.I3MOD,1.0,1.4,stiffness mass,6,frameSection:W12X26
-elements,beam|Roof|5400|6000|0~Roof|5400|9000|0,frame,beam,B37,Roof,affected,frameSection:W12X26.I3MOD,1.0,1.4,stiffness mass,6,frameSection:W12X26
-elements,beam|Roof|9000|0|0~Roof|9000|3000|0,frame,beam,B38,Roof,affected,frameSection:W12X26.I3MOD,1.0,1.4,stiffness mass,6,frameSection:W12X26
-elements,beam|Roof|9000|3000|0~Roof|9000|6000|0,frame,beam,B39,Roof,affected,frameSection:W12X26.I3MOD,1.0,1.4,stiffness mass,6,frameSection:W12X26
-elements,beam|Roof|9000|6000|0~Roof|9000|9000|0,frame,beam,B40,Roof,affected,frameSection:W12X26.I3MOD,1.0,1.4,stiffness mass,6,frameSection:W12X26
-elements,beam|Roof|12600|0|0~Roof|12600|3000|0,frame,beam,B41,Roof,affected,frameSection:W12X26.I3MOD,1.0,1.4,stiffness mass,6,frameSection:W12X26
-elements,beam|Roof|12600|3000|0~Roof|12600|6000|0,frame,beam,B42,Roof,affected,frameSection:W12X26.I3MOD,1.0,1.4,stiffness mass,6,frameSection:W12X26
-elements,beam|Roof|12600|6000|0~Roof|12600|9000|0,frame,beam,B43,Roof,affected,frameSection:W12X26.I3MOD,1.0,1.4,stiffness mass,6,frameSection:W12X26
-elements,column|L5|7200|6000|0~L6|7200|6000|0,frame,column,C13,L6,modified,ANG,,90.0,stiffness,7,
-elements,beam|L6|10800|3000|0~L6|10800|6000|0,frame,beam,B27,L6,modified,RELEASE,M2I M3I M2J M3J,,stiffness,7,
+elements,beam|Roof|1800|0|0~Roof|1800|3000|0,frame,beam,B32,Roof,affected,frameSection:W12X26.I3MOD,1.0,1.4,stiffness mass,5,frameSection:W12X26
+elements,beam|Roof|1800|3000|0~Roof|1800|6000|0,frame,beam,B33,Roof,affected,frameSection:W12X26.I3MOD,1.0,1.4,stiffness mass,5,frameSection:W12X26
+elements,beam|Roof|1800|6000|0~Roof|1800|9000|0,frame,beam,B34,Roof,affected,frameSection:W12X26.I3MOD,1.0,1.4,stiffness mass,5,frameSection:W12X26
+elements,beam|Roof|5400|0|0~Roof|5400|3000|0,frame,beam,B35,Roof,affected,frameSection:W12X26.I3MOD,1.0,1.4,stiffness mass,5,frameSection:W12X26
+elements,beam|Roof|5400|3000|0~Roof|5400|6000|0,frame,beam,B36,Roof,affected,frameSection:W12X26.I3MOD,1.0,1.4,stiffness mass,5,frameSection:W12X26
+elements,beam|Roof|5400|6000|0~Roof|5400|9000|0,frame,beam,B37,Roof,affected,frameSection:W12X26.I3MOD,1.0,1.4,stiffness mass,5,frameSection:W12X26
+elements,beam|Roof|9000|0|0~Roof|9000|3000|0,frame,beam,B38,Roof,affected,frameSection:W12X26.I3MOD,1.0,1.4,stiffness mass,5,frameSection:W12X26
+elements,beam|Roof|9000|3000|0~Roof|9000|6000|0,frame,beam,B39,Roof,affected,frameSection:W12X26.I3MOD,1.0,1.4,stiffness mass,5,frameSection:W12X26
+elements,beam|Roof|9000|6000|0~Roof|9000|9000|0,frame,beam,B40,Roof,affected,frameSection:W12X26.I3MOD,1.0,1.4,stiffness mass,5,frameSection:W12X26
+elements,beam|Roof|12600|0|0~Roof|12600|3000|0,frame,beam,B41,Roof,affected,frameSection:W12X26.I3MOD,1.0,1.4,stiffness mass,5,frameSection:W12X26
+elements,beam|Roof|12600|3000|0~Roof|12600|6000|0,frame,beam,B42,Roof,affected,frameSection:W12X26.I3MOD,1.0,1.4,stiffness mass,5,frameSection:W12X26
+elements,beam|Roof|12600|6000|0~Roof|12600|9000|0,frame,beam,B43,Roof,affected,frameSection:W12X26.I3MOD,1.0,1.4,stiffness mass,5,frameSection:W12X26
+elements,column|L5|7200|6000|0~L6|7200|6000|0,frame,column,C13,L6,modified,ANG,0.0,90.0,stiffness,6,
+elements,beam|L6|10800|3000|0~L6|10800|6000|0,frame,beam,B27,L6,modified,RELEASE,M2I M3I M2J M3J,,stiffness,6,
 elements,beam|L5|3600|0|0~L5|7200|0|0,frame,beam,B2,L5,modified,loads:SDL,"[{""DIR"":""GRAV"",""FVAL"":0.03333333333,""TYPE"":""UNIFF""}]","[{""DIR"":""GRAV"",""FVAL"":0.05,""TYPE"":""UNIFF""}]",load,9,
-elements,column|L2|0|0|0~L3|0|0|0,frame,column,C101,L3,affected,frameSection:BOX16.TF,0.75,1.0,stiffness mass,4,frameSection:BOX16
-elements,column|L2|0|0|0~L3|0|0|0,frame,column,C101,L3,affected,frameSection:BOX16.TW,0.75,1.0,stiffness mass,4,frameSection:BOX16
-elements,column|L2|14400|0|0~L3|14400|0|0,frame,column,C5,L3,affected,frameSection:BOX16.TF,0.75,1.0,stiffness mass,4,frameSection:BOX16
-elements,column|L2|14400|0|0~L3|14400|0|0,frame,column,C5,L3,affected,frameSection:BOX16.TW,0.75,1.0,stiffness mass,4,frameSection:BOX16
-elements,column|L2|3600|3000|0~L3|3600|3000|0,frame,column,C7,L3,modified,SECTION,W14X120,W14X132,stiffness mass,3,
-elements,column|L2|0|9000|0~L3|0|9000|0,frame,column,C104,L3,affected,frameSection:BOX16.TF,0.75,1.0,stiffness mass,4,frameSection:BOX16
-elements,column|L2|0|9000|0~L3|0|9000|0,frame,column,C104,L3,affected,frameSection:BOX16.TW,0.75,1.0,stiffness mass,4,frameSection:BOX16
-elements,column|L2|14400|9000|0~L3|14400|9000|0,frame,column,C20,L3,affected,frameSection:BOX16.TF,0.75,1.0,stiffness mass,4,frameSection:BOX16
-elements,column|L2|14400|9000|0~L3|14400|9000|0,frame,column,C20,L3,affected,frameSection:BOX16.TW,0.75,1.0,stiffness mass,4,frameSection:BOX16
-elements,beam|L3|3600|3000|0~L3|7200|3000|0,frame,beam,B6,L3,modified,CARDINALPT,8.0,2.0,stiffness,7,
-elements,column|Base|0|0|0~L2|0|0|0,frame,column,C101,L2,affected,frameSection:BOX16.TF,0.75,1.0,stiffness mass,4,frameSection:BOX16
-elements,column|Base|0|0|0~L2|0|0|0,frame,column,C101,L2,affected,frameSection:BOX16.TW,0.75,1.0,stiffness mass,4,frameSection:BOX16
-elements,column|Base|14400|0|0~L2|14400|0|0,frame,column,C5,L2,affected,frameSection:BOX16.TF,0.75,1.0,stiffness mass,4,frameSection:BOX16
-elements,column|Base|14400|0|0~L2|14400|0|0,frame,column,C5,L2,affected,frameSection:BOX16.TW,0.75,1.0,stiffness mass,4,frameSection:BOX16
-elements,column|Base|0|9000|0~L2|0|9000|0,frame,column,C104,L2,affected,frameSection:BOX16.TF,0.75,1.0,stiffness mass,4,frameSection:BOX16
-elements,column|Base|0|9000|0~L2|0|9000|0,frame,column,C104,L2,affected,frameSection:BOX16.TW,0.75,1.0,stiffness mass,4,frameSection:BOX16
-elements,column|Base|14400|9000|0~L2|14400|9000|0,frame,column,C20,L2,affected,frameSection:BOX16.TF,0.75,1.0,stiffness mass,4,frameSection:BOX16
-elements,column|Base|14400|9000|0~L2|14400|9000|0,frame,column,C20,L2,affected,frameSection:BOX16.TW,0.75,1.0,stiffness mass,4,frameSection:BOX16
-elements,beam|L2|0|0|0~L2|3600|0|0,frame,beam,B1,L2,affected,frameSection:GIRDER-USER.MATERIAL,A992Fy50,A572Gr50,stiffness mass,4,frameSection:GIRDER-USER
-elements,beam|L2|3600|0|0~L2|7200|0|0,frame,beam,B2,L2,affected,frameSection:GIRDER-USER.MATERIAL,A992Fy50,A572Gr50,stiffness mass,4,frameSection:GIRDER-USER
-elements,beam|L2|10800|0|0~L2|7200|0|0,frame,beam,B3,L2,affected,frameSection:GIRDER-USER.MATERIAL,A992Fy50,A572Gr50,stiffness mass,4,frameSection:GIRDER-USER
-elements,beam|L2|10800|0|0~L2|14400|0|0,frame,beam,B4,L2,affected,frameSection:GIRDER-USER.MATERIAL,A992Fy50,A572Gr50,stiffness mass,4,frameSection:GIRDER-USER
-elements,floor|Roof|0|0|0~Roof|0|3000|0~Roof|3600|0|0~Roof|3600|3000|0,area,floor,F101,Roof,affected,material:LW3000.FC,3.0,4.0,stiffness mass,5,shellSection:RoofSlab;material:LW3000
-elements,floor|Roof|0|0|0~Roof|0|3000|0~Roof|3600|0|0~Roof|3600|3000|0,area,floor,F101,Roof,affected,material:LW3000.WEIGHTPERVOLUME,6.365740741e-05,6.655092593e-05,mass,5,shellSection:RoofSlab;material:LW3000
-elements,floor|Roof|3600|0|0~Roof|3600|3000|0~Roof|7200|0|0~Roof|7200|3000|0,area,floor,F2,Roof,affected,material:LW3000.FC,3.0,4.0,stiffness mass,5,shellSection:RoofSlab;material:LW3000
-elements,floor|Roof|3600|0|0~Roof|3600|3000|0~Roof|7200|0|0~Roof|7200|3000|0,area,floor,F2,Roof,affected,material:LW3000.WEIGHTPERVOLUME,6.365740741e-05,6.655092593e-05,mass,5,shellSection:RoofSlab;material:LW3000
-elements,floor|Roof|10800|0|0~Roof|10800|3000|0~Roof|7200|0|0~Roof|7200|3000|0,area,floor,F3,Roof,affected,material:LW3000.FC,3.0,4.0,stiffness mass,5,shellSection:RoofSlab;material:LW3000
-elements,floor|Roof|10800|0|0~Roof|10800|3000|0~Roof|7200|0|0~Roof|7200|3000|0,area,floor,F3,Roof,affected,material:LW3000.WEIGHTPERVOLUME,6.365740741e-05,6.655092593e-05,mass,5,shellSection:RoofSlab;material:LW3000
-elements,floor|Roof|10800|0|0~Roof|10800|3000|0~Roof|14400|0|0~Roof|14400|3000|0,area,floor,F4,Roof,affected,material:LW3000.FC,3.0,4.0,stiffness mass,5,shellSection:RoofSlab;material:LW3000
-elements,floor|Roof|10800|0|0~Roof|10800|3000|0~Roof|14400|0|0~Roof|14400|3000|0,area,floor,F4,Roof,affected,material:LW3000.WEIGHTPERVOLUME,6.365740741e-05,6.655092593e-05,mass,5,shellSection:RoofSlab;material:LW3000
-elements,floor|Roof|0|3000|0~Roof|0|6000|0~Roof|3600|3000|0~Roof|3600|6000|0,area,floor,F102,Roof,affected,material:LW3000.FC,3.0,4.0,stiffness mass,5,shellSection:RoofSlab;material:LW3000
-elements,floor|Roof|0|3000|0~Roof|0|6000|0~Roof|3600|3000|0~Roof|3600|6000|0,area,floor,F102,Roof,affected,material:LW3000.WEIGHTPERVOLUME,6.365740741e-05,6.655092593e-05,mass,5,shellSection:RoofSlab;material:LW3000
-elements,floor|Roof|3600|3000|0~Roof|3600|6000|0~Roof|7200|3000|0~Roof|7200|6000|0,area,floor,F6,Roof,affected,material:LW3000.FC,3.0,4.0,stiffness mass,5,shellSection:RoofSlab;material:LW3000
-elements,floor|Roof|3600|3000|0~Roof|3600|6000|0~Roof|7200|3000|0~Roof|7200|6000|0,area,floor,F6,Roof,affected,material:LW3000.WEIGHTPERVOLUME,6.365740741e-05,6.655092593e-05,mass,5,shellSection:RoofSlab;material:LW3000
-elements,floor|Roof|10800|3000|0~Roof|10800|6000|0~Roof|7200|3000|0~Roof|7200|6000|0,area,floor,F7,Roof,affected,material:LW3000.FC,3.0,4.0,stiffness mass,5,shellSection:RoofSlab;material:LW3000
-elements,floor|Roof|10800|3000|0~Roof|10800|6000|0~Roof|7200|3000|0~Roof|7200|6000|0,area,floor,F7,Roof,affected,material:LW3000.WEIGHTPERVOLUME,6.365740741e-05,6.655092593e-05,mass,5,shellSection:RoofSlab;material:LW3000
-elements,floor|Roof|10800|3000|0~Roof|10800|6000|0~Roof|14400|3000|0~Roof|14400|6000|0,area,floor,F8,Roof,affected,material:LW3000.FC,3.0,4.0,stiffness mass,5,shellSection:RoofSlab;material:LW3000
-elements,floor|Roof|10800|3000|0~Roof|10800|6000|0~Roof|14400|3000|0~Roof|14400|6000|0,area,floor,F8,Roof,affected,material:LW3000.WEIGHTPERVOLUME,6.365740741e-05,6.655092593e-05,mass,5,shellSection:RoofSlab;material:LW3000
-elements,floor|Roof|0|6000|0~Roof|0|9000|0~Roof|3600|6000|0~Roof|3600|9000|0,area,floor,F103,Roof,affected,material:LW3000.FC,3.0,4.0,stiffness mass,5,shellSection:RoofSlab;material:LW3000
-elements,floor|Roof|0|6000|0~Roof|0|9000|0~Roof|3600|6000|0~Roof|3600|9000|0,area,floor,F103,Roof,affected,material:LW3000.WEIGHTPERVOLUME,6.365740741e-05,6.655092593e-05,mass,5,shellSection:RoofSlab;material:LW3000
-elements,floor|Roof|3600|6000|0~Roof|3600|9000|0~Roof|7200|6000|0~Roof|7200|9000|0,area,floor,F10,Roof,affected,material:LW3000.FC,3.0,4.0,stiffness mass,5,shellSection:RoofSlab;material:LW3000
-elements,floor|Roof|3600|6000|0~Roof|3600|9000|0~Roof|7200|6000|0~Roof|7200|9000|0,area,floor,F10,Roof,affected,material:LW3000.WEIGHTPERVOLUME,6.365740741e-05,6.655092593e-05,mass,5,shellSection:RoofSlab;material:LW3000
-elements,floor|Roof|10800|6000|0~Roof|10800|9000|0~Roof|7200|6000|0~Roof|7200|9000|0,area,floor,F11,Roof,affected,material:LW3000.FC,3.0,4.0,stiffness mass,5,shellSection:RoofSlab;material:LW3000
-elements,floor|Roof|10800|6000|0~Roof|10800|9000|0~Roof|7200|6000|0~Roof|7200|9000|0,area,floor,F11,Roof,affected,material:LW3000.WEIGHTPERVOLUME,6.365740741e-05,6.655092593e-05,mass,5,shellSection:RoofSlab;material:LW3000
-elements,floor|Roof|10800|6000|0~Roof|10800|9000|0~Roof|14400|6000|0~Roof|14400|9000|0,area,floor,F12,Roof,affected,material:LW3000.FC,3.0,4.0,stiffness mass,5,shellSection:RoofSlab;material:LW3000
-elements,floor|Roof|10800|6000|0~Roof|10800|9000|0~Roof|14400|6000|0~Roof|14400|9000|0,area,floor,F12,Roof,affected,material:LW3000.WEIGHTPERVOLUME,6.365740741e-05,6.655092593e-05,mass,5,shellSection:RoofSlab;material:LW3000
+elements,column|L2|0|0|0~L3|0|0|0,frame,column,C101,L3,affected,frameSection:BOX16.TF,0.75,1.0,stiffness mass,3,frameSection:BOX16
+elements,column|L2|0|0|0~L3|0|0|0,frame,column,C101,L3,affected,frameSection:BOX16.TW,0.75,1.0,stiffness mass,3,frameSection:BOX16
+elements,column|L2|14400|0|0~L3|14400|0|0,frame,column,C5,L3,affected,frameSection:BOX16.TF,0.75,1.0,stiffness mass,3,frameSection:BOX16
+elements,column|L2|14400|0|0~L3|14400|0|0,frame,column,C5,L3,affected,frameSection:BOX16.TW,0.75,1.0,stiffness mass,3,frameSection:BOX16
+elements,column|L2|3600|3000|0~L3|3600|3000|0,frame,column,C7,L3,modified,SECTION,W14X120,W14X132,stiffness mass,2,
+elements,column|L2|0|9000|0~L3|0|9000|0,frame,column,C104,L3,affected,frameSection:BOX16.TF,0.75,1.0,stiffness mass,3,frameSection:BOX16
+elements,column|L2|0|9000|0~L3|0|9000|0,frame,column,C104,L3,affected,frameSection:BOX16.TW,0.75,1.0,stiffness mass,3,frameSection:BOX16
+elements,column|L2|14400|9000|0~L3|14400|9000|0,frame,column,C20,L3,affected,frameSection:BOX16.TF,0.75,1.0,stiffness mass,3,frameSection:BOX16
+elements,column|L2|14400|9000|0~L3|14400|9000|0,frame,column,C20,L3,affected,frameSection:BOX16.TW,0.75,1.0,stiffness mass,3,frameSection:BOX16
+elements,beam|L3|3600|3000|0~L3|7200|3000|0,frame,beam,B6,L3,modified,CARDINALPT,8.0,2.0,stiffness,6,
+elements,column|Base|0|0|0~L2|0|0|0,frame,column,C101,L2,affected,frameSection:BOX16.TF,0.75,1.0,stiffness mass,3,frameSection:BOX16
+elements,column|Base|0|0|0~L2|0|0|0,frame,column,C101,L2,affected,frameSection:BOX16.TW,0.75,1.0,stiffness mass,3,frameSection:BOX16
+elements,column|Base|14400|0|0~L2|14400|0|0,frame,column,C5,L2,affected,frameSection:BOX16.TF,0.75,1.0,stiffness mass,3,frameSection:BOX16
+elements,column|Base|14400|0|0~L2|14400|0|0,frame,column,C5,L2,affected,frameSection:BOX16.TW,0.75,1.0,stiffness mass,3,frameSection:BOX16
+elements,column|Base|7200|3000|0~L2|7200|3000|0,frame,column,C8,L2,modified,PROPMODI22,,0.7,stiffness mass,5,
+elements,column|Base|7200|3000|0~L2|7200|3000|0,frame,column,C8,L2,modified,PROPMODI33,,0.7,stiffness mass,5,
+elements,column|Base|0|9000|0~L2|0|9000|0,frame,column,C104,L2,affected,frameSection:BOX16.TF,0.75,1.0,stiffness mass,3,frameSection:BOX16
+elements,column|Base|0|9000|0~L2|0|9000|0,frame,column,C104,L2,affected,frameSection:BOX16.TW,0.75,1.0,stiffness mass,3,frameSection:BOX16
+elements,column|Base|14400|9000|0~L2|14400|9000|0,frame,column,C20,L2,affected,frameSection:BOX16.TF,0.75,1.0,stiffness mass,3,frameSection:BOX16
+elements,column|Base|14400|9000|0~L2|14400|9000|0,frame,column,C20,L2,affected,frameSection:BOX16.TW,0.75,1.0,stiffness mass,3,frameSection:BOX16
+elements,beam|L2|0|0|0~L2|3600|0|0,frame,beam,B1,L2,affected,frameSection:GIRDER-USER.MATERIAL,A992Fy50,A572Gr50,stiffness mass,3,frameSection:GIRDER-USER
+elements,beam|L2|3600|0|0~L2|7200|0|0,frame,beam,B2,L2,affected,frameSection:GIRDER-USER.MATERIAL,A992Fy50,A572Gr50,stiffness mass,3,frameSection:GIRDER-USER
+elements,beam|L2|10800|0|0~L2|7200|0|0,frame,beam,B3,L2,affected,frameSection:GIRDER-USER.MATERIAL,A992Fy50,A572Gr50,stiffness mass,3,frameSection:GIRDER-USER
+elements,beam|L2|10800|0|0~L2|14400|0|0,frame,beam,B4,L2,affected,frameSection:GIRDER-USER.MATERIAL,A992Fy50,A572Gr50,stiffness mass,3,frameSection:GIRDER-USER
+elements,floor|Roof|0|0|0~Roof|0|3000|0~Roof|3600|0|0~Roof|3600|3000|0,area,floor,F101,Roof,affected,material:LW3000.FC,3.0,4.0,stiffness mass,4,shellSection:RoofSlab;material:LW3000
+elements,floor|Roof|0|0|0~Roof|0|3000|0~Roof|3600|0|0~Roof|3600|3000|0,area,floor,F101,Roof,affected,material:LW3000.WEIGHTPERVOLUME,6.365740741e-05,6.655092593e-05,mass,4,shellSection:RoofSlab;material:LW3000
+elements,floor|Roof|3600|0|0~Roof|3600|3000|0~Roof|7200|0|0~Roof|7200|3000|0,area,floor,F2,Roof,affected,material:LW3000.FC,3.0,4.0,stiffness mass,4,shellSection:RoofSlab;material:LW3000
+elements,floor|Roof|3600|0|0~Roof|3600|3000|0~Roof|7200|0|0~Roof|7200|3000|0,area,floor,F2,Roof,affected,material:LW3000.WEIGHTPERVOLUME,6.365740741e-05,6.655092593e-05,mass,4,shellSection:RoofSlab;material:LW3000
+elements,floor|Roof|10800|0|0~Roof|10800|3000|0~Roof|7200|0|0~Roof|7200|3000|0,area,floor,F3,Roof,affected,material:LW3000.FC,3.0,4.0,stiffness mass,4,shellSection:RoofSlab;material:LW3000
+elements,floor|Roof|10800|0|0~Roof|10800|3000|0~Roof|7200|0|0~Roof|7200|3000|0,area,floor,F3,Roof,affected,material:LW3000.WEIGHTPERVOLUME,6.365740741e-05,6.655092593e-05,mass,4,shellSection:RoofSlab;material:LW3000
+elements,floor|Roof|10800|0|0~Roof|10800|3000|0~Roof|14400|0|0~Roof|14400|3000|0,area,floor,F4,Roof,affected,material:LW3000.FC,3.0,4.0,stiffness mass,4,shellSection:RoofSlab;material:LW3000
+elements,floor|Roof|10800|0|0~Roof|10800|3000|0~Roof|14400|0|0~Roof|14400|3000|0,area,floor,F4,Roof,affected,material:LW3000.WEIGHTPERVOLUME,6.365740741e-05,6.655092593e-05,mass,4,shellSection:RoofSlab;material:LW3000
+elements,floor|Roof|0|3000|0~Roof|0|6000|0~Roof|3600|3000|0~Roof|3600|6000|0,area,floor,F102,Roof,affected,material:LW3000.FC,3.0,4.0,stiffness mass,4,shellSection:RoofSlab;material:LW3000
+elements,floor|Roof|0|3000|0~Roof|0|6000|0~Roof|3600|3000|0~Roof|3600|6000|0,area,floor,F102,Roof,affected,material:LW3000.WEIGHTPERVOLUME,6.365740741e-05,6.655092593e-05,mass,4,shellSection:RoofSlab;material:LW3000
+elements,floor|Roof|3600|3000|0~Roof|3600|6000|0~Roof|7200|3000|0~Roof|7200|6000|0,area,floor,F6,Roof,affected,material:LW3000.FC,3.0,4.0,stiffness mass,4,shellSection:RoofSlab;material:LW3000
+elements,floor|Roof|3600|3000|0~Roof|3600|6000|0~Roof|7200|3000|0~Roof|7200|6000|0,area,floor,F6,Roof,affected,material:LW3000.WEIGHTPERVOLUME,6.365740741e-05,6.655092593e-05,mass,4,shellSection:RoofSlab;material:LW3000
+elements,floor|Roof|10800|3000|0~Roof|10800|6000|0~Roof|7200|3000|0~Roof|7200|6000|0,area,floor,F7,Roof,affected,material:LW3000.FC,3.0,4.0,stiffness mass,4,shellSection:RoofSlab;material:LW3000
+elements,floor|Roof|10800|3000|0~Roof|10800|6000|0~Roof|7200|3000|0~Roof|7200|6000|0,area,floor,F7,Roof,affected,material:LW3000.WEIGHTPERVOLUME,6.365740741e-05,6.655092593e-05,mass,4,shellSection:RoofSlab;material:LW3000
+elements,floor|Roof|10800|3000|0~Roof|10800|6000|0~Roof|14400|3000|0~Roof|14400|6000|0,area,floor,F8,Roof,affected,material:LW3000.FC,3.0,4.0,stiffness mass,4,shellSection:RoofSlab;material:LW3000
+elements,floor|Roof|10800|3000|0~Roof|10800|6000|0~Roof|14400|3000|0~Roof|14400|6000|0,area,floor,F8,Roof,affected,material:LW3000.WEIGHTPERVOLUME,6.365740741e-05,6.655092593e-05,mass,4,shellSection:RoofSlab;material:LW3000
+elements,floor|Roof|0|6000|0~Roof|0|9000|0~Roof|3600|6000|0~Roof|3600|9000|0,area,floor,F103,Roof,affected,material:LW3000.FC,3.0,4.0,stiffness mass,4,shellSection:RoofSlab;material:LW3000
+elements,floor|Roof|0|6000|0~Roof|0|9000|0~Roof|3600|6000|0~Roof|3600|9000|0,area,floor,F103,Roof,affected,material:LW3000.WEIGHTPERVOLUME,6.365740741e-05,6.655092593e-05,mass,4,shellSection:RoofSlab;material:LW3000
+elements,floor|Roof|3600|6000|0~Roof|3600|9000|0~Roof|7200|6000|0~Roof|7200|9000|0,area,floor,F10,Roof,affected,material:LW3000.FC,3.0,4.0,stiffness mass,4,shellSection:RoofSlab;material:LW3000
+elements,floor|Roof|3600|6000|0~Roof|3600|9000|0~Roof|7200|6000|0~Roof|7200|9000|0,area,floor,F10,Roof,affected,material:LW3000.WEIGHTPERVOLUME,6.365740741e-05,6.655092593e-05,mass,4,shellSection:RoofSlab;material:LW3000
+elements,floor|Roof|10800|6000|0~Roof|10800|9000|0~Roof|7200|6000|0~Roof|7200|9000|0,area,floor,F11,Roof,affected,material:LW3000.FC,3.0,4.0,stiffness mass,4,shellSection:RoofSlab;material:LW3000
+elements,floor|Roof|10800|6000|0~Roof|10800|9000|0~Roof|7200|6000|0~Roof|7200|9000|0,area,floor,F11,Roof,affected,material:LW3000.WEIGHTPERVOLUME,6.365740741e-05,6.655092593e-05,mass,4,shellSection:RoofSlab;material:LW3000
+elements,floor|Roof|10800|6000|0~Roof|10800|9000|0~Roof|14400|6000|0~Roof|14400|9000|0,area,floor,F12,Roof,affected,material:LW3000.FC,3.0,4.0,stiffness mass,4,shellSection:RoofSlab;material:LW3000
+elements,floor|Roof|10800|6000|0~Roof|10800|9000|0~Roof|14400|6000|0~Roof|14400|9000|0,area,floor,F12,Roof,affected,material:LW3000.WEIGHTPERVOLUME,6.365740741e-05,6.655092593e-05,mass,4,shellSection:RoofSlab;material:LW3000
 elements,floor|L3|3600|3000|0~L3|3600|6000|0~L3|7200|3000|0~L3|7200|6000|0,area,floor,F6,L3,modified,loads:Live,"[{""DIR"":""GRAV"",""FVAL"":0.0003472222222,""TYPE"":""UNIFF""}]","[{""DIR"":""GRAV"",""FVAL"":0.0008680555556,""TYPE"":""UNIFF""}]",load,9,
+elements,floor|L2|10800|0|0~L2|10800|3000|0~L2|7200|0|0~L2|7200|3000|0,area,floor,F3,L2,modified,DIAPH,D1,D2,stiffness mass,16,
 elements,Base|14400|9000|0,point,joint,20,Base,modified,RESTRAINT,UX UY UZ,UX UY UZ RX RY RZ,stiffness,8,
+elements,L3|1800|3000|0,point,joint,25,L3,modified,DIAPH,,D1,stiffness mass,16,
+elements,Base|7200|0|0,point,joint,3,Base,affected,pointSpring:Pad.UZ,500.0,650.0,stiffness,8,pointSpring:Pad
 elements,Roof|7200|3000|0,point,joint,8,Roof,modified,loads:SDL,"[{""FX"":0.0,""FY"":0.0,""FZ"":-12.0,""MX"":0.0,""MY"":0.0,""MZ"":0.0,""TYPE"":""FORCE""}]","[{""FX"":0.0,""FY"":0.0,""FZ"":-18.0,""MX"":0.0,""MY"":0.0,""MZ"":0.0,""TYPE"":""FORCE""}]",load,9,
-elements,beam|L4|5640|3000|0~L4|5640|6000|0,frame,beam,B36 -> B44,L4,moved,,"(540, 300, 492) (540, 600, 492)","(564, 300, 504) (564, 600, 504)",geometry,2,
+elements,beam|L4|5640|3000|0~L4|5640|6000|0,frame,beam,B36 -> B44,L4,moved,,"(540, 300, 492) (540, 600, 492)","(564, 300, 504) (564, 600, 504)",geometry stiffness mass,1,
 elements,beam|L5|7200|3000|0~L5|7200|6000|0,frame,beam,B24,L5,removed,,"(720, 300, 648) (720, 600, 648)",,geometry stiffness mass,1,
+elements,floor|L7|10800|3000|0~L7|10800|6000|0~L7|14400|3000|0~L7|14400|6000|0,area,floor,F8,L7,removed,,"(1080, 300, 960) (1440, 300, 960) (1440, 600, 960) (1080, 600, 960)",,geometry stiffness mass,15,
 elements,brace|Base|10800|0|0~L2|14400|0|0,frame,brace,D9,L2,added,,,"(1080, 0, 0) (1440, 0, 180)",geometry stiffness mass,1,
-stories,L4,,,L4,,modified,elevation,492.0,504.0,geometry,2,
-stories,L4,,,L4,,modified,height,156.0,168.0,geometry,2,
-stories,L5,,,L5,,modified,elevation,648.0,660.0,geometry,2,
-stories,L6,,,L6,,modified,elevation,804.0,816.0,geometry,2,
-stories,L7,,,L7,,modified,elevation,960.0,972.0,geometry,2,
-stories,Roof,,,Roof,,modified,elevation,1116.0,1128.0,geometry,2,
-materials,LW3000,,,LW3000,,modified,FC,3.0,4.0,stiffness mass,5,
-materials,LW3000,,,LW3000,,modified,WEIGHTPERVOLUME,6.365740741e-05,6.655092593e-05,mass,5,
-frameSections,BOX16,,,BOX16,,modified,TF,0.75,1.0,stiffness mass,4,
-frameSections,BOX16,,,BOX16,,modified,TW,0.75,1.0,stiffness mass,4,
-frameSections,GIRDER-USER,,,GIRDER-USER,,modified,MATERIAL,A992Fy50,A572Gr50,stiffness mass,4,
-frameSections,W12X26,,,W12X26,,modified,I3MOD,1.0,1.4,stiffness mass,6,
-loadCases,Live,,,Live,,modified,LOADPAT:Lr,1.0,,load,9,
-combos,1.2D+1.6L+0.5Lr,,,1.2D+1.6L+0.5Lr,,modified,LOADCASE:Lr,,0.5,load,9,
-massSource,MsSrc1,,,MsSrc1,,modified,LOADPAT:Live,,0.25,mass,10,
+elements,wall|Base|14400|0|0~Base|14400|3000|0~L2|14400|0|0~L2|14400|3000|0,area,wall,W1,L2,added,,,"(1440, 0, 180) (1440, 300, 180) (1440, 300, 0) (1440, 0, 0)",geometry stiffness mass,15,
+stories,L4,,,L4,,modified,elevation,492.0,504.0,geometry stiffness mass,1,
+stories,L4,,,L4,,modified,height,156.0,168.0,geometry stiffness mass,1,
+stories,L5,,,L5,,modified,elevation,648.0,660.0,geometry stiffness mass,1,
+stories,L6,,,L6,,modified,elevation,804.0,816.0,geometry stiffness mass,1,
+stories,L7,,,L7,,modified,elevation,960.0,972.0,geometry stiffness mass,1,
+stories,Roof,,,Roof,,modified,elevation,1116.0,1128.0,geometry stiffness mass,1,
+materials,LW3000,,,LW3000,,modified,FC,3.0,4.0,stiffness mass,4,
+materials,LW3000,,,LW3000,,modified,WEIGHTPERVOLUME,6.365740741e-05,6.655092593e-05,mass,4,
+frameSections,BOX16,,,BOX16,,modified,TF,0.75,1.0,stiffness mass,3,
+frameSections,BOX16,,,BOX16,,modified,TW,0.75,1.0,stiffness mass,3,
+frameSections,GIRDER-USER,,,GIRDER-USER,,modified,MATERIAL,A992Fy50,A572Gr50,stiffness mass,3,
+frameSections,W12X26,,,W12X26,,modified,I3MOD,1.0,1.4,stiffness mass,5,
+pointSprings,Pad,,,Pad,,modified,UZ,500.0,650.0,stiffness,8,
+loadPatterns,EQX,,,EQX,,modified,SEISMIC:R,6.0,8.0,load,12,
+loadPatterns,WX,,,WX,,modified,WIND:VB,115.0,120.0,load,12,
+loadCases,Live,,,Live,,modified,LOADPAT:Lr,1.0,,load,13,
+loadCases,RSX,,,RSX,,modified,ACCEL:U1,"{""FUNC"":""DemoRS"",""SF"":386.09}","{""FUNC"":""DemoRS"",""SF"":424.699}",load,13,
+combos,1.2D+1.6L+0.5Lr,,,1.2D+1.6L+0.5Lr,,modified,LOADCASE:Lr,,0.5,load,14,
+massSource,MsSrc1,,,MsSrc1,,modified,LOADPAT:Live,,0.25,mass,11,
+functions,DemoRS,,,DemoRS,,modified,TIMEVAL,"[0.0,0.4,0.2,1.0,0.6,1.0,1.0,0.6,2.0,0.3]","[0.0,0.4,0.2,1.0,0.6,1.0,1.0,0.65,2.0,0.325]",load,17,

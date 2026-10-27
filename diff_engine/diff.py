@@ -33,16 +33,23 @@ TABLES: List[Tuple[str, DefTable, str]] = [
     ("loadCases", "load_cases", "loadCase"),
     ("combos", "combos", "combo"),
     ("massSource", "mass_source", "massSource"),
+    ("diaphragms", "diaphragms", "diaphragm"),
+    ("functions", "functions", "function"),
+    ("analysisOptions", "analysis", "analysisOption"),
 ]
 DEF_KIND: Dict[DefTable, str] = {
     "materials": "material", "frame_sections": "frame_section", "shell_props": "shell_prop",
     "point_springs": "spring", "line_springs": "spring", "area_springs": "spring",
     "load_patterns": "load_pattern", "load_sets": "load_set",
     "load_cases": "load_case", "combos": "combo", "mass_source": "mass_source",
+    "diaphragms": "diaphragm", "functions": "function", "analysis": "analysis",
 }
 SECTION_MATERIAL_KEYS = ("MATERIAL", "FILLMATERIAL", "CONCMATERIAL", "DECKMATERIAL")
 SPRING_SOURCE: Dict[Kind, DefTable] = {"point": "point_springs", "frame": "line_springs", "area": "area_springs"}
 SUBTYPES: Dict[str, Subtype] = {"BEAM": "beam", "COLUMN": "column", "BRACE": "brace", "FLOOR": "floor", "PANEL": "wall", "POINT": "joint"}
+# Local axis angles in degrees: absent means 0, and they compare modulo 360.
+ANGLE_KEYS = {"ANG"}
+ANGLE_TOL = 1e-3
 LEVEL_FIELDS: Tuple[Literal["name", "elevation", "height"], ...] = ("name", "elevation", "height")
 
 Hop = Tuple[str, str, str]  # (contract table, via prefix, definition name)
@@ -92,9 +99,9 @@ def diff_models(
             moves.append((_element(ctx, a, None), _element(ctx, None, b)))
             entries += moves[-1]
         else:
-            entries.append(_element(ctx, a, b))
-    entries += [_element(ctx, a, None) for a in removed]
-    entries += [_element(ctx, None, b) for b in added]
+            entries += _listed(_element(ctx, a, b), a, b)
+    entries += [e for a in removed for e in _listed(_element(ctx, a, None), a, None)]
+    entries += [e for b in added for e in _listed(_element(ctx, None, b), None, b)]
     _dedupe_keys(entries)
     for gone, new in moves:
         gone["movedTo"], new["movedFrom"] = new["key"], gone["key"]
@@ -109,6 +116,23 @@ def diff_models(
         tables=Tables(stories=story_table, **tables),
         summary={s: sum(e["status"] == s for e in entries) for s in STATUSES},
     )
+
+
+def _listed(entry: ElementDiff, a: Optional[Element], b: Optional[Element]) -> List[ElementDiff]:
+    """[entry] if it belongs in the output, else []. Frames and areas always do. A node does when it
+    carries a support, spring, mass or load, or when anything assigned to it changed; bare joints where
+    members meet stay out."""
+    if entry["kind"] != "point" or entry["status"] in ("modified", "affected"):
+        return [entry]
+    sides = [e for e in (a, b) if e is not None]
+    if any(_reportable_point(e) for e in sides):
+        return [entry]
+    one_sided = entry["status"] in ("added", "removed")
+    return [entry] if one_sided and any(set(e["props"]) - IGNORED_KEYS for e in sides) else []
+
+
+def _reportable_point(e: Element) -> bool:
+    return bool(e["loads"]) or any(k == "RESTRAINT" or "SPRING" in k or "MASS" in k for k in e["props"])
 
 
 def _meta(model: Model) -> ModelMeta:
@@ -159,7 +183,7 @@ def _stories(
         if a is None:
             table["added"].append(b["name"])
             continue
-        changes = [_change(k, a[k], b[k], 2) for k in LEVEL_FIELDS if not same(a[k], b[k])]
+        changes = [_change(k, a[k], b[k], 1) for k in LEVEL_FIELDS if not same(a[k], b[k])]
         if changes:
             table["modified"][b["name"]] = changes
     for a in levels_a:
@@ -215,13 +239,29 @@ def _own_changes(a: Element, b: Element) -> List[Change]:
     out: List[Change] = []
     for key in sorted((set(a["props"]) | set(b["props"])) - IGNORED_KEYS):
         va, vb = a["props"].get(key), b["props"].get(key)
-        if not same(va, vb):
+        if key in ANGLE_KEYS:
+            va, vb = _angle(va), _angle(vb)
+            if not _same_angle(va, vb):
+                out.append(_change(key, va, vb, assign_row(key), key))
+        elif not same(va, vb):
             out.append(_change(key, va, vb, assign_row(key), key))
     la, lb = _loads_by_pattern(a["loads"]), _loads_by_pattern(b["loads"])
     for pattern in sorted(set(la) | set(lb)):
         if not same(la.get(pattern, []), lb.get(pattern, [])):
             out.append(_change(f"loads:{pattern}", la.get(pattern, []), lb.get(pattern, []), 9))
     return out
+
+
+def _angle(value: Any) -> Any:
+    """An absent angle is 0 degrees. Anything that isn't a number is left for a plain compare."""
+    return 0.0 if value is None else value
+
+
+def _same_angle(a: Any, b: Any) -> bool:
+    if not (isinstance(a, float) and isinstance(b, float)):
+        return a == b
+    d = (a - b) % 360.0
+    return min(d, 360.0 - d) <= ANGLE_TOL
 
 
 def _loads_by_pattern(loads: List[Props]) -> DefaultDict[str, List[Props]]:
@@ -276,6 +316,8 @@ def _definition_paths(model: Model, e: Element) -> List[List[Hop]]:
                 SPRING_SOURCE[e["kind"]]
             ]
             paths.append([(table, prefix[table], value)])
+    if isinstance(props.get("DIAPH"), str):
+        paths.append([("diaphragms", prefix["diaphragms"], props["DIAPH"])])
     for load in e["loads"]:
         if "SET" in load:
             paths.append([("loadSets", "loadSet", load["SET"])])

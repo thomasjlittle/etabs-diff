@@ -1,7 +1,7 @@
-// Engine-output adapter checks. Expected values are read off viewer/example-diff.json by hand
+// Engine-output adapter checks. Expected values are read off frontend/demo_viewer/example-diff.json by hand
 // (synthetic 3-story example) and checked for consistency on fixtures/demo/diff.json (seeded demo).
 import { describe, expect, it } from 'vitest';
-import example from '../../viewer/example-diff.json';
+import example from '../demo_viewer/example-diff.json';
 import demo from '../../fixtures/demo/diff.json';
 import { adaptEngine, engineFieldGroup, type EngineDiff } from './engineAdapter';
 import { describeChange, headlineCounts, memberStyles, moves } from './data';
@@ -63,8 +63,9 @@ describe('engine adapter: seeded demo (8 stories)', () => {
       'Beam B36 at L4 had both endpoints moved, a shift of 24.0 in relative to its story. The story itself also moved 12.0 in, reported separately.',
     );
     expect(moves(dm)).toHaveLength(2); // one arrow per moved end
-    // engine summary: 2 added, 2 removed, one pair of which is the move
-    expect(headlineCounts(dm).added).toBe(1);
+    // engine summary: 3 added, 3 removed; B36 -> B44 is the move pair. Left: added brace D9 and
+    // wall W1, removed beam B24 (G1) and floor F8 (ST).
+    expect(headlineCounts(dm).added).toBe(2);
     expect(dm.changes.filter((c) => c.type === 'removed' && c.group === 'G1')).toHaveLength(1);
   });
 

@@ -1,8 +1,10 @@
 // Level 3: one line per individual change that passes the Summary / Category filter, in the order
 // #15 sorted them (story top to bottom, then label). Shows the active filter with a way to clear it.
-// Clicking a row selects it.
+// Clicking a row selects it and opens the detail panel below the table.
 import type { CategoryNode, ChangeGroup, ChangeKind, ChangeRow } from '../../shared/viewModel'
 import { useUi, visibleRows, type Filter } from '../../shared/uiState'
+import { ElementDetail } from './ElementDetail'
+import { categoryLabels, withUnit } from './format'
 
 const kindClass: Record<ChangeKind, string> = {
   added: 'bg-green-100 text-green-800',
@@ -10,18 +12,6 @@ const kindClass: Record<ChangeKind, string> = {
   modified: 'bg-amber-100 text-amber-800',
   moved: 'bg-blue-100 text-blue-800',
   renamed: 'bg-slate-100 text-slate-700',
-}
-
-const withUnit = (value: string, unit?: string) => (unit && value !== '—' ? `${value} ${unit}` : value)
-
-/** Labels for categories and subcategories by id. */
-function categoryLabels(categories: CategoryNode[]) {
-  const labels = new Map<string, string>()
-  for (const c of categories) {
-    labels.set(c.id, c.label)
-    for (const s of c.subcategories) labels.set(s.id, s.label)
-  }
-  return labels
 }
 
 /** What the active filter is, in words, or null when nothing is filtered. */
@@ -93,6 +83,7 @@ export function ElementSection({ rows, groups, categories }: { rows: ChangeRow[]
             </table>
           </div>
         )}
+      <ElementDetail rows={rows} labels={labels} />
     </section>
   )
 }

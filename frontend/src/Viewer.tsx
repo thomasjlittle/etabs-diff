@@ -7,7 +7,7 @@ import { Bounds, Html, Line, OrbitControls, OrthographicCamera, PerspectiveCamer
 import type { Result, Vec3 } from './keeptabsTypes';
 import { type ColorBy, type DrawStyle, type ViewMode, isVisible, memberStyles, memberToChange, moves } from './data';
 import {
-  type LoadView, type ModelLoads, glyphSegments, loadChanged, loadGlyphs, loadsFor, maxByClass, pickReason,
+  type LoadSide, type LoadView, type ModelLoads, glyphSegments, loadChanged, loadGlyphs, loadNote, loadsFor, maxByClass,
 } from './loads';
 
 export type CameraMode = '3d' | 'plan' | 'N' | 'S' | 'E' | 'W';
@@ -58,10 +58,14 @@ export interface ViewerProps {
   onLoadFocus?: (key: string) => void;  // hover or click on a loaded element
 }
 
-/** Which model's loads this pane draws: a split pane only shows its own model's. */
-const drawsLoads = (viewMode: ViewMode, v: LoadView) => viewMode === 'overlay' || (viewMode === 'baseline' ? 'a' : 'b') === v.side;
+/** Which model's loads this pane draws: each pane its own, overlay the after model. */
+const loadSide = (viewMode: ViewMode): LoadSide => (viewMode === 'baseline' ? 'a' : 'b');
 
 export default function Viewer(props: ViewerProps) {
+  const { result, viewMode, loadView } = props;
+  const side = loadSide(viewMode);
+  const note = loadView && result.loads
+    && loadNote(result.loads, side, loadView.pick, side === 'a' ? result.meta.source.baseline : result.meta.source.revised);
   return (
     <div className="relative h-full w-full">
       {/* Clicking empty space clears the selection. */}
@@ -70,9 +74,9 @@ export default function Viewer(props: ViewerProps) {
         <Scene key={props.cameraMode} {...props} />
       </Canvas>
       {props.legend !== false && <Legend units={props.result.meta.units.length} colorBy={props.colorBy} loads={!!props.loadView} />}
-      {props.loadView && props.result.loads && drawsLoads(props.viewMode, props.loadView) && pickReason(props.result.loads, props.loadView) && (
-        <div className="pointer-events-none absolute right-2 top-2 max-w-[60%] rounded bg-amber-50 px-2 py-1 text-xs text-amber-800 ring-1 ring-amber-200">
-          {props.loadView.pick.name} not drawn: {pickReason(props.result.loads, props.loadView)}
+      {note && (
+        <div role="note" className="pointer-events-none absolute right-2 top-2 max-w-[60%] rounded bg-amber-50 px-2 py-1 text-xs text-amber-800 ring-1 ring-amber-200">
+          {note}
         </div>
       )}
     </div>
@@ -193,8 +197,8 @@ function Scene({ result, selectedId, onSelect, viewMode, cameraMode, colorBy, st
         })}
       </Bounds>
 
-      {loadView && result.loads && drawsLoads(viewMode, loadView) && (
-        <LoadLayer loads={result.loads} view={loadView} length={size * 0.07 * loadView.scale} storyFilter={storyFilter} onFocus={focus} />
+      {loadView && result.loads && (
+        <LoadLayer loads={result.loads} side={loadSide(viewMode)} view={loadView} length={size * 0.07 * loadView.scale} storyFilter={storyFilter} onFocus={focus} />
       )}
 
       {viewMode !== 'baseline' && arrows.map((a, i) => <primitive key={i} object={a} />)}
@@ -227,18 +231,20 @@ function Scene({ result, selectedId, onSelect, viewMode, cameraMode, colorBy, st
 }
 
 /**
- * Applied loads of one pick on one model, as arrows. Each element's arrows are one line set, so a hover
+ * Applied loads of one pick on one model, as arrows. Arrow lengths are scaled to the largest load in
+ * either model, so the two panes compare directly. Each element's arrows are one line set, so a hover
  * names the element. Local directions are dashed: drawn on default local axes (no axis angle in the diff).
  */
-function LoadLayer({ loads, view, length, storyFilter, onFocus }: {
-  loads: ModelLoads; view: LoadView; length: number; storyFilter: string | null; onFocus: (key: string) => () => void;
+function LoadLayer({ loads, side, view, length, storyFilter, onFocus }: {
+  loads: ModelLoads; side: LoadSide; view: LoadView; length: number; storyFilter: string | null; onFocus: (key: string) => () => void;
 }) {
   const drawn = useMemo(() => {
-    const items = loads.elements.map((el) => ({
-      el, glyphs: loadGlyphs(el, loadsFor(el, view.side, view.pick, loads.definitions)), changed: loadChanged(el, view.pick, loads.definitions),
+    const glyphs = (s: LoadSide) => loads.elements.map((el) => ({
+      el, glyphs: loadGlyphs(el, loadsFor(el, s, view.pick, loads.definitions)), changed: loadChanged(el, view.pick, loads.definitions),
     })).filter((x) => x.glyphs.length);
-    return { items, max: maxByClass(items.flatMap((x) => x.glyphs)) };
-  }, [loads, view.side, view.pick]);
+    const bySide = { a: glyphs('a'), b: glyphs('b') };
+    return { items: bySide[side], max: maxByClass([...bySide.a, ...bySide.b].flatMap((x) => x.glyphs)) };
+  }, [loads, side, view.pick]);
   return (
     <>
       {drawn.items.flatMap(({ el, glyphs, changed }) => [false, true].map((local) => {

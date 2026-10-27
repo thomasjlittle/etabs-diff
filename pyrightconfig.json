@@ -1,0 +1,6 @@
+{
+  "include": ["backend/diff_engine"],
+  "extraPaths": ["backend"],
+  "pythonVersion": "3.9",
+  "typeCheckingMode": "strict"
+}

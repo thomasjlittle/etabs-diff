@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>etabs-diff viewer</title>
+<style>
+  html, body { margin: 0; height: 100%; font: 14px system-ui, sans-serif; background: #f4f4f4; color: #222; }
+  #bar { position: fixed; top: 0; left: 0; right: 0; display: flex; gap: 12px; align-items: center;
+         padding: 8px 12px; background: #fff; border-bottom: 1px solid #ddd; z-index: 1; flex-wrap: wrap; }
+  #legend { margin-left: auto; }
+  .gray { color: #888; } .red { color: #d22; font-weight: 600; }
+  #drop { position: fixed; inset: 0; display: none; align-items: center; justify-content: center;
+          background: rgba(210, 34, 34, 0.08); border: 3px dashed #d22; font-size: 20px; z-index: 2; }
+  body.dragging #drop { display: flex; }
+  canvas { display: block; }
+  #notice { flex-basis: 100%; color: #d22; font-weight: 600; }
+  #notice:empty { display: none; }
+  #side { position: fixed; top: 60px; right: 8px; bottom: 8px; width: 360px; overflow: auto; z-index: 1;
+          background: #fff; border: 1px solid #ddd; border-radius: 6px; padding: 4px 12px 12px; box-sizing: border-box; }
+  #side:empty { display: none; }
+  #side h3 { margin: 14px 0 4px; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: #666; }
+  #side table { border-collapse: collapse; width: 100%; font-size: 12px; }
+  #side th, #side td { border-top: 1px solid #eee; padding: 3px 4px; text-align: left; vertical-align: top; overflow-wrap: anywhere; }
+  #side th { color: #666; font-weight: 500; white-space: nowrap; }
+  #side .hint { color: #888; font-size: 12px; margin: 6px 0 0; }
+  #side button { float: right; margin-top: 10px; }
+  #filters label { white-space: nowrap; margin-right: 6px; }
+  #filters b, #pair b { font-weight: 500; color: #666; margin: 0 4px 0 8px; }
+  tr.pick { cursor: pointer; } tr.pick:hover, tr.on { background: #e3ecfb; }
+  @media (max-width: 640px) { #side { top: auto; left: 8px; width: auto; max-height: 45vh; } }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<div id="bar">
+  <input type="file" id="file" accept=".json,application/json">
+  <button id="example">Load example</button>
+  <span id="pair" hidden><b>Before</b><select id="before"></select><b>After</b><select id="after"></select></span>
+  <span id="filters">
+    <b>Red</b><label><input type="checkbox" name="status" value="added">added</label><label><input type="checkbox" name="status" value="removed">removed</label><label><input type="checkbox" name="status" value="moved">moved</label><label><input type="checkbox" name="status" value="modified">modified</label><label><input type="checkbox" name="status" value="affected">affected</label>
+    <b>Affects</b><label><input type="checkbox" name="affects" value="geometry">geometry</label><label><input type="checkbox" name="affects" value="stiffness">stiffness</label><label><input type="checkbox" name="affects" value="mass">mass</label><label><input type="checkbox" name="affects" value="load">load</label>
+    <b>Story</b><select id="story"><option value="">all</option></select>
+  </span>
+  <span id="legend" class="gray">Load a diff JSON (file picker or drag and drop)</span>
+  <span id="notice"></span>
+</div>
+<div id="side"></div>
+<div id="drop">Drop diff JSON here</div>
+<script type="module">
+// ponytail: all inline so the page works from file:// (Chrome blocks local module imports there)
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+const GRAY = new THREE.Color(0x888888), RED = new THREE.Color(0xdd2222), PICK = new THREE.Color(0x1a73e8);
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(devicePixelRatio);
+document.body.appendChild(renderer.domElement);
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xf4f4f4);
+const camera = new THREE.PerspectiveCamera(45, 1, 1, 1e6);
+camera.up.set(0, 0, 1);  // ETABS is Z-up
+const controls = new OrbitControls(camera, renderer.domElement);
+let model = null, overlay = null, diff = null;
+const raycaster = new THREE.Raycaster();
+
+function resize() {
+  renderer.setSize(innerWidth, innerHeight);
+  camera.aspect = innerWidth / innerHeight;
+  camera.updateProjectionMatrix();
+}
+addEventListener('resize', resize);
+resize();
+renderer.setAnimationLoop(() => { controls.update(); renderer.render(scene, camera); });
+
+// Flatten elements into line/triangle/point arrays, with the owning element per primitive for picking.
+function arrays(els) {
+  const a = { lines: [], tris: [], pts: [], lineEls: [], triEls: [], ptEls: [] };
+  for (const el of els) {
+    const g = el.geometry;
+    if (el.kind === 'frame') { a.lines.push(...g[0], ...g[1]); a.lineEls.push(el); }
+    else if (el.kind === 'point') { a.pts.push(...g[0]); a.ptEls.push(el); }
+    // ponytail: fan triangulation, right for convex areas; use THREE.ShapeUtils if L-shaped walls/slabs show up
+    else for (let i = 1; i < g.length - 1; i++) { a.tris.push(...g[0], ...g[i], ...g[i + 1]); a.triEls.push(el); }
+  }
+  return a;
+}
+
+// Filters: a filtered-out change draws gray like unchanged, so the model stays whole.
+// State lives in the URL (?status=...&affects=...&story=...) so a filtered view is a shareable link.
+const STATUSES = ['added', 'removed', 'moved', 'modified', 'affected'], AFFECTS = ['geometry', 'stiffness', 'mass', 'load'];
+const params = new URLSearchParams(location.search);
+const listParam = (k, all) => params.has(k) ? new Set(params.get(k).split(',').filter(v => all.includes(v))) : new Set(all);
+const filt = { status: listParam('status', STATUSES), affects: listParam('affects', AFFECTS), story: params.get('story') || '' };
+// ponytail: elements with no tagged changes (added/removed) pass the affects filter; only their status gates them
+// A linked move (removed with movedTo, added with movedFrom, partner present) counts as one 'moved' pair.
+let byKey = new Map();
+const partner = el => byKey.get(el.movedTo ?? el.movedFrom);
+const statusOf = el => partner(el) ? 'moved' : el.status;
+const isRed = el => filt.status.has(statusOf(el)) &&
+  (!el.changes?.some(c => c.affects?.length) || el.changes.some(c => c.affects?.some(a => filt.affects.has(a))));
+const onStory = el => !filt.story || el.story === filt.story;
+
+function syncUrl() {
+  const set = (k, v, dflt) => v === dflt ? params.delete(k) : params.set(k, v);
+  set('status', STATUSES.filter(s => filt.status.has(s)).join(','), STATUSES.join(','));
+  set('affects', AFFECTS.filter(a => filt.affects.has(a)).join(','), AFFECTS.join(','));
+  set('story', filt.story, '');
+  history.replaceState(null, '', params.size ? `?${params}` : location.pathname);
+}
+
+const mid = el => new THREE.Vector3(...el.geometry[0]).add(new THREE.Vector3(...el.geometry.at(-1))).multiplyScalar(0.5);
+const geo = arr => new THREE.BufferGeometry().setAttribute('position', new THREE.Float32BufferAttribute(arr, 3));
+
+// One mesh per (kind, red, on chosen story) bucket keeps draw calls low on large models.
+function build(diff) {
+  const group = new THREE.Group();
+  for (const red of [false, true]) for (const near of [true, false]) {
+    const els = diff.elements.filter(el => isRed(el) === red && onStory(el) === near);
+    const old = red ? els.filter(el => el.movedTo && partner(el)) : [];
+    const b = arrays(els.filter(el => !old.includes(el)));
+    const fade = near ? 1 : 0.25;  // off the chosen story, everything fades further
+    const look = { color: red ? RED : GRAY, transparent: !red || !near, opacity: (red ? 1 : 0.3) * fade, depthWrite: red && near };
+    const add = (obj, els) => { obj.userData.els = els; if (red) obj.renderOrder = 1; group.add(obj); };  // red over the gray ghost
+    if (b.tris.length) add(new THREE.Mesh(geo(b.tris),
+      new THREE.MeshBasicMaterial({ ...look, side: THREE.DoubleSide, opacity: (red ? 0.6 : 0.12) * fade, transparent: true })), b.triEls);
+    if (b.lines.length) add(new THREE.LineSegments(geo(b.lines), new THREE.LineBasicMaterial(look)), b.lineEls);
+    if (b.pts.length) add(new THREE.Points(geo(b.pts),
+      new THREE.PointsMaterial({ ...look, size: red ? 9 : 6, sizeAttenuation: false })), b.ptEls);
+    // Moved members: old position dashed, thin arrow from old midpoint to new midpoint.
+    const o = arrays(old);
+    if (o.lines.length) {
+      const dashed = new THREE.LineSegments(geo(o.lines), new THREE.LineDashedMaterial({ ...look, dashSize: 6, gapSize: 6 }));
+      add(dashed.computeLineDistances(), o.lineEls);
+      for (const el of o.lineEls) {
+        const from = mid(el), to = mid(partner(el)), dir = to.clone().sub(from), len = dir.length();
+        if (len) group.add(new THREE.ArrowHelper(dir.normalize(), from, len, RED, Math.min(len * 0.3, 12), Math.min(len * 0.15, 6)));
+      }
+    }
+  }
+  return group;
+}
+
+// Selection and table highlights draw on top of everything in blue.
+function highlight(els) {
+  if (overlay) scene.remove(overlay);
+  overlay = null;
+  if (!els.length) return;
+  const old = els.filter(el => el.movedTo && partner(el)), b = arrays(els.filter(el => !old.includes(el)));
+  const look = { color: PICK, depthTest: false, transparent: true };
+  overlay = new THREE.Group();
+  if (old.length) overlay.add(new THREE.LineSegments(geo(arrays(old).lines), new THREE.LineDashedMaterial({ ...look, dashSize: 6, gapSize: 6 })).computeLineDistances());
+  if (b.tris.length) overlay.add(new THREE.Mesh(geo(b.tris), new THREE.MeshBasicMaterial({ ...look, opacity: 0.5, side: THREE.DoubleSide })));
+  if (b.lines.length) overlay.add(new THREE.LineSegments(geo(b.lines), new THREE.LineBasicMaterial(look)));
+  if (b.pts.length) overlay.add(new THREE.Points(geo(b.pts), new THREE.PointsMaterial({ ...look, size: 11, sizeAttenuation: false })));
+  overlay.children.forEach(o => { o.renderOrder = 2; });
+  scene.add(overlay);
+}
+
+const esc = v => String(v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+const val = v => v == null ? '<i class="gray">none</i>' : esc(typeof v === 'string' ? v : JSON.stringify(v));
+const tableEntries = t => (t?.added?.length || 0) + (t?.removed?.length || 0) + Object.keys(t?.modified || {}).length;
+const viaRef = (table, name) => `${table.replace(/ies$/, 'y').replace(/s$/, '')}:${name}`;  // materials -> material:NAME
+
+function changeRows(changes) {
+  if (!changes?.length) return '<p class="hint">No field changes recorded.</p>';
+  return '<table><tr><th>Field</th><th>Before</th><th>After</th><th>Affects</th></tr>' + changes.map(c =>
+    `<tr><td>${esc(c.field)}</td><td>${val(c.before)}</td><td>${val(c.after)}</td><td>${esc((c.affects || []).join(', '))}</td></tr>`).join('') + '</table>';
+}
+
+const xyz = p => p.map(v => +v.toFixed(2)).join(', ');
+
+// old = the removed end (movedTo), now = the added end (movedFrom). Distance is relative to the story,
+// so a story elevation change is reported separately, like the rest of the diff.
+function movedHtml(old, now) {
+  const row = (k, v) => `<tr><th>${k}</th><td>${esc(v ?? '')}</td></tr>`;
+  const st = diff.stories?.find(s => s.name === now.story);
+  const lift = st?.elevA != null && st?.elevB != null ? st.elevB - st.elevA : 0;
+  const d = mid(now).sub(mid(old)).sub(new THREE.Vector3(0, 0, lift)).length();
+  return '<button id="clear">Clear</button><h3>Element</h3><table>' + row('Label', old.label === now.label ? now.label : `${old.label} -> ${now.label}`) +
+    row('Story', now.story) + row('Kind', `${now.kind} / ${now.subtype}`) + row('Status', 'moved') +
+    row('Distance moved', `${+d.toFixed(2)} in`) + (lift ? row('Story shift', `${+lift.toFixed(2)} in (story ${now.story} elevation change)`) : '') +
+    '</table><h3>End coordinates (in)</h3><table><tr><th></th><th>Old</th><th>New</th></tr>' +
+    old.geometry.map((p, i) => `<tr><th>${i ? 'j' : 'i'}</th><td>${xyz(p)}</td><td>${xyz(now.geometry[i] ?? [])}</td></tr>`).join('') +
+    '</table><p class="hint">Old position dashed, new position solid.</p>' +
+    ([...old.changes, ...now.changes].length ? '<h3>Changes</h3>' + changeRows([...old.changes, ...now.changes]) : '');
+}
+
+function detailsHtml(el) {
+  const p = partner(el);
+  if (p) return el.movedTo ? movedHtml(el, p) : movedHtml(p, el);
+  const row = (k, v) => `<tr><th>${k}</th><td>${esc(v ?? '')}</td></tr>`;
+  return '<button id="clear">Clear</button><h3>Element</h3><table>' + row('Label', el.label) + row('Story', el.story) +
+    row('Kind', `${el.kind} / ${el.subtype}`) + row('Status', el.status) + '</table>' +
+    (el.status === 'unchanged' ? '' : '<h3>Changes</h3>' + changeRows(el.changes)) +
+    (el.via?.length ? '<h3>Via</h3><table>' + el.via.map(v => `<tr><td>${esc(v)}</td></tr>`).join('') + '</table>' : '');
+}
+
+// Every table in the diff, contract ones and any extras the engine adds.
+function tablesHtml(tables, selected) {
+  const out = [];
+  for (const [table, t] of Object.entries(tables || {})) {
+    if (!tableEntries(t)) continue;
+    const rows = [];
+    for (const name of t.added || []) rows.push(`<tr><td>${esc(name)}</td><td>added</td><td colspan="3"></td></tr>`);
+    for (const name of t.removed || []) rows.push(`<tr><td>${esc(name)}</td><td>removed</td><td colspan="3"></td></tr>`);
+    for (const [name, changes] of Object.entries(t.modified || {})) {
+      const ref = viaRef(table, name);
+      const n = diff.elements.filter(el => el.via?.includes(ref)).length;
+      const cls = `pick${ref === selected ? ' on' : ''}`;
+      const status = `modified${n ? ` (${n} member${n === 1 ? '' : 's'})` : ''}`;
+      (changes.length ? changes : [{}]).forEach((c, i) => rows.push(`<tr class="${cls}" data-ref="${esc(ref)}">` +
+        `<td>${i ? '' : esc(name)}</td><td>${i ? '' : status}</td><td>${esc(c.field ?? '')}</td><td>${val(c.before)}</td><td>${val(c.after)}</td></tr>`));
+    }
+    out.push(`<h3>${esc(table)}</h3><table><tr><th>Name</th><th>Status</th><th>Field</th><th>Before</th><th>After</th></tr>${rows.join('')}</table>`);
+  }
+  return out.length ? '<h3 style="color:#222">Table changes</h3><p class="hint">Click a modified row to highlight the members that use it.</p>' + out.join('') : '';
+}
+
+// One side panel: selected element (or highlighted definition) on top, table changes below.
+function render(sel = {}) {
+  const side = document.getElementById('side');
+  let top = '';
+  if (sel.el) top = detailsHtml(sel.el);
+  else if (sel.ref) {
+    const n = diff.elements.filter(el => el.via?.includes(sel.ref)).length;
+    top = `<button id="clear">Clear</button><h3>Highlighted</h3><p class="hint">${n} member${n === 1 ? '' : 's'} using ${esc(sel.ref)} shown in blue.</p>`;
+  } else top = '<p class="hint">Click an element to see what changed.</p>';
+  side.innerHTML = diff ? top + tablesHtml(diff.tables, sel.ref) : '';
+  document.getElementById('clear')?.addEventListener('click', () => select());
+  side.querySelectorAll('tr.pick').forEach(tr => tr.addEventListener('click', () => select({ ref: tr.dataset.ref })));
+}
+
+function select(sel = {}) {
+  highlight(sel.el ? [sel.el, partner(sel.el)].filter(Boolean) : sel.ref ? diff.elements.filter(el => el.via?.includes(sel.ref)) : []);
+  render(sel);
+}
+
+// Nearest hit wins, but lines and points beat the area faces they sit on.
+function pick(x, y) {
+  if (!model) return;
+  raycaster.setFromCamera(new THREE.Vector2(x / innerWidth * 2 - 1, -(y / innerHeight) * 2 + 1), camera);
+  const hits = raycaster.intersectObjects(model.children, false);
+  const hit = hits.find(h => !h.object.isMesh) || hits[0];
+  if (!hit) return select();
+  const els = hit.object.userData.els;
+  select({ el: hit.object.isLineSegments ? els[hit.index / 2] : hit.object.isPoints ? els[hit.index] : els[hit.faceIndex] });
+}
+
+// Treat a press as a click only if the pointer barely moved, so orbit drags don't select.
+let down = null;
+renderer.domElement.addEventListener('pointerdown', e => { down = [e.clientX, e.clientY]; });
+renderer.domElement.addEventListener('pointerup', e => {
+  if (down && Math.hypot(e.clientX - down[0], e.clientY - down[1]) < 5) pick(e.clientX, e.clientY);
+  down = null;
+});
+
+// Rebuild the scene and counts from the current filters, keeping the camera where it is.
+function redraw() {
+  if (!diff) return;
+  if (model) scene.remove(model);
+  model = build(diff);
+  scene.add(model);
+  const shown = diff.elements.filter(onStory);
+  const n = s => shown.filter(el => statusOf(el) === s && isRed(el) && !(s === 'moved' && el.movedTo)).length;  // a pair counts once
+  const tabled = Object.values(diff.tables || {}).reduce((sum, t) => sum + tableEntries(t), 0);
+  document.getElementById('legend').innerHTML =
+    `<span class="gray">gray ${shown.filter(el => !isRed(el)).length}</span> | <span class="red">red: added ${n('added')}, ` +
+    `removed ${n('removed')}, moved ${n('moved')}, modified ${n('modified')}, affected ${n('affected')}</span> | table changes ${tabled}`;
+  syncUrl();
+}
+
+const story = document.getElementById('story');
+for (const box of document.querySelectorAll('#filters input')) box.checked = filt[box.name].has(box.value);
+document.getElementById('filters').addEventListener('change', e => {
+  if (e.target === story) filt.story = story.value;
+  else filt[e.target.name][e.target.checked ? 'add' : 'delete'](e.target.value);
+  redraw();
+});
+
+function show(data) {
+  if (!Array.isArray(data?.elements)) throw new Error('not an etabs-diff output: no elements array');
+  diff = data;
+  byKey = new Map(diff.elements.map(el => [el.key, el]));
+  const names = [...new Set([...(diff.stories || []).map(s => s.name), ...diff.elements.map(el => el.story)])].filter(Boolean);
+  story.replaceChildren(new Option('all', ''), ...names.map(name => new Option(name, name)));
+  if (!names.includes(filt.story)) filt.story = '';
+  story.value = filt.story;
+  redraw();
+  const box = new THREE.Box3().setFromObject(model);
+  const center = box.getCenter(new THREE.Vector3());
+  const size = box.getSize(new THREE.Vector3()).length() || 1;
+  controls.target.copy(center);
+  camera.position.copy(center).add(new THREE.Vector3(1, -1.4, 0.9).multiplyScalar(size * 0.8));
+  camera.near = size / 1000; camera.far = size * 100;
+  camera.updateProjectionMatrix();
+  raycaster.params.Line.threshold = raycaster.params.Points.threshold = size / 150;
+  const n = k => Number(diff.summary?.[k]) || 0;
+  const drawn = n('added') + n('removed') + n('modified') + n('affected');
+  const tabled = Object.values(diff.tables || {}).reduce((sum, t) => sum + tableEntries(t), 0);
+  document.getElementById('notice').textContent = drawn ? '' : tabled
+    ? `No differences in the 3D view. ${tabled} table change${tabled === 1 ? '' : 's'} listed in the side panel.`
+    : 'No differences found.';
+  select();
+}
+
+// Bundled comparisons (diffs/, built by just demo-diffs): Before/After pick a pair, kept in the URL as ?before=&after=.
+const before = document.getElementById('before'), after = document.getElementById('after');
+function clearPair() {
+  before.value = after.value = '';
+  params.delete('before'); params.delete('after');
+}
+async function loadPair() {
+  if (!before.value || !after.value) return;
+  params.delete('diff');
+  params.set('before', before.value); params.set('after', after.value);
+  const url = `diffs/${encodeURIComponent(before.value)}__${encodeURIComponent(after.value)}.json`;
+  try { await loadUrl(url); }
+  catch (e) { alert(`Could not load ${url}: ${e.message}`); }
+}
+before.addEventListener('change', loadPair);
+after.addEventListener('change', loadPair);
+
+async function loadFile(file) {
+  clearPair();
+  try { show(JSON.parse(await file.text())); }
+  catch (e) { alert(`Could not load ${file.name}: ${e.message}`); }
+}
+
+async function loadUrl(url) {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  show(await res.json());
+}
+
+document.getElementById('file').addEventListener('change', e => e.target.files[0] && loadFile(e.target.files[0]));
+// index.html?diff=<relative path> opens straight to that diff (needs a served page, like the example button)
+const diffParam = new URLSearchParams(location.search).get('diff');
+if (diffParam) loadUrl(diffParam).catch(e => alert(`Could not load ${diffParam}: ${e.message}`));
+// ponytail: no manifest (file:// page, or a folder without diffs/) just leaves the dropdowns hidden
+fetch('diffs/manifest.json').then(res => res.ok ? res.json() : null).then(m => {
+  const models = m?.models || [];
+  if (!models.length) return;
+  for (const s of [before, after]) s.replaceChildren(new Option('', ''), ...models.map(name => new Option(name, name)));
+  document.getElementById('pair').hidden = false;
+  if (diffParam) return;
+  const pick = (k, dflt) => models.includes(params.get(k)) ? params.get(k) : dflt;
+  before.value = pick('before', models[0]);
+  after.value = pick('after', models[1] ?? models[0]);
+  loadPair();
+}).catch(() => {});
+document.getElementById('example').addEventListener('click', async () => {
+  clearPair();
+  try { await loadUrl('example-diff.json'); }
+  catch {
+    // file:// pages cannot fetch neighbors, so fall back to the picker
+    alert('Browsers block loading files next to a page opened from disk. Pick example-diff.json in the next dialog, or serve this folder (see README).');
+    document.getElementById('file').click();
+  }
+});
+addEventListener('dragover', e => { e.preventDefault(); document.body.classList.add('dragging'); });
+addEventListener('dragleave', e => { if (!e.relatedTarget) document.body.classList.remove('dragging'); });
+addEventListener('drop', e => {
+  e.preventDefault();
+  document.body.classList.remove('dragging');
+  if (e.dataTransfer.files[0]) loadFile(e.dataTransfer.files[0]);
+});
+</script>
+</body>
+</html>

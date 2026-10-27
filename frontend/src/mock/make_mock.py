@@ -1,4 +1,4 @@
-"""Write the synthetic Vantage mock file(s). Run from frontend/: python3 -I src/mock/make_mock.py
+"""Write the synthetic keepTABS mock file(s). Run from frontend/: python3 -I src/mock/make_mock.py
 
 Geometry (grid, stories, members) is generated. Every change record is written out by hand below so
 its numbers can be checked against a sketch of the frame. All data is synthetic. Units: inch, kip.
@@ -181,7 +181,7 @@ def result():
     return {
         "mock": True,
         "meta": {
-            "schema_version": "vantage-0.1",
+            "schema_version": "keeptabs-0.1",
             "source": {"baseline": "synthetic-frame-rev-A.e2k", "revised": "synthetic-frame-rev-B.e2k"},
             "units": {"length": "in", "force": "kip"},
             "coordinate_system": {"axes": "X east, Y north, Z up", "aligned": True, "offset": [0, 0, 0]},

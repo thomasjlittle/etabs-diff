@@ -1,11 +1,11 @@
-// Adapter: diff_engine output (frontend/demo_viewer/contract.ts, schemaVersion 0.1) -> Vantage Result.
-// This is what `just demo` feeds Thomas's viewer, so real .e2k pairs can be reviewed in Vantage.
+// Adapter: diff_engine output (frontend/demo_viewer/contract.ts, schemaVersion 0.2) -> keepTABS Result.
+// This is what `just demo` feeds Thomas's viewer, so real .e2k pairs can be reviewed in keepTABS.
 //
 // Element-level changes go to the planning-board group for their field. "affected" elements carry
 // their upstream definition's changes; those are reported once, as the table (definition) change,
 // with every member whose `via` names it. Not available from engine output: source line
 // evidence, ambiguous matches. Areas (floors, walls) are listed as changes but not drawn.
-import type { Change, Coverage, Group, Member, Node, Result, Side, Value, Vec3 } from './vantageTypes';
+import type { Change, Coverage, Group, Member, Node, Result, Side, Value, Vec3 } from './keeptabsTypes';
 import { GROUPS } from './adapter';
 import { fieldCategory, tableCategory } from './categories';
 
@@ -196,7 +196,7 @@ export function adaptEngine(d: EngineDiff, opts: { mock: boolean }): Result {
   return {
     mock: opts.mock,
     meta: {
-      schema_version: `vantage-0.1 (adapted from engine ${d.schemaVersion})`,
+      schema_version: `keeptabs-0.1 (adapted from engine ${d.schemaVersion})`,
       source: { baseline: d.meta.a.file, revised: d.meta.b.file },
       units: { length: d.meta.lengthUnit, force: d.meta.forceUnit ?? 'kip' },
       coordinate_system: { axes: 'X, Y plan; Z up', aligned: true, offset: [0, 0, 0] },

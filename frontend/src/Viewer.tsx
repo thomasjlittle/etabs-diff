@@ -4,7 +4,7 @@ import { useEffect, useId, useMemo, useRef, type ComponentRef } from 'react';
 import * as THREE from 'three';
 import { Canvas, useFrame, type ThreeEvent } from '@react-three/fiber';
 import { Bounds, Html, Line, OrbitControls, OrthographicCamera, PerspectiveCamera, useBounds } from '@react-three/drei';
-import type { Result, Vec3 } from './vantageTypes';
+import type { Result, Vec3 } from './keeptabsTypes';
 import { type ColorBy, type DrawStyle, type ViewMode, isVisible, memberStyles, memberToChange, moves } from './data';
 
 export type CameraMode = '3d' | 'plan' | 'N' | 'S' | 'E' | 'W';

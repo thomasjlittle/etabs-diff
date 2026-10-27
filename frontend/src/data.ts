@@ -1,5 +1,5 @@
 // Pure data helpers: no React, no three.js, so the rules can be unit tested.
-import type { Change, Member, Result, Value, Vec3 } from './vantageTypes';
+import type { Change, Member, Result, Value, Vec3 } from './keeptabsTypes';
 
 /** Renames and reversed end order are bookkeeping, not physical changes. */
 export const isPhysical = (c: Change) => c.type !== 'label_only';

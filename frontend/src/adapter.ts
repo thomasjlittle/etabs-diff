@@ -1,4 +1,4 @@
-// Adapter: team contract ({modelA, modelB, diff} per backend schema.py / types.ts) -> Vantage Result.
+// Adapter: team contract ({modelA, modelB, diff} per backend schema.py / types.ts) -> keepTABS Result.
 // Same shape as POST /api/diff returns, so this works for the fixtures now and the API later.
 //
 // Field -> group mapping follows the team planning board. Judgment calls (see README / PR):
@@ -6,7 +6,7 @@
 //   story elevation change -> G1, one change with no members (members are compared relative to story)
 // Not available from schema.py: source line evidence, ambiguous matches. Those stay empty.
 import type { Diff, Frame, Model, SetDiff } from './types';
-import type { Change, Coverage, Group, Member, Node, Result, Side, Value, Vec3 } from './vantageTypes';
+import type { Change, Coverage, Group, Member, Node, Result, Side, Value, Vec3 } from './keeptabsTypes';
 import { fieldCategory, tableCategory } from './categories';
 
 export interface TeamResult { modelA: Model; modelB: Model; diff: Diff }
@@ -51,7 +51,7 @@ export function frameFieldGroup(field: string): string {
   return '1D'; // modifiers and any other frame property
 }
 
-/** schema.py values are loosely typed; Vantage shows numbers, strings and number lists. */
+/** schema.py values are loosely typed; keepTABS shows numbers, strings and number lists. */
 function toValue(v: unknown): Value {
   if (v === null || v === undefined) return null;
   if (typeof v === 'number' || typeof v === 'string') return v;
@@ -82,7 +82,7 @@ export function adapt({ modelA, modelB, diff }: TeamResult): Result {
     const fa = framesA.get(id);
     if (fb && fa && changes.some((c) => c.field === 'nodes') && !(same(fa.i, fb.i) && same(fa.j, fb.j))) moved.set(id, fa);
   }
-  // Vantage member id for a B frame: a moved frame is drawn as two members, use the revised one.
+  // keepTABS member id for a B frame: a moved frame is drawn as two members, use the revised one.
   const mid = (id: string) => (moved.has(id) ? `${id}~B` : id);
   for (const f of modelB.frames) {
     if (added.has(f.id)) addMember(f, 'revised');
@@ -187,7 +187,7 @@ export function adapt({ modelA, modelB, diff }: TeamResult): Result {
   return {
     mock: true, // fixtures are synthetic; the MOCK DATA badge stays on
     meta: {
-      schema_version: 'vantage-0.1 (adapted from schema.py)',
+      schema_version: 'keeptabs-0.1 (adapted from schema.py)',
       source: { baseline: modelA.meta.file, revised: modelB.meta.file },
       units: { length: 'in', force: 'kip' }, // parsers normalize to kip and inch (CLAUDE.md)
       coordinate_system: { axes: 'X, Y plan; Z up', aligned: true, offset: [0, 0, 0] },

@@ -1,6 +1,6 @@
-// Vantage: review two revisions of a structural model. Frontend only; reads committed diffs and fixtures.
+// keepTABS: review two revisions of a structural model. Frontend only; reads committed diffs and fixtures.
 import { lazy, Suspense, useCallback, useEffect, useReducer, useRef, useState, type ReactNode } from 'react';
-import type { Result } from './vantageTypes';
+import type { Result } from './keeptabsTypes';
 import { type ColorBy, reducer } from './data';
 import { ChangeTable, DetailPanel, StoryStrip, SummaryList } from './Panels';
 import type { CameraMode, CameraSync, ViewerProps } from './Viewer';
@@ -25,7 +25,7 @@ const SOURCES: [string, string][] = [
   ['hack-models', 'Sample: Hack models, real ETABS (pick two)'],
   ['seeded-demo', 'Sample: Seeded demo, 8 stories (engine output)'],
   ['team-fixture', 'Dev: team fixture (fixtures/*.json)'],
-  ['mock-result', 'Dev: Vantage mock'],
+  ['mock-result', 'Dev: keepTABS mock'],
 ];
 
 // Real ETABS models from frontend/demo_viewer/models/, diffed by the engine for every ordered pair
@@ -91,7 +91,7 @@ export async function compareModels(original: File, second: File): Promise<Resul
   body.append('b', second);
   let res: Response;
   try {
-    res = await fetch(COMPARE_ROUTE, { method: 'POST', body, headers: { 'x-vantage-compare': '1' } });
+    res = await fetch(COMPARE_ROUTE, { method: 'POST', body, headers: { 'x-keeptabs-local': '1' } });
   } catch {
     throw new Error('The local dev server did not answer. Start it from frontend/ with: npm run dev');
   }

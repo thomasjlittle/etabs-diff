@@ -6,6 +6,9 @@ import { Canvas, useFrame, type ThreeEvent } from '@react-three/fiber';
 import { Bounds, Html, Line, OrbitControls, OrthographicCamera, PerspectiveCamera, useBounds } from '@react-three/drei';
 import type { Result, Vec3 } from './keeptabsTypes';
 import { type ColorBy, type DrawStyle, type ViewMode, isVisible, memberStyles, memberToChange, moves } from './data';
+import {
+  type LoadView, type ModelLoads, glyphSegments, loadChanged, loadGlyphs, loadsFor, maxByClass, pickReason,
+} from './loads';
 
 export type CameraMode = '3d' | 'plan' | 'N' | 'S' | 'E' | 'W';
 
@@ -17,6 +20,9 @@ export const COLORS: Record<DrawStyle, string> = {
   previous: '#dc2626',         // red dashed: old position of a moved member
   property: '#7c3aed',         // violet: section or material assignment changed
 };
+
+// Applied loads: anything that differs from the other model red, the rest neutral (gray-and-red rule).
+export const LOAD_COLORS = { same: '#475569', changed: '#dc2626' };
 
 // Direction from the model centre to the camera for each view.
 const VIEW_DIR: Record<CameraMode, Vec3> = {
@@ -48,7 +54,12 @@ export interface ViewerProps {
   resetTick: number;  // bump to fit the whole model
   sync?: CameraSync | null; // split view: link this pane's camera to the other pane
   legend?: boolean;
+  loadView?: LoadView | null;           // applied loads to draw; null or absent: off
+  onLoadFocus?: (key: string) => void;  // hover or click on a loaded element
 }
+
+/** Which model's loads this pane draws: a split pane only shows its own model's. */
+const drawsLoads = (viewMode: ViewMode, v: LoadView) => viewMode === 'overlay' || (viewMode === 'baseline' ? 'a' : 'b') === v.side;
 
 export default function Viewer(props: ViewerProps) {
   return (
@@ -58,12 +69,17 @@ export default function Viewer(props: ViewerProps) {
         {/* Remount per camera mode so each view starts from its own direction, then fits. */}
         <Scene key={props.cameraMode} {...props} />
       </Canvas>
-      {props.legend !== false && <Legend units={props.result.meta.units.length} colorBy={props.colorBy} />}
+      {props.legend !== false && <Legend units={props.result.meta.units.length} colorBy={props.colorBy} loads={!!props.loadView} />}
+      {props.loadView && props.result.loads && drawsLoads(props.viewMode, props.loadView) && pickReason(props.result.loads, props.loadView) && (
+        <div className="pointer-events-none absolute right-2 top-2 max-w-[60%] rounded bg-amber-50 px-2 py-1 text-xs text-amber-800 ring-1 ring-amber-200">
+          {props.loadView.pick.name} not drawn: {pickReason(props.result.loads, props.loadView)}
+        </div>
+      )}
     </div>
   );
 }
 
-function Scene({ result, selectedId, onSelect, viewMode, cameraMode, colorBy, storyFilter, zoomTick, resetTick, sync }: ViewerProps) {
+function Scene({ result, selectedId, onSelect, viewMode, cameraMode, colorBy, storyFilter, zoomTick, resetTick, sync, loadView, onLoadFocus }: ViewerProps) {
   const xyz = useMemo(() => new Map(result.nodes.map((n) => [n.id, n.xyz])), [result]);
   const styles = useMemo(() => memberStyles(result, colorBy), [result, colorBy]);
   const changeOf = useMemo(() => memberToChange(result), [result]);
@@ -134,6 +150,11 @@ function Scene({ result, selectedId, onSelect, viewMode, cameraMode, colorBy, st
   const click = (memberId: string) => (e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation();
     onSelect(changeOf.get(memberId) ?? null);
+    if (loadView) onLoadFocus?.(memberId);
+  };
+  const focus = (key: string) => () => {
+    document.body.style.cursor = 'pointer';
+    if (loadView) onLoadFocus?.(key);
   };
 
   return (
@@ -164,12 +185,16 @@ function Scene({ result, selectedId, onSelect, viewMode, cameraMode, colorBy, st
               transparent
               opacity={faded ? 0.12 : 1}
               onClick={click(m.id)}
-              onPointerOver={() => (document.body.style.cursor = 'pointer')}
+              onPointerOver={focus(m.id)}
               onPointerOut={() => (document.body.style.cursor = '')}
             />
           );
         })}
       </Bounds>
+
+      {loadView && result.loads && drawsLoads(viewMode, loadView) && (
+        <LoadLayer loads={result.loads} view={loadView} length={size * 0.06 * loadView.scale} storyFilter={storyFilter} onFocus={focus} />
+      )}
 
       {viewMode !== 'baseline' && arrows.map((a, i) => <primitive key={i} object={a} />)}
 
@@ -200,6 +225,45 @@ function Scene({ result, selectedId, onSelect, viewMode, cameraMode, colorBy, st
   );
 }
 
+/**
+ * Applied loads of one pick on one model, as arrows. Each element's arrows are one line set, so a hover
+ * names the element. Local directions are dashed: drawn on default local axes (no axis angle in the diff).
+ */
+function LoadLayer({ loads, view, length, storyFilter, onFocus }: {
+  loads: ModelLoads; view: LoadView; length: number; storyFilter: string | null; onFocus: (key: string) => () => void;
+}) {
+  const drawn = useMemo(() => {
+    const items = loads.elements.map((el) => ({
+      el, glyphs: loadGlyphs(el, loadsFor(el, view.side, view.pick, loads.definitions)), changed: loadChanged(el, view.pick, loads.definitions),
+    })).filter((x) => x.glyphs.length);
+    return { items, max: maxByClass(items.flatMap((x) => x.glyphs)) };
+  }, [loads, view.side, view.pick]);
+  return (
+    <>
+      {drawn.items.flatMap(({ el, glyphs, changed }) => [false, true].map((local) => {
+        const segs = glyphs.filter((g) => g.local === local).flatMap((g) => glyphSegments(g, drawn.max, length));
+        if (segs.length === 0) return null;
+        return (
+          <Line
+            key={`${el.key}|${local}`}
+            segments
+            points={segs.flat()}
+            color={changed ? LOAD_COLORS.changed : LOAD_COLORS.same}
+            lineWidth={changed ? 2 : 1.25}
+            dashed={local}
+            dashSize={6}
+            gapSize={4}
+            transparent
+            opacity={storyFilter !== null && el.story !== storyFilter ? 0.12 : 1}
+            onPointerOver={onFocus(el.key)}
+            onPointerOut={() => (document.body.style.cursor = '')}
+          />
+        );
+      }))}
+    </>
+  );
+}
+
 /** Zooms to the selected change when it changes or when "Zoom to selected" is pressed. */
 function ZoomController({ box, zoomTick, resetTick, sync }: {
   box: THREE.Box3 | null; zoomTick: number; resetTick: number; sync?: CameraSync | null;
@@ -219,12 +283,17 @@ function ZoomController({ box, zoomTick, resetTick, sync }: {
   return null;
 }
 
-function Legend({ units, colorBy }: { units: string; colorBy: ColorBy }) {
+function Legend({ units, colorBy, loads }: { units: string; colorBy: ColorBy; loads: boolean }) {
   const rows: [string, string, boolean][] = [
     [COLORS.context, 'Unchanged', false],
     [COLORS.added, 'Added / new position', false],
     [COLORS.removed, 'Removed / old position', true],
     ...(colorBy === 'property' ? [[COLORS.property, 'Section or material changed', false] as [string, string, boolean]] : []),
+    ...(loads ? [
+      [LOAD_COLORS.same, 'Load, same in both models', false],
+      [LOAD_COLORS.changed, 'Load, differs from the other model', false],
+      [LOAD_COLORS.same, 'Local direction (default axes)', true],
+    ] as [string, string, boolean][] : []),
   ];
   return (
     <div className="pointer-events-none absolute bottom-2 left-2 whitespace-nowrap rounded border border-slate-200 bg-white/90 px-2 py-1 text-[10px] leading-4 text-slate-700">

@@ -1,4 +1,4 @@
-// Vantage: review two revisions of a structural model. Frontend only; synthetic data only.
+// Vantage: review two revisions of a structural model. Frontend only; reads committed diffs and fixtures.
 import { lazy, Suspense, useCallback, useEffect, useReducer, useState, type ReactNode } from 'react';
 import type { Result } from './vantageTypes';
 import { type ColorBy, type ViewMode, reducer } from './data';
@@ -7,6 +7,7 @@ import type { CameraMode } from './Viewer';
 import type { Diff, Model } from './types';
 import { adapt } from './adapter';
 import { adaptEngine, type EngineDiff } from './engineAdapter';
+import manifest from '../demo_viewer/diffs/manifest.json';
 
 // Loaded separately so tests (no WebGL) never import three.js.
 const Viewer = lazy(() => import('./Viewer'));
@@ -16,27 +17,28 @@ const MOCKS = import.meta.glob('./mock/*.json');
 
 // Data sources in the top-bar dropdown. "team-fixture" is the team's reference case in schema.py format.
 const SOURCES: [string, string][] = [
-  ['team-fixture', 'Team fixture (fixtures/*.json)'],
+  ['hack-models', 'Hack models, real ETABS (pick two)'],
   ['seeded-demo', 'Seeded demo, 8 stories (engine output)'],
-  ['hack-local', 'Hack pair, real ETABS (local only)'],
+  ['team-fixture', 'Team fixture (fixtures/*.json)'],
   ['mock-result', 'Vantage mock'],
 ];
 
-// Engine output from real models lives in frontend/local-data/ (gitignored), never in the repo.
-// Generate it with: PYTHONPATH=backend python3 -m diff_engine <before.e2k> <after.e2k> -o frontend/local-data/hack-diff.json
-const LOCAL = import.meta.glob('../local-data/*.json');
+// Real ETABS models from frontend/demo_viewer/models/, diffed by the engine for every ordered pair
+// (diff_engine.demo_diffs). The manifest lists the models; each pair is diffs/<original>__<second>.json.
+export const MODELS: string[] = manifest.models;
+const PAIRS = import.meta.glob('../demo_viewer/diffs/*__*.json');
+export interface Pair { original: string; second: string }
 
-export async function loadScenario(name: string): Promise<Result> {
-  if (name === 'seeded-demo') {
-    // Synthetic pair, regenerated from latest main (same as `just demo-seeded`); equals main's fixtures/demo/diff.json.
-    const load = LOCAL['../local-data/seeded-diff.json'];
-    if (!load) throw new Error('frontend/local-data/seeded-diff.json not found. Run the engine on fixtures/demo/before.e2k and after.e2k (see App.tsx).');
-    return adaptEngine(((await load()) as { default: EngineDiff }).default, { mock: true });
-  }
-  if (name === 'hack-local') {
-    const load = LOCAL['../local-data/hack-diff.json'];
-    if (!load) throw new Error('frontend/local-data/hack-diff.json not found. Run the engine on the hack pair first (see App.tsx).');
+export async function loadScenario(name: string, pair: Pair = { original: MODELS[0], second: MODELS[1] }): Promise<Result> {
+  if (name === 'hack-models') {
+    const load = PAIRS[`../demo_viewer/diffs/${pair.original}__${pair.second}.json`];
+    if (!load) throw new Error(`No precomputed diff for ${pair.original} → ${pair.second} in frontend/demo_viewer/diffs/.`);
     return adaptEngine(((await load()) as { default: EngineDiff }).default, { mock: false });
+  }
+  if (name === 'seeded-demo') {
+    // Synthetic pair (same as `just demo-seeded`), committed by the engine owner.
+    const d = await import('../../fixtures/demo/diff.json');
+    return adaptEngine(d.default as unknown as EngineDiff, { mock: true });
   }
   if (name === 'team-fixture') {
     const [a, b, d] = await Promise.all([
@@ -102,18 +104,28 @@ export default function App() {
   const [story, setStory] = useState<string | null>(null);
   const [zoomTick, setZoomTick] = useState(0);
   const [resetTick, setResetTick] = useState(0);
-  const [source, setSource] = useState('team-fixture');
+  const [source, setSource] = useState('hack-models');
+  const [original, setOriginal] = useState(MODELS[0]);
+  const [second, setSecond] = useState(MODELS[1]);
 
   // Each load starts from a clean slate: previous result, selection and story filter are dropped.
   useEffect(() => {
     let current = true;
     dispatch({ type: 'load_start' });
     setStory(null);
-    loadScenario(source)
+    loadScenario(source, { original, second })
       .then((result) => current && dispatch({ type: 'load_ok', result }))
       .catch((e: Error) => current && dispatch({ type: 'load_fail', message: e.message }));
     return () => { current = false; }; // ignore a slow load that was superseded
-  }, [source]);
+  }, [source, original, second]);
+
+  const modelSelect = (label: string, value: string, onChange: (v: string) => void) => (
+    <label className="text-xs text-slate-500">{label}{' '}
+      <select aria-label={label} value={value} onChange={(e) => onChange(e.target.value)} className="rounded border px-1 text-slate-900">
+        {MODELS.map((m) => <option key={m} value={m}>{m}</option>)}
+      </select>
+    </label>
+  );
 
   const { load } = state;
   return (
@@ -122,13 +134,20 @@ export default function App() {
         <h1 className="font-semibold">Vantage</h1>
         {/* Always visible: says whether what's on screen is synthetic or a real model. */}
         <span className="rounded bg-slate-900 px-2 py-0.5 text-xs font-bold tracking-wide text-white">
-          {load.status === 'ready' && !load.result.mock ? 'REAL MODEL · LOCAL ONLY' : 'MOCK DATA'}
+          {load.status === 'ready' && !load.result.mock ? 'REAL ETABS MODELS' : 'MOCK DATA'}
         </span>
         <label className="text-xs text-slate-500">Data{' '}
           <select value={source} onChange={(e) => setSource(e.target.value)} className="rounded border px-1 text-slate-900">
             {SOURCES.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
           </select>
         </label>
+        {source === 'hack-models' && (
+          <div className="flex items-center gap-2">
+            {modelSelect('Original', original, setOriginal)}
+            <span className="text-slate-400">→</span>
+            {modelSelect('Second', second, setSecond)}
+          </div>
+        )}
         <Toggle label="Show" value={viewMode} onChange={setViewMode}
           options={[['baseline', 'Baseline'], ['overlay', 'Overlay'], ['revised', 'Revised']]} />
         <Toggle label="View" value={cameraMode} onChange={setCameraMode}

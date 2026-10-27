@@ -1,6 +1,6 @@
-# etabs-diff Viewer
+# keepTABS Viewer
 
-A simple 3D viewer for the output of the etabs-diff engine. The engine compares two ETABS exports of the same model and writes a JSON diff. This page draws every element in that diff: unchanged elements in transparent gray, anything that changed (added, removed, modified, or affected) in red.
+A simple 3D viewer for the output of the keepTABS diff engine (`backend/diff_engine/`). The engine compares two ETABS exports of the same model and writes a JSON diff. This page draws every element in that diff: unchanged elements in transparent gray, anything that changed (added, removed, modified, or affected) in red.
 
 ![Viewer showing the example diff](screenshot.png)
 
@@ -14,7 +14,7 @@ It's one static HTML file. There's no install and no build step. It loads three.
 | `contract.ts` | The exact shape of the diff JSON. This is the source of truth. |
 | `CONTRACT.md` | The same contract explained field by field. Start here. |
 | `example-diff.json` | A made-up 3-story, 2x2-bay steel building with elements in every status, so you can work on the viewer without the engine. |
-| `models/` | Five versions of a small hackathon model (`Hack_v01a`, `Hack_v02`, `Hack_v02a` in lb and ft, `Hack_v03`, `Hack_v04`). |
+| `models/` | Six versions of a small hackathon model (`Hack_v01`, `Hack_v01a`, `Hack_v02`, `Hack_v02a` in lb and ft, `Hack_v03`, `Hack_v04`). |
 | `diffs/` | The engine's diff of every ordered pair of `models/`, plus `manifest.json` listing the models. Rebuild with `just demo-diffs`. |
 
 ## Opening It
@@ -41,7 +41,7 @@ The side panel also lists every table in the diff's `tables` (stories, materials
 
 Run the engine on two `.e2k` files and load the JSON it writes, the same way you'd load the example. Anything that follows `contract.ts` will draw. If the page says it's not an etabs-diff output, the file is missing the `elements` array.
 
-The engine is still being built on a separate branch, so until it lands, `example-diff.json` is the stand-in. If you change the example, keep it valid against `contract.ts` and keep `summary` matching the element counts.
+`example-diff.json` is a stand-in for working on the viewer without the engine. If you change the example, keep it valid against `contract.ts` and keep `summary` matching the element counts.
 
 ## How It Draws
 

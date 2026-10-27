@@ -1,14 +1,15 @@
 // Vantage: review two revisions of a structural model. Frontend only; reads committed diffs and fixtures.
-import { lazy, Suspense, useCallback, useEffect, useReducer, useState, type ReactNode } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useReducer, useRef, useState, type ReactNode } from 'react';
 import type { Result } from './vantageTypes';
-import { type ColorBy, type ViewMode, reducer } from './data';
+import { type ColorBy, reducer } from './data';
 import { ChangeTable, DetailPanel, StoryStrip, SummaryList } from './Panels';
-import type { CameraMode } from './Viewer';
+import type { CameraMode, CameraSync, ViewerProps } from './Viewer';
 import type { Diff, Model } from './types';
 import { adapt } from './adapter';
 import { adaptEngine, type EngineDiff } from './engineAdapter';
 import manifest from '../demo_viewer/diffs/manifest.json';
 import { RevisionLog } from './RevisionLog';
+import { categoryOf } from './categories';
 import { UploadStart } from './UploadStart';
 
 // Loaded separately so tests (no WebGL) never import three.js.
@@ -112,17 +113,43 @@ export function Workspace({ result, selectedId, onSelect, viewer, story, onStory
   viewer?: ReactNode; story?: string | null; onStory?: (s: string | null) => void;
 }) {
   const props = { result, selectedId, onSelect };
+  // Category picked in the summary list; the table below lists only that category's changes.
+  const [category, setCategory] = useState<string | null>(null);
+  // A selection made elsewhere (3D, table) outside the picked category switches the table to its category.
+  const selected = result.changes.find((c) => c.id === selectedId);
+  const selectedCategory = selected && categoryOf(selected);
+  useEffect(() => {
+    if (category && selectedCategory && selectedCategory !== category) setCategory(selectedCategory);
+  }, [selectedCategory]); // eslint-disable-line react-hooks/exhaustive-deps
   return (
-    <div className="grid min-h-0 flex-1 grid-cols-[20rem_1fr_22rem] grid-rows-[1fr_15rem]">
-      <aside className="min-h-0 overflow-hidden border-r border-slate-200"><SummaryList {...props} /></aside>
-      <main className="flex min-h-0 flex-col">
+    // minmax(0, 1fr): the 3D canvas keeps its last pixel height, so a plain 1fr row would not shrink and
+    // the viewer would spill over the table when the table grows.
+    <div className={`grid min-h-0 flex-1 grid-cols-[20rem_minmax(0,1fr)_22rem] ${category ? 'grid-rows-[minmax(0,1fr)_22rem]' : 'grid-rows-[minmax(0,1fr)_15rem]'}`}>
+      <aside className="min-h-0 overflow-hidden border-r border-slate-200"><SummaryList result={result} category={category} onCategory={setCategory} /></aside>
+      <main className="flex min-h-0 flex-col overflow-hidden">
         <StoryStrip result={result} story={story ?? null} onStory={onStory ?? (() => {})} />
-        <div className="min-h-0 flex-1">
+        <div className="relative min-h-0 flex-1 overflow-hidden">
           {viewer ?? <div className="flex h-full items-center justify-center text-sm text-slate-400">Viewer</div>}
         </div>
       </main>
       <aside className="min-h-0 overflow-y-auto border-l border-slate-200"><DetailPanel {...props} /></aside>
-      <section className="col-span-3 min-h-0 border-t border-slate-200"><ChangeTable {...props} /></section>
+      <section className="col-span-3 min-h-0 border-t border-slate-200"><ChangeTable {...props} category={category} onCategory={setCategory} /></section>
+    </div>
+  );
+}
+
+/** Model 1 and Model 2 side by side. With sync, orbiting one pane moves the other the same way. */
+function SplitView({ sync, ...props }: Omit<ViewerProps, 'viewMode'>) {
+  return (
+    <div className="absolute inset-0 grid grid-cols-2 grid-rows-[minmax(0,1fr)] divide-x divide-slate-300">
+      {(['baseline', 'revised'] as const).map((side) => (
+        <div key={side} className="relative min-h-0 min-w-0 overflow-hidden">
+          <Viewer {...props} viewMode={side} sync={sync} legend={side === 'revised'} />
+          <span className="pointer-events-none absolute left-2 top-2 rounded bg-white/90 px-2 py-0.5 text-xs font-semibold text-slate-700 ring-1 ring-slate-200">
+            {side === 'baseline' ? 'Model 1' : 'Model 2'}
+          </span>
+        </div>
+      ))}
     </div>
   );
 }
@@ -151,7 +178,9 @@ function Toggle<T extends string>({ label, value, options, onChange }: {
 export default function App() {
   const [state, dispatch] = useReducer(reducer, { load: { status: 'loading' }, selectedChangeId: null });
   const select = useCallback((id: string | null) => dispatch({ type: 'select', id }), []);
-  const [viewMode, setViewMode] = useState<ViewMode>('overlay');
+  // Model 1 and Model 2 side by side, cameras linked unless the user unlinks them.
+  const [linked, setLinked] = useState(true);
+  const sync = useRef<CameraSync>({ driver: null, version: 0, position: [0, 0, 0], target: [0, 0, 0], zoom: 1 }).current;
   const [cameraMode, setCameraMode] = useState<CameraMode>('3d');
   const [colorBy, setColorBy] = useState<ColorBy>('change');
   const [story, setStory] = useState<string | null>(null);
@@ -204,10 +233,17 @@ export default function App() {
   const openPair = (a: string, b: string) => { changeSource('hack-models'); setOriginal(a); setSecond(b); setPage('review'); };
 
   const { load } = state;
+  const viewerProps = load.status === 'ready' ? {
+    result: load.result, selectedId: state.selectedChangeId, onSelect: select,
+    cameraMode, colorBy, storyFilter: story, zoomTick, resetTick,
+  } : null;
   return (
     <div className="flex h-screen flex-col bg-white text-slate-900">
       <header className="flex flex-wrap items-center gap-x-4 gap-y-1 border-b border-slate-200 px-4 py-2">
-        <h1 className="font-semibold">Vantage</h1>
+        <h1 className="flex items-center gap-2 text-lg font-bold tracking-tight">
+          <img src="/keeptabs-icon.png" alt="" className="h-8 w-auto" />
+          <span><span className="text-slate-800">keep</span><span className="text-blue-700">TABS</span></span>
+        </h1>
         <Toggle label="Page" value={page} onChange={setPage} options={[['review', 'Review'], ['log', 'Revision log']]} />
         {/* Always visible: says whether what's on screen is synthetic or a real model. */}
         {/* Only once something is loaded: while waiting or comparing, there is no data to label. */}
@@ -223,9 +259,9 @@ export default function App() {
         </label>
         {source === 'hack-models' && (
           <div className="flex items-center gap-2">
-            {modelSelect('Original', original, setOriginal)}
+            {modelSelect('Model 1', original, setOriginal)}
             <span className="text-slate-400">→</span>
-            {modelSelect('Revised', second, setSecond)}
+            {modelSelect('Model 2', second, setSecond)}
           </div>
         )}
         {source === 'e2k-upload' && compared && (
@@ -240,8 +276,10 @@ export default function App() {
               onChange={(e) => setDiffFile(e.target.files?.[0] ?? null)} />
           </label>
         )}
-        <Toggle label="Show" value={viewMode} onChange={setViewMode}
-          options={[['baseline', 'Original'], ['overlay', 'Overlay'], ['revised', 'Revised']]} />
+        <button aria-pressed={linked} onClick={() => setLinked((l) => !l)}
+          className={`rounded px-2 py-0.5 text-xs ${linked ? 'bg-slate-800 text-white' : 'bg-slate-100 hover:bg-slate-200'}`}>
+          {linked ? 'Views linked' : 'Views unlinked'}
+        </button>
         <Toggle label="View" value={cameraMode} onChange={setCameraMode}
           options={[['3d', '3D'], ['plan', 'Plan'], ['N', 'N'], ['S', 'S'], ['E', 'E'], ['W', 'W']]} />
         <Toggle label="Color by" value={colorBy} onChange={setColorBy}
@@ -279,18 +317,16 @@ export default function App() {
             onClick={() => setRetryTick((t) => t + 1)}>Try again</button>
         </div>
       )}
-      {page === 'review' && load.status === 'ready' && (
+      {page === 'review' && viewerProps && (
         <Workspace
-          result={load.result}
+          result={viewerProps.result}
           selectedId={state.selectedChangeId}
           onSelect={select}
           story={story}
           onStory={setStory}
           viewer={
             <Suspense fallback={<div className="p-4 text-sm text-slate-400">Loading viewer…</div>}>
-              <Viewer result={load.result} selectedId={state.selectedChangeId} onSelect={select}
-                viewMode={viewMode} cameraMode={cameraMode} colorBy={colorBy} storyFilter={story}
-                zoomTick={zoomTick} resetTick={resetTick} />
+              <SplitView {...viewerProps} sync={linked ? sync : null} />
             </Suspense>
           }
         />

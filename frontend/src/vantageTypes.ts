@@ -41,6 +41,7 @@ export interface Change {
   id: string;
   type: ChangeType;
   group: string;                 // Group.id
+  category?: string;             // left-panel category id (categories.ts); derived from group when absent
   member_ids: string[];          // for a move: [baseline member, revised member]
   subject?: string;              // for non-member records, e.g. "Material STEEL-COL"
   extent: { members: number; distance: number };

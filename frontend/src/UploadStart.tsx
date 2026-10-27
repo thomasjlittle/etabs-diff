@@ -1,4 +1,4 @@
-// Start screen: pick an Original and a Revised model, then Compare. Shown until a comparison is loaded.
+// Start screen: pick Model 1 (earlier) and Model 2 (later), then Compare. Shown until a comparison is loaded.
 import { useRef, useState, type DragEvent } from 'react';
 
 export const MODEL_EXTENSIONS = ['.e2k', '.$et'];
@@ -61,7 +61,7 @@ function DropZone({ label, hint, file, onFile }: {
         </>
       )}
       {rejected && <p role="alert" className="text-xs text-red-700">{rejected}</p>}
-      <input ref={input} type="file" accept={MODEL_EXTENSIONS.join(',')} aria-label={`${label} model file`} className="hidden"
+      <input ref={input} type="file" accept={MODEL_EXTENSIONS.join(',')} aria-label={`${label} file`} className="hidden"
         onChange={(e) => { take(e.target.files?.[0]); e.target.value = ''; }} />
     </div>
   );
@@ -83,11 +83,11 @@ export function UploadStart({ original, revised, onOriginal, onRevised, onCompar
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <DropZone label="Original" hint="The earlier version (before)" file={original} onFile={onOriginal} />
-          <button aria-label="Swap Original and Revised" title="Swap Original and Revised"
+          <DropZone label="Model 1" hint="The earlier version (before)" file={original} onFile={onOriginal} />
+          <button aria-label="Swap Model 1 and Model 2" title="Swap Model 1 and Model 2"
             disabled={!original && !revised} onClick={swap}
             className="rounded-full bg-slate-100 px-3 py-2 text-sm hover:bg-slate-200 disabled:opacity-40">⇄</button>
-          <DropZone label="Revised" hint="The later version (after)" file={revised} onFile={onRevised} />
+          <DropZone label="Model 2" hint="The later version (after)" file={revised} onFile={onRevised} />
         </div>
         {error && (
           <p role="alert" className="rounded border border-red-200 bg-red-50 p-3 text-sm text-red-800">

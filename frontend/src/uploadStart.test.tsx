@@ -13,18 +13,18 @@ function Harness({ onCompare = () => {}, error = null }: { onCompare?: () => voi
     onCompare={onCompare} onSample={() => {}} busy={false} error={error} />;
 }
 
-const pick = (label: string, f: File) => fireEvent.change(screen.getByLabelText(`${label} model file`), { target: { files: [f] } });
+const pick = (label: string, f: File) => fireEvent.change(screen.getByLabelText(`${label} file`), { target: { files: [f] } });
 const compare = () => screen.getByRole('button', { name: 'Compare' }) as HTMLButtonElement;
 
 describe('UploadStart', () => {
   afterEach(cleanup);
-  it('Compare is enabled only once both Original and Revised are picked', () => {
+  it('Compare is enabled only once both Model 1 and Model 2 are picked', () => {
     const onCompare = vi.fn();
     render(<Harness onCompare={onCompare} />);
     expect(compare().disabled).toBe(true);
-    pick('Original', file('Hack_v01a.e2k'));
+    pick('Model 1', file('Hack_v01a.e2k'));
     expect(compare().disabled).toBe(true);
-    pick('Revised', file('Hack_v04.$ET'));
+    pick('Model 2', file('Hack_v04.$ET'));
     expect(compare().disabled).toBe(false);
     fireEvent.click(compare());
     expect(onCompare).toHaveBeenCalledOnce();
@@ -32,24 +32,24 @@ describe('UploadStart', () => {
 
   it('shows the picked file name, and Swap exchanges the two', () => {
     render(<Harness />);
-    pick('Original', file('v1.e2k'));
-    pick('Revised', file('v2.e2k'));
-    fireEvent.click(screen.getByRole('button', { name: 'Swap Original and Revised' }));
-    expect(screen.getByTestId('drop-Original').textContent).toContain('v2.e2k');
-    expect(screen.getByTestId('drop-Revised').textContent).toContain('v1.e2k');
+    pick('Model 1', file('v1.e2k'));
+    pick('Model 2', file('v2.e2k'));
+    fireEvent.click(screen.getByRole('button', { name: 'Swap Model 1 and Model 2' }));
+    expect(screen.getByTestId('drop-Model 1').textContent).toContain('v2.e2k');
+    expect(screen.getByTestId('drop-Model 2').textContent).toContain('v1.e2k');
   });
 
   it('a file that is not .e2k or .$et is refused with a message', () => {
     render(<Harness />);
-    pick('Original', file('model.EDB'));
+    pick('Model 1', file('model.EDB'));
     expect(screen.getByRole('alert').textContent).toContain('model.EDB is not an ETABS text export');
     expect(compare().disabled).toBe(true);
   });
 
   it('dropping a file onto a zone picks it', () => {
     render(<Harness />);
-    fireEvent.drop(screen.getByTestId('drop-Revised'), { dataTransfer: { files: [file('after.e2k')] } });
-    expect(screen.getByTestId('drop-Revised').textContent).toContain('after.e2k');
+    fireEvent.drop(screen.getByTestId('drop-Model 2'), { dataTransfer: { files: [file('after.e2k')] } });
+    expect(screen.getByTestId('drop-Model 2').textContent).toContain('after.e2k');
   });
 
   it('an engine error shows on the start screen', () => {

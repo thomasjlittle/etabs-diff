@@ -29,6 +29,12 @@ demo-seeded:
 example:
     python3 -m diff_engine.serve frontend/demo_viewer/example-diff.json
 
+# egit: git-style log, show, diff, add, status, pull, push over the model history (just egit --help)
+[no-cd]
+[positional-arguments]
+egit *args:
+    @"{{justfile_directory()}}/egit" "$@"
+
 # type-check backend/diff_engine with pyright in strict mode (pyrightconfig.json)
 typecheck:
     pyright

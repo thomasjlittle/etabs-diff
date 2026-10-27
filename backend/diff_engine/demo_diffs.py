@@ -30,15 +30,20 @@ def build(models_dir: Path = MODELS_DIR) -> Dict[str, str]:
     return files
 
 
-def main() -> None:
-    files = build()
-    DIFFS_DIR.mkdir(exist_ok=True)
-    for stale in DIFFS_DIR.glob("*.json"):
+def write(models_dir: Path = MODELS_DIR, diffs_dir: Path = DIFFS_DIR) -> int:
+    """Rewrite diffs_dir from models_dir, dropping stale pair files. Returns how many files it wrote."""
+    files = build(models_dir)
+    diffs_dir.mkdir(exist_ok=True)
+    for stale in diffs_dir.glob("*.json"):
         if stale.name not in files:
             stale.unlink()
     for name, text in files.items():
-        (DIFFS_DIR / name).write_text(text, encoding="utf-8")
-    print(f"wrote {len(files)} files to {DIFFS_DIR}")
+        (diffs_dir / name).write_text(text, encoding="utf-8")
+    return len(files)
+
+
+def main() -> None:
+    print(f"wrote {write()} files to {DIFFS_DIR}")
 
 
 if __name__ == "__main__":

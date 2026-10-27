@@ -1,4 +1,4 @@
-"""The viewer's output contract (output-contract.ts, schemaVersion 0.1) as Python types.
+"""The viewer's output contract (contract.ts, schemaVersion 0.2) as Python types.
 
 TypedDicts are plain dicts at runtime, so the engine's result is the JSON as-is. Field names match the
 TypeScript contract exactly. Fields marked extension are additive and a viewer can ignore them.
@@ -36,10 +36,22 @@ class _ElementDiff(TypedDict):
     changes: List[Change]  # empty when unchanged, added, removed (but a moved pair's own changes ride on its removed half); for affected, the upstream definition changes
 
 
+# One applied load as written, minus its pattern: raw e2k keys (TYPE, DIR, FVAL, FSTART, FEND, FX..MZ, SET, ...) in kip
+# and in. Frame loads also carry every position both ways: RDIST/DIST, RDSTART/DSTART, RDEND/DEND (inches from the
+# I end). A resolved area load set has TYPE UNIFLOADSET, its SET name and the pattern's FVAL.
+AppliedLoad = Dict[str, Any]
+
+
+class ElementLoads(TypedDict):
+    a: Dict[str, List[AppliedLoad]]  # pattern -> loads in model A; {} when absent or unloaded in A
+    b: Dict[str, List[AppliedLoad]]
+
+
 class ElementDiff(_ElementDiff, total=False):
     via: List[str]  # e.g. ["frameSection:W14X22", "material:A992Fy50"]
     movedTo: str  # extension: key of the added entry this removed frame moved to
     movedFrom: str  # extension: key of the removed entry this added frame moved from
+    loads: ElementLoads  # 0.2: only on elements that carry a load in A or B, whatever their status
 
 
 class TableDiff(TypedDict):
@@ -93,10 +105,46 @@ class Tables(_Tables, total=False):
     analysisOptions: TableDiff  # extension: global analysis records by keyword, e.g. PDELTA
 
 
+class Expansion(TypedDict):
+    expandable: bool
+    patterns: Dict[str, float]  # pattern -> effective factor; {} when not expandable
+    reason: Optional[str]  # why not, None when expandable
+
+
+class LoadPatternDef(TypedDict):
+    type: str  # as written, e.g. Dead, Live, Seismic
+    selfWeight: float  # self-weight multiplier, 0 when absent
+
+
+class LoadCaseDef(TypedDict):
+    type: str  # as written, e.g. Linear Static, Modal - Eigen
+    patterns: Dict[str, float]  # LOADPAT terms: pattern -> scale factor
+    effective: Expansion
+
+
+class LoadComboDef(TypedDict):
+    type: str  # as written, e.g. Linear Add, Envelope
+    cases: Dict[str, float]  # LOADCASE terms: name -> scale factor (ETABS may name a combo here too)
+    combos: Dict[str, float]  # LOADCOMBO terms: combo -> scale factor
+    effective: Expansion
+
+
+class LoadDefinitions(TypedDict):
+    patterns: Dict[str, LoadPatternDef]
+    cases: Dict[str, LoadCaseDef]
+    combos: Dict[str, LoadComboDef]
+
+
+class SideLoadDefinitions(TypedDict):
+    a: LoadDefinitions
+    b: LoadDefinitions
+
+
 class DiffOutput(TypedDict):
-    schemaVersion: Literal["0.1"]
+    schemaVersion: Literal["0.2"]
     meta: Meta
     stories: List[Story]  # bottom up
     elements: List[ElementDiff]  # every element in the union of A and B
     tables: Tables
     summary: Dict[Status, int]
+    loadDefinitions: SideLoadDefinitions  # 0.2: every load pattern, case and combo per model, not just changes

@@ -111,7 +111,9 @@ export function describeChange(c: Change, r: Result, members = memberMap(r)): st
   if (c.type === 'added') return `${c.subject ?? memberName(m)} was added.`;
   if (c.type === 'removed') return `${c.subject ?? memberName(m)} was removed.`;
   if (c.type === 'label_only' && 'label' in a)
-    return `${m ? KIND[m.kind] : 'Member'} at ${m?.story ?? '?'} was renamed from ${b.label} to ${a.label}. Label only, not a physical change.`;
+    return `${c.subject ?? `${m ? KIND[m.kind] : 'Member'} at ${m?.story ?? '?'}`} was renamed from ${b.label} to ${a.label}. Label only, not a physical change.`;
+  if (c.type === 'label_only' && 'name' in a)
+    return `${c.subject ?? 'Definition'} was renamed from ${b.name} to ${a.name}. Label only, not a physical change.`;
   if (c.type === 'label_only')
     return `${memberName(m)} lists its end nodes in reverse order in the revised file. Same member, not a physical change.`;
 

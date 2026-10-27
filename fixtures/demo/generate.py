@@ -2,7 +2,7 @@
 
 Run from the repo root:
     python fixtures/demo/generate.py
-    python -m diff_engine fixtures/demo/before.e2k fixtures/demo/after.e2k -o fixtures/demo/diff.json
+    python -m diff_engine fixtures/demo/before.e2k fixtures/demo/after.e2k -o fixtures/demo/diff.json --csv fixtures/demo/changes.csv
 
 Writes before.e2k, after.e2k and seeded-changes.json next to this file. Each seeded change lists the
 elements the engine should report for it (B's label, A's for removed) and the definition table edits.

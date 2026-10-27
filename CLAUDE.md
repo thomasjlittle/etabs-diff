@@ -58,23 +58,20 @@ Work on a branch per workstream. Merge small and often. Pull main every couple o
 
 ## Commands
 
-**Both (dev):**
+**Frontend** (work in `frontend/`):
 ```
-npm run dev
-```
-Runs backend on localhost:8000 and frontend on localhost:5173 with live reload.
-
-**Backend:**
-```
-cd backend
-uv run pytest                    # Run tests
-uv run uvicorn etabs_register.api:app --reload   # Start server
-```
-
-**Frontend:**
-```
-cd frontend
 npm install
 npm run dev    # Dev server at localhost:5173
 npm run build  # Production build
+```
+
+**Backend** (work in `backend/`):
+```
+uv run pytest                    # Run tests
+uv run uvicorn etabs_register.api:app --reload   # Start server on localhost:8000
+```
+
+**Both together** (from repo root, for demos):
+```
+npm run dev    # Runs both backend and frontend with live reload
 ```

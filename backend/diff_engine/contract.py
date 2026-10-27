@@ -15,18 +15,18 @@ Subtype = Literal["beam", "column", "brace", "floor", "wall", "other", "joint"]
 
 class _Change(TypedDict):
     field: str
-    before: Any
+    before: Any  # raw e2k value (number, string, list, nested dict), genuinely untyped
     after: Any
     affects: List[Affect]
 
 
 class Change(_Change, total=False):
-    row: Optional[int]  # extension: property table row, None when outside the table
+    row: Optional[int]  # extension: change list row (1 to 17), None when outside the list
 
 
 class _ElementDiff(TypedDict):
     key: str  # geometric match key: level-relative (story, x, y, dz), tolerance-rounded; never a label
-    kind: Kind  # points: only those with a restraint, spring, mass, or load
+    kind: Kind  # points: those with a restraint, spring, mass, or load, or whose assigns changed
     subtype: Subtype
     label: str  # display only (B's label, A's when removed)
     story: str  # story the element is tied to (B's, A's when removed)
@@ -87,6 +87,9 @@ class Tables(_Tables, total=False):
     loadCases: TableDiff  # extension: terms as LOADPAT:<pattern>, ACCEL:<dir>
     combos: TableDiff  # extension: terms as LOADCASE:<case>, LOADCOMBO:<combo>
     massSource: TableDiff  # extension: terms as LOADPAT:<pattern>
+    diaphragms: TableDiff  # extension: diaphragm definitions (TYPE RIGID / SEMIRIGID)
+    functions: TableDiff  # extension: response spectrum and time history functions
+    analysisOptions: TableDiff  # extension: global analysis records by keyword, e.g. PDELTA
 
 
 class DiffOutput(TypedDict):

@@ -26,11 +26,16 @@ type Load = { status: 'loading' } | { status: 'ready'; vm: ViewModel } | { statu
 function App() {
   const [load, setLoad] = useState<Load>({ status: 'loading' })
   const [usingSample, setUsingSample] = useState(true)
+  // Bumped on every successful load so Shell remounts and drops the previous data's filter and selection.
+  const [loadId, setLoadId] = useState(0)
 
   function showSample() {
     setUsingSample(true)
     loadFixtures()
-      .then((raw) => setLoad({ status: 'ready', vm: toViewModel(raw) }))
+      .then((raw) => {
+        setLoad({ status: 'ready', vm: toViewModel(raw) })
+        setLoadId((n) => n + 1)
+      })
       .catch((err) => setLoad({ status: 'error', message: err instanceof Error ? err.message : 'Failed to load fixtures' }))
   }
 
@@ -38,6 +43,7 @@ function App() {
     setUsingSample(false)
     try {
       setLoad({ status: 'ready', vm: toViewModel(raw) })
+      setLoadId((n) => n + 1)
     } catch (err) {
       setLoad({ status: 'error', message: err instanceof Error ? err.message : 'Failed to read the comparison' })
     }
@@ -58,7 +64,7 @@ function App() {
       </header>
       {load.status === 'loading' && <p className="p-4 text-sm text-slate-500">Loading fixtures…</p>}
       {load.status === 'error' && <p role="alert" className="p-4 text-sm">Could not load the comparison: {load.message}</p>}
-      {load.status === 'ready' && <Shell vm={load.vm} />}
+      {load.status === 'ready' && <Shell key={loadId} vm={load.vm} />}
     </div>
   )
 }

@@ -111,4 +111,20 @@ describe('app', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Use sample' }))
     await screen.findByText(/model-a\.e2k → model-b\.e2k/)
   })
+
+  it('a new comparison starts with no active filter', async () => {
+    mockFetch({ ok: true, body: await backendResult() })
+    render(<App />)
+    await screen.findByText(/model-a\.e2k → model-b\.e2k/)
+    const groups = screen.getByRole('list', { name: 'Change groups' })
+    fireEvent.click(groups.querySelector('button')!)
+    expect(screen.queryByLabelText('Active filter')).not.toBeNull()
+
+    // Same data as the sample, so the group ids match and a stale filter would still apply.
+    pick('Before', before)
+    pick('After', after)
+    fireEvent.click(compareButton())
+    await screen.findByText(/tower-rev1\.e2k → tower-rev2\.\$et/)
+    expect(screen.queryByLabelText('Active filter')).toBeNull()
+  })
 })

@@ -8,6 +8,7 @@
 import type { Change, Coverage, Group, Member, Node, Result, Side, Value, Vec3 } from './keeptabsTypes';
 import { GROUPS } from './adapter';
 import { fieldCategory, tableCategory } from './categories';
+import type { ElementLoads, LoadDefinitions } from './loads';
 
 // ---- engine contract (subset this adapter reads) ----
 interface EChange { field: string; before: unknown; after: unknown; affects: string[]; kind?: 'renamed' }
@@ -15,6 +16,7 @@ interface EElement {
   key: string; kind: 'point' | 'frame' | 'area'; subtype: string; label: string; story: string;
   status: 'unchanged' | 'added' | 'removed' | 'modified' | 'affected';
   geometry: Vec3[]; changes: EChange[]; via?: string[]; movedTo?: string; movedFrom?: string;
+  loads?: ElementLoads;
 }
 interface ETable { added: string[]; removed: string[]; modified: Record<string, EChange[]> }
 export interface EngineDiff {
@@ -23,6 +25,7 @@ export interface EngineDiff {
   stories: { name: string; elevA: number | null; elevB: number | null }[];
   elements: EElement[];
   tables: Record<string, ETable>;
+  loadDefinitions?: { a: LoadDefinitions; b: LoadDefinitions };
 }
 
 /** Group for an element field (e2k keyword, any case). */
@@ -212,6 +215,13 @@ export function adaptEngine(d: EngineDiff, opts: { mock: boolean }): Result {
     changes,
     groups,
     warnings: { coverage, ambiguous: [], error: null },
+    // Applied loads as the engine writes them (0.2), for drawing a pattern, case or combo.
+    loads: {
+      elements: d.elements.filter((e) => e.loads).map((e) => ({
+        key: e.key, kind: e.kind, subtype: e.subtype, label: e.label, story: e.story, geometry: e.geometry, loads: e.loads!,
+      })),
+      definitions: d.loadDefinitions ?? null,
+    },
   };
 }
 

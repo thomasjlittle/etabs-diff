@@ -11,6 +11,8 @@ import manifest from '../demo_viewer/diffs/manifest.json';
 import { RevisionLog } from './RevisionLog';
 import { categoryOf } from './categories';
 import { UploadStart } from './UploadStart';
+import { LoadDetails, LoadsControl } from './LoadPanel';
+import type { LoadView } from './loads';
 
 // Loaded separately so tests (no WebGL) never import three.js.
 const Viewer = lazy(() => import('./Viewer'));
@@ -108,9 +110,10 @@ export async function compareModels(original: File, second: File): Promise<Resul
 }
 
 /** The review panels, sharing one selected change. The viewer is passed in so tests can leave it out. */
-export function Workspace({ result, selectedId, onSelect, viewer, story, onStory }: {
+export function Workspace({ result, selectedId, onSelect, viewer, story, onStory, loadView, loadFocus }: {
   result: Result; selectedId: string | null; onSelect: (id: string | null) => void;
   viewer?: ReactNode; story?: string | null; onStory?: (s: string | null) => void;
+  loadView?: LoadView | null; loadFocus?: string | null;
 }) {
   const props = { result, selectedId, onSelect };
   // Category picked in the summary list; the table below lists only that category's changes.
@@ -132,7 +135,10 @@ export function Workspace({ result, selectedId, onSelect, viewer, story, onStory
           {viewer ?? <div className="flex h-full items-center justify-center text-sm text-slate-400">Viewer</div>}
         </div>
       </main>
-      <aside className="min-h-0 overflow-y-auto border-l border-slate-200"><DetailPanel {...props} /></aside>
+      <aside className="min-h-0 overflow-y-auto border-l border-slate-200">
+        <DetailPanel {...props} />
+        {loadView && result.loads && <LoadDetails result={result} view={loadView} focus={loadFocus ?? null} selectedId={selectedId} />}
+      </aside>
       <section className="col-span-3 min-h-0 border-t border-slate-200"><ChangeTable {...props} category={category} onCategory={setCategory} /></section>
     </div>
   );
@@ -197,12 +203,17 @@ export default function App() {
   const [retryTick, setRetryTick] = useState(0);
   const waitingForFile = (source === 'diff-file' && !diffFile) || (source === 'e2k-upload' && !compared);
   const [page, setPage] = useState<'review' | 'log'>('review');
+  // Applied loads: off by default; the element last hovered or clicked shows its loads in the details panel.
+  const [loadView, setLoadView] = useState<LoadView | null>(null);
+  const [loadFocus, setLoadFocus] = useState<string | null>(null);
 
   // Each load starts from a clean slate: previous result, selection and story filter are dropped.
   useEffect(() => {
     let current = true;
     dispatch({ type: 'load_start' });
     setStory(null);
+    setLoadView(null); // another pair may not have the same patterns
+    setLoadFocus(null);
     if (waitingForFile) return;
     const loading = source === 'diff-file' && diffFile ? openDiffFile(diffFile)
       : source === 'e2k-upload' && compared ? compareModels(...compared)
@@ -235,7 +246,7 @@ export default function App() {
   const { load } = state;
   const viewerProps = load.status === 'ready' ? {
     result: load.result, selectedId: state.selectedChangeId, onSelect: select,
-    cameraMode, colorBy, storyFilter: story, zoomTick, resetTick,
+    cameraMode, colorBy, storyFilter: story, zoomTick, resetTick, loadView, onLoadFocus: setLoadFocus,
   } : null;
   return (
     <div className="flex h-screen flex-col bg-white text-slate-900">
@@ -288,6 +299,7 @@ export default function App() {
           disabled={!state.selectedChangeId} onClick={() => setZoomTick((t) => t + 1)}>Zoom to selected</button>
         <button className="rounded bg-slate-100 px-2 py-0.5 text-xs hover:bg-slate-200"
           onClick={() => setResetTick((t) => t + 1)}>Reset view</button>
+        {load.status === 'ready' && load.result.loads && <LoadsControl loads={load.result.loads} view={loadView} onChange={setLoadView} />}
         {load.status === 'ready' && (
           <span className="ml-auto text-xs text-slate-500">
             {load.result.meta.source.baseline} → {load.result.meta.source.revised} · {load.result.meta.units.length}, {load.result.meta.units.force}
@@ -324,6 +336,8 @@ export default function App() {
           onSelect={select}
           story={story}
           onStory={setStory}
+          loadView={loadView}
+          loadFocus={loadFocus}
           viewer={
             <Suspense fallback={<div className="p-4 text-sm text-slate-400">Loading viewer…</div>}>
               <SplitView {...viewerProps} sync={linked ? sync : null} />

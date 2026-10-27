@@ -7,8 +7,8 @@ import { describeChange, headlineCounts } from './data';
 const pair = (original: string, second: string) => loadScenario('hack-models', { original, second });
 
 describe('model pairs', () => {
-  it('the manifest lists the five hackathon models', () => {
-    expect(MODELS).toEqual(['Hack_v01a', 'Hack_v02', 'Hack_v02a', 'Hack_v03', 'Hack_v04']);
+  it('the manifest lists the eight committed hackathon models', () => {
+    expect(MODELS).toEqual(['Hack_v01', 'Hack_v01a', 'Hack_v02', 'Hack_v02a', 'Hack_v03', 'Hack_v04', 'Hack_v05', 'Hack_v06']);
   });
 
   it('every ordered pair loads and every change points at drawn members', async () => {
@@ -37,13 +37,14 @@ describe('model pairs', () => {
     ]);
   });
 
-  it('v01a -> v04: Story2 framing added, B1 removed, plus the three v02 changes', async () => {
+  it('v01a -> v04: Story2 framing added, B1 extended to B7, plus the three v02 changes', async () => {
     const r = await pair('Hack_v01a', 'Hack_v04');
-    // added: 13 frames (Story1 B5 B7 B8; Story2 C1-C4, B2-B5 B7 B8) + floor F2 · removed: B1 · modified: C1, C3, Conc16x10
-    expect(headlineCounts(r)).toEqual({ added: 14, removed: 1, modified: 3, label_only: 0 });
+    // 12 frames + floor F2 added. B1 -> B7 is a linked move, alongside C1, C3, Conc16x10 edits.
+    expect(headlineCounts(r)).toEqual({ added: 13, removed: 0, modified: 4, label_only: 0 });
+    expect(r.changes.filter((c) => c.group === 'G1' && c.member_ids.length === 2)).toHaveLength(1);
   });
 
   it('original -> second direction matters: v04 -> v01a removes what v01a -> v04 adds', async () => {
-    expect(headlineCounts(await pair('Hack_v04', 'Hack_v01a'))).toMatchObject({ added: 1, removed: 14 });
+    expect(headlineCounts(await pair('Hack_v04', 'Hack_v01a'))).toMatchObject({ added: 0, removed: 13, modified: 4 });
   });
 });

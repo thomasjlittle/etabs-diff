@@ -1,6 +1,6 @@
 """CSV change report on the seeded demo pair: every seeded change is a row, no unchanged element is.
 
-Run from the repo root: python -m unittest discover -s diff_engine/tests -t .
+Run from backend/: python -m unittest discover -s diff_engine/tests -t .
 """
 
 import csv
@@ -15,7 +15,7 @@ from diff_engine import DiffOutput, diff_files
 from diff_engine.__main__ import main
 from diff_engine.report import COLUMNS
 
-DEMO = Path(__file__).resolve().parents[2] / "fixtures" / "demo"
+DEMO = Path(__file__).resolve().parents[3] / "fixtures" / "demo"
 
 
 class ReportTest(unittest.TestCase):

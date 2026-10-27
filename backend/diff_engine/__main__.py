@@ -53,7 +53,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
 
 def _view(result: DiffOutput, output: Optional[str]) -> int:
     from .serve import run
-    # temp dir unless -o was given, never viewer/, so real model output stays out of the repo
+    # temp dir unless -o was given, never demo_viewer/, so real model output stays out of the repo
     with tempfile.TemporaryDirectory(prefix="etabs-diff-") as tmp:
         path = output or f"{tmp}/diff.json"
         with open(path, "w", encoding="utf-8") as fh:

@@ -1,6 +1,6 @@
 """--view server: serves the viewer page and the diff JSON at the printed URL, then shuts down.
 
-Run from the repo root: python -m unittest discover -s diff_engine/tests -t .
+Run from backend/: python -m unittest discover -s diff_engine/tests -t .
 """
 
 import json

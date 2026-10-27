@@ -11,7 +11,7 @@ from typing import Any, ClassVar, Dict, cast
 from diff_engine import DiffOutput, diff_files
 from diff_engine.contract import TableDiff
 
-DEMO = Path(__file__).resolve().parents[2] / "fixtures" / "demo"
+DEMO = Path(__file__).resolve().parents[3] / "fixtures" / "demo"
 
 
 class DemoPairTest(unittest.TestCase):

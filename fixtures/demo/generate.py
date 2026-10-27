@@ -2,12 +2,12 @@
 
 Run from the repo root:
     python fixtures/demo/generate.py
-    python -m diff_engine fixtures/demo/before.e2k fixtures/demo/after.e2k -o fixtures/demo/diff.json --csv fixtures/demo/changes.csv
+    PYTHONPATH=backend python -m diff_engine fixtures/demo/before.e2k fixtures/demo/after.e2k -o fixtures/demo/diff.json --csv fixtures/demo/changes.csv
 
 Writes before.e2k, after.e2k and seeded-changes.json next to this file. Each seeded change lists the
 elements the engine should report for it (B's label, A's for removed) and the definition table edits.
 Everything not listed must come out unchanged, including the relabeled batch and the within-tolerance
-nudge. diff_engine/tests/test_demo_pair.py holds the engine to exactly that list.
+nudge. backend/diff_engine/tests/test_demo_pair.py holds the engine to exactly that list.
 """
 
 import copy

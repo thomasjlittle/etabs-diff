@@ -1,6 +1,6 @@
 """Synthetic e2k checks: match tolerance, relabel invariance, units, moved members, levels, definitions.
 
-Run from the repo root: python -m unittest discover -s diff_engine/tests -t .
+Run from backend/: python -m unittest discover -s diff_engine/tests -t .
 """
 
 import unittest

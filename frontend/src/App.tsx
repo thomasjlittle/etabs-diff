@@ -12,9 +12,9 @@ export function Shell({ vm }: { vm: ViewModel }) {
   return (
     <UiProvider>
       <div className="grid min-h-0 flex-1 grid-cols-[18rem_18rem_1fr]">
-        <SummarySection groups={vm.summary} />
+        <SummarySection meta={vm.meta} summary={vm.summary} />
         <CategorySection categories={vm.categories} />
-        <ElementSection rows={vm.rows} categories={vm.categories} />
+        <ElementSection rows={vm.rows} groups={vm.summary.groups} />
       </div>
     </UiProvider>
   )
@@ -37,7 +37,7 @@ function App() {
         <h1 className="font-semibold">ETABS Model Diff</h1>
         {load.status === 'ready' && (
           <span className="text-xs text-slate-500">
-            {load.vm.meta.baseline} → {load.vm.meta.revised} · {load.vm.meta.units.length}, {load.vm.meta.units.force}
+            {load.vm.meta.baseline.file} → {load.vm.meta.revised.file} ·{load.vm.meta.units.length}, {load.vm.meta.units.force}
           </span>
         )}
       </header>

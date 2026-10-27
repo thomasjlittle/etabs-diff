@@ -18,6 +18,7 @@ With [just](https://github.com/casey/just) installed:
 | --- | --- |
 | `just` | list the recipes |
 | `just view before.e2k after.e2k` | diff two files and open the viewer on the result |
+| `just demo` | diff the bundled demo pair in `fixtures/demo/` and open the viewer on it |
 | `just example` | open the viewer on the bundled example diff |
 | `just test` | run the diff engine tests |
 

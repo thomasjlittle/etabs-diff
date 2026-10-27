@@ -26,11 +26,15 @@ TABLES = [
     ("lineSprings", "line_springs", "lineSpring"),
     ("areaSprings", "area_springs", "areaSpring"),
     ("loadSets", "load_sets", "loadSet"),
+    ("loadCases", "load_cases", "loadCase"),
+    ("combos", "combos", "combo"),
+    ("massSource", "mass_source", "massSource"),
 ]
 DEF_KIND = {
     "materials": "material", "frame_sections": "frame_section", "shell_props": "shell_prop",
     "point_springs": "spring", "line_springs": "spring", "area_springs": "spring",
     "load_patterns": "load_pattern", "load_sets": "load_set",
+    "load_cases": "load_case", "combos": "combo", "mass_source": "mass_source",
 }
 SECTION_MATERIAL_KEYS = ("MATERIAL", "FILLMATERIAL", "CONCMATERIAL", "DECKMATERIAL")
 SPRING_SOURCE = {"point": "point_springs", "frame": "line_springs", "area": "area_springs"}

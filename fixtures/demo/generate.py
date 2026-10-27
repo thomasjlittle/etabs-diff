@@ -69,6 +69,15 @@ SHELL_PROPS = {
     "RoofSlab": [{"PROPTYPE": "Slab", "MATERIAL": "LW3000", "MODELINGTYPE": "Membrane", "SLABTYPE": "Slab",
                   "SLABTHICKNESS": 5.25}],
 }
+# Linear static cases: pattern -> scale factor. Live double counts Lr until the seeded fix.
+LOAD_CASES = {"Dead": {"Dead": 1, "SDL": 1}, "Live": {"Live": 1, "Lr": 1}, "Lr": {"Lr": 1}}
+# Combos: (type, [(LOADCASE or LOADCOMBO, name, factor)]). 1.2D+1.6L+0.5Lr is missing its Lr term until seeded.
+COMBOS = {
+    "1.4D": ("Linear Add", [("LOADCASE", "Dead", 1.4)]),
+    "1.2D+1.6L+0.5Lr": ("Linear Add", [("LOADCASE", "Dead", 1.2), ("LOADCASE", "Live", 1.6)]),
+    "Gravity": ("Envelope", [("LOADCOMBO", "1.4D", 1), ("LOADCOMBO", "1.2D+1.6L+0.5Lr", 1)]),
+}
+MASS_SOURCE = {"Dead": 1, "SDL": 1}  # pattern -> factor, for MsSrc1
 
 
 def pid(i, j):
@@ -90,6 +99,9 @@ def base_model():
         "materials": copy.deepcopy(MATERIALS),
         "frame_sections": copy.deepcopy(FRAME_SECTIONS),
         "shell_props": copy.deepcopy(SHELL_PROPS),
+        "load_cases": copy.deepcopy(LOAD_CASES),
+        "combos": copy.deepcopy(COMBOS),
+        "mass_source": dict(MASS_SOURCE),
     }
     for j, y in enumerate(YS):
         for i, x in enumerate(XS):
@@ -293,6 +305,16 @@ def seed(before):
     m["area_loads"][(f, "L3")] = [area_load("SDL", 15), area_load("Live", 125)]
     add(9, f"Floor {f} at L3 live load 50 to 125 psf (storage)", [element("modified", f, "L3", ["loads:Live"])])
 
+    del m["load_cases"]["Live"]["Lr"]
+    add(9, "Load case Live no longer double counts roof live Lr (it has its own case)",
+        tables={"loadCases": {"Live": ["LOADPAT:Lr"]}})
+
+    m["combos"]["1.2D+1.6L+0.5Lr"][1].append(("LOADCASE", "Lr", 0.5))
+    add(9, "Combo 1.2D+1.6L+0.5Lr gets its missing 0.5 Lr term", tables={"combos": {"1.2D+1.6L+0.5Lr": ["LOADCASE:Lr"]}})
+
+    m["mass_source"]["Live"] = 0.25
+    add(10, "Mass source MsSrc1 adds 25% of Live", tables={"massSource": {"MsSrc1": ["LOADPAT:Live"]}})
+
     b = frame_at(m, "BEAM", mid(2, 0), mid(2, 1))
     reroute(m, b, "L6", "B45", 0.05)
     controls.append(f"Infill beam {b} at L6 redrawn as B45 0.05 in along X, inside the 0.1 in merge tolerance")
@@ -394,24 +416,22 @@ def render(m, saved):
         out += ["", f"$ {title}"]
         out += [f'  {kw}  "{label}"  "{story}"  {kv(load)}' for (label, story), loads in by_story(m, name)
                 for load in loads]
+    out += ["", "$ LOAD CASES"]
+    for name, pats in m["load_cases"].items():
+        out.append(f'  LOADCASE "{name}"  TYPE  "Linear Static"  INITCOND  "PRESET"')
+        out += [f'  LOADCASE "{name}"  LOADPAT  "{p}"  SF  {fmt(sf)}' for p, sf in pats.items()]
+    out += ["", "$ LOAD COMBINATIONS"]
+    for name, (kind, terms) in m["combos"].items():
+        out.append(f'  COMBO "{name}"  TYPE "{kind}"')
+        out += [f'  COMBO "{name}"  {key} "{target}"  SF {fmt(sf)}' for key, target, sf in terms]
     out += [
-        "", "$ LOAD CASES",
-        '  LOADCASE "Dead"  TYPE  "Linear Static"  INITCOND  "PRESET"',
-        '  LOADCASE "Dead"  LOADPAT  "Dead"  SF  1',
-        '  LOADCASE "Dead"  LOADPAT  "SDL"  SF  1',
-        '  LOADCASE "Live"  TYPE  "Linear Static"  INITCOND  "PRESET"',
-        '  LOADCASE "Live"  LOADPAT  "Live"  SF  1',
-        '  LOADCASE "Live"  LOADPAT  "Lr"  SF  1',
-        "", "$ LOAD COMBINATIONS",
-        '  COMBO "1.2D+1.6L"  TYPE "Linear Add"',
-        '  COMBO "1.2D+1.6L"  LOADCASE "Dead"  SF 1.2',
-        '  COMBO "1.2D+1.6L"  LOADCASE "Live"  SF 1.6',
         "", "$ MASS SOURCE",
-        '  MASSSOURCE  "MsSrc1"  INCLUDEELEMENTS "Yes"  INCLUDEADDEDMASS "Yes"  INCLUDELOADS "Yes"  '
-        'INCLUDELATERALMASS "Yes"  INCLUDEVERTICALMASS "No"  LUMPMASS "Yes"  DEFAULT "Yes"',
-        '  MASSSOURCELOAD  "MsSrc1"  "SDL"  1',
-        "", "  END OF MODEL FILE", "",
+        '  MASSSOURCE  "MsSrc1"    INCLUDEELEMENTS "Yes"    INCLUDEADDEDMASS "Yes"    INCLUDELOADS "Yes"    '
+        'INCLUDEMOVE "No"    INCLUDELATERALMASS "Yes"    INCLUDEVERTICALMASS "No"    LUMPATSTORIES "Yes"    '
+        'ISDEFAULT "Yes"',
     ]
+    out += [f'  MASSSOURCELOAD  "MsSrc1"  "{p}"  {fmt(f)}' for p, f in m["mass_source"].items()]
+    out += ["", "  END OF MODEL FILE", ""]
     return "\r\n".join(out)
 
 

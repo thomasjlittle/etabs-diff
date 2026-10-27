@@ -84,6 +84,9 @@ class Tables(_Tables, total=False):
     lineSprings: TableDiff  # extension
     areaSprings: TableDiff  # extension
     loadSets: TableDiff  # extension
+    loadCases: TableDiff  # extension: terms as LOADPAT:<pattern>, ACCEL:<dir>
+    combos: TableDiff  # extension: terms as LOADCASE:<case>, LOADCOMBO:<combo>
+    massSource: TableDiff  # extension: terms as LOADPAT:<pattern>
 
 
 class DiffOutput(TypedDict):

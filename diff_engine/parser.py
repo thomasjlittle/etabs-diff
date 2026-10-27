@@ -26,7 +26,12 @@ DEFINITIONS = {
     "LINESPRING": "line_springs",
     "AREASPRING": "area_springs",
     "LOADPATTERN": "load_patterns",
+    "MASSSOURCE": "mass_source",
 }
+# Definitions where each repeated line adds one term (a load and its factor) instead of more keys.
+# A term line is NAME TERMKEY "target" [SF x ...]; it is stored under "TERMKEY:target".
+TERMED = {"LOADCASE": "load_cases", "COMBO": "combos"}
+TERM_KEYS = {"LOADPAT", "ACCEL", "LOADCASE", "LOADCOMBO"}
 
 
 def tokenize(line):
@@ -80,6 +85,7 @@ def parse_text(text):
         **{name: {} for name in ASSIGNS.values()},
         **{name: defaultdict(list) for name in LOADS.values()},
         **{name: {} for name in DEFINITIONS.values()},
+        **{name: {} for name in TERMED.values()},
         "load_sets": {},
         "skipped": defaultdict(int),
     }
@@ -155,8 +161,27 @@ def _record(model, kw, rest, fac):
     elif kw in DEFINITIONS:
         target = model[DEFINITIONS[kw]].setdefault(rest[0][0], {})
         key_values(rest[1:], kw, fac, target)
+    elif kw in TERMED:
+        target = model[TERMED[kw]].setdefault(rest[0][0], {})
+        first = str(rest[1][0]).upper()
+        if first in TERM_KEYS:
+            kv = key_values(rest[3:], f"{kw}:{first}", fac)
+            target[f"{first}:{rest[2][0]}"] = kv["SF"] if kv.keys() == {"SF"} else kv
+        else:
+            key_values(_joint_ref(rest[1:]), kw, fac, target)
+    elif kw == "MASSSOURCELOAD":
+        # Positional: MASSSOURCELOAD "source" "pattern" factor
+        model["mass_source"].setdefault(rest[0][0], {})[f"LOADPAT:{rest[1][0]}"] = rest[2][0]
     elif kw == "SHELLUNIFORMLOADSET":
         kv = key_values(rest[1:], kw, fac)
         model["load_sets"].setdefault(rest[0][0], {})[kv["LOADPAT"]] = kv["VALUE"]
     else:
         model["skipped"][kw] += 1
+
+
+def _joint_ref(tokens):
+    """Pushover cases write JOINT "label" "story"; fold the pair into one "label@story" value."""
+    for i, (value, quoted) in enumerate(tokens[:-2]):
+        if value == "JOINT" and not quoted:
+            return tokens[: i + 1] + [(f"{tokens[i + 1][0]}@{tokens[i + 2][0]}", True)] + tokens[i + 3 :]
+    return tokens

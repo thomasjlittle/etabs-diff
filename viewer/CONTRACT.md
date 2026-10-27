@@ -75,13 +75,15 @@ Not every joint. Only points that carry something of their own: a support (restr
 
 ## `tables`
 
-Definitions that aren't elements in space: `stories`, `materials`, `frameSections`, `shellSections`, `pointSprings`, `loadPatterns`. Each one is:
+Definitions that aren't elements in space: `stories`, `materials`, `frameSections`, `shellSections`, `pointSprings`, `loadPatterns`, plus `loadCases`, `combos` and `massSource` when the engine compares them. Each one is:
 
 - `added`: names only in B.
 - `removed`: names only in A.
 - `modified`: an object from name to its list of `changes` (same shape as above).
 
 These are the upstream causes behind `affected` elements. The viewer lists them in its side panel.
+
+Load cases, combos and the mass source are lists of load terms, so each term is its own change: `field` is `LOADPAT:Live` (a pattern in a case or the mass source), `LOADCASE:Dead` or `LOADCOMBO:1.4D` (a term in a combo), and `before` / `after` is its scale factor, `null` when the term is missing on that side. They don't make any element `affected`.
 
 ## `summary`
 

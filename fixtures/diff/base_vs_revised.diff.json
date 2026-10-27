@@ -1,0 +1,1572 @@
+{
+  "schema_version": 1,
+  "before": {
+    "file": "base.e2k",
+    "program": "ETABS",
+    "program_version": "20.3.0",
+    "file_units": {
+      "force": "KIP",
+      "length": "FT",
+      "temperature": "F"
+    }
+  },
+  "after": {
+    "file": "revised.e2k",
+    "program": "ETABS",
+    "program_version": "20.3.0",
+    "file_units": {
+      "force": "KIP",
+      "length": "FT",
+      "temperature": "F"
+    }
+  },
+  "units": {
+    "force": "KIP",
+    "length": "FT",
+    "temperature": "F"
+  },
+  "tolerances": {
+    "match": 0.01,
+    "rel": 1e-05,
+    "abs": 1e-09
+  },
+  "stories": {
+    "before": [
+      {
+        "name": "BASE",
+        "elev": 0.0,
+        "height": null
+      },
+      {
+        "name": "L2",
+        "elev": 14.0,
+        "height": 14.0
+      },
+      {
+        "name": "L3",
+        "elev": 26.0,
+        "height": 12.0
+      },
+      {
+        "name": "ROOF",
+        "elev": 38.0,
+        "height": 12.0
+      }
+    ],
+    "after": [
+      {
+        "name": "BASE",
+        "elev": 0.0,
+        "height": null
+      },
+      {
+        "name": "L2",
+        "elev": 14.0,
+        "height": 14.0
+      },
+      {
+        "name": "L3",
+        "elev": 26.0,
+        "height": 12.0
+      },
+      {
+        "name": "ROOF",
+        "elev": 38.0,
+        "height": 12.0
+      }
+    ]
+  },
+  "summary": {
+    "point": {
+      "unchanged": 26,
+      "added": 4,
+      "removed": 2,
+      "modified": 0,
+      "relabeled": 0
+    },
+    "frame": {
+      "unchanged": 41,
+      "added": 2,
+      "removed": 2,
+      "modified": 1,
+      "relabeled": 3
+    },
+    "area": {
+      "unchanged": 6,
+      "added": 0,
+      "removed": 0,
+      "modified": 1,
+      "relabeled": 0
+    },
+    "definitions": {
+      "added": 1,
+      "removed": 0,
+      "modified": 1
+    }
+  },
+  "objects": [
+    {
+      "kind": "area",
+      "status": "unchanged",
+      "type": "FLOOR",
+      "before_id": "F1@L2",
+      "after_id": "F1@L2",
+      "label": "F1",
+      "story": "L2",
+      "coords": [
+        [0.0, 0.0, 14.0],
+        [25.0, 0.0, 14.0],
+        [25.0, 30.0, 14.0],
+        [0.0, 30.0, 14.0]
+      ],
+      "section": "SLAB8",
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "area",
+      "status": "unchanged",
+      "type": "FLOOR",
+      "before_id": "F1@L3",
+      "after_id": "F1@L3",
+      "label": "F1",
+      "story": "L3",
+      "coords": [
+        [0.0, 0.0, 26.0],
+        [25.0, 0.0, 26.0],
+        [25.0, 30.0, 26.0],
+        [0.0, 30.0, 26.0]
+      ],
+      "section": "SLAB8",
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "area",
+      "status": "unchanged",
+      "type": "FLOOR",
+      "before_id": "F1@ROOF",
+      "after_id": "F1@ROOF",
+      "label": "F1",
+      "story": "ROOF",
+      "coords": [
+        [0.0, 0.0, 38.0],
+        [25.0, 0.0, 38.0],
+        [25.0, 30.0, 38.0],
+        [0.0, 30.0, 38.0]
+      ],
+      "section": "SLAB8",
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "area",
+      "status": "modified",
+      "type": "FLOOR",
+      "before_id": "F2@L2",
+      "after_id": "F2@L2",
+      "label": "F2",
+      "story": "L2",
+      "coords": [
+        [25.0, 0.0, 14.0],
+        [50.0, 0.0, 14.0],
+        [50.0, 30.0, 14.0],
+        [25.0, 30.0, 14.0]
+      ],
+      "section": "SLAB8",
+      "offset": 0.0,
+      "changes": [
+        {
+          "field": "loads.LIVE",
+          "before": [
+            {
+              "TYPE": "UNIFF",
+              "DIR": "GRAV",
+              "FVAL": 0.05
+            }
+          ],
+          "after": [
+            {
+              "TYPE": "UNIFF",
+              "DIR": "GRAV",
+              "FVAL": 0.125
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "area",
+      "status": "unchanged",
+      "type": "FLOOR",
+      "before_id": "F2@L3",
+      "after_id": "F2@L3",
+      "label": "F2",
+      "story": "L3",
+      "coords": [
+        [25.0, 0.0, 26.0],
+        [50.0, 0.0, 26.0],
+        [50.0, 30.0, 26.0],
+        [25.0, 30.0, 26.0]
+      ],
+      "section": "SLAB8",
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "area",
+      "status": "unchanged",
+      "type": "FLOOR",
+      "before_id": "F2@ROOF",
+      "after_id": "F2@ROOF",
+      "label": "F2",
+      "story": "ROOF",
+      "coords": [
+        [25.0, 0.0, 38.0],
+        [50.0, 0.0, 38.0],
+        [50.0, 30.0, 38.0],
+        [25.0, 30.0, 38.0]
+      ],
+      "section": "SLAB8",
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "area",
+      "status": "unchanged",
+      "type": "PANEL",
+      "before_id": "W1@L2",
+      "after_id": "W1@L2",
+      "label": "W1",
+      "story": "L2",
+      "coords": [
+        [50.0, 0.0, 0.0],
+        [50.0, 30.0, 0.0],
+        [50.0, 30.0, 14.0],
+        [50.0, 0.0, 14.0]
+      ],
+      "section": "WALL12",
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "frame",
+      "status": "added",
+      "type": "BEAM",
+      "before_id": null,
+      "after_id": "B10@L2",
+      "label": "B10",
+      "story": "L2",
+      "coords": [
+        [25.0, 22.0, 14.0],
+        [50.0, 22.0, 14.0]
+      ],
+      "section": "W18X35",
+      "offset": null,
+      "changes": []
+    },
+    {
+      "kind": "frame",
+      "status": "removed",
+      "type": "BEAM",
+      "before_id": "B10@L2",
+      "after_id": null,
+      "label": "B10",
+      "story": "L2",
+      "coords": [
+        [25.0, 20.0, 14.0],
+        [50.0, 20.0, 14.0]
+      ],
+      "section": "W18X35",
+      "offset": null,
+      "changes": []
+    },
+    {
+      "kind": "frame",
+      "status": "unchanged",
+      "type": "BEAM",
+      "before_id": "B1@L2",
+      "after_id": "B1@L2",
+      "label": "B1",
+      "story": "L2",
+      "coords": [
+        [0.0, 0.0, 14.0],
+        [25.0, 0.0, 14.0]
+      ],
+      "section": "W18X35",
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "frame",
+      "status": "unchanged",
+      "type": "BEAM",
+      "before_id": "B1@L3",
+      "after_id": "B1@L3",
+      "label": "B1",
+      "story": "L3",
+      "coords": [
+        [0.0, 0.0, 26.0],
+        [25.0, 0.0, 26.0]
+      ],
+      "section": "W18X35",
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "frame",
+      "status": "unchanged",
+      "type": "BEAM",
+      "before_id": "B1@ROOF",
+      "after_id": "B1@ROOF",
+      "label": "B1",
+      "story": "ROOF",
+      "coords": [
+        [0.0, 0.0, 38.0],
+        [25.0, 0.0, 38.0]
+      ],
+      "section": "W18X35",
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "frame",
+      "status": "unchanged",
+      "type": "BEAM",
+      "before_id": "B2@L2",
+      "after_id": "B2@L2",
+      "label": "B2",
+      "story": "L2",
+      "coords": [
+        [25.0, 0.0, 14.0],
+        [50.0, 0.0, 14.0]
+      ],
+      "section": "W18X35",
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "frame",
+      "status": "modified",
+      "type": "BEAM",
+      "before_id": "B2@L3",
+      "after_id": "B2@L3",
+      "label": "B2",
+      "story": "L3",
+      "coords": [
+        [25.0, 0.0, 26.0],
+        [50.0, 0.0, 26.0]
+      ],
+      "section": "W24X55",
+      "offset": 0.0,
+      "changes": [
+        {
+          "field": "assigns.SECTION",
+          "before": "W18X35",
+          "after": "W24X55"
+        }
+      ]
+    },
+    {
+      "kind": "frame",
+      "status": "unchanged",
+      "type": "BEAM",
+      "before_id": "B2@ROOF",
+      "after_id": "B2@ROOF",
+      "label": "B2",
+      "story": "ROOF",
+      "coords": [
+        [25.0, 0.0, 38.0],
+        [50.0, 0.0, 38.0]
+      ],
+      "section": "W18X35",
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "frame",
+      "status": "unchanged",
+      "type": "BEAM",
+      "before_id": "B3@L2",
+      "after_id": "B3@L2",
+      "label": "B3",
+      "story": "L2",
+      "coords": [
+        [0.0, 30.0, 14.0],
+        [25.0, 30.0, 14.0]
+      ],
+      "section": "W18X35",
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "frame",
+      "status": "unchanged",
+      "type": "BEAM",
+      "before_id": "B3@L3",
+      "after_id": "B3@L3",
+      "label": "B3",
+      "story": "L3",
+      "coords": [
+        [0.0, 30.0, 26.0],
+        [25.0, 30.0, 26.0]
+      ],
+      "section": "W18X35",
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "frame",
+      "status": "unchanged",
+      "type": "BEAM",
+      "before_id": "B3@ROOF",
+      "after_id": "B3@ROOF",
+      "label": "B3",
+      "story": "ROOF",
+      "coords": [
+        [0.0, 30.0, 38.0],
+        [25.0, 30.0, 38.0]
+      ],
+      "section": "W18X35",
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "frame",
+      "status": "unchanged",
+      "type": "BEAM",
+      "before_id": "B4@L2",
+      "after_id": "B4@L2",
+      "label": "B4",
+      "story": "L2",
+      "coords": [
+        [25.0, 30.0, 14.0],
+        [50.0, 30.0, 14.0]
+      ],
+      "section": "W18X35",
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "frame",
+      "status": "unchanged",
+      "type": "BEAM",
+      "before_id": "B4@L3",
+      "after_id": "B4@L3",
+      "label": "B4",
+      "story": "L3",
+      "coords": [
+        [25.0, 30.0, 26.0],
+        [50.0, 30.0, 26.0]
+      ],
+      "section": "W18X35",
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "frame",
+      "status": "unchanged",
+      "type": "BEAM",
+      "before_id": "B4@ROOF",
+      "after_id": "B4@ROOF",
+      "label": "B4",
+      "story": "ROOF",
+      "coords": [
+        [25.0, 30.0, 38.0],
+        [50.0, 30.0, 38.0]
+      ],
+      "section": "W18X35",
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "frame",
+      "status": "unchanged",
+      "type": "BEAM",
+      "before_id": "B5@L2",
+      "after_id": "B5@L2",
+      "label": "B5",
+      "story": "L2",
+      "coords": [
+        [0.0, 0.0, 14.0],
+        [0.0, 30.0, 14.0]
+      ],
+      "section": "W21X44",
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "frame",
+      "status": "unchanged",
+      "type": "BEAM",
+      "before_id": "B5@L3",
+      "after_id": "B5@L3",
+      "label": "B5",
+      "story": "L3",
+      "coords": [
+        [0.0, 0.0, 26.0],
+        [0.0, 30.0, 26.0]
+      ],
+      "section": "W21X44",
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "frame",
+      "status": "unchanged",
+      "type": "BEAM",
+      "before_id": "B5@ROOF",
+      "after_id": "B5@ROOF",
+      "label": "B5",
+      "story": "ROOF",
+      "coords": [
+        [0.0, 0.0, 38.0],
+        [0.0, 30.0, 38.0]
+      ],
+      "section": "W21X44",
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "frame",
+      "status": "unchanged",
+      "type": "BEAM",
+      "before_id": "B6@L2",
+      "after_id": "B6@L2",
+      "label": "B6",
+      "story": "L2",
+      "coords": [
+        [25.0, 0.0, 14.0],
+        [25.0, 30.0, 14.0]
+      ],
+      "section": "W21X44",
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "frame",
+      "status": "unchanged",
+      "type": "BEAM",
+      "before_id": "B6@L3",
+      "after_id": "B6@L3",
+      "label": "B6",
+      "story": "L3",
+      "coords": [
+        [25.0, 0.0, 26.0],
+        [25.0, 30.0, 26.0]
+      ],
+      "section": "W21X44",
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "frame",
+      "status": "unchanged",
+      "type": "BEAM",
+      "before_id": "B6@ROOF",
+      "after_id": "B6@ROOF",
+      "label": "B6",
+      "story": "ROOF",
+      "coords": [
+        [25.0, 0.0, 38.0],
+        [25.0, 30.0, 38.0]
+      ],
+      "section": "W21X44",
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "frame",
+      "status": "unchanged",
+      "type": "BEAM",
+      "before_id": "B7@L2",
+      "after_id": "B7@L2",
+      "label": "B7",
+      "story": "L2",
+      "coords": [
+        [50.0, 0.0, 14.0],
+        [50.0, 30.0, 14.0]
+      ],
+      "section": "W21X44",
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "frame",
+      "status": "unchanged",
+      "type": "BEAM",
+      "before_id": "B7@L3",
+      "after_id": "B7@L3",
+      "label": "B7",
+      "story": "L3",
+      "coords": [
+        [50.0, 0.0, 26.0],
+        [50.0, 30.0, 26.0]
+      ],
+      "section": "W21X44",
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "frame",
+      "status": "unchanged",
+      "type": "BEAM",
+      "before_id": "B7@ROOF",
+      "after_id": "B7@ROOF",
+      "label": "B7",
+      "story": "ROOF",
+      "coords": [
+        [50.0, 0.0, 38.0],
+        [50.0, 30.0, 38.0]
+      ],
+      "section": "W21X44",
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "frame",
+      "status": "added",
+      "type": "BEAM",
+      "before_id": null,
+      "after_id": "B8@L3",
+      "label": "B8",
+      "story": "L3",
+      "coords": [
+        [12.5, 0.0, 26.0],
+        [12.5, 30.0, 26.0]
+      ],
+      "section": "W18X35",
+      "offset": null,
+      "changes": []
+    },
+    {
+      "kind": "frame",
+      "status": "unchanged",
+      "type": "BEAM",
+      "before_id": "B9@L2",
+      "after_id": "B9@L2",
+      "label": "B9",
+      "story": "L2",
+      "coords": [
+        [0.0, 10.004, 14.0],
+        [25.0, 10.004, 14.0]
+      ],
+      "section": "W18X35",
+      "offset": 0.004,
+      "changes": []
+    },
+    {
+      "kind": "frame",
+      "status": "unchanged",
+      "type": "COLUMN",
+      "before_id": "C1@L2",
+      "after_id": "C1@L2",
+      "label": "C1",
+      "story": "L2",
+      "coords": [
+        [0.0, 0.0, 0.0],
+        [0.0, 0.0, 14.0]
+      ],
+      "section": "W14X90",
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "frame",
+      "status": "unchanged",
+      "type": "COLUMN",
+      "before_id": "C1@L3",
+      "after_id": "C1@L3",
+      "label": "C1",
+      "story": "L3",
+      "coords": [
+        [0.0, 0.0, 14.0],
+        [0.0, 0.0, 26.0]
+      ],
+      "section": "W14X90",
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "frame",
+      "status": "unchanged",
+      "type": "COLUMN",
+      "before_id": "C1@ROOF",
+      "after_id": "C1@ROOF",
+      "label": "C1",
+      "story": "ROOF",
+      "coords": [
+        [0.0, 0.0, 26.0],
+        [0.0, 0.0, 38.0]
+      ],
+      "section": "W14X68",
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "frame",
+      "status": "unchanged",
+      "type": "COLUMN",
+      "before_id": "C2@L2",
+      "after_id": "C2@L2",
+      "label": "C2",
+      "story": "L2",
+      "coords": [
+        [25.0, 0.0, 0.0],
+        [25.0, 0.0, 14.0]
+      ],
+      "section": "W14X90",
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "frame",
+      "status": "unchanged",
+      "type": "COLUMN",
+      "before_id": "C2@L3",
+      "after_id": "C2@L3",
+      "label": "C2",
+      "story": "L3",
+      "coords": [
+        [25.0, 0.0, 14.0],
+        [25.0, 0.0, 26.0]
+      ],
+      "section": "W14X90",
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "frame",
+      "status": "unchanged",
+      "type": "COLUMN",
+      "before_id": "C2@ROOF",
+      "after_id": "C2@ROOF",
+      "label": "C2",
+      "story": "ROOF",
+      "coords": [
+        [25.0, 0.0, 26.0],
+        [25.0, 0.0, 38.0]
+      ],
+      "section": "W14X68",
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "frame",
+      "status": "relabeled",
+      "type": "COLUMN",
+      "before_id": "C3@L2",
+      "after_id": "C30@L2",
+      "label": "C30",
+      "story": "L2",
+      "coords": [
+        [50.0, 0.0, 0.0],
+        [50.0, 0.0, 14.0]
+      ],
+      "section": "W14X90",
+      "offset": 0.0,
+      "changes": [
+        {
+          "field": "label",
+          "before": "C3",
+          "after": "C30"
+        }
+      ]
+    },
+    {
+      "kind": "frame",
+      "status": "relabeled",
+      "type": "COLUMN",
+      "before_id": "C3@L3",
+      "after_id": "C30@L3",
+      "label": "C30",
+      "story": "L3",
+      "coords": [
+        [50.0, 0.0, 14.0],
+        [50.0, 0.0, 26.0]
+      ],
+      "section": "W14X90",
+      "offset": 0.0,
+      "changes": [
+        {
+          "field": "label",
+          "before": "C3",
+          "after": "C30"
+        }
+      ]
+    },
+    {
+      "kind": "frame",
+      "status": "relabeled",
+      "type": "COLUMN",
+      "before_id": "C3@ROOF",
+      "after_id": "C30@ROOF",
+      "label": "C30",
+      "story": "ROOF",
+      "coords": [
+        [50.0, 0.0, 26.0],
+        [50.0, 0.0, 38.0]
+      ],
+      "section": "W14X68",
+      "offset": 0.0,
+      "changes": [
+        {
+          "field": "label",
+          "before": "C3",
+          "after": "C30"
+        }
+      ]
+    },
+    {
+      "kind": "frame",
+      "status": "unchanged",
+      "type": "COLUMN",
+      "before_id": "C4@L2",
+      "after_id": "C4@L2",
+      "label": "C4",
+      "story": "L2",
+      "coords": [
+        [0.0, 30.0, 0.0],
+        [0.0, 30.0, 14.0]
+      ],
+      "section": "W14X90",
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "frame",
+      "status": "unchanged",
+      "type": "COLUMN",
+      "before_id": "C4@L3",
+      "after_id": "C4@L3",
+      "label": "C4",
+      "story": "L3",
+      "coords": [
+        [0.0, 30.0, 14.0],
+        [0.0, 30.0, 26.0]
+      ],
+      "section": "W14X90",
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "frame",
+      "status": "unchanged",
+      "type": "COLUMN",
+      "before_id": "C4@ROOF",
+      "after_id": "C4@ROOF",
+      "label": "C4",
+      "story": "ROOF",
+      "coords": [
+        [0.0, 30.0, 26.0],
+        [0.0, 30.0, 38.0]
+      ],
+      "section": "W14X68",
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "frame",
+      "status": "unchanged",
+      "type": "COLUMN",
+      "before_id": "C5@L2",
+      "after_id": "C5@L2",
+      "label": "C5",
+      "story": "L2",
+      "coords": [
+        [25.0, 30.0, 0.0],
+        [25.0, 30.0, 14.0]
+      ],
+      "section": "W14X90",
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "frame",
+      "status": "unchanged",
+      "type": "COLUMN",
+      "before_id": "C5@L3",
+      "after_id": "C5@L3",
+      "label": "C5",
+      "story": "L3",
+      "coords": [
+        [25.0, 30.0, 14.0],
+        [25.0, 30.0, 26.0]
+      ],
+      "section": "W14X90",
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "frame",
+      "status": "unchanged",
+      "type": "COLUMN",
+      "before_id": "C5@ROOF",
+      "after_id": "C5@ROOF",
+      "label": "C5",
+      "story": "ROOF",
+      "coords": [
+        [25.0, 30.0, 26.0],
+        [25.0, 30.0, 38.0]
+      ],
+      "section": "W14X68",
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "frame",
+      "status": "unchanged",
+      "type": "COLUMN",
+      "before_id": "C6@L2",
+      "after_id": "C6@L2",
+      "label": "C6",
+      "story": "L2",
+      "coords": [
+        [50.0, 30.0, 0.0],
+        [50.0, 30.0, 14.0]
+      ],
+      "section": "W14X90",
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "frame",
+      "status": "unchanged",
+      "type": "COLUMN",
+      "before_id": "C6@L3",
+      "after_id": "C6@L3",
+      "label": "C6",
+      "story": "L3",
+      "coords": [
+        [50.0, 30.0, 14.0],
+        [50.0, 30.0, 26.0]
+      ],
+      "section": "W14X90",
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "frame",
+      "status": "unchanged",
+      "type": "COLUMN",
+      "before_id": "C6@ROOF",
+      "after_id": "C6@ROOF",
+      "label": "C6",
+      "story": "ROOF",
+      "coords": [
+        [50.0, 30.0, 26.0],
+        [50.0, 30.0, 38.0]
+      ],
+      "section": "W14X68",
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "frame",
+      "status": "unchanged",
+      "type": "BRACE",
+      "before_id": "D1@L2",
+      "after_id": "D1@L2",
+      "label": "D1",
+      "story": "L2",
+      "coords": [
+        [0.0, 0.0, 0.0],
+        [25.0, 0.0, 14.0]
+      ],
+      "section": "HSS6X6X3/8",
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "frame",
+      "status": "unchanged",
+      "type": "BRACE",
+      "before_id": "D1@L3",
+      "after_id": "D1@L3",
+      "label": "D1",
+      "story": "L3",
+      "coords": [
+        [0.0, 0.0, 14.0],
+        [25.0, 0.0, 26.0]
+      ],
+      "section": "HSS6X6X3/8",
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "frame",
+      "status": "unchanged",
+      "type": "BRACE",
+      "before_id": "D1@ROOF",
+      "after_id": "D1@ROOF",
+      "label": "D1",
+      "story": "ROOF",
+      "coords": [
+        [0.0, 0.0, 26.0],
+        [25.0, 0.0, 38.0]
+      ],
+      "section": "HSS6X6X3/8",
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "frame",
+      "status": "unchanged",
+      "type": "BRACE",
+      "before_id": "D2@L2",
+      "after_id": "D2@L2",
+      "label": "D2",
+      "story": "L2",
+      "coords": [
+        [50.0, 0.0, 0.0],
+        [25.0, 0.0, 14.0]
+      ],
+      "section": "HSS6X6X3/8",
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "frame",
+      "status": "unchanged",
+      "type": "BRACE",
+      "before_id": "D2@L3",
+      "after_id": "D2@L3",
+      "label": "D2",
+      "story": "L3",
+      "coords": [
+        [50.0, 0.0, 14.0],
+        [25.0, 0.0, 26.0]
+      ],
+      "section": "HSS6X6X3/8",
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "frame",
+      "status": "removed",
+      "type": "BRACE",
+      "before_id": "D2@ROOF",
+      "after_id": null,
+      "label": "D2",
+      "story": "ROOF",
+      "coords": [
+        [50.0, 0.0, 26.0],
+        [25.0, 0.0, 38.0]
+      ],
+      "section": "HSS6X6X3/8",
+      "offset": null,
+      "changes": []
+    },
+    {
+      "kind": "point",
+      "status": "unchanged",
+      "type": null,
+      "before_id": "10@L2",
+      "after_id": "10@L2",
+      "label": "10",
+      "story": "L2",
+      "coords": [
+        [25.0, 10.004, 14.0]
+      ],
+      "section": null,
+      "offset": 0.004,
+      "changes": []
+    },
+    {
+      "kind": "point",
+      "status": "added",
+      "type": null,
+      "before_id": null,
+      "after_id": "11@L2",
+      "label": "11",
+      "story": "L2",
+      "coords": [
+        [25.0, 22.0, 14.0]
+      ],
+      "section": null,
+      "offset": null,
+      "changes": []
+    },
+    {
+      "kind": "point",
+      "status": "removed",
+      "type": null,
+      "before_id": "11@L2",
+      "after_id": null,
+      "label": "11",
+      "story": "L2",
+      "coords": [
+        [25.0, 20.0, 14.0]
+      ],
+      "section": null,
+      "offset": null,
+      "changes": []
+    },
+    {
+      "kind": "point",
+      "status": "added",
+      "type": null,
+      "before_id": null,
+      "after_id": "12@L2",
+      "label": "12",
+      "story": "L2",
+      "coords": [
+        [50.0, 22.0, 14.0]
+      ],
+      "section": null,
+      "offset": null,
+      "changes": []
+    },
+    {
+      "kind": "point",
+      "status": "removed",
+      "type": null,
+      "before_id": "12@L2",
+      "after_id": null,
+      "label": "12",
+      "story": "L2",
+      "coords": [
+        [50.0, 20.0, 14.0]
+      ],
+      "section": null,
+      "offset": null,
+      "changes": []
+    },
+    {
+      "kind": "point",
+      "status": "unchanged",
+      "type": null,
+      "before_id": "1@BASE",
+      "after_id": "1@BASE",
+      "label": "1",
+      "story": "BASE",
+      "coords": [
+        [0.0, 0.0, 0.0]
+      ],
+      "section": null,
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "point",
+      "status": "unchanged",
+      "type": null,
+      "before_id": "1@L2",
+      "after_id": "1@L2",
+      "label": "1",
+      "story": "L2",
+      "coords": [
+        [0.0, 0.0, 14.0]
+      ],
+      "section": null,
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "point",
+      "status": "unchanged",
+      "type": null,
+      "before_id": "1@L3",
+      "after_id": "1@L3",
+      "label": "1",
+      "story": "L3",
+      "coords": [
+        [0.0, 0.0, 26.0]
+      ],
+      "section": null,
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "point",
+      "status": "unchanged",
+      "type": null,
+      "before_id": "1@ROOF",
+      "after_id": "1@ROOF",
+      "label": "1",
+      "story": "ROOF",
+      "coords": [
+        [0.0, 0.0, 38.0]
+      ],
+      "section": null,
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "point",
+      "status": "unchanged",
+      "type": null,
+      "before_id": "2@BASE",
+      "after_id": "2@BASE",
+      "label": "2",
+      "story": "BASE",
+      "coords": [
+        [25.0, 0.0, 0.0]
+      ],
+      "section": null,
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "point",
+      "status": "unchanged",
+      "type": null,
+      "before_id": "2@L2",
+      "after_id": "2@L2",
+      "label": "2",
+      "story": "L2",
+      "coords": [
+        [25.0, 0.0, 14.0]
+      ],
+      "section": null,
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "point",
+      "status": "unchanged",
+      "type": null,
+      "before_id": "2@L3",
+      "after_id": "2@L3",
+      "label": "2",
+      "story": "L3",
+      "coords": [
+        [25.0, 0.0, 26.0]
+      ],
+      "section": null,
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "point",
+      "status": "unchanged",
+      "type": null,
+      "before_id": "2@ROOF",
+      "after_id": "2@ROOF",
+      "label": "2",
+      "story": "ROOF",
+      "coords": [
+        [25.0, 0.0, 38.0]
+      ],
+      "section": null,
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "point",
+      "status": "unchanged",
+      "type": null,
+      "before_id": "3@BASE",
+      "after_id": "3@BASE",
+      "label": "3",
+      "story": "BASE",
+      "coords": [
+        [50.0, 0.0, 0.0]
+      ],
+      "section": null,
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "point",
+      "status": "unchanged",
+      "type": null,
+      "before_id": "3@L2",
+      "after_id": "3@L2",
+      "label": "3",
+      "story": "L2",
+      "coords": [
+        [50.0, 0.0, 14.0]
+      ],
+      "section": null,
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "point",
+      "status": "unchanged",
+      "type": null,
+      "before_id": "3@L3",
+      "after_id": "3@L3",
+      "label": "3",
+      "story": "L3",
+      "coords": [
+        [50.0, 0.0, 26.0]
+      ],
+      "section": null,
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "point",
+      "status": "unchanged",
+      "type": null,
+      "before_id": "3@ROOF",
+      "after_id": "3@ROOF",
+      "label": "3",
+      "story": "ROOF",
+      "coords": [
+        [50.0, 0.0, 38.0]
+      ],
+      "section": null,
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "point",
+      "status": "unchanged",
+      "type": null,
+      "before_id": "4@BASE",
+      "after_id": "4@BASE",
+      "label": "4",
+      "story": "BASE",
+      "coords": [
+        [0.0, 30.0, 0.0]
+      ],
+      "section": null,
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "point",
+      "status": "unchanged",
+      "type": null,
+      "before_id": "4@L2",
+      "after_id": "4@L2",
+      "label": "4",
+      "story": "L2",
+      "coords": [
+        [0.0, 30.0, 14.0]
+      ],
+      "section": null,
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "point",
+      "status": "unchanged",
+      "type": null,
+      "before_id": "4@L3",
+      "after_id": "4@L3",
+      "label": "4",
+      "story": "L3",
+      "coords": [
+        [0.0, 30.0, 26.0]
+      ],
+      "section": null,
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "point",
+      "status": "unchanged",
+      "type": null,
+      "before_id": "4@ROOF",
+      "after_id": "4@ROOF",
+      "label": "4",
+      "story": "ROOF",
+      "coords": [
+        [0.0, 30.0, 38.0]
+      ],
+      "section": null,
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "point",
+      "status": "unchanged",
+      "type": null,
+      "before_id": "5@BASE",
+      "after_id": "5@BASE",
+      "label": "5",
+      "story": "BASE",
+      "coords": [
+        [25.0, 30.0, 0.0]
+      ],
+      "section": null,
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "point",
+      "status": "unchanged",
+      "type": null,
+      "before_id": "5@L2",
+      "after_id": "5@L2",
+      "label": "5",
+      "story": "L2",
+      "coords": [
+        [25.0, 30.0, 14.0]
+      ],
+      "section": null,
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "point",
+      "status": "unchanged",
+      "type": null,
+      "before_id": "5@L3",
+      "after_id": "5@L3",
+      "label": "5",
+      "story": "L3",
+      "coords": [
+        [25.0, 30.0, 26.0]
+      ],
+      "section": null,
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "point",
+      "status": "unchanged",
+      "type": null,
+      "before_id": "5@ROOF",
+      "after_id": "5@ROOF",
+      "label": "5",
+      "story": "ROOF",
+      "coords": [
+        [25.0, 30.0, 38.0]
+      ],
+      "section": null,
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "point",
+      "status": "unchanged",
+      "type": null,
+      "before_id": "6@BASE",
+      "after_id": "6@BASE",
+      "label": "6",
+      "story": "BASE",
+      "coords": [
+        [50.0, 30.0, 0.0]
+      ],
+      "section": null,
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "point",
+      "status": "unchanged",
+      "type": null,
+      "before_id": "6@L2",
+      "after_id": "6@L2",
+      "label": "6",
+      "story": "L2",
+      "coords": [
+        [50.0, 30.0, 14.0]
+      ],
+      "section": null,
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "point",
+      "status": "unchanged",
+      "type": null,
+      "before_id": "6@L3",
+      "after_id": "6@L3",
+      "label": "6",
+      "story": "L3",
+      "coords": [
+        [50.0, 30.0, 26.0]
+      ],
+      "section": null,
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "point",
+      "status": "unchanged",
+      "type": null,
+      "before_id": "6@ROOF",
+      "after_id": "6@ROOF",
+      "label": "6",
+      "story": "ROOF",
+      "coords": [
+        [50.0, 30.0, 38.0]
+      ],
+      "section": null,
+      "offset": 0.0,
+      "changes": []
+    },
+    {
+      "kind": "point",
+      "status": "added",
+      "type": null,
+      "before_id": null,
+      "after_id": "7@L3",
+      "label": "7",
+      "story": "L3",
+      "coords": [
+        [12.5, 0.0, 26.0]
+      ],
+      "section": null,
+      "offset": null,
+      "changes": []
+    },
+    {
+      "kind": "point",
+      "status": "added",
+      "type": null,
+      "before_id": null,
+      "after_id": "8@L3",
+      "label": "8",
+      "story": "L3",
+      "coords": [
+        [12.5, 30.0, 26.0]
+      ],
+      "section": null,
+      "offset": null,
+      "changes": []
+    },
+    {
+      "kind": "point",
+      "status": "unchanged",
+      "type": null,
+      "before_id": "9@L2",
+      "after_id": "9@L2",
+      "label": "9",
+      "story": "L2",
+      "coords": [
+        [0.0, 10.004, 14.0]
+      ],
+      "section": null,
+      "offset": 0.004,
+      "changes": []
+    }
+  ],
+  "definitions": [
+    {
+      "category": "combos",
+      "name": "D+L",
+      "status": "modified",
+      "changes": [
+        {
+          "field": "LOADCASE.SDL",
+          "before": null,
+          "after": 1.0
+        }
+      ]
+    },
+    {
+      "category": "frame_sections",
+      "name": "W24X55",
+      "status": "added",
+      "changes": [
+        {
+          "field": "MATERIAL",
+          "before": null,
+          "after": "A992Fy50"
+        },
+        {
+          "field": "SHAPE",
+          "before": null,
+          "after": "W24X55"
+        }
+      ]
+    }
+  ]
+}

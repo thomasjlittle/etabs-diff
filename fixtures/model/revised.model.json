@@ -1,0 +1,1902 @@
+{
+  "schema_version": 1,
+  "source": {
+    "file": "revised.e2k",
+    "program": "ETABS",
+    "program_version": "20.3.0",
+    "file_units": {
+      "force": "KIP",
+      "length": "FT",
+      "temperature": "F"
+    }
+  },
+  "units": {
+    "force": "KIP",
+    "length": "FT",
+    "temperature": "F"
+  },
+  "stories": [
+    {
+      "name": "BASE",
+      "elev": 0.0,
+      "height": null
+    },
+    {
+      "name": "L2",
+      "elev": 14.0,
+      "height": 14.0
+    },
+    {
+      "name": "L3",
+      "elev": 26.0,
+      "height": 12.0
+    },
+    {
+      "name": "ROOF",
+      "elev": 38.0,
+      "height": 12.0
+    }
+  ],
+  "grids": [
+    {
+      "system": "G1",
+      "label": "1",
+      "dir": "X",
+      "coord": 0.0
+    },
+    {
+      "system": "G1",
+      "label": "2",
+      "dir": "X",
+      "coord": 25.0
+    },
+    {
+      "system": "G1",
+      "label": "3",
+      "dir": "X",
+      "coord": 50.0
+    },
+    {
+      "system": "G1",
+      "label": "A",
+      "dir": "Y",
+      "coord": 0.0
+    },
+    {
+      "system": "G1",
+      "label": "B",
+      "dir": "Y",
+      "coord": 30.0
+    }
+  ],
+  "points": [
+    {
+      "id": "10@L2",
+      "label": "10",
+      "story": "L2",
+      "coords": [
+        [25.0, 10.004, 14.0]
+      ],
+      "assigns": {},
+      "loads": {}
+    },
+    {
+      "id": "11@L2",
+      "label": "11",
+      "story": "L2",
+      "coords": [
+        [25.0, 22.0, 14.0]
+      ],
+      "assigns": {},
+      "loads": {}
+    },
+    {
+      "id": "12@L2",
+      "label": "12",
+      "story": "L2",
+      "coords": [
+        [50.0, 22.0, 14.0]
+      ],
+      "assigns": {},
+      "loads": {}
+    },
+    {
+      "id": "1@BASE",
+      "label": "1",
+      "story": "BASE",
+      "coords": [
+        [0.0, 0.0, 0.0]
+      ],
+      "assigns": {
+        "RESTRAINT": "UX UY UZ RX RY RZ"
+      },
+      "loads": {}
+    },
+    {
+      "id": "1@L2",
+      "label": "1",
+      "story": "L2",
+      "coords": [
+        [0.0, 0.0, 14.0]
+      ],
+      "assigns": {},
+      "loads": {}
+    },
+    {
+      "id": "1@L3",
+      "label": "1",
+      "story": "L3",
+      "coords": [
+        [0.0, 0.0, 26.0]
+      ],
+      "assigns": {},
+      "loads": {}
+    },
+    {
+      "id": "1@ROOF",
+      "label": "1",
+      "story": "ROOF",
+      "coords": [
+        [0.0, 0.0, 38.0]
+      ],
+      "assigns": {},
+      "loads": {}
+    },
+    {
+      "id": "2@BASE",
+      "label": "2",
+      "story": "BASE",
+      "coords": [
+        [25.0, 0.0, 0.0]
+      ],
+      "assigns": {
+        "RESTRAINT": "UX UY UZ RX RY RZ"
+      },
+      "loads": {}
+    },
+    {
+      "id": "2@L2",
+      "label": "2",
+      "story": "L2",
+      "coords": [
+        [25.0, 0.0, 14.0]
+      ],
+      "assigns": {},
+      "loads": {}
+    },
+    {
+      "id": "2@L3",
+      "label": "2",
+      "story": "L3",
+      "coords": [
+        [25.0, 0.0, 26.0]
+      ],
+      "assigns": {},
+      "loads": {}
+    },
+    {
+      "id": "2@ROOF",
+      "label": "2",
+      "story": "ROOF",
+      "coords": [
+        [25.0, 0.0, 38.0]
+      ],
+      "assigns": {},
+      "loads": {}
+    },
+    {
+      "id": "3@BASE",
+      "label": "3",
+      "story": "BASE",
+      "coords": [
+        [50.0, 0.0, 0.0]
+      ],
+      "assigns": {
+        "RESTRAINT": "UX UY UZ RX RY RZ"
+      },
+      "loads": {}
+    },
+    {
+      "id": "3@L2",
+      "label": "3",
+      "story": "L2",
+      "coords": [
+        [50.0, 0.0, 14.0]
+      ],
+      "assigns": {},
+      "loads": {}
+    },
+    {
+      "id": "3@L3",
+      "label": "3",
+      "story": "L3",
+      "coords": [
+        [50.0, 0.0, 26.0]
+      ],
+      "assigns": {},
+      "loads": {}
+    },
+    {
+      "id": "3@ROOF",
+      "label": "3",
+      "story": "ROOF",
+      "coords": [
+        [50.0, 0.0, 38.0]
+      ],
+      "assigns": {},
+      "loads": {}
+    },
+    {
+      "id": "4@BASE",
+      "label": "4",
+      "story": "BASE",
+      "coords": [
+        [0.0, 30.0, 0.0]
+      ],
+      "assigns": {
+        "RESTRAINT": "UX UY UZ RX RY RZ"
+      },
+      "loads": {}
+    },
+    {
+      "id": "4@L2",
+      "label": "4",
+      "story": "L2",
+      "coords": [
+        [0.0, 30.0, 14.0]
+      ],
+      "assigns": {},
+      "loads": {}
+    },
+    {
+      "id": "4@L3",
+      "label": "4",
+      "story": "L3",
+      "coords": [
+        [0.0, 30.0, 26.0]
+      ],
+      "assigns": {},
+      "loads": {}
+    },
+    {
+      "id": "4@ROOF",
+      "label": "4",
+      "story": "ROOF",
+      "coords": [
+        [0.0, 30.0, 38.0]
+      ],
+      "assigns": {},
+      "loads": {}
+    },
+    {
+      "id": "5@BASE",
+      "label": "5",
+      "story": "BASE",
+      "coords": [
+        [25.0, 30.0, 0.0]
+      ],
+      "assigns": {
+        "RESTRAINT": "UX UY UZ RX RY RZ"
+      },
+      "loads": {}
+    },
+    {
+      "id": "5@L2",
+      "label": "5",
+      "story": "L2",
+      "coords": [
+        [25.0, 30.0, 14.0]
+      ],
+      "assigns": {},
+      "loads": {}
+    },
+    {
+      "id": "5@L3",
+      "label": "5",
+      "story": "L3",
+      "coords": [
+        [25.0, 30.0, 26.0]
+      ],
+      "assigns": {},
+      "loads": {}
+    },
+    {
+      "id": "5@ROOF",
+      "label": "5",
+      "story": "ROOF",
+      "coords": [
+        [25.0, 30.0, 38.0]
+      ],
+      "assigns": {},
+      "loads": {}
+    },
+    {
+      "id": "6@BASE",
+      "label": "6",
+      "story": "BASE",
+      "coords": [
+        [50.0, 30.0, 0.0]
+      ],
+      "assigns": {
+        "RESTRAINT": "UX UY UZ RX RY RZ"
+      },
+      "loads": {}
+    },
+    {
+      "id": "6@L2",
+      "label": "6",
+      "story": "L2",
+      "coords": [
+        [50.0, 30.0, 14.0]
+      ],
+      "assigns": {},
+      "loads": {}
+    },
+    {
+      "id": "6@L3",
+      "label": "6",
+      "story": "L3",
+      "coords": [
+        [50.0, 30.0, 26.0]
+      ],
+      "assigns": {},
+      "loads": {}
+    },
+    {
+      "id": "6@ROOF",
+      "label": "6",
+      "story": "ROOF",
+      "coords": [
+        [50.0, 30.0, 38.0]
+      ],
+      "assigns": {},
+      "loads": {
+        "SDL": [
+          {
+            "TYPE": "FORCE",
+            "FZ": -5.0
+          }
+        ]
+      }
+    },
+    {
+      "id": "7@L3",
+      "label": "7",
+      "story": "L3",
+      "coords": [
+        [12.5, 0.0, 26.0]
+      ],
+      "assigns": {},
+      "loads": {}
+    },
+    {
+      "id": "8@L3",
+      "label": "8",
+      "story": "L3",
+      "coords": [
+        [12.5, 30.0, 26.0]
+      ],
+      "assigns": {},
+      "loads": {}
+    },
+    {
+      "id": "9@L2",
+      "label": "9",
+      "story": "L2",
+      "coords": [
+        [0.0, 10.004, 14.0]
+      ],
+      "assigns": {},
+      "loads": {}
+    }
+  ],
+  "frames": [
+    {
+      "id": "B10@L2",
+      "label": "B10",
+      "story": "L2",
+      "type": "BEAM",
+      "nodes": [
+        {"point": "11", "story": "L2"},
+        {"point": "12", "story": "L2"}
+      ],
+      "coords": [
+        [25.0, 22.0, 14.0],
+        [50.0, 22.0, 14.0]
+      ],
+      "assigns": {
+        "SECTION": "W18X35",
+        "MAXSTASPC": 2.0,
+        "AUTOMESH": "YES",
+        "MESHATINTERSECTIONS": "YES"
+      },
+      "loads": {}
+    },
+    {
+      "id": "B1@L2",
+      "label": "B1",
+      "story": "L2",
+      "type": "BEAM",
+      "nodes": [
+        {"point": "1", "story": "L2"},
+        {"point": "2", "story": "L2"}
+      ],
+      "coords": [
+        [0.0, 0.0, 14.0],
+        [25.0, 0.0, 14.0]
+      ],
+      "assigns": {
+        "SECTION": "W18X35",
+        "MAXSTASPC": 2.0,
+        "AUTOMESH": "YES",
+        "MESHATINTERSECTIONS": "YES"
+      },
+      "loads": {
+        "SDL": [
+          {
+            "TYPE": "UNIFF",
+            "DIR": "GRAV",
+            "FVAL": 0.3
+          }
+        ]
+      }
+    },
+    {
+      "id": "B1@L3",
+      "label": "B1",
+      "story": "L3",
+      "type": "BEAM",
+      "nodes": [
+        {"point": "1", "story": "L3"},
+        {"point": "2", "story": "L3"}
+      ],
+      "coords": [
+        [0.0, 0.0, 26.0],
+        [25.0, 0.0, 26.0]
+      ],
+      "assigns": {
+        "SECTION": "W18X35",
+        "MAXSTASPC": 2.0,
+        "AUTOMESH": "YES",
+        "MESHATINTERSECTIONS": "YES"
+      },
+      "loads": {
+        "SDL": [
+          {
+            "TYPE": "UNIFF",
+            "DIR": "GRAV",
+            "FVAL": 0.3
+          }
+        ]
+      }
+    },
+    {
+      "id": "B1@ROOF",
+      "label": "B1",
+      "story": "ROOF",
+      "type": "BEAM",
+      "nodes": [
+        {"point": "1", "story": "ROOF"},
+        {"point": "2", "story": "ROOF"}
+      ],
+      "coords": [
+        [0.0, 0.0, 38.0],
+        [25.0, 0.0, 38.0]
+      ],
+      "assigns": {
+        "SECTION": "W18X35",
+        "MAXSTASPC": 2.0,
+        "AUTOMESH": "YES",
+        "MESHATINTERSECTIONS": "YES"
+      },
+      "loads": {}
+    },
+    {
+      "id": "B2@L2",
+      "label": "B2",
+      "story": "L2",
+      "type": "BEAM",
+      "nodes": [
+        {"point": "2", "story": "L2"},
+        {"point": "3", "story": "L2"}
+      ],
+      "coords": [
+        [25.0, 0.0, 14.0],
+        [50.0, 0.0, 14.0]
+      ],
+      "assigns": {
+        "SECTION": "W18X35",
+        "MAXSTASPC": 2.0,
+        "AUTOMESH": "YES",
+        "MESHATINTERSECTIONS": "YES"
+      },
+      "loads": {}
+    },
+    {
+      "id": "B2@L3",
+      "label": "B2",
+      "story": "L3",
+      "type": "BEAM",
+      "nodes": [
+        {"point": "2", "story": "L3"},
+        {"point": "3", "story": "L3"}
+      ],
+      "coords": [
+        [25.0, 0.0, 26.0],
+        [50.0, 0.0, 26.0]
+      ],
+      "assigns": {
+        "SECTION": "W24X55",
+        "MAXSTASPC": 2.0,
+        "AUTOMESH": "YES",
+        "MESHATINTERSECTIONS": "YES"
+      },
+      "loads": {}
+    },
+    {
+      "id": "B2@ROOF",
+      "label": "B2",
+      "story": "ROOF",
+      "type": "BEAM",
+      "nodes": [
+        {"point": "2", "story": "ROOF"},
+        {"point": "3", "story": "ROOF"}
+      ],
+      "coords": [
+        [25.0, 0.0, 38.0],
+        [50.0, 0.0, 38.0]
+      ],
+      "assigns": {
+        "SECTION": "W18X35",
+        "MAXSTASPC": 2.0,
+        "AUTOMESH": "YES",
+        "MESHATINTERSECTIONS": "YES"
+      },
+      "loads": {}
+    },
+    {
+      "id": "B3@L2",
+      "label": "B3",
+      "story": "L2",
+      "type": "BEAM",
+      "nodes": [
+        {"point": "4", "story": "L2"},
+        {"point": "5", "story": "L2"}
+      ],
+      "coords": [
+        [0.0, 30.0, 14.0],
+        [25.0, 30.0, 14.0]
+      ],
+      "assigns": {
+        "SECTION": "W18X35",
+        "MAXSTASPC": 2.0,
+        "AUTOMESH": "YES",
+        "MESHATINTERSECTIONS": "YES"
+      },
+      "loads": {}
+    },
+    {
+      "id": "B3@L3",
+      "label": "B3",
+      "story": "L3",
+      "type": "BEAM",
+      "nodes": [
+        {"point": "4", "story": "L3"},
+        {"point": "5", "story": "L3"}
+      ],
+      "coords": [
+        [0.0, 30.0, 26.0],
+        [25.0, 30.0, 26.0]
+      ],
+      "assigns": {
+        "SECTION": "W18X35",
+        "MAXSTASPC": 2.0,
+        "AUTOMESH": "YES",
+        "MESHATINTERSECTIONS": "YES"
+      },
+      "loads": {}
+    },
+    {
+      "id": "B3@ROOF",
+      "label": "B3",
+      "story": "ROOF",
+      "type": "BEAM",
+      "nodes": [
+        {"point": "4", "story": "ROOF"},
+        {"point": "5", "story": "ROOF"}
+      ],
+      "coords": [
+        [0.0, 30.0, 38.0],
+        [25.0, 30.0, 38.0]
+      ],
+      "assigns": {
+        "SECTION": "W18X35",
+        "MAXSTASPC": 2.0,
+        "AUTOMESH": "YES",
+        "MESHATINTERSECTIONS": "YES"
+      },
+      "loads": {
+        "SDL": [
+          {
+            "TYPE": "TRAPF",
+            "DIR": "GRAV",
+            "FSTART": 0.2,
+            "FEND": 0.4,
+            "RDSTART": 0.0,
+            "RDEND": 1.0
+          }
+        ]
+      }
+    },
+    {
+      "id": "B4@L2",
+      "label": "B4",
+      "story": "L2",
+      "type": "BEAM",
+      "nodes": [
+        {"point": "5", "story": "L2"},
+        {"point": "6", "story": "L2"}
+      ],
+      "coords": [
+        [25.0, 30.0, 14.0],
+        [50.0, 30.0, 14.0]
+      ],
+      "assigns": {
+        "SECTION": "W18X35",
+        "MAXSTASPC": 2.0,
+        "AUTOMESH": "YES",
+        "MESHATINTERSECTIONS": "YES"
+      },
+      "loads": {}
+    },
+    {
+      "id": "B4@L3",
+      "label": "B4",
+      "story": "L3",
+      "type": "BEAM",
+      "nodes": [
+        {"point": "5", "story": "L3"},
+        {"point": "6", "story": "L3"}
+      ],
+      "coords": [
+        [25.0, 30.0, 26.0],
+        [50.0, 30.0, 26.0]
+      ],
+      "assigns": {
+        "SECTION": "W18X35",
+        "MAXSTASPC": 2.0,
+        "AUTOMESH": "YES",
+        "MESHATINTERSECTIONS": "YES"
+      },
+      "loads": {}
+    },
+    {
+      "id": "B4@ROOF",
+      "label": "B4",
+      "story": "ROOF",
+      "type": "BEAM",
+      "nodes": [
+        {"point": "5", "story": "ROOF"},
+        {"point": "6", "story": "ROOF"}
+      ],
+      "coords": [
+        [25.0, 30.0, 38.0],
+        [50.0, 30.0, 38.0]
+      ],
+      "assigns": {
+        "SECTION": "W18X35",
+        "MAXSTASPC": 2.0,
+        "AUTOMESH": "YES",
+        "MESHATINTERSECTIONS": "YES"
+      },
+      "loads": {}
+    },
+    {
+      "id": "B5@L2",
+      "label": "B5",
+      "story": "L2",
+      "type": "BEAM",
+      "nodes": [
+        {"point": "1", "story": "L2"},
+        {"point": "4", "story": "L2"}
+      ],
+      "coords": [
+        [0.0, 0.0, 14.0],
+        [0.0, 30.0, 14.0]
+      ],
+      "assigns": {
+        "SECTION": "W21X44",
+        "MAXSTASPC": 2.0,
+        "AUTOMESH": "YES",
+        "MESHATINTERSECTIONS": "YES"
+      },
+      "loads": {}
+    },
+    {
+      "id": "B5@L3",
+      "label": "B5",
+      "story": "L3",
+      "type": "BEAM",
+      "nodes": [
+        {"point": "1", "story": "L3"},
+        {"point": "4", "story": "L3"}
+      ],
+      "coords": [
+        [0.0, 0.0, 26.0],
+        [0.0, 30.0, 26.0]
+      ],
+      "assigns": {
+        "SECTION": "W21X44",
+        "MAXSTASPC": 2.0,
+        "AUTOMESH": "YES",
+        "MESHATINTERSECTIONS": "YES"
+      },
+      "loads": {}
+    },
+    {
+      "id": "B5@ROOF",
+      "label": "B5",
+      "story": "ROOF",
+      "type": "BEAM",
+      "nodes": [
+        {"point": "1", "story": "ROOF"},
+        {"point": "4", "story": "ROOF"}
+      ],
+      "coords": [
+        [0.0, 0.0, 38.0],
+        [0.0, 30.0, 38.0]
+      ],
+      "assigns": {
+        "SECTION": "W21X44",
+        "MAXSTASPC": 2.0,
+        "AUTOMESH": "YES",
+        "MESHATINTERSECTIONS": "YES"
+      },
+      "loads": {}
+    },
+    {
+      "id": "B6@L2",
+      "label": "B6",
+      "story": "L2",
+      "type": "BEAM",
+      "nodes": [
+        {"point": "2", "story": "L2"},
+        {"point": "5", "story": "L2"}
+      ],
+      "coords": [
+        [25.0, 0.0, 14.0],
+        [25.0, 30.0, 14.0]
+      ],
+      "assigns": {
+        "SECTION": "W21X44",
+        "MAXSTASPC": 2.0,
+        "AUTOMESH": "YES",
+        "MESHATINTERSECTIONS": "YES"
+      },
+      "loads": {}
+    },
+    {
+      "id": "B6@L3",
+      "label": "B6",
+      "story": "L3",
+      "type": "BEAM",
+      "nodes": [
+        {"point": "2", "story": "L3"},
+        {"point": "5", "story": "L3"}
+      ],
+      "coords": [
+        [25.0, 0.0, 26.0],
+        [25.0, 30.0, 26.0]
+      ],
+      "assigns": {
+        "SECTION": "W21X44",
+        "MAXSTASPC": 2.0,
+        "AUTOMESH": "YES",
+        "MESHATINTERSECTIONS": "YES"
+      },
+      "loads": {}
+    },
+    {
+      "id": "B6@ROOF",
+      "label": "B6",
+      "story": "ROOF",
+      "type": "BEAM",
+      "nodes": [
+        {"point": "2", "story": "ROOF"},
+        {"point": "5", "story": "ROOF"}
+      ],
+      "coords": [
+        [25.0, 0.0, 38.0],
+        [25.0, 30.0, 38.0]
+      ],
+      "assigns": {
+        "SECTION": "W21X44",
+        "MAXSTASPC": 2.0,
+        "AUTOMESH": "YES",
+        "MESHATINTERSECTIONS": "YES"
+      },
+      "loads": {}
+    },
+    {
+      "id": "B7@L2",
+      "label": "B7",
+      "story": "L2",
+      "type": "BEAM",
+      "nodes": [
+        {"point": "3", "story": "L2"},
+        {"point": "6", "story": "L2"}
+      ],
+      "coords": [
+        [50.0, 0.0, 14.0],
+        [50.0, 30.0, 14.0]
+      ],
+      "assigns": {
+        "SECTION": "W21X44",
+        "MAXSTASPC": 2.0,
+        "AUTOMESH": "YES",
+        "MESHATINTERSECTIONS": "YES"
+      },
+      "loads": {}
+    },
+    {
+      "id": "B7@L3",
+      "label": "B7",
+      "story": "L3",
+      "type": "BEAM",
+      "nodes": [
+        {"point": "3", "story": "L3"},
+        {"point": "6", "story": "L3"}
+      ],
+      "coords": [
+        [50.0, 0.0, 26.0],
+        [50.0, 30.0, 26.0]
+      ],
+      "assigns": {
+        "SECTION": "W21X44",
+        "MAXSTASPC": 2.0,
+        "AUTOMESH": "YES",
+        "MESHATINTERSECTIONS": "YES"
+      },
+      "loads": {}
+    },
+    {
+      "id": "B7@ROOF",
+      "label": "B7",
+      "story": "ROOF",
+      "type": "BEAM",
+      "nodes": [
+        {"point": "3", "story": "ROOF"},
+        {"point": "6", "story": "ROOF"}
+      ],
+      "coords": [
+        [50.0, 0.0, 38.0],
+        [50.0, 30.0, 38.0]
+      ],
+      "assigns": {
+        "SECTION": "W21X44",
+        "MAXSTASPC": 2.0,
+        "AUTOMESH": "YES",
+        "MESHATINTERSECTIONS": "YES"
+      },
+      "loads": {}
+    },
+    {
+      "id": "B8@L3",
+      "label": "B8",
+      "story": "L3",
+      "type": "BEAM",
+      "nodes": [
+        {"point": "7", "story": "L3"},
+        {"point": "8", "story": "L3"}
+      ],
+      "coords": [
+        [12.5, 0.0, 26.0],
+        [12.5, 30.0, 26.0]
+      ],
+      "assigns": {
+        "SECTION": "W18X35",
+        "MAXSTASPC": 2.0,
+        "AUTOMESH": "YES",
+        "MESHATINTERSECTIONS": "YES"
+      },
+      "loads": {}
+    },
+    {
+      "id": "B9@L2",
+      "label": "B9",
+      "story": "L2",
+      "type": "BEAM",
+      "nodes": [
+        {"point": "9", "story": "L2"},
+        {"point": "10", "story": "L2"}
+      ],
+      "coords": [
+        [0.0, 10.004, 14.0],
+        [25.0, 10.004, 14.0]
+      ],
+      "assigns": {
+        "SECTION": "W18X35",
+        "MAXSTASPC": 2.0,
+        "AUTOMESH": "YES",
+        "MESHATINTERSECTIONS": "YES"
+      },
+      "loads": {}
+    },
+    {
+      "id": "C1@L2",
+      "label": "C1",
+      "story": "L2",
+      "type": "COLUMN",
+      "nodes": [
+        {"point": "1", "story": "BASE"},
+        {"point": "1", "story": "L2"}
+      ],
+      "coords": [
+        [0.0, 0.0, 0.0],
+        [0.0, 0.0, 14.0]
+      ],
+      "assigns": {
+        "SECTION": "W14X90",
+        "MINNUMSTA": 3.0,
+        "AUTOMESH": "YES",
+        "MESHATINTERSECTIONS": "YES"
+      },
+      "loads": {}
+    },
+    {
+      "id": "C1@L3",
+      "label": "C1",
+      "story": "L3",
+      "type": "COLUMN",
+      "nodes": [
+        {"point": "1", "story": "L2"},
+        {"point": "1", "story": "L3"}
+      ],
+      "coords": [
+        [0.0, 0.0, 14.0],
+        [0.0, 0.0, 26.0]
+      ],
+      "assigns": {
+        "SECTION": "W14X90",
+        "MINNUMSTA": 3.0,
+        "AUTOMESH": "YES",
+        "MESHATINTERSECTIONS": "YES"
+      },
+      "loads": {}
+    },
+    {
+      "id": "C1@ROOF",
+      "label": "C1",
+      "story": "ROOF",
+      "type": "COLUMN",
+      "nodes": [
+        {"point": "1", "story": "L3"},
+        {"point": "1", "story": "ROOF"}
+      ],
+      "coords": [
+        [0.0, 0.0, 26.0],
+        [0.0, 0.0, 38.0]
+      ],
+      "assigns": {
+        "SECTION": "W14X68",
+        "MINNUMSTA": 3.0,
+        "AUTOMESH": "YES",
+        "MESHATINTERSECTIONS": "YES"
+      },
+      "loads": {}
+    },
+    {
+      "id": "C2@L2",
+      "label": "C2",
+      "story": "L2",
+      "type": "COLUMN",
+      "nodes": [
+        {"point": "2", "story": "BASE"},
+        {"point": "2", "story": "L2"}
+      ],
+      "coords": [
+        [25.0, 0.0, 0.0],
+        [25.0, 0.0, 14.0]
+      ],
+      "assigns": {
+        "SECTION": "W14X90",
+        "MINNUMSTA": 3.0,
+        "AUTOMESH": "YES",
+        "MESHATINTERSECTIONS": "YES"
+      },
+      "loads": {}
+    },
+    {
+      "id": "C2@L3",
+      "label": "C2",
+      "story": "L3",
+      "type": "COLUMN",
+      "nodes": [
+        {"point": "2", "story": "L2"},
+        {"point": "2", "story": "L3"}
+      ],
+      "coords": [
+        [25.0, 0.0, 14.0],
+        [25.0, 0.0, 26.0]
+      ],
+      "assigns": {
+        "SECTION": "W14X90",
+        "MINNUMSTA": 3.0,
+        "AUTOMESH": "YES",
+        "MESHATINTERSECTIONS": "YES"
+      },
+      "loads": {}
+    },
+    {
+      "id": "C2@ROOF",
+      "label": "C2",
+      "story": "ROOF",
+      "type": "COLUMN",
+      "nodes": [
+        {"point": "2", "story": "L3"},
+        {"point": "2", "story": "ROOF"}
+      ],
+      "coords": [
+        [25.0, 0.0, 26.0],
+        [25.0, 0.0, 38.0]
+      ],
+      "assigns": {
+        "SECTION": "W14X68",
+        "MINNUMSTA": 3.0,
+        "AUTOMESH": "YES",
+        "MESHATINTERSECTIONS": "YES"
+      },
+      "loads": {}
+    },
+    {
+      "id": "C30@L2",
+      "label": "C30",
+      "story": "L2",
+      "type": "COLUMN",
+      "nodes": [
+        {"point": "3", "story": "BASE"},
+        {"point": "3", "story": "L2"}
+      ],
+      "coords": [
+        [50.0, 0.0, 0.0],
+        [50.0, 0.0, 14.0]
+      ],
+      "assigns": {
+        "SECTION": "W14X90",
+        "MINNUMSTA": 3.0,
+        "AUTOMESH": "YES",
+        "MESHATINTERSECTIONS": "YES"
+      },
+      "loads": {}
+    },
+    {
+      "id": "C30@L3",
+      "label": "C30",
+      "story": "L3",
+      "type": "COLUMN",
+      "nodes": [
+        {"point": "3", "story": "L2"},
+        {"point": "3", "story": "L3"}
+      ],
+      "coords": [
+        [50.0, 0.0, 14.0],
+        [50.0, 0.0, 26.0]
+      ],
+      "assigns": {
+        "SECTION": "W14X90",
+        "MINNUMSTA": 3.0,
+        "AUTOMESH": "YES",
+        "MESHATINTERSECTIONS": "YES"
+      },
+      "loads": {}
+    },
+    {
+      "id": "C30@ROOF",
+      "label": "C30",
+      "story": "ROOF",
+      "type": "COLUMN",
+      "nodes": [
+        {"point": "3", "story": "L3"},
+        {"point": "3", "story": "ROOF"}
+      ],
+      "coords": [
+        [50.0, 0.0, 26.0],
+        [50.0, 0.0, 38.0]
+      ],
+      "assigns": {
+        "SECTION": "W14X68",
+        "MINNUMSTA": 3.0,
+        "AUTOMESH": "YES",
+        "MESHATINTERSECTIONS": "YES"
+      },
+      "loads": {}
+    },
+    {
+      "id": "C4@L2",
+      "label": "C4",
+      "story": "L2",
+      "type": "COLUMN",
+      "nodes": [
+        {"point": "4", "story": "BASE"},
+        {"point": "4", "story": "L2"}
+      ],
+      "coords": [
+        [0.0, 30.0, 0.0],
+        [0.0, 30.0, 14.0]
+      ],
+      "assigns": {
+        "SECTION": "W14X90",
+        "MINNUMSTA": 3.0,
+        "AUTOMESH": "YES",
+        "MESHATINTERSECTIONS": "YES"
+      },
+      "loads": {}
+    },
+    {
+      "id": "C4@L3",
+      "label": "C4",
+      "story": "L3",
+      "type": "COLUMN",
+      "nodes": [
+        {"point": "4", "story": "L2"},
+        {"point": "4", "story": "L3"}
+      ],
+      "coords": [
+        [0.0, 30.0, 14.0],
+        [0.0, 30.0, 26.0]
+      ],
+      "assigns": {
+        "SECTION": "W14X90",
+        "MINNUMSTA": 3.0,
+        "AUTOMESH": "YES",
+        "MESHATINTERSECTIONS": "YES"
+      },
+      "loads": {}
+    },
+    {
+      "id": "C4@ROOF",
+      "label": "C4",
+      "story": "ROOF",
+      "type": "COLUMN",
+      "nodes": [
+        {"point": "4", "story": "L3"},
+        {"point": "4", "story": "ROOF"}
+      ],
+      "coords": [
+        [0.0, 30.0, 26.0],
+        [0.0, 30.0, 38.0]
+      ],
+      "assigns": {
+        "SECTION": "W14X68",
+        "MINNUMSTA": 3.0,
+        "AUTOMESH": "YES",
+        "MESHATINTERSECTIONS": "YES"
+      },
+      "loads": {}
+    },
+    {
+      "id": "C5@L2",
+      "label": "C5",
+      "story": "L2",
+      "type": "COLUMN",
+      "nodes": [
+        {"point": "5", "story": "BASE"},
+        {"point": "5", "story": "L2"}
+      ],
+      "coords": [
+        [25.0, 30.0, 0.0],
+        [25.0, 30.0, 14.0]
+      ],
+      "assigns": {
+        "SECTION": "W14X90",
+        "MINNUMSTA": 3.0,
+        "AUTOMESH": "YES",
+        "MESHATINTERSECTIONS": "YES"
+      },
+      "loads": {}
+    },
+    {
+      "id": "C5@L3",
+      "label": "C5",
+      "story": "L3",
+      "type": "COLUMN",
+      "nodes": [
+        {"point": "5", "story": "L2"},
+        {"point": "5", "story": "L3"}
+      ],
+      "coords": [
+        [25.0, 30.0, 14.0],
+        [25.0, 30.0, 26.0]
+      ],
+      "assigns": {
+        "SECTION": "W14X90",
+        "MINNUMSTA": 3.0,
+        "AUTOMESH": "YES",
+        "MESHATINTERSECTIONS": "YES"
+      },
+      "loads": {}
+    },
+    {
+      "id": "C5@ROOF",
+      "label": "C5",
+      "story": "ROOF",
+      "type": "COLUMN",
+      "nodes": [
+        {"point": "5", "story": "L3"},
+        {"point": "5", "story": "ROOF"}
+      ],
+      "coords": [
+        [25.0, 30.0, 26.0],
+        [25.0, 30.0, 38.0]
+      ],
+      "assigns": {
+        "SECTION": "W14X68",
+        "MINNUMSTA": 3.0,
+        "AUTOMESH": "YES",
+        "MESHATINTERSECTIONS": "YES"
+      },
+      "loads": {}
+    },
+    {
+      "id": "C6@L2",
+      "label": "C6",
+      "story": "L2",
+      "type": "COLUMN",
+      "nodes": [
+        {"point": "6", "story": "BASE"},
+        {"point": "6", "story": "L2"}
+      ],
+      "coords": [
+        [50.0, 30.0, 0.0],
+        [50.0, 30.0, 14.0]
+      ],
+      "assigns": {
+        "SECTION": "W14X90",
+        "MINNUMSTA": 3.0,
+        "AUTOMESH": "YES",
+        "MESHATINTERSECTIONS": "YES"
+      },
+      "loads": {}
+    },
+    {
+      "id": "C6@L3",
+      "label": "C6",
+      "story": "L3",
+      "type": "COLUMN",
+      "nodes": [
+        {"point": "6", "story": "L2"},
+        {"point": "6", "story": "L3"}
+      ],
+      "coords": [
+        [50.0, 30.0, 14.0],
+        [50.0, 30.0, 26.0]
+      ],
+      "assigns": {
+        "SECTION": "W14X90",
+        "MINNUMSTA": 3.0,
+        "AUTOMESH": "YES",
+        "MESHATINTERSECTIONS": "YES"
+      },
+      "loads": {}
+    },
+    {
+      "id": "C6@ROOF",
+      "label": "C6",
+      "story": "ROOF",
+      "type": "COLUMN",
+      "nodes": [
+        {"point": "6", "story": "L3"},
+        {"point": "6", "story": "ROOF"}
+      ],
+      "coords": [
+        [50.0, 30.0, 26.0],
+        [50.0, 30.0, 38.0]
+      ],
+      "assigns": {
+        "SECTION": "W14X68",
+        "MINNUMSTA": 3.0,
+        "AUTOMESH": "YES",
+        "MESHATINTERSECTIONS": "YES"
+      },
+      "loads": {}
+    },
+    {
+      "id": "D1@L2",
+      "label": "D1",
+      "story": "L2",
+      "type": "BRACE",
+      "nodes": [
+        {"point": "1", "story": "BASE"},
+        {"point": "2", "story": "L2"}
+      ],
+      "coords": [
+        [0.0, 0.0, 0.0],
+        [25.0, 0.0, 14.0]
+      ],
+      "assigns": {
+        "SECTION": "HSS6X6X3/8",
+        "RELEASE": "PINNED",
+        "MINNUMSTA": 3.0,
+        "AUTOMESH": "YES",
+        "MESHATINTERSECTIONS": "YES"
+      },
+      "loads": {}
+    },
+    {
+      "id": "D1@L3",
+      "label": "D1",
+      "story": "L3",
+      "type": "BRACE",
+      "nodes": [
+        {"point": "1", "story": "L2"},
+        {"point": "2", "story": "L3"}
+      ],
+      "coords": [
+        [0.0, 0.0, 14.0],
+        [25.0, 0.0, 26.0]
+      ],
+      "assigns": {
+        "SECTION": "HSS6X6X3/8",
+        "RELEASE": "PINNED",
+        "MINNUMSTA": 3.0,
+        "AUTOMESH": "YES",
+        "MESHATINTERSECTIONS": "YES"
+      },
+      "loads": {}
+    },
+    {
+      "id": "D1@ROOF",
+      "label": "D1",
+      "story": "ROOF",
+      "type": "BRACE",
+      "nodes": [
+        {"point": "1", "story": "L3"},
+        {"point": "2", "story": "ROOF"}
+      ],
+      "coords": [
+        [0.0, 0.0, 26.0],
+        [25.0, 0.0, 38.0]
+      ],
+      "assigns": {
+        "SECTION": "HSS6X6X3/8",
+        "RELEASE": "PINNED",
+        "MINNUMSTA": 3.0,
+        "AUTOMESH": "YES",
+        "MESHATINTERSECTIONS": "YES"
+      },
+      "loads": {}
+    },
+    {
+      "id": "D2@L2",
+      "label": "D2",
+      "story": "L2",
+      "type": "BRACE",
+      "nodes": [
+        {"point": "3", "story": "BASE"},
+        {"point": "2", "story": "L2"}
+      ],
+      "coords": [
+        [50.0, 0.0, 0.0],
+        [25.0, 0.0, 14.0]
+      ],
+      "assigns": {
+        "SECTION": "HSS6X6X3/8",
+        "RELEASE": "PINNED",
+        "MINNUMSTA": 3.0,
+        "AUTOMESH": "YES",
+        "MESHATINTERSECTIONS": "YES"
+      },
+      "loads": {}
+    },
+    {
+      "id": "D2@L3",
+      "label": "D2",
+      "story": "L3",
+      "type": "BRACE",
+      "nodes": [
+        {"point": "3", "story": "L2"},
+        {"point": "2", "story": "L3"}
+      ],
+      "coords": [
+        [50.0, 0.0, 14.0],
+        [25.0, 0.0, 26.0]
+      ],
+      "assigns": {
+        "SECTION": "HSS6X6X3/8",
+        "RELEASE": "PINNED",
+        "MINNUMSTA": 3.0,
+        "AUTOMESH": "YES",
+        "MESHATINTERSECTIONS": "YES"
+      },
+      "loads": {}
+    }
+  ],
+  "areas": [
+    {
+      "id": "F1@L2",
+      "label": "F1",
+      "story": "L2",
+      "type": "FLOOR",
+      "nodes": [
+        {"point": "1", "story": "L2"},
+        {"point": "2", "story": "L2"},
+        {"point": "5", "story": "L2"},
+        {"point": "4", "story": "L2"}
+      ],
+      "coords": [
+        [0.0, 0.0, 14.0],
+        [25.0, 0.0, 14.0],
+        [25.0, 30.0, 14.0],
+        [0.0, 30.0, 14.0]
+      ],
+      "assigns": {
+        "SECTION": "SLAB8",
+        "DIAPH": "D1",
+        "CARDINALPOINT": "MIDDLE"
+      },
+      "loads": {
+        "SDL": [
+          {
+            "TYPE": "UNIFF",
+            "DIR": "GRAV",
+            "FVAL": 0.015
+          }
+        ],
+        "LIVE": [
+          {
+            "TYPE": "UNIFF",
+            "DIR": "GRAV",
+            "FVAL": 0.05
+          }
+        ]
+      }
+    },
+    {
+      "id": "F1@L3",
+      "label": "F1",
+      "story": "L3",
+      "type": "FLOOR",
+      "nodes": [
+        {"point": "1", "story": "L3"},
+        {"point": "2", "story": "L3"},
+        {"point": "5", "story": "L3"},
+        {"point": "4", "story": "L3"}
+      ],
+      "coords": [
+        [0.0, 0.0, 26.0],
+        [25.0, 0.0, 26.0],
+        [25.0, 30.0, 26.0],
+        [0.0, 30.0, 26.0]
+      ],
+      "assigns": {
+        "SECTION": "SLAB8",
+        "DIAPH": "D1",
+        "CARDINALPOINT": "MIDDLE"
+      },
+      "loads": {
+        "SDL": [
+          {
+            "TYPE": "UNIFF",
+            "DIR": "GRAV",
+            "FVAL": 0.015
+          }
+        ],
+        "LIVE": [
+          {
+            "TYPE": "UNIFF",
+            "DIR": "GRAV",
+            "FVAL": 0.05
+          }
+        ]
+      }
+    },
+    {
+      "id": "F1@ROOF",
+      "label": "F1",
+      "story": "ROOF",
+      "type": "FLOOR",
+      "nodes": [
+        {"point": "1", "story": "ROOF"},
+        {"point": "2", "story": "ROOF"},
+        {"point": "5", "story": "ROOF"},
+        {"point": "4", "story": "ROOF"}
+      ],
+      "coords": [
+        [0.0, 0.0, 38.0],
+        [25.0, 0.0, 38.0],
+        [25.0, 30.0, 38.0],
+        [0.0, 30.0, 38.0]
+      ],
+      "assigns": {
+        "SECTION": "SLAB8",
+        "DIAPH": "D1",
+        "CARDINALPOINT": "MIDDLE"
+      },
+      "loads": {
+        "SDL": [
+          {
+            "TYPE": "UNIFF",
+            "DIR": "GRAV",
+            "FVAL": 0.015
+          }
+        ],
+        "LIVE": [
+          {
+            "TYPE": "UNIFF",
+            "DIR": "GRAV",
+            "FVAL": 0.02
+          }
+        ]
+      }
+    },
+    {
+      "id": "F2@L2",
+      "label": "F2",
+      "story": "L2",
+      "type": "FLOOR",
+      "nodes": [
+        {"point": "2", "story": "L2"},
+        {"point": "3", "story": "L2"},
+        {"point": "6", "story": "L2"},
+        {"point": "5", "story": "L2"}
+      ],
+      "coords": [
+        [25.0, 0.0, 14.0],
+        [50.0, 0.0, 14.0],
+        [50.0, 30.0, 14.0],
+        [25.0, 30.0, 14.0]
+      ],
+      "assigns": {
+        "SECTION": "SLAB8",
+        "DIAPH": "D1",
+        "CARDINALPOINT": "MIDDLE"
+      },
+      "loads": {
+        "SDL": [
+          {
+            "TYPE": "UNIFF",
+            "DIR": "GRAV",
+            "FVAL": 0.015
+          }
+        ],
+        "LIVE": [
+          {
+            "TYPE": "UNIFF",
+            "DIR": "GRAV",
+            "FVAL": 0.125
+          }
+        ]
+      }
+    },
+    {
+      "id": "F2@L3",
+      "label": "F2",
+      "story": "L3",
+      "type": "FLOOR",
+      "nodes": [
+        {"point": "2", "story": "L3"},
+        {"point": "3", "story": "L3"},
+        {"point": "6", "story": "L3"},
+        {"point": "5", "story": "L3"}
+      ],
+      "coords": [
+        [25.0, 0.0, 26.0],
+        [50.0, 0.0, 26.0],
+        [50.0, 30.0, 26.0],
+        [25.0, 30.0, 26.0]
+      ],
+      "assigns": {
+        "SECTION": "SLAB8",
+        "DIAPH": "D1",
+        "CARDINALPOINT": "MIDDLE"
+      },
+      "loads": {
+        "SDL": [
+          {
+            "TYPE": "UNIFF",
+            "DIR": "GRAV",
+            "FVAL": 0.015
+          }
+        ],
+        "LIVE": [
+          {
+            "TYPE": "UNIFF",
+            "DIR": "GRAV",
+            "FVAL": 0.05
+          }
+        ]
+      }
+    },
+    {
+      "id": "F2@ROOF",
+      "label": "F2",
+      "story": "ROOF",
+      "type": "FLOOR",
+      "nodes": [
+        {"point": "2", "story": "ROOF"},
+        {"point": "3", "story": "ROOF"},
+        {"point": "6", "story": "ROOF"},
+        {"point": "5", "story": "ROOF"}
+      ],
+      "coords": [
+        [25.0, 0.0, 38.0],
+        [50.0, 0.0, 38.0],
+        [50.0, 30.0, 38.0],
+        [25.0, 30.0, 38.0]
+      ],
+      "assigns": {
+        "SECTION": "SLAB8",
+        "DIAPH": "D1",
+        "CARDINALPOINT": "MIDDLE"
+      },
+      "loads": {
+        "SDL": [
+          {
+            "TYPE": "UNIFF",
+            "DIR": "GRAV",
+            "FVAL": 0.015
+          }
+        ],
+        "LIVE": [
+          {
+            "TYPE": "UNIFF",
+            "DIR": "GRAV",
+            "FVAL": 0.02
+          }
+        ]
+      }
+    },
+    {
+      "id": "W1@L2",
+      "label": "W1",
+      "story": "L2",
+      "type": "PANEL",
+      "nodes": [
+        {"point": "3", "story": "BASE"},
+        {"point": "6", "story": "BASE"},
+        {"point": "6", "story": "L2"},
+        {"point": "3", "story": "L2"}
+      ],
+      "coords": [
+        [50.0, 0.0, 0.0],
+        [50.0, 30.0, 0.0],
+        [50.0, 30.0, 14.0],
+        [50.0, 0.0, 14.0]
+      ],
+      "assigns": {
+        "SECTION": "WALL12",
+        "PIER": "P1",
+        "CARDINALPOINT": "MIDDLE"
+      },
+      "loads": {}
+    }
+  ],
+  "definitions": {
+    "analysis_options": {
+      "ACTIVEDOF": {
+        "VALUE": "UX UY UZ RX RY RZ"
+      },
+      "PDELTA": {
+        "METHOD": "NONE"
+      }
+    },
+    "combos": {
+      "1.2D+1.6L": {
+        "TYPE": "Linear Add",
+        "LOADCASE": {
+          "DEAD": 1.2,
+          "SDL": 1.2,
+          "LIVE": 1.6
+        }
+      },
+      "1.4D": {
+        "TYPE": "Linear Add",
+        "LOADCASE": {
+          "DEAD": 1.4,
+          "SDL": 1.4
+        }
+      },
+      "D+L": {
+        "TYPE": "Linear Add",
+        "NOTES": "Service check",
+        "LOADCASE": {
+          "DEAD": 1.0,
+          "LIVE": 1.0,
+          "SDL": 1.0
+        }
+      },
+      "ENV": {
+        "TYPE": "Envelope",
+        "LOADCOMBO": {
+          "1.4D": 1.0,
+          "1.2D+1.6L": 1.0
+        }
+      }
+    },
+    "design_preferences": {
+      "STEELPREFERENCE": {
+        "CODE": "AISC 360-16",
+        "THDESIGN": "EVERYSTEP-ALL",
+        "FRAMETYPE": "SMF"
+      }
+    },
+    "diaphragms": {
+      "D1": {
+        "TYPE": "RIGID"
+      }
+    },
+    "frame_sections": {
+      "CB16X24": {
+        "MATERIAL": "4000Psi",
+        "SHAPE": "Concrete Rectangular",
+        "D": 2.0,
+        "B": 1.333333,
+        "JMOD": 0.1,
+        "I2MOD": 0.35,
+        "I3MOD": 0.35
+      },
+      "HSS6X6X3/8": {
+        "MATERIAL": "A992Fy50",
+        "SHAPE": "HSS6X6X3/8"
+      },
+      "W14X68": {
+        "MATERIAL": "A992Fy50",
+        "SHAPE": "W14X68"
+      },
+      "W14X90": {
+        "MATERIAL": "A992Fy50",
+        "SHAPE": "W14X90",
+        "FILE": "AISC14"
+      },
+      "W18X35": {
+        "MATERIAL": "A992Fy50",
+        "SHAPE": "W18X35"
+      },
+      "W21X44": {
+        "MATERIAL": "A992Fy50",
+        "SHAPE": "W21X44"
+      },
+      "W24X55": {
+        "MATERIAL": "A992Fy50",
+        "SHAPE": "W24X55"
+      }
+    },
+    "functions": {
+      "RS1": {
+        "FUNCTYPE": "SPECTRUM",
+        "DAMPRATIO": 0.05,
+        "SPECTYPE": "ASCE716",
+        "SS": 1.5,
+        "S1": 0.6,
+        "TL": 8.0,
+        "SITECLASS": "D"
+      }
+    },
+    "load_cases": {
+      "DEAD": {
+        "TYPE": "Linear Static",
+        "INITCOND": "PRESET",
+        "LOADPAT": {
+          "DEAD": 1.0
+        }
+      },
+      "LIVE": {
+        "TYPE": "Linear Static",
+        "INITCOND": "PRESET",
+        "LOADPAT": {
+          "LIVE": 1.0
+        }
+      },
+      "Modal": {
+        "TYPE": "Modal - Eigen",
+        "INITCOND": "PRESET",
+        "MAXMODES": 12.0,
+        "MINMODES": 1.0,
+        "EIGENSHIFTFREQ": 0.0,
+        "EIGENCUTOFF": 0.0,
+        "EIGENTOL": 1e-09
+      },
+      "RSX": {
+        "TYPE": "Response Spectrum",
+        "MODALCASE": "Modal",
+        "ACCEL": {
+          "U1": {
+            "FUNC": "RS1",
+            "SF": 32.17405
+          }
+        },
+        "MODALDAMPTYPE": "Constant",
+        "CONSTDAMP": 0.05
+      },
+      "SDL": {
+        "TYPE": "Linear Static",
+        "INITCOND": "PRESET",
+        "LOADPAT": {
+          "SDL": 1.0
+        }
+      }
+    },
+    "load_patterns": {
+      "DEAD": {
+        "TYPE": "Dead",
+        "SELFWEIGHT": 1.0
+      },
+      "LIVE": {
+        "TYPE": "Live",
+        "SELFWEIGHT": 0.0
+      },
+      "SDL": {
+        "TYPE": "Super Dead",
+        "SELFWEIGHT": 0.0
+      }
+    },
+    "mass_sources": {
+      "MsSrc1": {
+        "INCLUDEELEMENTS": "Yes",
+        "INCLUDEADDEDMASS": "Yes",
+        "INCLUDELOADS": "Yes",
+        "ISDEFAULT": "Yes",
+        "LOADS": {
+          "SDL": 1.0
+        }
+      }
+    },
+    "materials": {
+      "4000Psi": {
+        "TYPE": "Concrete",
+        "GRADE": "f'c 4000 psi",
+        "WEIGHTPERVOLUME": 0.15,
+        "SYMTYPE": "Isotropic",
+        "E": 519119.5,
+        "U": 0.2,
+        "A": 5.5e-06,
+        "FC": 576.0
+      },
+      "A992Fy50": {
+        "TYPE": "Steel",
+        "GRADE": "Grade 50",
+        "WEIGHTPERVOLUME": 0.49,
+        "SYMTYPE": "Isotropic",
+        "E": 4176000.0,
+        "U": 0.3,
+        "A": 6.5e-06,
+        "FY": 7200.0,
+        "FU": 9360.0,
+        "FYE": 7920.0,
+        "FUE": 10296.0
+      }
+    },
+    "piers": {
+      "P1": {}
+    },
+    "rebar": {
+      "#4": {
+        "AREA": 0.001388889,
+        "DIA": 0.04166667
+      },
+      "#5": {
+        "AREA": 0.002152778,
+        "DIA": 0.05208333
+      }
+    },
+    "shell_props": {
+      "SLAB8": {
+        "PROPTYPE": "Slab",
+        "MATERIAL": "4000Psi",
+        "MODELINGTYPE": "ShellThin",
+        "SLABTYPE": "Slab",
+        "SLABTHICKNESS": 0.6666667
+      },
+      "WALL12": {
+        "PROPTYPE": "Wall",
+        "MATERIAL": "4000Psi",
+        "MODELINGTYPE": "ShellThin",
+        "WALLTHICKNESS": 1.0,
+        "F11MOD": 0.35,
+        "F22MOD": 0.35,
+        "F12MOD": 0.35
+      }
+    }
+  },
+  "warnings": []
+}

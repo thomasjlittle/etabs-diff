@@ -38,3 +38,5 @@ Thumbs.db
 # Synthetic fixtures are fine
 !tests/**/*.e2k
 !fixtures/**/*.e2k
+# Hackathon models the demo viewer compares (approved to publish)
+!frontend/demo_viewer/models/*.e2k

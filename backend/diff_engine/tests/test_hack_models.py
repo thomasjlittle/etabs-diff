@@ -1,17 +1,18 @@
-"""The hackathon pair in fixtures/hack: Hack_v01a to Hack_v02 changes member properties on Story1 and nothing else.
+"""The hackathon models in frontend/demo_viewer/models and the viewer's precomputed diffs of them.
 
-Ground truth from the model author: one column changes section size, one concrete material changes within an
-existing section property, and one column rotates 90 degrees.
+Hack_v01a to Hack_v02 changes member properties on Story1 and nothing else. Ground truth from the model author:
+one column changes section size, one concrete material changes within an existing section property, and one
+column rotates 90 degrees. Hack_v02a is Hack_v02 exported in lb and ft, so it must diff clean against Hack_v02.
 """
 
 import unittest
-from pathlib import Path
 from typing import Any, ClassVar, Dict, cast
 
 from diff_engine import DiffOutput, diff_files
 from diff_engine.contract import TableDiff
+from diff_engine.demo_diffs import DIFFS_DIR, MODELS_DIR, build
 
-HACK = Path(__file__).resolve().parents[3] / "fixtures" / "hack"
+HACK = MODELS_DIR
 
 
 class HackPairTest(unittest.TestCase):
@@ -46,6 +47,23 @@ class HackPairTest(unittest.TestCase):
         self.assertEqual(self.result["summary"],
                          {"unchanged": 10, "added": 0, "removed": 0, "modified": 2, "affected": 1})
         self.assertTrue(all(s["elevA"] == s["elevB"] for s in self.result["stories"]))
+
+
+class UnitsOnlyTest(unittest.TestCase):
+    def test_lb_ft_export_diffs_clean(self) -> None:
+        result = diff_files(HACK / "Hack_v02.e2k", HACK / "Hack_v02a.e2k")
+        self.assertEqual(result["summary"],
+                         {"unchanged": 13, "added": 0, "removed": 0, "modified": 0, "affected": 0})
+        for name, table in cast(Dict[str, TableDiff], result["tables"]).items():
+            with self.subTest(table=name):
+                self.assertEqual(table, {"added": [], "removed": [], "modified": {}})
+        self.assertTrue(all(s["elevA"] == s["elevB"] for s in result["stories"]))
+
+
+class BundledDiffsTest(unittest.TestCase):
+    def test_committed_diffs_match_a_fresh_run(self) -> None:
+        committed = {p.name: p.read_text(encoding="utf-8") for p in DIFFS_DIR.glob("*.json")}
+        self.assertEqual(committed, build(), "stale viewer diffs, run: just demo-diffs")
 
 
 if __name__ == "__main__":

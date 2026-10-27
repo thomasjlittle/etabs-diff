@@ -1,0 +1,68 @@
+{
+  "revisions": [
+    {
+      "file": "Hack_v01.e2k",
+      "parents": [],
+      "summary": "Add one-story frame on Story1",
+      "body": "Columns C1 to C4, beams B1 to B4 and slab F2 on Story1, with fixed bases at joints 1 to 4.",
+      "author": "Hackathon team",
+      "date": "2026-10-27T11:57:04"
+    },
+    {
+      "file": "Hack_v01a.e2k",
+      "parents": ["Hack_v01.e2k"],
+      "summary": "Add section types, releases, loads and combos",
+      "body": "Two column types, a concrete beam type with a different f'c material, two pinned column bases, a steel beam at 0.5 EI in I22 and I33, a pinned end release, D and L load patterns, two load combos, a dead UDL and a live point frame load, and a dummy mass source.",
+      "author": "Hackathon team",
+      "date": "2026-10-27T12:54:23"
+    },
+    {
+      "file": "Hack_v02.e2k",
+      "parents": ["Hack_v01a.e2k"],
+      "summary": "Change member properties on Story 1",
+      "body": "Resize C3 to W16X36, rotate C1 90 deg, and switch Conc16x10 to 6 ksi.",
+      "author": "Hackathon team",
+      "date": "2026-10-27T13:12:24"
+    },
+    {
+      "file": "Hack_v02a.e2k",
+      "parents": ["Hack_v02.e2k"],
+      "summary": "Export Hack_v02 in lb and ft",
+      "body": "Same model as Hack_v02, saved in lb-ft units instead of kip-in. Should diff clean against Hack_v02.",
+      "author": "Hackathon team",
+      "date": "2026-10-27T13:13:44"
+    },
+    {
+      "file": "Hack_v03.e2k",
+      "parents": ["Hack_v02.e2k"],
+      "summary": "Extend B1 to B7 and add beams B5 and B8",
+      "body": "Replace B1 with a longer Conc24x10 beam B7 (300 in) from the same start point, with its dead load now trapezoidal over the first 80% and the live point load moved to 0.4. Add W18X60 beam B5 and a Conc16x10 cantilever B8 off the back right corner. All on Story1.",
+      "author": "Hackathon team",
+      "date": "2026-10-27T13:26:41"
+    },
+    {
+      "file": "Hack_v04.e2k",
+      "parents": ["Hack_v03.e2k"],
+      "summary": "Copy Story1 framing up to Story2",
+      "body": "Add columns C1 to C4, beams B2, B3, B4, B5, B7 and B8, and slab F2 on Story2, with the same sections and the same loads on B2 and B7.",
+      "author": "Hackathon team",
+      "date": "2026-10-27T13:27:15"
+    },
+    {
+      "file": "Hack_v05.e2k",
+      "parents": ["Hack_v04.e2k"],
+      "summary": "Remove B5 on Story2 and fix base joint 1",
+      "body": "Remove B5 at Story2, set the C2 rigid zone factor to 1.0 at Story2, raise the B7 live point load at Story2 from 5 to 10 kip, and fix all six DOF at base joint 1.",
+      "author": "Hackathon team",
+      "date": "2026-10-27T14:13:23"
+    },
+    {
+      "file": "Hack_v06.e2k",
+      "parents": ["Hack_v05.e2k"],
+      "summary": "Edit materials and add section Conc16x10_5ksi",
+      "body": "Drop A992Fy50 E from 29000 to 20000 ksi (17 steel members affected), set 6Ksi weight to 0, add material 5ksi and section Conc16x10_5ksi, move B2 at Story2 onto it, and rotate B7 at Story1 90 deg.",
+      "author": "Hackathon team",
+      "date": "2026-10-27T14:25:09"
+    }
+  ]
+}

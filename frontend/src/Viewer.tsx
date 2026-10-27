@@ -167,8 +167,9 @@ function Scene({ result, selectedId, onSelect, viewMode, cameraMode, colorBy, st
       <OrbitControls ref={controls} makeDefault target={center} enableRotate={cameraMode === '3d'}
         onStart={() => sync && (sync.driver = me)} onChange={broadcast} />
 
-      <Bounds fit clip observe margin={1.15}>
-        <ZoomController box={selectedBox} zoomTick={zoomTick} resetTick={resetTick} sync={sync} />
+      {/* Loads stick out past the members (roof arrows above the top story), so frame with more room. */}
+      <Bounds fit clip observe margin={loadView ? 1.4 : 1.15}>
+        <ZoomController box={selectedBox} zoomTick={zoomTick} resetTick={resetTick} sync={sync} roomy={!!loadView} />
         {result.members.filter((m) => isVisible(m.side, viewMode)).map((m) => {
           const style = styles.get(m.id) ?? 'context';
           const isSel = selectedMembers.has(m.id);
@@ -193,7 +194,7 @@ function Scene({ result, selectedId, onSelect, viewMode, cameraMode, colorBy, st
       </Bounds>
 
       {loadView && result.loads && drawsLoads(viewMode, loadView) && (
-        <LoadLayer loads={result.loads} view={loadView} length={size * 0.06 * loadView.scale} storyFilter={storyFilter} onFocus={focus} />
+        <LoadLayer loads={result.loads} view={loadView} length={size * 0.07 * loadView.scale} storyFilter={storyFilter} onFocus={focus} />
       )}
 
       {viewMode !== 'baseline' && arrows.map((a, i) => <primitive key={i} object={a} />)}
@@ -249,7 +250,7 @@ function LoadLayer({ loads, view, length, storyFilter, onFocus }: {
             segments
             points={segs.flat()}
             color={changed ? LOAD_COLORS.changed : LOAD_COLORS.same}
-            lineWidth={changed ? 2 : 1.25}
+            lineWidth={changed ? 2.5 : 1.5}
             dashed={local}
             dashSize={6}
             gapSize={4}
@@ -265,11 +266,12 @@ function LoadLayer({ loads, view, length, storyFilter, onFocus }: {
 }
 
 /** Zooms to the selected change when it changes or when "Zoom to selected" is pressed. */
-function ZoomController({ box, zoomTick, resetTick, sync }: {
-  box: THREE.Box3 | null; zoomTick: number; resetTick: number; sync?: CameraSync | null;
+function ZoomController({ box, zoomTick, resetTick, sync, roomy }: {
+  box: THREE.Box3 | null; zoomTick: number; resetTick: number; sync?: CameraSync | null; roomy: boolean;
 }) {
   const api = useBounds();
   const firstReset = useRef(resetTick);
+  const firstRoomy = useRef(roomy);
   useEffect(() => {
     if (!box) return;
     if (sync) sync.driver = null; // each pane frames the selection itself
@@ -280,6 +282,12 @@ function ZoomController({ box, zoomTick, resetTick, sync }: {
     if (sync) sync.driver = null;
     api.refresh().clip().fit();
   }, [resetTick]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { // loads on or off: refit with the new margin
+    if (roomy === firstRoomy.current) return;
+    firstRoomy.current = roomy;
+    if (sync) sync.driver = null;
+    api.refresh().clip().fit();
+  }, [roomy, api]); // eslint-disable-line react-hooks/exhaustive-deps
   return null;
 }
 

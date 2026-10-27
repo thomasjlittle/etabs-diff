@@ -74,7 +74,8 @@ export function LoadDetails({ result, view, focus, selectedId }: {
       <div>
         <h3 className="font-semibold text-slate-700">Loads on {elementName(el)}</h3>
         <p className="text-slate-500">
-          {view.pick.name} ({view.pick.kind}) · {changed ? <span className="font-semibold text-red-700">differs between models</span> : 'same in both models'}
+          {view.pick.name} ({view.pick.kind}) · {pickReason(loads, view) ? `not drawn: ${pickReason(loads, view)}`
+            : changed ? <span className="font-semibold text-red-700">differs between models</span> : 'same in both models'}
         </p>
       </div>
       {(['a', 'b'] as const).map((side) => {

@@ -206,12 +206,19 @@ export function maxByClass(glyphs: Glyph[]): Record<LoadClass, number> {
 export type Seg = [Vec3, Vec3];
 
 /**
- * Line segments for a glyph. `length` is the arrow length for the class's largest value; each arrow is
- * scaled to its own value. Heads sit on the element, tails away from it, like a load diagram.
+ * Arrow length for each class's largest value, relative to the base length. A point load is one lone
+ * arrow beside rows of distributed-load arrows, so it gets more length to read at the same scale.
+ */
+export const CLASS_LENGTH: Record<LoadClass, number> = { force: 2, line: 1, area: 1 };
+
+/**
+ * Line segments for a glyph. `length` times CLASS_LENGTH is the arrow length for the class's largest
+ * value; each arrow is scaled to its own value. Heads sit on the element, tails away from it, like a load diagram.
  */
 export function glyphSegments(gl: Glyph, max: Record<LoadClass, number>, length: number): Seg[] {
   const segs: Seg[] = [];
   const tails: Vec3[] = [];
+  length *= CLASS_LENGTH[gl.cls];
   const head = length * 0.12;
   for (const a of gl.arrows) {
     const L = max[gl.cls] ? (Math.abs(a.value) / max[gl.cls]) * length : 0;
@@ -272,11 +279,30 @@ export function pickOptions(m: ModelLoads): Record<LoadPick['kind'], string[]> {
   return { pattern: patterns, case: names((d) => d.cases), combo: names((d) => d.combos) };
 }
 
-/** What the loads control shows: one pick, on one model, at a scale. null in the app means loads are off. */
-export interface LoadView { pick: LoadPick; side: LoadSide; scale: number }
+/** What the loads control shows: one pick at a scale, each pane drawing its own model. null in the app means loads are off. */
+export interface LoadView { pick: LoadPick; scale: number }
 
-/** Why the pick can't be drawn on its model, or null when it can. */
-export const pickReason = (m: ModelLoads, v: LoadView) => {
-  const f = pickFactors(m.definitions?.[v.side], v.pick);
+/** Why the pick can't be drawn on one model, or null when it can. */
+export const pickReason = (m: ModelLoads, side: LoadSide, pick: LoadPick) => {
+  const f = pickFactors(m.definitions?.[side], pick);
   return 'reason' in f ? f.reason : null;
 };
+
+/** Whether the pick puts any load on any element of one model. */
+export const hasLoads = (m: ModelLoads, side: LoadSide, pick: LoadPick) =>
+  m.elements.some((el) => loadsFor(el, side, pick, m.definitions).length > 0);
+
+/** Why one model's pane draws nothing for the pick, or null when it draws loads. `file`: that model's file name. */
+export function loadNote(m: ModelLoads, side: LoadSide, pick: LoadPick, file: string): string | null {
+  const reason = pickReason(m, side, pick);
+  if (reason) return `${pick.name} not drawn: ${reason}`;
+  return hasLoads(m, side, pick) ? null : `No applied loads in ${file.replace(/\.[^.]+$/, '')} for ${pick.name}`;
+}
+
+/** Loads on: the first pattern that loads an element in either model (so not a self-weight-only one). */
+export function defaultLoadView(m: ModelLoads): LoadView {
+  const patterns = pickOptions(m).pattern;
+  const pick = (name: string): LoadPick => ({ kind: 'pattern', name });
+  const name = patterns.find((p) => hasLoads(m, 'a', pick(p)) || hasLoads(m, 'b', pick(p))) ?? patterns[0] ?? '';
+  return { pick: pick(name), scale: 1 };
+}

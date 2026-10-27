@@ -88,7 +88,7 @@ describe('arrows', () => {
     const [gl] = loadGlyphs(beam({}), [{ TYPE: 'POINTF', DIR: 'GRAV', FVAL: 10, DIST: 120 }]);
     expect(gl.arrows).toEqual([{ at: [120, 0, 144], dir: [0, 0, -1], value: 10 }]);
     const [shaft] = glyphSegments(gl, maxByClass([gl]), 50);
-    expect(shaft).toEqual([[120, 0, 194], [120, 0, 144]]);
+    expect(shaft).toEqual([[120, 0, 244], [120, 0, 144]]); // point loads: twice the base length
   });
 
   it('trapezoid: a row of arrows over its extent, scaled by value, tails joined', () => {
@@ -102,13 +102,13 @@ describe('arrows', () => {
     expect(tailLine[4][1]).toEqual([150, 0, 184]);
   });
 
-  it('largest load in each class gets the full length', () => {
+  it('largest load in each class gets the full length, smaller ones in proportion', () => {
     const els = loadGlyphs(beam({}), [{ TYPE: 'POINTF', DIR: 'Z', FVAL: -4, DIST: 0 }, { TYPE: 'POINTF', DIR: 'Z', FVAL: 2, DIST: 300 }]);
     const max = maxByClass(els);
     expect(max.force).toBe(4);
     // Negative Z points down, so its tail is above the member.
-    expect(glyphSegments(els[0], max, 30)[0]).toEqual([[0, 0, 174], [0, 0, 144]]);
-    expect(glyphSegments(els[1], max, 30)[0]).toEqual([[300, 0, 129], [300, 0, 144]]);
+    expect(glyphSegments(els[0], max, 30)[0]).toEqual([[0, 0, 204], [0, 0, 144]]);
+    expect(glyphSegments(els[1], max, 30)[0]).toEqual([[300, 0, 114], [300, 0, 144]]);
   });
 
   it('joint force: the resultant at the node; moments not drawn', () => {

@@ -12,7 +12,7 @@ import { RevisionLog } from './RevisionLog';
 import { categoryOf } from './categories';
 import { UploadStart } from './UploadStart';
 import { LoadDetails, LoadsControl } from './LoadPanel';
-import type { LoadView } from './loads';
+import { type LoadView, defaultLoadView } from './loads';
 
 // Loaded separately so tests (no WebGL) never import three.js.
 const Viewer = lazy(() => import('./Viewer'));
@@ -203,7 +203,8 @@ export default function App() {
   const [retryTick, setRetryTick] = useState(0);
   const waitingForFile = (source === 'diff-file' && !diffFile) || (source === 'e2k-upload' && !compared);
   const [page, setPage] = useState<'review' | 'log'>('review');
-  // Applied loads: off by default; the element last hovered or clicked shows its loads in the details panel.
+  // Applied loads: on by default, back to the default pick for each new pair; the element last hovered or
+  // clicked shows its loads in the details panel.
   const [loadView, setLoadView] = useState<LoadView | null>(null);
   const [loadFocus, setLoadFocus] = useState<string | null>(null);
 
@@ -219,7 +220,11 @@ export default function App() {
       : source === 'e2k-upload' && compared ? compareModels(...compared)
         : loadScenario(source, { original, second });
     loading
-      .then((result) => current && dispatch({ type: 'load_ok', result }))
+      .then((result) => {
+        if (!current) return;
+        dispatch({ type: 'load_ok', result });
+        setLoadView(result.loads ? defaultLoadView(result.loads) : null);
+      })
       .catch((e: Error) => current && dispatch({ type: 'load_fail', message: e.message }));
     return () => { current = false; }; // ignore a slow load that was superseded
   }, [source, original, second, diffFile, compared, retryTick, waitingForFile]);

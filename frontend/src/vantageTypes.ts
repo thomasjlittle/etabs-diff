@@ -51,7 +51,7 @@ export interface Change {
   evidence: Evidence[];
 }
 
-export interface Group { id: string; title: string; tier: string; change_ids: string[] }
+export interface Group { id: string; title: string; change_ids: string[] }
 
 export interface Coverage { group: string; record: string; status: 'compared' | 'seen_not_compared' }
 

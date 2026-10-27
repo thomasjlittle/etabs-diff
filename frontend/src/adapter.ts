@@ -12,18 +12,18 @@ import { fieldCategory, tableCategory } from './categories';
 export interface TeamResult { modelA: Model; modelB: Model; diff: Diff }
 
 // Planning-board groups, in board order (same list as src/mock/make_mock.py).
-export const GROUPS: [string, string, string][] = [
-  ['G1', 'Geometry / level changes', 'MVP'],
-  ['1A', 'Section reassigned', 'MVP'],
-  ['1B', 'Section definition edited', 'MVP'],
-  ['1C', 'Material edited', 'MVP'],
-  ['1D', 'Property modifiers', '2nd pass'],
-  ['1E', 'End releases / end offsets / insertion point / local axis', '2nd pass'],
-  ['2A', 'Supports and springs', '2nd pass'],
-  ['2B', 'Applied loads', '2nd pass'],
-  ['T3', 'Tables only: mass, load patterns, load cases, combos', '3rd pass'],
-  ['ST', 'Stretch: walls/slabs, diaphragm assigns, spectrum/time history', 'Stretch'],
-  ['LO', 'Label-only / not physical', 'Info'],
+export const GROUPS: [string, string][] = [
+  ['G1', 'Geometry / level changes'],
+  ['1A', 'Section reassigned'],
+  ['1B', 'Section definition edited'],
+  ['1C', 'Material edited'],
+  ['1D', 'Property modifiers'],
+  ['1E', 'End releases / end offsets / insertion point / local axis'],
+  ['2A', 'Supports and springs'],
+  ['2B', 'Applied loads'],
+  ['T3', 'Tables only: mass, load patterns, load cases, combos'],
+  ['ST', 'Walls/slabs, diaphragm assigns, spectrum/time history'],
+  ['LO', 'Label-only / not physical'],
 ];
 
 // diff.tables key -> [group, record name shown in coverage, subject prefix]
@@ -168,8 +168,8 @@ export function adapt({ modelA, modelB, diff }: TeamResult): Result {
 
   // ---- assemble ----
   const changes: Change[] = draft.map((c, n) => ({ id: `C${String(n + 1).padStart(2, '0')}`, ...c }));
-  const groups: Group[] = GROUPS.map(([id, title, tier]) => ({
-    id, title, tier, change_ids: changes.filter((c) => c.group === id).map((c) => c.id),
+  const groups: Group[] = GROUPS.map(([id, title]) => ({
+    id, title, change_ids: changes.filter((c) => c.group === id).map((c) => c.id),
   }));
   const coverage: Coverage[] = [
     { group: 'G1', record: 'Frame members', status: 'compared' },

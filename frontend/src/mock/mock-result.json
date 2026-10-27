@@ -1417,7 +1417,6 @@
   {
    "id": "G1",
    "title": "Geometry / level changes",
-   "tier": "MVP",
    "change_ids": [
     "C01",
     "C02",
@@ -1427,7 +1426,6 @@
   {
    "id": "1A",
    "title": "Section reassigned",
-   "tier": "MVP",
    "change_ids": [
     "C06"
    ]
@@ -1435,13 +1433,11 @@
   {
    "id": "1B",
    "title": "Section definition edited",
-   "tier": "MVP",
    "change_ids": []
   },
   {
    "id": "1C",
    "title": "Material edited",
-   "tier": "MVP",
    "change_ids": [
     "C07"
    ]
@@ -1449,43 +1445,36 @@
   {
    "id": "1D",
    "title": "Property modifiers",
-   "tier": "2nd pass",
    "change_ids": []
   },
   {
    "id": "1E",
    "title": "End releases / end offsets / insertion point / local axis",
-   "tier": "2nd pass",
    "change_ids": []
   },
   {
    "id": "2A",
    "title": "Supports and springs",
-   "tier": "2nd pass",
    "change_ids": []
   },
   {
    "id": "2B",
    "title": "Applied loads",
-   "tier": "2nd pass",
    "change_ids": []
   },
   {
    "id": "T3",
    "title": "Tables only: mass, load patterns, load cases, combos",
-   "tier": "3rd pass",
    "change_ids": []
   },
   {
    "id": "ST",
-   "title": "Stretch: walls/slabs, diaphragm assigns, spectrum/time history",
-   "tier": "Stretch",
+   "title": "Walls/slabs, diaphragm assigns, spectrum/time history",
    "change_ids": []
   },
   {
    "id": "LO",
    "title": "Label-only / not physical",
-   "tier": "Info",
    "change_ids": [
     "C04",
     "C05"

@@ -63,6 +63,8 @@ There's also a little easter egg: `egit`, git for model versions. It works on th
 
 `./egit --help` and `./egit <command> --help` have the rest.
 
+To run it bare as `egit` from any folder, symlink it onto your PATH once from the repo root: `ln -s "$PWD/egit" ~/.local/bin/egit`. It finds the history from its own location, so the symlink works anywhere.
+
 # How It Compares Models
 
 - Both files are normalized to kip and inch, so the same model saved in different units diffs clean (`Hack_v02a` is `Hack_v02` in lb and ft).

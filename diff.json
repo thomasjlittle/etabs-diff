@@ -1,0 +1,298 @@
+{
+  "frames": {
+    "added": [
+      "D3@L3"
+    ],
+    "removed": [
+      "B7@L1"
+    ],
+    "modified": {
+      "B1@L1": [
+        {
+          "field": "props.modI33",
+          "before": 1,
+          "after": 1.5,
+          "affects": [
+            "stiffness"
+          ]
+        }
+      ],
+      "B4@L3": [
+        {
+          "field": "props.lineMass",
+          "before": null,
+          "after": 1.2e-06,
+          "affects": [
+            "mass"
+          ]
+        }
+      ],
+      "B5@L2": [
+        {
+          "field": "props.releaseI",
+          "before": "",
+          "after": "M3",
+          "affects": [
+            "stiffness"
+          ]
+        },
+        {
+          "field": "props.releaseJ",
+          "before": "",
+          "after": "M3",
+          "affects": [
+            "stiffness"
+          ]
+        }
+      ],
+      "B9@L1": [
+        {
+          "field": "label",
+          "before": "B4",
+          "after": "B9",
+          "affects": []
+        }
+      ],
+      "C2@L1": [
+        {
+          "field": "section",
+          "before": "W14X90",
+          "after": "W14X120",
+          "affects": [
+            "stiffness",
+            "mass"
+          ]
+        }
+      ],
+      "D2@L2": [
+        {
+          "field": "nodes",
+          "before": [
+            "1@L1",
+            "2@L2"
+          ],
+          "after": [
+            "1@L1",
+            "3@L2"
+          ],
+          "affects": [
+            "geometry"
+          ]
+        }
+      ]
+    },
+    "matchedBy": {
+      "B1@L1": "label",
+      "B1@L2": "label",
+      "B1@L3": "label",
+      "B2@L1": "label",
+      "B2@L2": "label",
+      "B2@L3": "label",
+      "B3@L1": "label",
+      "B3@L2": "label",
+      "B3@L3": "label",
+      "B4@L2": "label",
+      "B4@L3": "label",
+      "B5@L1": "label",
+      "B5@L2": "label",
+      "B5@L3": "label",
+      "B6@L1": "label",
+      "B6@L2": "label",
+      "B6@L3": "label",
+      "B7@L2": "label",
+      "B7@L3": "label",
+      "B9@L1": "geometry",
+      "C1@L1": "label",
+      "C1@L2": "label",
+      "C1@L3": "label",
+      "C2@L1": "label",
+      "C2@L2": "label",
+      "C2@L3": "label",
+      "C3@L1": "label",
+      "C3@L2": "label",
+      "C3@L3": "label",
+      "C4@L1": "label",
+      "C4@L2": "label",
+      "C4@L3": "label",
+      "C5@L1": "label",
+      "C5@L2": "label",
+      "C5@L3": "label",
+      "C6@L1": "label",
+      "C6@L2": "label",
+      "C6@L3": "label",
+      "D1@L1": "label",
+      "D2@L2": "label"
+    }
+  },
+  "tables": {
+    "stories": {
+      "added": [],
+      "removed": [],
+      "modified": {
+        "L3": [
+          {
+            "field": "elev",
+            "before": 432,
+            "after": 444,
+            "affects": [
+              "geometry"
+            ]
+          }
+        ]
+      }
+    },
+    "nodes": {
+      "added": [],
+      "removed": [],
+      "modified": {
+        "3@Base": [
+          {
+            "field": "props.restraint",
+            "before": "UX UY UZ",
+            "after": "UX UY UZ RX RY RZ",
+            "affects": [
+              "stiffness"
+            ]
+          }
+        ]
+      }
+    },
+    "areas": {
+      "added": [],
+      "removed": [],
+      "modified": {}
+    },
+    "loads": {
+      "added": [
+        "5@L3|Live|Force|Gravity"
+      ],
+      "removed": [],
+      "modified": {
+        "F1@L2|SDL|Uniform|Gravity": [
+          {
+            "field": "values",
+            "before": [
+              0.000139
+            ],
+            "after": [
+              0.000208
+            ],
+            "affects": [
+              "load"
+            ]
+          }
+        ]
+      }
+    },
+    "materials": {
+      "added": [],
+      "removed": [],
+      "modified": {
+        "4000Psi": [
+          {
+            "field": "E",
+            "before": 3605,
+            "after": 4031,
+            "affects": [
+              "stiffness"
+            ]
+          },
+          {
+            "field": "fc",
+            "before": 4,
+            "after": 5,
+            "affects": []
+          }
+        ]
+      }
+    },
+    "frameSections": {
+      "added": [],
+      "removed": [],
+      "modified": {
+        "BR1": [
+          {
+            "field": "t",
+            "before": 0.349,
+            "after": 0.465,
+            "affects": [
+              "stiffness",
+              "mass"
+            ]
+          }
+        ]
+      }
+    },
+    "shellSections": {
+      "added": [],
+      "removed": [],
+      "modified": {}
+    },
+    "loadPatterns": {
+      "added": [],
+      "removed": [],
+      "modified": {
+        "EQX": [
+          {
+            "field": "R",
+            "before": 8,
+            "after": 6,
+            "affects": [
+              "load"
+            ]
+          }
+        ]
+      }
+    },
+    "loadCases": {
+      "added": [],
+      "removed": [],
+      "modified": {
+        "EQX": [
+          {
+            "field": "pDelta",
+            "before": "None",
+            "after": "Nonlinear",
+            "affects": [
+              "load"
+            ]
+          }
+        ]
+      }
+    },
+    "combos": {
+      "added": [
+        "0.9D+E"
+      ],
+      "removed": [],
+      "modified": {
+        "1.2D+L+E": [
+          {
+            "field": "factors.Live",
+            "before": 1.0,
+            "after": 0.5,
+            "affects": [
+              "load"
+            ]
+          }
+        ]
+      }
+    },
+    "massSource": {
+      "added": [],
+      "removed": [],
+      "modified": {
+        "MsSrc1": [
+          {
+            "field": "Live",
+            "before": null,
+            "after": 0.25,
+            "affects": [
+              "mass"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

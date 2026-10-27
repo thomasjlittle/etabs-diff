@@ -1,0 +1,1801 @@
+{
+  "meta": {
+    "file": "model-a.e2k",
+    "etabsVersion": "22.1.0",
+    "sourceUnits": "kip, in"
+  },
+  "stories": [
+    {
+      "name": "L3",
+      "elev": 432
+    },
+    {
+      "name": "L2",
+      "elev": 288
+    },
+    {
+      "name": "L1",
+      "elev": 144
+    },
+    {
+      "name": "Base",
+      "elev": 0
+    }
+  ],
+  "nodes": [
+    {
+      "id": "1@L3",
+      "label": "1",
+      "story": "L3",
+      "xyz": [
+        0,
+        0,
+        432
+      ],
+      "props": {}
+    },
+    {
+      "id": "2@L3",
+      "label": "2",
+      "story": "L3",
+      "xyz": [
+        360,
+        0,
+        432
+      ],
+      "props": {}
+    },
+    {
+      "id": "3@L3",
+      "label": "3",
+      "story": "L3",
+      "xyz": [
+        720,
+        0,
+        432
+      ],
+      "props": {}
+    },
+    {
+      "id": "4@L3",
+      "label": "4",
+      "story": "L3",
+      "xyz": [
+        0,
+        360,
+        432
+      ],
+      "props": {}
+    },
+    {
+      "id": "5@L3",
+      "label": "5",
+      "story": "L3",
+      "xyz": [
+        360,
+        360,
+        432
+      ],
+      "props": {}
+    },
+    {
+      "id": "6@L3",
+      "label": "6",
+      "story": "L3",
+      "xyz": [
+        720,
+        360,
+        432
+      ],
+      "props": {}
+    },
+    {
+      "id": "1@L2",
+      "label": "1",
+      "story": "L2",
+      "xyz": [
+        0,
+        0,
+        288
+      ],
+      "props": {}
+    },
+    {
+      "id": "2@L2",
+      "label": "2",
+      "story": "L2",
+      "xyz": [
+        360,
+        0,
+        288
+      ],
+      "props": {}
+    },
+    {
+      "id": "3@L2",
+      "label": "3",
+      "story": "L2",
+      "xyz": [
+        720,
+        0,
+        288
+      ],
+      "props": {}
+    },
+    {
+      "id": "4@L2",
+      "label": "4",
+      "story": "L2",
+      "xyz": [
+        0,
+        360,
+        288
+      ],
+      "props": {}
+    },
+    {
+      "id": "5@L2",
+      "label": "5",
+      "story": "L2",
+      "xyz": [
+        360,
+        360,
+        288
+      ],
+      "props": {}
+    },
+    {
+      "id": "6@L2",
+      "label": "6",
+      "story": "L2",
+      "xyz": [
+        720,
+        360,
+        288
+      ],
+      "props": {}
+    },
+    {
+      "id": "1@L1",
+      "label": "1",
+      "story": "L1",
+      "xyz": [
+        0,
+        0,
+        144
+      ],
+      "props": {}
+    },
+    {
+      "id": "2@L1",
+      "label": "2",
+      "story": "L1",
+      "xyz": [
+        360,
+        0,
+        144
+      ],
+      "props": {}
+    },
+    {
+      "id": "3@L1",
+      "label": "3",
+      "story": "L1",
+      "xyz": [
+        720,
+        0,
+        144
+      ],
+      "props": {}
+    },
+    {
+      "id": "4@L1",
+      "label": "4",
+      "story": "L1",
+      "xyz": [
+        0,
+        360,
+        144
+      ],
+      "props": {}
+    },
+    {
+      "id": "5@L1",
+      "label": "5",
+      "story": "L1",
+      "xyz": [
+        360,
+        360,
+        144
+      ],
+      "props": {}
+    },
+    {
+      "id": "6@L1",
+      "label": "6",
+      "story": "L1",
+      "xyz": [
+        720,
+        360,
+        144
+      ],
+      "props": {}
+    },
+    {
+      "id": "1@Base",
+      "label": "1",
+      "story": "Base",
+      "xyz": [
+        0,
+        0,
+        0
+      ],
+      "props": {
+        "restraint": "UX UY UZ RX RY RZ"
+      }
+    },
+    {
+      "id": "2@Base",
+      "label": "2",
+      "story": "Base",
+      "xyz": [
+        360,
+        0,
+        0
+      ],
+      "props": {
+        "restraint": "UX UY UZ RX RY RZ"
+      }
+    },
+    {
+      "id": "3@Base",
+      "label": "3",
+      "story": "Base",
+      "xyz": [
+        720,
+        0,
+        0
+      ],
+      "props": {
+        "restraint": "UX UY UZ"
+      }
+    },
+    {
+      "id": "4@Base",
+      "label": "4",
+      "story": "Base",
+      "xyz": [
+        0,
+        360,
+        0
+      ],
+      "props": {
+        "restraint": "UX UY UZ RX RY RZ"
+      }
+    },
+    {
+      "id": "5@Base",
+      "label": "5",
+      "story": "Base",
+      "xyz": [
+        360,
+        360,
+        0
+      ],
+      "props": {
+        "restraint": "UX UY UZ RX RY RZ"
+      }
+    },
+    {
+      "id": "6@Base",
+      "label": "6",
+      "story": "Base",
+      "xyz": [
+        720,
+        360,
+        0
+      ],
+      "props": {
+        "restraint": "UX UY UZ RX RY RZ"
+      }
+    }
+  ],
+  "frames": [
+    {
+      "id": "C1@L1",
+      "label": "C1",
+      "story": "L1",
+      "kind": "column",
+      "nodes": [
+        "1@Base",
+        "1@L1"
+      ],
+      "i": [
+        0,
+        0,
+        0
+      ],
+      "j": [
+        0,
+        0,
+        144
+      ],
+      "section": "W14X90",
+      "props": {}
+    },
+    {
+      "id": "C2@L1",
+      "label": "C2",
+      "story": "L1",
+      "kind": "column",
+      "nodes": [
+        "2@Base",
+        "2@L1"
+      ],
+      "i": [
+        360,
+        0,
+        0
+      ],
+      "j": [
+        360,
+        0,
+        144
+      ],
+      "section": "W14X90",
+      "props": {}
+    },
+    {
+      "id": "C3@L1",
+      "label": "C3",
+      "story": "L1",
+      "kind": "column",
+      "nodes": [
+        "3@Base",
+        "3@L1"
+      ],
+      "i": [
+        720,
+        0,
+        0
+      ],
+      "j": [
+        720,
+        0,
+        144
+      ],
+      "section": "W14X90",
+      "props": {}
+    },
+    {
+      "id": "C4@L1",
+      "label": "C4",
+      "story": "L1",
+      "kind": "column",
+      "nodes": [
+        "4@Base",
+        "4@L1"
+      ],
+      "i": [
+        0,
+        360,
+        0
+      ],
+      "j": [
+        0,
+        360,
+        144
+      ],
+      "section": "W14X90",
+      "props": {}
+    },
+    {
+      "id": "C5@L1",
+      "label": "C5",
+      "story": "L1",
+      "kind": "column",
+      "nodes": [
+        "5@Base",
+        "5@L1"
+      ],
+      "i": [
+        360,
+        360,
+        0
+      ],
+      "j": [
+        360,
+        360,
+        144
+      ],
+      "section": "W14X90",
+      "props": {}
+    },
+    {
+      "id": "C6@L1",
+      "label": "C6",
+      "story": "L1",
+      "kind": "column",
+      "nodes": [
+        "6@Base",
+        "6@L1"
+      ],
+      "i": [
+        720,
+        360,
+        0
+      ],
+      "j": [
+        720,
+        360,
+        144
+      ],
+      "section": "W14X90",
+      "props": {}
+    },
+    {
+      "id": "B1@L1",
+      "label": "B1",
+      "story": "L1",
+      "kind": "beam",
+      "nodes": [
+        "1@L1",
+        "2@L1"
+      ],
+      "i": [
+        0,
+        0,
+        144
+      ],
+      "j": [
+        360,
+        0,
+        144
+      ],
+      "section": "W18X35",
+      "props": {
+        "modI33": 1,
+        "releaseI": "",
+        "releaseJ": ""
+      }
+    },
+    {
+      "id": "B2@L1",
+      "label": "B2",
+      "story": "L1",
+      "kind": "beam",
+      "nodes": [
+        "2@L1",
+        "3@L1"
+      ],
+      "i": [
+        360,
+        0,
+        144
+      ],
+      "j": [
+        720,
+        0,
+        144
+      ],
+      "section": "W18X35",
+      "props": {
+        "modI33": 1,
+        "releaseI": "",
+        "releaseJ": ""
+      }
+    },
+    {
+      "id": "B3@L1",
+      "label": "B3",
+      "story": "L1",
+      "kind": "beam",
+      "nodes": [
+        "4@L1",
+        "5@L1"
+      ],
+      "i": [
+        0,
+        360,
+        144
+      ],
+      "j": [
+        360,
+        360,
+        144
+      ],
+      "section": "W18X35",
+      "props": {
+        "modI33": 1,
+        "releaseI": "",
+        "releaseJ": ""
+      }
+    },
+    {
+      "id": "B4@L1",
+      "label": "B4",
+      "story": "L1",
+      "kind": "beam",
+      "nodes": [
+        "5@L1",
+        "6@L1"
+      ],
+      "i": [
+        360,
+        360,
+        144
+      ],
+      "j": [
+        720,
+        360,
+        144
+      ],
+      "section": "W18X35",
+      "props": {
+        "modI33": 1,
+        "releaseI": "",
+        "releaseJ": ""
+      }
+    },
+    {
+      "id": "B5@L1",
+      "label": "B5",
+      "story": "L1",
+      "kind": "beam",
+      "nodes": [
+        "1@L1",
+        "4@L1"
+      ],
+      "i": [
+        0,
+        0,
+        144
+      ],
+      "j": [
+        0,
+        360,
+        144
+      ],
+      "section": "W18X35",
+      "props": {
+        "modI33": 1,
+        "releaseI": "",
+        "releaseJ": ""
+      }
+    },
+    {
+      "id": "B6@L1",
+      "label": "B6",
+      "story": "L1",
+      "kind": "beam",
+      "nodes": [
+        "2@L1",
+        "5@L1"
+      ],
+      "i": [
+        360,
+        0,
+        144
+      ],
+      "j": [
+        360,
+        360,
+        144
+      ],
+      "section": "W18X35",
+      "props": {
+        "modI33": 1,
+        "releaseI": "",
+        "releaseJ": ""
+      }
+    },
+    {
+      "id": "B7@L1",
+      "label": "B7",
+      "story": "L1",
+      "kind": "beam",
+      "nodes": [
+        "3@L1",
+        "6@L1"
+      ],
+      "i": [
+        720,
+        0,
+        144
+      ],
+      "j": [
+        720,
+        360,
+        144
+      ],
+      "section": "W18X35",
+      "props": {
+        "modI33": 1,
+        "releaseI": "",
+        "releaseJ": ""
+      }
+    },
+    {
+      "id": "D1@L1",
+      "label": "D1",
+      "story": "L1",
+      "kind": "brace",
+      "nodes": [
+        "1@Base",
+        "2@L1"
+      ],
+      "i": [
+        0,
+        0,
+        0
+      ],
+      "j": [
+        360,
+        0,
+        144
+      ],
+      "section": "BR1",
+      "props": {
+        "releaseI": "M2M3",
+        "releaseJ": "M2M3"
+      }
+    },
+    {
+      "id": "C1@L2",
+      "label": "C1",
+      "story": "L2",
+      "kind": "column",
+      "nodes": [
+        "1@L1",
+        "1@L2"
+      ],
+      "i": [
+        0,
+        0,
+        144
+      ],
+      "j": [
+        0,
+        0,
+        288
+      ],
+      "section": "W14X90",
+      "props": {}
+    },
+    {
+      "id": "C2@L2",
+      "label": "C2",
+      "story": "L2",
+      "kind": "column",
+      "nodes": [
+        "2@L1",
+        "2@L2"
+      ],
+      "i": [
+        360,
+        0,
+        144
+      ],
+      "j": [
+        360,
+        0,
+        288
+      ],
+      "section": "W14X90",
+      "props": {}
+    },
+    {
+      "id": "C3@L2",
+      "label": "C3",
+      "story": "L2",
+      "kind": "column",
+      "nodes": [
+        "3@L1",
+        "3@L2"
+      ],
+      "i": [
+        720,
+        0,
+        144
+      ],
+      "j": [
+        720,
+        0,
+        288
+      ],
+      "section": "W14X90",
+      "props": {}
+    },
+    {
+      "id": "C4@L2",
+      "label": "C4",
+      "story": "L2",
+      "kind": "column",
+      "nodes": [
+        "4@L1",
+        "4@L2"
+      ],
+      "i": [
+        0,
+        360,
+        144
+      ],
+      "j": [
+        0,
+        360,
+        288
+      ],
+      "section": "W14X90",
+      "props": {}
+    },
+    {
+      "id": "C5@L2",
+      "label": "C5",
+      "story": "L2",
+      "kind": "column",
+      "nodes": [
+        "5@L1",
+        "5@L2"
+      ],
+      "i": [
+        360,
+        360,
+        144
+      ],
+      "j": [
+        360,
+        360,
+        288
+      ],
+      "section": "W14X90",
+      "props": {}
+    },
+    {
+      "id": "C6@L2",
+      "label": "C6",
+      "story": "L2",
+      "kind": "column",
+      "nodes": [
+        "6@L1",
+        "6@L2"
+      ],
+      "i": [
+        720,
+        360,
+        144
+      ],
+      "j": [
+        720,
+        360,
+        288
+      ],
+      "section": "W14X90",
+      "props": {}
+    },
+    {
+      "id": "B1@L2",
+      "label": "B1",
+      "story": "L2",
+      "kind": "beam",
+      "nodes": [
+        "1@L2",
+        "2@L2"
+      ],
+      "i": [
+        0,
+        0,
+        288
+      ],
+      "j": [
+        360,
+        0,
+        288
+      ],
+      "section": "W18X35",
+      "props": {
+        "modI33": 1,
+        "releaseI": "",
+        "releaseJ": ""
+      }
+    },
+    {
+      "id": "B2@L2",
+      "label": "B2",
+      "story": "L2",
+      "kind": "beam",
+      "nodes": [
+        "2@L2",
+        "3@L2"
+      ],
+      "i": [
+        360,
+        0,
+        288
+      ],
+      "j": [
+        720,
+        0,
+        288
+      ],
+      "section": "W18X35",
+      "props": {
+        "modI33": 1,
+        "releaseI": "",
+        "releaseJ": ""
+      }
+    },
+    {
+      "id": "B3@L2",
+      "label": "B3",
+      "story": "L2",
+      "kind": "beam",
+      "nodes": [
+        "4@L2",
+        "5@L2"
+      ],
+      "i": [
+        0,
+        360,
+        288
+      ],
+      "j": [
+        360,
+        360,
+        288
+      ],
+      "section": "W18X35",
+      "props": {
+        "modI33": 1,
+        "releaseI": "",
+        "releaseJ": ""
+      }
+    },
+    {
+      "id": "B4@L2",
+      "label": "B4",
+      "story": "L2",
+      "kind": "beam",
+      "nodes": [
+        "5@L2",
+        "6@L2"
+      ],
+      "i": [
+        360,
+        360,
+        288
+      ],
+      "j": [
+        720,
+        360,
+        288
+      ],
+      "section": "W18X35",
+      "props": {
+        "modI33": 1,
+        "releaseI": "",
+        "releaseJ": ""
+      }
+    },
+    {
+      "id": "B5@L2",
+      "label": "B5",
+      "story": "L2",
+      "kind": "beam",
+      "nodes": [
+        "1@L2",
+        "4@L2"
+      ],
+      "i": [
+        0,
+        0,
+        288
+      ],
+      "j": [
+        0,
+        360,
+        288
+      ],
+      "section": "W18X35",
+      "props": {
+        "modI33": 1,
+        "releaseI": "",
+        "releaseJ": ""
+      }
+    },
+    {
+      "id": "B6@L2",
+      "label": "B6",
+      "story": "L2",
+      "kind": "beam",
+      "nodes": [
+        "2@L2",
+        "5@L2"
+      ],
+      "i": [
+        360,
+        0,
+        288
+      ],
+      "j": [
+        360,
+        360,
+        288
+      ],
+      "section": "W18X35",
+      "props": {
+        "modI33": 1,
+        "releaseI": "",
+        "releaseJ": ""
+      }
+    },
+    {
+      "id": "B7@L2",
+      "label": "B7",
+      "story": "L2",
+      "kind": "beam",
+      "nodes": [
+        "3@L2",
+        "6@L2"
+      ],
+      "i": [
+        720,
+        0,
+        288
+      ],
+      "j": [
+        720,
+        360,
+        288
+      ],
+      "section": "W18X35",
+      "props": {
+        "modI33": 1,
+        "releaseI": "",
+        "releaseJ": ""
+      }
+    },
+    {
+      "id": "D2@L2",
+      "label": "D2",
+      "story": "L2",
+      "kind": "brace",
+      "nodes": [
+        "1@L1",
+        "2@L2"
+      ],
+      "i": [
+        0,
+        0,
+        144
+      ],
+      "j": [
+        360,
+        0,
+        288
+      ],
+      "section": "BR1",
+      "props": {
+        "releaseI": "M2M3",
+        "releaseJ": "M2M3"
+      }
+    },
+    {
+      "id": "C1@L3",
+      "label": "C1",
+      "story": "L3",
+      "kind": "column",
+      "nodes": [
+        "1@L2",
+        "1@L3"
+      ],
+      "i": [
+        0,
+        0,
+        288
+      ],
+      "j": [
+        0,
+        0,
+        432
+      ],
+      "section": "W14X90",
+      "props": {}
+    },
+    {
+      "id": "C2@L3",
+      "label": "C2",
+      "story": "L3",
+      "kind": "column",
+      "nodes": [
+        "2@L2",
+        "2@L3"
+      ],
+      "i": [
+        360,
+        0,
+        288
+      ],
+      "j": [
+        360,
+        0,
+        432
+      ],
+      "section": "W14X90",
+      "props": {}
+    },
+    {
+      "id": "C3@L3",
+      "label": "C3",
+      "story": "L3",
+      "kind": "column",
+      "nodes": [
+        "3@L2",
+        "3@L3"
+      ],
+      "i": [
+        720,
+        0,
+        288
+      ],
+      "j": [
+        720,
+        0,
+        432
+      ],
+      "section": "W14X90",
+      "props": {}
+    },
+    {
+      "id": "C4@L3",
+      "label": "C4",
+      "story": "L3",
+      "kind": "column",
+      "nodes": [
+        "4@L2",
+        "4@L3"
+      ],
+      "i": [
+        0,
+        360,
+        288
+      ],
+      "j": [
+        0,
+        360,
+        432
+      ],
+      "section": "W14X90",
+      "props": {}
+    },
+    {
+      "id": "C5@L3",
+      "label": "C5",
+      "story": "L3",
+      "kind": "column",
+      "nodes": [
+        "5@L2",
+        "5@L3"
+      ],
+      "i": [
+        360,
+        360,
+        288
+      ],
+      "j": [
+        360,
+        360,
+        432
+      ],
+      "section": "W14X90",
+      "props": {}
+    },
+    {
+      "id": "C6@L3",
+      "label": "C6",
+      "story": "L3",
+      "kind": "column",
+      "nodes": [
+        "6@L2",
+        "6@L3"
+      ],
+      "i": [
+        720,
+        360,
+        288
+      ],
+      "j": [
+        720,
+        360,
+        432
+      ],
+      "section": "W14X90",
+      "props": {}
+    },
+    {
+      "id": "B1@L3",
+      "label": "B1",
+      "story": "L3",
+      "kind": "beam",
+      "nodes": [
+        "1@L3",
+        "2@L3"
+      ],
+      "i": [
+        0,
+        0,
+        432
+      ],
+      "j": [
+        360,
+        0,
+        432
+      ],
+      "section": "W18X35",
+      "props": {
+        "modI33": 1,
+        "releaseI": "",
+        "releaseJ": ""
+      }
+    },
+    {
+      "id": "B2@L3",
+      "label": "B2",
+      "story": "L3",
+      "kind": "beam",
+      "nodes": [
+        "2@L3",
+        "3@L3"
+      ],
+      "i": [
+        360,
+        0,
+        432
+      ],
+      "j": [
+        720,
+        0,
+        432
+      ],
+      "section": "W18X35",
+      "props": {
+        "modI33": 1,
+        "releaseI": "",
+        "releaseJ": ""
+      }
+    },
+    {
+      "id": "B3@L3",
+      "label": "B3",
+      "story": "L3",
+      "kind": "beam",
+      "nodes": [
+        "4@L3",
+        "5@L3"
+      ],
+      "i": [
+        0,
+        360,
+        432
+      ],
+      "j": [
+        360,
+        360,
+        432
+      ],
+      "section": "W18X35",
+      "props": {
+        "modI33": 1,
+        "releaseI": "",
+        "releaseJ": ""
+      }
+    },
+    {
+      "id": "B4@L3",
+      "label": "B4",
+      "story": "L3",
+      "kind": "beam",
+      "nodes": [
+        "5@L3",
+        "6@L3"
+      ],
+      "i": [
+        360,
+        360,
+        432
+      ],
+      "j": [
+        720,
+        360,
+        432
+      ],
+      "section": "W18X35",
+      "props": {
+        "modI33": 1,
+        "releaseI": "",
+        "releaseJ": ""
+      }
+    },
+    {
+      "id": "B5@L3",
+      "label": "B5",
+      "story": "L3",
+      "kind": "beam",
+      "nodes": [
+        "1@L3",
+        "4@L3"
+      ],
+      "i": [
+        0,
+        0,
+        432
+      ],
+      "j": [
+        0,
+        360,
+        432
+      ],
+      "section": "W18X35",
+      "props": {
+        "modI33": 1,
+        "releaseI": "",
+        "releaseJ": ""
+      }
+    },
+    {
+      "id": "B6@L3",
+      "label": "B6",
+      "story": "L3",
+      "kind": "beam",
+      "nodes": [
+        "2@L3",
+        "5@L3"
+      ],
+      "i": [
+        360,
+        0,
+        432
+      ],
+      "j": [
+        360,
+        360,
+        432
+      ],
+      "section": "W18X35",
+      "props": {
+        "modI33": 1,
+        "releaseI": "",
+        "releaseJ": ""
+      }
+    },
+    {
+      "id": "B7@L3",
+      "label": "B7",
+      "story": "L3",
+      "kind": "beam",
+      "nodes": [
+        "3@L3",
+        "6@L3"
+      ],
+      "i": [
+        720,
+        0,
+        432
+      ],
+      "j": [
+        720,
+        360,
+        432
+      ],
+      "section": "W18X35",
+      "props": {
+        "modI33": 1,
+        "releaseI": "",
+        "releaseJ": ""
+      }
+    }
+  ],
+  "areas": [
+    {
+      "id": "F1@L1",
+      "label": "F1",
+      "story": "L1",
+      "kind": "slab",
+      "nodes": [
+        "1@L1",
+        "2@L1",
+        "5@L1",
+        "4@L1"
+      ],
+      "corners": [
+        [
+          0,
+          0,
+          144
+        ],
+        [
+          360,
+          0,
+          144
+        ],
+        [
+          360,
+          360,
+          144
+        ],
+        [
+          0,
+          360,
+          144
+        ]
+      ],
+      "section": "Slab8",
+      "props": {
+        "diaphragm": "D1",
+        "modM11": 1
+      }
+    },
+    {
+      "id": "F2@L1",
+      "label": "F2",
+      "story": "L1",
+      "kind": "slab",
+      "nodes": [
+        "2@L1",
+        "3@L1",
+        "6@L1",
+        "5@L1"
+      ],
+      "corners": [
+        [
+          360,
+          0,
+          144
+        ],
+        [
+          720,
+          0,
+          144
+        ],
+        [
+          720,
+          360,
+          144
+        ],
+        [
+          360,
+          360,
+          144
+        ]
+      ],
+      "section": "Slab8",
+      "props": {
+        "diaphragm": "D1",
+        "modM11": 1
+      }
+    },
+    {
+      "id": "F1@L2",
+      "label": "F1",
+      "story": "L2",
+      "kind": "slab",
+      "nodes": [
+        "1@L2",
+        "2@L2",
+        "5@L2",
+        "4@L2"
+      ],
+      "corners": [
+        [
+          0,
+          0,
+          288
+        ],
+        [
+          360,
+          0,
+          288
+        ],
+        [
+          360,
+          360,
+          288
+        ],
+        [
+          0,
+          360,
+          288
+        ]
+      ],
+      "section": "Slab8",
+      "props": {
+        "diaphragm": "D1",
+        "modM11": 1
+      }
+    },
+    {
+      "id": "F2@L2",
+      "label": "F2",
+      "story": "L2",
+      "kind": "slab",
+      "nodes": [
+        "2@L2",
+        "3@L2",
+        "6@L2",
+        "5@L2"
+      ],
+      "corners": [
+        [
+          360,
+          0,
+          288
+        ],
+        [
+          720,
+          0,
+          288
+        ],
+        [
+          720,
+          360,
+          288
+        ],
+        [
+          360,
+          360,
+          288
+        ]
+      ],
+      "section": "Slab8",
+      "props": {
+        "diaphragm": "D1",
+        "modM11": 1
+      }
+    },
+    {
+      "id": "F1@L3",
+      "label": "F1",
+      "story": "L3",
+      "kind": "slab",
+      "nodes": [
+        "1@L3",
+        "2@L3",
+        "5@L3",
+        "4@L3"
+      ],
+      "corners": [
+        [
+          0,
+          0,
+          432
+        ],
+        [
+          360,
+          0,
+          432
+        ],
+        [
+          360,
+          360,
+          432
+        ],
+        [
+          0,
+          360,
+          432
+        ]
+      ],
+      "section": "Slab8",
+      "props": {
+        "diaphragm": "D1",
+        "modM11": 1
+      }
+    },
+    {
+      "id": "F2@L3",
+      "label": "F2",
+      "story": "L3",
+      "kind": "slab",
+      "nodes": [
+        "2@L3",
+        "3@L3",
+        "6@L3",
+        "5@L3"
+      ],
+      "corners": [
+        [
+          360,
+          0,
+          432
+        ],
+        [
+          720,
+          0,
+          432
+        ],
+        [
+          720,
+          360,
+          432
+        ],
+        [
+          360,
+          360,
+          432
+        ]
+      ],
+      "section": "Slab8",
+      "props": {
+        "diaphragm": "D1",
+        "modM11": 1
+      }
+    }
+  ],
+  "loads": [
+    {
+      "id": "F1@L1|SDL|Uniform|Gravity",
+      "on": "F1@L1",
+      "pattern": "SDL",
+      "type": "Uniform",
+      "dir": "Gravity",
+      "values": [
+        0.000139
+      ]
+    },
+    {
+      "id": "F1@L1|Live|Uniform|Gravity",
+      "on": "F1@L1",
+      "pattern": "Live",
+      "type": "Uniform",
+      "dir": "Gravity",
+      "values": [
+        0.000347
+      ]
+    },
+    {
+      "id": "F2@L1|SDL|Uniform|Gravity",
+      "on": "F2@L1",
+      "pattern": "SDL",
+      "type": "Uniform",
+      "dir": "Gravity",
+      "values": [
+        0.000139
+      ]
+    },
+    {
+      "id": "F2@L1|Live|Uniform|Gravity",
+      "on": "F2@L1",
+      "pattern": "Live",
+      "type": "Uniform",
+      "dir": "Gravity",
+      "values": [
+        0.000347
+      ]
+    },
+    {
+      "id": "F1@L2|SDL|Uniform|Gravity",
+      "on": "F1@L2",
+      "pattern": "SDL",
+      "type": "Uniform",
+      "dir": "Gravity",
+      "values": [
+        0.000139
+      ]
+    },
+    {
+      "id": "F1@L2|Live|Uniform|Gravity",
+      "on": "F1@L2",
+      "pattern": "Live",
+      "type": "Uniform",
+      "dir": "Gravity",
+      "values": [
+        0.000347
+      ]
+    },
+    {
+      "id": "F2@L2|SDL|Uniform|Gravity",
+      "on": "F2@L2",
+      "pattern": "SDL",
+      "type": "Uniform",
+      "dir": "Gravity",
+      "values": [
+        0.000139
+      ]
+    },
+    {
+      "id": "F2@L2|Live|Uniform|Gravity",
+      "on": "F2@L2",
+      "pattern": "Live",
+      "type": "Uniform",
+      "dir": "Gravity",
+      "values": [
+        0.000347
+      ]
+    },
+    {
+      "id": "F1@L3|SDL|Uniform|Gravity",
+      "on": "F1@L3",
+      "pattern": "SDL",
+      "type": "Uniform",
+      "dir": "Gravity",
+      "values": [
+        0.000139
+      ]
+    },
+    {
+      "id": "F1@L3|Live|Uniform|Gravity",
+      "on": "F1@L3",
+      "pattern": "Live",
+      "type": "Uniform",
+      "dir": "Gravity",
+      "values": [
+        0.000347
+      ]
+    },
+    {
+      "id": "F2@L3|SDL|Uniform|Gravity",
+      "on": "F2@L3",
+      "pattern": "SDL",
+      "type": "Uniform",
+      "dir": "Gravity",
+      "values": [
+        0.000139
+      ]
+    },
+    {
+      "id": "F2@L3|Live|Uniform|Gravity",
+      "on": "F2@L3",
+      "pattern": "Live",
+      "type": "Uniform",
+      "dir": "Gravity",
+      "values": [
+        0.000347
+      ]
+    }
+  ],
+  "materials": {
+    "A992Fy50": {
+      "type": "Steel",
+      "E": 29000,
+      "Fy": 50,
+      "Fu": 65,
+      "unitWeight": 0.000284
+    },
+    "A500GrC": {
+      "type": "Steel",
+      "E": 29000,
+      "Fy": 50,
+      "Fu": 62,
+      "unitWeight": 0.000284
+    },
+    "4000Psi": {
+      "type": "Concrete",
+      "E": 3605,
+      "fc": 4,
+      "unitWeight": 8.68e-05
+    }
+  },
+  "frameSections": {
+    "W14X90": {
+      "material": "A992Fy50",
+      "shape": "I/Wide Flange",
+      "autoSelect": "No",
+      "d": 14.0,
+      "bf": 14.5,
+      "tf": 0.71,
+      "tw": 0.44
+    },
+    "W14X120": {
+      "material": "A992Fy50",
+      "shape": "I/Wide Flange",
+      "autoSelect": "No",
+      "d": 14.5,
+      "bf": 14.7,
+      "tf": 0.94,
+      "tw": 0.59
+    },
+    "W18X35": {
+      "material": "A992Fy50",
+      "shape": "I/Wide Flange",
+      "autoSelect": "No",
+      "d": 17.7,
+      "bf": 6.0,
+      "tf": 0.425,
+      "tw": 0.3
+    },
+    "BR1": {
+      "material": "A500GrC",
+      "shape": "Tube",
+      "autoSelect": "No",
+      "d": 6,
+      "b": 6,
+      "t": 0.349
+    }
+  },
+  "shellSections": {
+    "Slab8": {
+      "material": "4000Psi",
+      "type": "Slab",
+      "modeling": "Membrane",
+      "thickness": 8
+    }
+  },
+  "loadPatterns": {
+    "Dead": {
+      "type": "Dead",
+      "selfWeight": 1
+    },
+    "SDL": {
+      "type": "Super Dead",
+      "selfWeight": 0
+    },
+    "Live": {
+      "type": "Live",
+      "selfWeight": 0
+    },
+    "EQX": {
+      "type": "Seismic",
+      "selfWeight": 0,
+      "autoLateral": "ASCE 7-16",
+      "dir": "X",
+      "R": 8,
+      "Cd": 5.5,
+      "Omega": 3,
+      "Ie": 1,
+      "Ss": 1.5,
+      "S1": 0.6
+    }
+  },
+  "loadCases": {
+    "Dead": {
+      "type": "Linear Static",
+      "pDelta": "None"
+    },
+    "SDL": {
+      "type": "Linear Static",
+      "pDelta": "None"
+    },
+    "Live": {
+      "type": "Linear Static",
+      "pDelta": "None"
+    },
+    "EQX": {
+      "type": "Linear Static",
+      "pDelta": "None"
+    },
+    "Modal": {
+      "type": "Modal - Eigen",
+      "numModes": 12
+    }
+  },
+  "combos": {
+    "1.2D+1.6L": {
+      "type": "Linear Add",
+      "factors": {
+        "Dead": 1.2,
+        "SDL": 1.2,
+        "Live": 1.6
+      }
+    },
+    "1.2D+L+E": {
+      "type": "Linear Add",
+      "factors": {
+        "Dead": 1.2,
+        "SDL": 1.2,
+        "Live": 1.0,
+        "EQX": 1.0
+      }
+    }
+  },
+  "massSource": {
+    "MsSrc1": {
+      "fromElements": "Yes",
+      "fromLoads": "Yes",
+      "Dead": 1,
+      "SDL": 1
+    }
+  },
+  "unparsed": [
+    "$ DESIGN PREFERENCES",
+    "$ FUNCTIONS"
+  ]
+}

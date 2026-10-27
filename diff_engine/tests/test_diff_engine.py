@@ -62,25 +62,33 @@ def model(**edits):
     return parse_text(text)
 
 
-def changed(result):
+def statuses(result, kind=None):
+    return sorted(e["status"] for e in result["elements"] if kind in (None, e["kind"]))
+
+
+def not_unchanged(result):
     return [e for e in result["elements"] if e["status"] != "unchanged"]
 
 
 class DiffEngineTest(unittest.TestCase):
-    def test_identical_models_have_no_changes(self):
+    def test_identical_models_list_every_element_unchanged(self):
         result = diff_models(model(), model())
-        self.assertEqual(result["elements"], [])
-        self.assertEqual(result["levels"], [])
+        # 2 columns, 1 beam, 1 floor, 2 supported joints
+        self.assertEqual(len(result["elements"]), 6)
+        self.assertEqual(result["summary"]["unchanged"], 6)
+        self.assertEqual(result["tables"]["stories"], {"added": [], "removed": [], "modified": {}})
 
     def test_match_tolerance(self):
-        nudged = model(replace=[('POINT "2"  6 0', 'POINT "2"  6.004 0')])
-        self.assertEqual(changed(diff_models(model(), nudged)), [])
-        strict = diff_models(model(), nudged, tolerance=0.001)
-        self.assertTrue(changed(strict))
+        # 1 mm is 0.039 in, inside the 0.1 in fallback tolerance but outside 0.01 in.
+        nudged = model(replace=[('POINT "2"  6 0', 'POINT "2"  6.001 0')])
+        self.assertEqual(not_unchanged(diff_models(model(), nudged)), [])
+        self.assertTrue(not_unchanged(diff_models(model(), nudged, tolerance=0.01)))
 
     def test_relabel_invariance(self):
         relabeled = model(labels=dict(p1="91", p2="92", p3="93", p4="94", c1="X7", c2="X8", b1="Y1", f1="Z1"))
-        self.assertEqual(diff_models(model(), relabeled)["elements"], [])
+        before, after = diff_models(model(), model()), diff_models(model(), relabeled)
+        self.assertEqual(not_unchanged(after), [])
+        self.assertEqual(sorted(e["key"] for e in before["elements"]), sorted(e["key"] for e in after["elements"]))
 
     def test_units_normalization(self):
         # Same model written in LB-IN: lengths / 0.0254, forces / 0.00444822162.
@@ -102,47 +110,56 @@ class DiffEngineTest(unittest.TestCase):
             ("SLABTHICKNESS 0.2", f"SLABTHICKNESS {0.2 / m}"),
         ])
         result = diff_models(model(), imperial)
-        self.assertEqual(result["elements"], [])
-        self.assertEqual(result["definitions"], [])
+        self.assertEqual(not_unchanged(result), [])
+        self.assertTrue(all(not t["modified"] for t in result["tables"].values()))
+        beam = next(e for e in result["elements"] if e["subtype"] == "beam")
+        self.assertAlmostEqual(beam["geometry"][1][0], 6 / m, places=4)  # geometry is in inches
 
-    def test_moved_member(self):
-        # Point 2 moves 0.3 m in plan: the column on it and the beam's J end move, nothing is added.
-        moved = model(replace=[('POINT "2"  6 0', 'POINT "2"  6.3 0')])
-        result = diff_models(model(), moved)
-        frames = [e for e in result["elements"] if e["kind"] == "frame"]
-        self.assertEqual(sorted(e["status"] for e in frames), ["moved", "moved"])
-        self.assertTrue(all(2 in e["rows"] for e in frames))
-        no_pass = diff_models(model(), moved, move_tolerance=0)
-        self.assertIn("added", {e["status"] for e in no_pass["elements"]})
+    def test_moved_member_is_removed_plus_added_with_link(self):
+        # Point 2 moves 0.3 m (11.8 in) in plan: the column on it and the beam's J end move.
+        moved = diff_models(model(), model(replace=[('POINT "2"  6 0', 'POINT "2"  6.3 0')]))
+        frames = [e for e in moved["elements"] if e["kind"] == "frame" and e["status"] != "unchanged"]
+        self.assertEqual(sorted(e["status"] for e in frames), ["added", "added", "removed", "removed"])
+        keys = {e["key"]: e for e in frames}
+        for e in frames:
+            link = e.get("movedTo") or e.get("movedFrom")
+            self.assertIn(link, keys)
+        no_pass = diff_models(model(), model(replace=[('POINT "2"  6 0', 'POINT "2"  6.3 0')]), move_tolerance=0)
+        self.assertFalse(any("movedTo" in e for e in no_pass["elements"]))
 
     def test_moved_pass_is_bounded(self):
-        # The beam's J end jumps 4 m to point 4: that is a removal plus an addition, not a move.
-        far = model(replace=[('BEAM  "1"  "2"  0', 'BEAM  "1"  "4"  0')])
-        beams = [e["status"] for e in diff_models(model(), far)["elements"] if e["type"] == "BEAM"]
-        self.assertEqual(sorted(beams), ["added", "removed"])
+        # The beam's J end jumps 5 m to point 4: a removal plus an addition with no link.
+        far = diff_models(model(), model(replace=[('BEAM  "1"  "2"  0', 'BEAM  "1"  "4"  0')]))
+        beams = [e for e in far["elements"] if e["subtype"] == "beam"]
+        self.assertEqual(sorted(e["status"] for e in beams), ["added", "removed"])
+        self.assertFalse(any("movedTo" in e or "movedFrom" in e for e in beams))
 
-    def test_parser_skips_comments_and_scales_frame_point_loads(self):
-        text = BASE.format(**LABELS).replace('UNITS  "KN"  "M"  "C"', 'UNITS  "KIP"  "IN"  "F"')
+    def test_parser_quirks_comments_and_frame_point_loads(self):
+        text = BASE.format(**LABELS)
         text += '  STARTCOMMENTS\n  UNITS changed by hand\n  STORY heights revised\n  ENDCOMMENTS\n'
         text += '  LINELOAD  "B1"  "L1"  TYPE "POINTF"  DIR "GRAV"  LC "SDL"  FVAL 10 RDIST 0.5\n'
+        # Real-file quirks: CRLF, a doubled quote inside a name, a value running into the next key.
+        text = text.replace('RELEASE "M3I M3J"', 'RELEASE "PINNED"CARDINALPT 8')
+        text = text.replace('SHELLPROP  "SLAB"', 'SHELLPROP  "Slab 8"" Thick"').replace("\n", "\r\n")
         parsed = parse_text(text)
         self.assertEqual([s["name"] for s in parsed["stories"]], ["L1", "BASE"])
+        self.assertEqual(parsed["line_assigns"][("B1", "L1")]["CARDINALPT"], 8.0)
+        self.assertIn('Slab 8" Thick', parsed["shell_props"])
         point_load = parsed["line_loads"][("B1", "L1")][-1]
-        self.assertAlmostEqual(point_load["FVAL"], 44.4822162)
+        self.assertAlmostEqual(point_load["FVAL"], 10 / 4.44822162)  # kN to kip, not kN/m to kip/in
 
-    def test_level_elevation_change_is_one_level_change(self):
-        taller = model(replace=[("HEIGHT 4", "HEIGHT 4.5")])
-        result = diff_models(model(), taller)
-        self.assertEqual(result["elements"], [])
-        self.assertEqual([lv["after"]["name"] for lv in result["levels"]], ["L1"])
+    def test_level_elevation_change_is_one_story_change(self):
+        result = diff_models(model(), model(replace=[("HEIGHT 4", "HEIGHT 4.5")]))
+        self.assertEqual(not_unchanged(result), [])
+        self.assertEqual(list(result["tables"]["stories"]["modified"]), ["L1"])
 
     def test_material_change_reaches_members_through_sections(self):
-        stiffer = model(replace=[("E 2E+08", "E 2.1E+08")])
-        result = diff_models(model(), stiffer)
-        material = next(d for d in result["definitions"] if d["kind"] == "material")
-        self.assertEqual(material["rows"], [5])
-        self.assertEqual(sorted(material["used_via"]), ["BM", "COL", "SLAB"])
-        self.assertEqual(len(material["used_by"]), 4)  # two columns, one beam, one floor
+        result = diff_models(model(), model(replace=[("E 2E+08", "E 2.1E+08")]))
+        self.assertEqual(list(result["tables"]["materials"]["modified"]), ["STEEL"])
+        affected = [e for e in result["elements"] if e["status"] == "affected"]
+        self.assertEqual(len(affected), 4)  # two columns, one beam, one floor
+        self.assertTrue(all("material:STEEL" in e["via"] for e in affected))
+        self.assertTrue(all(c["field"] == "material:STEEL.E" for e in affected for c in e["changes"]))
 
     def test_property_rows(self):
         edited = model(replace=[
@@ -150,8 +167,10 @@ class DiffEngineTest(unittest.TestCase):
             ('RESTRAINT "UX UY UZ RX RY RZ"\n  POINTASSIGN  "2"', 'RESTRAINT "UX UY UZ"\n  POINTASSIGN  "2"'),
             ("FVAL 2.5", "FVAL 3"),
         ])
-        rows = {r for e in diff_models(model(), edited)["elements"] for r in e["rows"]}
+        result = diff_models(model(), edited)
+        rows = {c["row"] for e in result["elements"] for c in e["changes"]}
         self.assertEqual(rows, {3, 7, 8, 9})
+        self.assertEqual(statuses(result, "point"), ["modified", "unchanged"])
 
 
 if __name__ == "__main__":

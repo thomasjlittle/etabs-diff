@@ -1,19 +1,20 @@
-"""Unit normalization. Every parsed value is converted to kN, m, and degrees C."""
+"""Unit normalization. Every parsed value is converted to kip, inch, and degrees F."""
 
-FORCE_TO_KN = {
-    "KN": 1.0,
-    "N": 0.001,
-    "LB": 0.00444822162,
-    "KIP": 4.44822162,
-    "KGF": 0.00980665,
-    "TONF": 9.80665,  # metric tonne-force, unconfirmed
+_KN_PER_KIP = 4.44822162
+FORCE_TO_KIP = {
+    "KIP": 1.0,
+    "LB": 0.001,
+    "KN": 1 / _KN_PER_KIP,
+    "N": 0.001 / _KN_PER_KIP,
+    "KGF": 0.00980665 / _KN_PER_KIP,
+    "TONF": 9.80665 / _KN_PER_KIP,  # metric tonne-force, unconfirmed
 }
-LENGTH_TO_M = {
-    "M": 1.0,
-    "MM": 0.001,
-    "CM": 0.01,
-    "IN": 0.0254,
-    "FT": 0.3048,
+LENGTH_TO_IN = {
+    "IN": 1.0,
+    "FT": 12.0,
+    "M": 1 / 0.0254,
+    "CM": 1 / 2.54,
+    "MM": 1 / 25.4,
 }
 
 # (force exponent, length exponent) per key, per record keyword.
@@ -69,16 +70,16 @@ THERMAL_KEYS = {"A", "A1", "A2", "A3"}
 
 
 def factors(units):
-    """(force factor, length factor, per-degree factor) for a UNITS triple like ('LB', 'IN', 'F')."""
+    """(force factor, length factor, per-degree factor) for a UNITS triple like ('KN', 'M', 'C')."""
     force, length, temp = (u.upper() for u in units)
-    if force not in FORCE_TO_KN or length not in LENGTH_TO_M:
+    if force not in FORCE_TO_KIP or length not in LENGTH_TO_IN:
         raise ValueError(f"unsupported units {units}")
-    per_degree = 9.0 / 5.0 if temp == "F" else 1.0
-    return FORCE_TO_KN[force], LENGTH_TO_M[length], per_degree
+    per_degree = 5.0 / 9.0 if temp == "C" else 1.0
+    return FORCE_TO_KIP[force], LENGTH_TO_IN[length], per_degree
 
 
 def scale(record, key, value, fac):
-    """Convert one numeric value of `record`.`key` to kN/m/C. Unknown keys pass through."""
+    """Convert one numeric value of `record`.`key` to kip/in/F. Unknown keys pass through."""
     if not isinstance(value, float):
         return value
     if record == "MATERIAL" and key in THERMAL_KEYS:

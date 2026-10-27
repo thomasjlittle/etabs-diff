@@ -4,8 +4,10 @@ import logging
 
 log = logging.getLogger(__name__)
 
-# Point assign keys that alone do not make a point worth reporting.
-BORING_POINT_KEYS = {"USERJOINT"}
+
+def _reportable_point(props):
+    """Points are listed only when they carry a support, spring, or mass (or a load, checked separately)."""
+    return any(k == "RESTRAINT" or "SPRING" in k or "MASS" in k for k in props)
 
 
 def levels(model):
@@ -62,7 +64,7 @@ def elements(model):
     keys = sorted(set(model["point_assigns"]) | set(model["point_loads"]))
     for label, story in keys:
         props = model["point_assigns"].get((label, story), {})
-        if not (set(props) - BORING_POINT_KEYS) and (label, story) not in model["point_loads"]:
+        if not _reportable_point(props) and (label, story) not in model["point_loads"]:
             continue
         if label not in model["points"] or story not in index:
             log.warning("point assign without a point or story: %s @ %s", label, story)

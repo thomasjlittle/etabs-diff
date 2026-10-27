@@ -2,19 +2,10 @@
 
 import re
 
-ROWS = {
-    1: "members_added_removed",
-    2: "member_moved",
-    3: "section_reassigned",
-    4: "section_definition",
-    5: "material_definition",
-    6: "property_modifiers",
-    7: "releases_offsets_insertion_axis",
-    8: "supports_springs",
-    9: "loads",
-    10: "additional_mass",
-}
-OTHER = "other"
+# Row numbers follow the property table: 1 members added/removed, 2 moved (incl. story elevation),
+# 3 section reassigned, 4 section definition, 5 material, 6 property modifiers,
+# 7 releases/offsets/insertion/local axis, 8 supports and springs, 9 loads, 10 additional mass.
+# None means a change outside the table (meshing, diaphragms, piers, ...).
 
 # Keys that carry no model meaning for the diff.
 IGNORED_KEYS = {"USERJOINT", "FILE"}
@@ -24,9 +15,25 @@ _ROW7_EXACT = {"ANG", "LENOFFI", "LENOFFJ", "RIGIDZONE", "TRANSFORMSTIFFNESSFORO
 _ROW7_PREFIX = ("RELEASE", "PARTIALFIX", "OFFSET", "LOCALAXIS")
 
 
-def tag(row):
-    """{'row': n, 'category': slug}, or {'row': None, 'category': 'other'}."""
-    return {"row": row, "category": ROWS.get(row, OTHER)}
+_ROW_AFFECTS = {
+    1: ["geometry", "stiffness", "mass"],
+    2: ["geometry"],
+    3: ["stiffness", "mass"],
+    4: ["stiffness", "mass"],
+    5: ["stiffness", "mass"],
+    6: ["stiffness", "mass"],
+    7: ["stiffness"],
+    8: ["stiffness"],
+    9: ["load"],
+    10: ["mass"],
+}
+
+
+def affects(row, key=""):
+    """What a change touches, for the contract's `affects` list."""
+    if key == "WEIGHTPERVOLUME" or key in ("MMOD", "WMOD"):
+        return ["mass"]
+    return list(_ROW_AFFECTS.get(row, []))
 
 
 def assign_row(key):

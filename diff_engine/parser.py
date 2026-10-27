@@ -1,4 +1,4 @@
-"""Parse an ETABS .e2k / .$et text export into plain dicts, with values in kN, m, C."""
+"""Parse an ETABS .e2k / .$et text export into plain dicts, with values in kip, in, F."""
 
 import logging
 import re
@@ -71,6 +71,8 @@ def parse_text(text):
     """Parse e2k text. Unknown records are skipped; nothing here raises on odd input except bad UNITS."""
     model = {
         "units": None,
+        "program": {},
+        "merge_tol": None,
         "stories": [],
         "points": {},
         "lines": {},
@@ -114,7 +116,15 @@ def parse_text(text):
 
 
 def _record(model, kw, rest, fac):
-    if kw == "STORY":
+    if kw == "PROGRAM":
+        model["program"] = {"name": rest[0][0], **key_values(rest[1:], kw, fac)}
+    elif kw == "PREFERENCE":
+        model["merge_tol"] = key_values(rest, kw, fac).get("MERGETOL", model["merge_tol"])
+    elif kw == "SEISMIC":
+        # Auto lateral load parameters belong to the load pattern they name.
+        pattern = model["load_patterns"].setdefault(rest[0][0], {})
+        pattern["SEISMIC"] = {"CODE": rest[1][0], **key_values(rest[2:], kw, fac)}
+    elif kw == "STORY":
         model["stories"].append({"name": rest[0][0], **key_values(rest[1:], kw, fac)})
     elif kw == "POINT":
         x, y =float(rest[1][0]) * fac[1], float(rest[2][0]) * fac[1]

@@ -23,7 +23,9 @@ Either works:
 - **From a static server** (makes "Load example" one click): from this folder run `python -m http.server 8000` and open http://localhost:8000.
 - **Straight to a diff:** put the JSON in the served folder and open `index.html?diff=<relative path>`, e.g. http://localhost:8000/?diff=example-diff.json. Handy for sharing a link to one comparison.
 
-Controls: left drag to orbit, right drag to pan, scroll to zoom. The top right shows the counts per status from the diff's `summary` plus the number of table changes. If nothing in 3D changed but the tables did, a red note under the counts says so.
+Controls: left drag to orbit, right drag to pan, scroll to zoom. The top right shows the counts per status plus the number of table changes. If nothing in 3D changed but the tables did, a red note under the counts says so.
+
+Filters sit in the top bar. **Red** turns each status on or off, **Affects** keeps an element red only if one of its changes touches an enabled category (affected elements use their upstream definition's categories; added and removed elements have none, so only their status toggle applies), and **Story** fades everything off the chosen story. A filtered-out element draws gray like unchanged, so the model stays whole. The counts follow what's shown, and the filters are saved in the URL (`&status=`, `&affects=`, `&story=`) so a filtered view can be shared as a link.
 
 Click (or tap) an element to see its label, story, kind, status, each change (field, before, after, affects) and, for affected elements, the `via` list. Click empty space or Clear to drop the selection. The selected element turns blue.
 
@@ -47,8 +49,7 @@ The engine is still being built on a separate branch, so until it lands, `exampl
 
 Not built yet, in rough priority order:
 
-1. Separate colors per status (e.g. green added, red removed, orange modified, yellow affected), with toggles to hide each.
-2. Story filter or isolate, using `stories` and each element's `story`.
-3. Thicker lines for red frames (WebGL lines are always 1px; three.js `Line2` fixes this).
-4. Proper triangulation for non-convex areas (L-shaped slabs or walls) with `THREE.ShapeUtils`.
-5. Warn when `schemaVersion` isn't `"0.1"`.
+1. Separate colors per status (e.g. green added, red removed, orange modified, yellow affected).
+2. Thicker lines for red frames (WebGL lines are always 1px; three.js `Line2` fixes this).
+3. Proper triangulation for non-convex areas (L-shaped slabs or walls) with `THREE.ShapeUtils`.
+4. Warn when `schemaVersion` isn't `"0.1"`.

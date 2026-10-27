@@ -58,4 +58,23 @@ Work on a branch per workstream. Merge small and often. Pull main every couple o
 
 ## Commands
 
-Fill in once the scaffold exists: backend install / run / test, frontend install / dev, how to run both.
+**Both (dev):**
+```
+npm run dev
+```
+Runs backend on localhost:8000 and frontend on localhost:5173 with live reload.
+
+**Backend:**
+```
+cd backend
+uv run pytest                    # Run tests
+uv run uvicorn etabs_register.api:app --reload   # Start server
+```
+
+**Frontend:**
+```
+cd frontend
+npm install
+npm run dev    # Dev server at localhost:5173
+npm run build  # Production build
+```

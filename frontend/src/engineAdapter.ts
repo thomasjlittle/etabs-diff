@@ -8,6 +8,7 @@
 import type { Change, Coverage, Group, Member, Node, Result, Side, Value, Vec3 } from './vantageTypes';
 import { GROUPS } from './adapter';
 import { fieldCategory, tableCategory } from './categories';
+import { loadField, loadValue } from './loads';
 
 // ---- engine contract (subset this adapter reads) ----
 interface EChange { field: string; before: unknown; after: unknown; affects: string[]; kind?: 'renamed' }
@@ -117,6 +118,7 @@ export function adaptEngine(d: EngineDiff, opts: { mock: boolean }): Result {
   }
 
   // ---- element changes ----
+  const loadUnits = { length: d.meta.lengthUnit, force: d.meta.forceUnit ?? 'kip' };
   for (const e of d.elements) {
     if (inMove.has(e.key) || e.status === 'unchanged' || e.status === 'affected') continue;
     const drawn = e.kind === 'frame';
@@ -138,13 +140,14 @@ export function adaptEngine(d: EngineDiff, opts: { mock: boolean }): Result {
     }
     for (const [k, cs] of byGroup) {
       const [group, category] = k.split('|');
-      const field = (c: EChange) => (group === '1A' ? 'section' : c.field);
+      const field = (c: EChange) => (group === '1A' ? 'section' : loadField(c.field) ?? c.field);
+      const value = (c: EChange, v: unknown) => loadValue(c.field, e.kind, v, loadUnits) ?? toValue(v);
       draft.push({
         type: group === 'rename' ? 'label_only' : 'modified', group: group === 'rename' ? 'G1' : group, category,
         member_ids: drawn ? [e.key] : [],
         extent: { members: drawn ? 1 : 0, distance: 0 },
-        before: Object.fromEntries(cs.map((c) => [field(c), toValue(c.before)])),
-        after: Object.fromEntries(cs.map((c) => [field(c), toValue(c.after)])),
+        before: Object.fromEntries(cs.map((c) => [field(c), value(c, c.before)])),
+        after: Object.fromEntries(cs.map((c) => [field(c), value(c, c.after)])),
         evidence: [],
         ...(drawn ? {} : { subject: subjectOf(e) }),
       });

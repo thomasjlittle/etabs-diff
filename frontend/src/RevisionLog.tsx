@@ -41,7 +41,7 @@ function CountChips({ counts }: { counts: Counts | null | undefined }) {
   const chip = (n: number, label: string, cls: string) =>
     <span className={`rounded px-1.5 py-0.5 ${n ? cls : 'bg-slate-50 text-slate-400'}`}>{n} {label}</span>;
   return (
-    <span className="flex gap-1 text-[11px]">
+    <span className="flex gap-1 text-[0.6875rem]">
       {chip(counts.added, 'added', 'bg-green-100 text-green-800')}
       {chip(counts.removed, 'removed', 'bg-red-100 text-red-800')}
       {chip(counts.modified, 'modified', 'bg-amber-100 text-amber-800')}

@@ -11,6 +11,7 @@ import manifest from '../demo_viewer/diffs/manifest.json';
 import { RevisionLog } from './RevisionLog';
 import { categoryOf } from './categories';
 import { UploadStart } from './UploadStart';
+import { Splitter, clamp } from './Splitter';
 
 // Loaded separately so tests (no WebGL) never import three.js.
 const Viewer = lazy(() => import('./Viewer'));
@@ -121,37 +122,88 @@ export function Workspace({ result, selectedId, onSelect, viewer, story, onStory
   useEffect(() => {
     if (category && selectedCategory && selectedCategory !== category) setCategory(selectedCategory);
   }, [selectedCategory]); // eslint-disable-line react-hooks/exhaustive-deps
+  // Pane sizes in px, set by dragging the splitters; each side pane can also be hidden.
+  const [left, setLeft] = useState({ size: 320, open: true });
+  const [right, setRight] = useState({ size: 352, open: true });
+  const [bottom, setBottom] = useState({ size: 240, open: true });
+  const resize = (set: typeof setLeft, max: number) => (d: number) =>
+    set((p) => ({ ...p, size: clamp(p.size + d, 160, max) }));
+  const toggle = (set: typeof setLeft) => () => set((p) => ({ ...p, open: !p.open }));
+  // Picking a category lists it in the table, so bring the table back if it was hidden.
+  const pick = (c: string | null) => {
+    setCategory(c);
+    if (c) setBottom((p) => ({ ...p, open: true }));
+  };
+  const maxHeight = typeof window === 'undefined' ? 800 : window.innerHeight * 0.7;
   return (
-    // minmax(0, 1fr): the 3D canvas keeps its last pixel height, so a plain 1fr row would not shrink and
-    // the viewer would spill over the table when the table grows.
-    <div className={`grid min-h-0 flex-1 grid-cols-[20rem_minmax(0,1fr)_22rem] ${category ? 'grid-rows-[minmax(0,1fr)_22rem]' : 'grid-rows-[minmax(0,1fr)_15rem]'}`}>
-      <aside className="min-h-0 overflow-hidden border-r border-slate-200"><SummaryList result={result} category={category} onCategory={setCategory} /></aside>
-      <main className="flex min-h-0 flex-col overflow-hidden">
-        <StoryStrip result={result} story={story ?? null} onStory={onStory ?? (() => {})} />
-        <div className="relative min-h-0 flex-1 overflow-hidden">
-          {viewer ?? <div className="flex h-full items-center justify-center text-sm text-slate-400">Viewer</div>}
-        </div>
-      </main>
-      <aside className="min-h-0 overflow-y-auto border-l border-slate-200"><DetailPanel {...props} /></aside>
-      <section className="col-span-3 min-h-0 border-t border-slate-200"><ChangeTable {...props} category={category} onCategory={setCategory} /></section>
+    // min-h-0 / min-w-0 throughout: the 3D canvas keeps its last pixel size, so without them the viewer
+    // would not shrink and would spill over the other panes.
+    <div className="flex min-h-0 flex-1 flex-col">
+      <div className="flex min-h-0 flex-1">
+        {left.open && (
+          <aside data-testid="pane-summary" style={{ width: left.size }} className="min-h-0 shrink-0 overflow-hidden">
+            <SummaryList result={result} category={category} onCategory={pick} />
+          </aside>
+        )}
+        <Splitter dir="x" label="summary panel" onDrag={resize(setLeft, 640)}
+          open={left.open} onToggle={toggle(setLeft)} arrows={['‹', '›']} />
+        <main className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
+          <StoryStrip result={result} story={story ?? null} onStory={onStory ?? (() => {})} />
+          <div className="relative min-h-0 flex-1 overflow-hidden">
+            {viewer ?? <div className="flex h-full items-center justify-center text-sm text-slate-400">Viewer</div>}
+          </div>
+        </main>
+        <Splitter dir="x" label="detail panel" onDrag={(d) => resize(setRight, 720)(-d)}
+          open={right.open} onToggle={toggle(setRight)} arrows={['›', '‹']} />
+        {right.open && (
+          <aside data-testid="pane-detail" style={{ width: right.size }} className="min-h-0 shrink-0 overflow-y-auto">
+            <DetailPanel {...props} />
+          </aside>
+        )}
+      </div>
+      <Splitter dir="y" label="change table" onDrag={(d) => resize(setBottom, maxHeight)(-d)}
+        open={bottom.open} onToggle={toggle(setBottom)} arrows={['⌄', '⌃']} />
+      {bottom.open && (
+        <section data-testid="pane-table" style={{ height: bottom.size }} className="min-h-0 shrink-0">
+          <ChangeTable {...props} category={category} onCategory={pick} />
+        </section>
+      )}
     </div>
   );
 }
 
 /** Model 1 and Model 2 side by side. With sync, orbiting one pane moves the other the same way. */
 function SplitView({ sync, ...props }: Omit<ViewerProps, 'viewMode'>) {
-  return (
-    <div className="absolute inset-0 grid grid-cols-2 grid-rows-[minmax(0,1fr)] divide-x divide-slate-300">
-      {(['baseline', 'revised'] as const).map((side) => (
-        <div key={side} className="relative min-h-0 min-w-0 overflow-hidden">
-          <Viewer {...props} viewMode={side} sync={sync} legend={side === 'revised'} />
-          <span className="pointer-events-none absolute left-2 top-2 rounded bg-white/90 px-2 py-0.5 text-xs font-semibold text-slate-700 ring-1 ring-slate-200">
-            {side === 'baseline' ? 'Model 1' : 'Model 2'}
-          </span>
-        </div>
-      ))}
+  const box = useRef<HTMLDivElement>(null);
+  const [share, setShare] = useState(50); // Model 1's share of the width, in percent
+  const pane = (side: 'baseline' | 'revised') => (
+    <div className="relative min-h-0 min-w-0 overflow-hidden" style={{ flex: side === 'baseline' ? share : 100 - share }}>
+      <Viewer {...props} viewMode={side} sync={sync} legend={side === 'revised'} />
+      <span className="pointer-events-none absolute left-2 top-2 rounded bg-white/90 px-2 py-0.5 text-xs font-semibold text-slate-700 ring-1 ring-slate-200">
+        {side === 'baseline' ? 'Model 1' : 'Model 2'}
+      </span>
     </div>
   );
+  return (
+    <div ref={box} className="absolute inset-0 flex">
+      {pane('baseline')}
+      <Splitter dir="x" label="model panes" onDrag={(d) => setShare((s) => clamp(s + (100 * d) / (box.current?.clientWidth || 1), 15, 85))} />
+      {pane('revised')}
+    </div>
+  );
+}
+
+// Text size: scales the root font size, and every size in the UI is in rem, so all text follows.
+type TextSize = 'S' | 'M' | 'L';
+const TEXT_PX: Record<TextSize, string> = { S: '14px', M: '16px', L: '18px' };
+const TEXT_KEY = 'keeptabs.textSize';
+function savedTextSize(): TextSize {
+  try {
+    const v = localStorage.getItem(TEXT_KEY);
+    return v === 'S' || v === 'L' ? v : 'M';
+  } catch {
+    return 'M';
+  }
 }
 
 /** A labelled group of toggle buttons for the top bar. */
@@ -182,6 +234,11 @@ export default function App() {
   const [linked, setLinked] = useState(true);
   const sync = useRef<CameraSync>({ driver: null, version: 0, position: [0, 0, 0], target: [0, 0, 0], zoom: 1 }).current;
   const [cameraMode, setCameraMode] = useState<CameraMode>('3d');
+  const [textSize, setTextSize] = useState<TextSize>(savedTextSize);
+  useEffect(() => {
+    document.documentElement.style.fontSize = TEXT_PX[textSize];
+    try { localStorage.setItem(TEXT_KEY, textSize); } catch { /* storage blocked: size just isn't remembered */ }
+  }, [textSize]);
   const [colorBy, setColorBy] = useState<ColorBy>('change');
   const [story, setStory] = useState<string | null>(null);
   const [zoomTick, setZoomTick] = useState(0);
@@ -245,6 +302,7 @@ export default function App() {
           <span><span className="text-slate-800">keep</span><span className="text-blue-700">TABS</span></span>
         </h1>
         <Toggle label="Page" value={page} onChange={setPage} options={[['review', 'Review'], ['log', 'Revision log']]} />
+        <Toggle label="Text" value={textSize} onChange={setTextSize} options={[['S', 'S'], ['M', 'M'], ['L', 'L']]} />
         {/* Always visible: says whether what's on screen is synthetic or a real model. */}
         {/* Only once something is loaded: while waiting or comparing, there is no data to label. */}
         {load.status === 'ready' && (

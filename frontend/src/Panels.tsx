@@ -27,7 +27,7 @@ function useScrollWhenSelected<T extends HTMLElement>(selected: boolean) {
 }
 
 const Badge = ({ children }: { children: React.ReactNode }) => (
-  <span className="rounded border border-slate-300 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-slate-600">
+  <span className="rounded border border-slate-300 px-1.5 py-0.5 text-[0.625rem] font-medium uppercase tracking-wide text-slate-600">
     {children}
   </span>
 );
@@ -36,11 +36,11 @@ const Badge = ({ children }: { children: React.ReactNode }) => (
 
 /** Count badge, shaded from light to dark blue as the count nears the largest in this comparison; 0 stays gray. */
 function CountBadge({ n, max }: { n: number; max: number }) {
-  if (n === 0) return <span className="min-w-6 rounded-full bg-slate-100 px-1.5 text-center text-[11px] text-slate-400">0</span>;
+  if (n === 0) return <span className="min-w-6 rounded-full bg-slate-100 px-1.5 text-center text-[0.6875rem] text-slate-400">0</span>;
   const t = n / Math.max(1, max);
   const light = 90 - 52 * t; // 90% (few) to 38% (most)
   return (
-    <span className="min-w-6 rounded-full px-1.5 text-center text-[11px] font-semibold"
+    <span className="min-w-6 rounded-full px-1.5 text-center text-[0.6875rem] font-semibold"
       style={{ background: `hsl(217 80% ${light}%)`, color: light < 62 ? 'white' : 'hsl(217 80% 25%)' }}>
       {n}
     </span>
@@ -84,7 +84,7 @@ export function SummaryList({ result, category, onCategory }: {
                 onClick={() => flip(sec.title)}
                 className="flex w-full items-center gap-2 bg-slate-50 px-3 py-1.5 text-left hover:bg-slate-100"
               >
-                <span className="w-3 text-[10px] text-slate-500">{open ? '▾' : '▸'}</span>
+                <span className="w-3 text-[0.625rem] text-slate-500">{open ? '▾' : '▸'}</span>
                 <span className="flex-1 text-xs font-semibold uppercase tracking-wide text-slate-800">{sec.title}</span>
                 {sec.items.some((c) => c.compared) && <CountBadge n={total} max={max} />}
               </button>
@@ -103,15 +103,15 @@ export function SummaryList({ result, category, onCategory }: {
                   >
                     <span className="min-w-0 flex-1">
                       <span className={`block text-xs ${c.compared ? 'text-slate-800' : 'text-slate-400'}`}>{c.title}</span>
-                      {c.compared && c.note && <span className="block text-[10px] italic text-slate-400">{c.note}</span>}
+                      {c.compared && c.note && <span className="block text-[0.625rem] italic text-slate-400">{c.note}</span>}
                     </span>
                     {c.compared ? <CountBadge n={n} max={max} />
-                      : <span className="text-[10px] italic text-slate-400">Not compared</span>}
+                      : <span className="text-[0.625rem] italic text-slate-400">Not compared</span>}
                   </button>
                 );
               })}
               {open && sec.title === 'Other' && notCompared > 0 && (
-                <p className="py-1 pl-8 pr-3 text-[11px] italic text-slate-400">
+                <p className="py-1 pl-8 pr-3 text-[0.6875rem] italic text-slate-400">
                   {notCompared} record type{notCompared === 1 ? '' : 's'} seen in the file, not compared
                 </p>
               )}
@@ -183,7 +183,7 @@ export function StoryStrip({ result, story, onStory }: {
   const max = Math.max(1, ...Object.values(counts));
   const stories = [...result.stories].sort((a, b) => a.elevation - b.elevation);
   return (
-    <div className="flex items-center gap-1 border-b border-slate-200 px-3 py-1 text-[11px]">
+    <div className="flex items-center gap-1 border-b border-slate-200 px-3 py-1 text-[0.6875rem]">
       <span className="mr-1 text-slate-500">Stories</span>
       {stories.map((s) => {
         const n = counts[s.name] ?? 0;

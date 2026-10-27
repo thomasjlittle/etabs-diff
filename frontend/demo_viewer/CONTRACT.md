@@ -68,6 +68,11 @@ Each change is `{ field, before, after, affects }`:
 - `field`: what changed, e.g. `"section"`, `"restraint"`, `"load:LIVE.FZ"`, `"material:A992Fy50.Fy"`.
 - `before`, `after`: the old and new values. Any JSON type (number, string, object). `before` is `null` for things that didn't exist in A, and `after` is `null` for things gone in B.
 - `affects`: which kinds of behavior the change matters for: any of `geometry`, `stiffness`, `mass`, `load`. Useful later for filtering or coloring.
+- `kind`: optional `"renamed"` on a `label` or definition `name` change. The old/new names are in `before` / `after`, with an empty `affects` list. Elements retain `status: "modified"` and are counted there for compatibility; viewers can show label-only changes as renamed. A rename can coexist with physical changes on the same element.
+
+### Renamed definitions
+
+An unambiguous removed/added pair with identical properties is reported once under `tables[table].modified[newName]`, as a `name` change with `kind: "renamed"`. It is absent from `added` and `removed`. This applies to materials, frame/shell sections, load patterns, cases, combinations, and the other compared definition tables. References to a renamed material, section, pattern or case compare by identity, so the rename alone does not create a reassignment or load-term edit. Users carry the upstream name change through `via`. Multiple identical candidates remain added/removed because their identities cannot be determined reliably. CSV reports use `status: "renamed"` for the rename row.
 
 ### Which points are included
 

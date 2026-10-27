@@ -3,13 +3,13 @@
 //
 // Element-level changes go to the planning-board group for their field. "affected" elements carry
 // their upstream definition's changes; those are reported once, as the table (definition) change,
-// with every member whose `via` names it. Not available from engine output: renames, source line
+// with every member whose `via` names it. Not available from engine output: source line
 // evidence, ambiguous matches. Areas (floors, walls) are listed as changes but not drawn.
 import type { Change, Coverage, Group, Member, Node, Result, Side, Value, Vec3 } from './vantageTypes';
 import { GROUPS } from './adapter';
 
 // ---- engine contract (subset this adapter reads) ----
-interface EChange { field: string; before: unknown; after: unknown; affects: string[] }
+interface EChange { field: string; before: unknown; after: unknown; affects: string[]; kind?: 'renamed' }
 interface EElement {
   key: string; kind: 'point' | 'frame' | 'area'; subtype: string; label: string; story: string;
   status: 'unchanged' | 'added' | 'removed' | 'modified' | 'affected';
@@ -130,13 +130,13 @@ export function adaptEngine(d: EngineDiff, opts: { mock: boolean }): Result {
     // modified: one change per group of fields
     const byGroup = new Map<string, EChange[]>();
     for (const c of e.changes) {
-      const g = e.kind === 'area' ? 'ST' : engineFieldGroup(c.field.split(':')[0]);
+      const g = c.kind === 'renamed' && c.field === 'label' ? 'rename' : e.kind === 'area' ? 'ST' : engineFieldGroup(c.field.split(':')[0]);
       byGroup.set(g, [...(byGroup.get(g) ?? []), c]);
     }
     for (const [group, cs] of byGroup) {
       const field = (c: EChange) => (group === '1A' ? 'section' : c.field);
       draft.push({
-        type: 'modified', group, member_ids: drawn ? [e.key] : [],
+        type: group === 'rename' ? 'label_only' : 'modified', group: group === 'rename' ? 'G1' : group, member_ids: drawn ? [e.key] : [],
         extent: { members: drawn ? 1 : 0, distance: 0 },
         before: Object.fromEntries(cs.map((c) => [field(c), toValue(c.before)])),
         after: Object.fromEntries(cs.map((c) => [field(c), toValue(c.after)])),
@@ -156,7 +156,7 @@ export function adaptEngine(d: EngineDiff, opts: { mock: boolean }): Result {
     for (const [name, cs] of Object.entries(t.modified)) {
       const ids = table === 'stories' ? [] : users(table, name); // story moves are not member changes
       draft.push({
-        ...defChange('modified', group, ids,
+        ...defChange(cs.every((c) => c.kind === 'renamed') ? 'label_only' : 'modified', group, ids,
           Object.fromEntries(cs.map((c) => [defField(c.field), toValue(c.before)])),
           Object.fromEntries(cs.map((c) => [defField(c.field), toValue(c.after)]))),
         subject: `${prefix} ${name}`,

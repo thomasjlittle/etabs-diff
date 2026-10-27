@@ -22,6 +22,7 @@ class _Change(TypedDict):
 
 class Change(_Change, total=False):
     row: Optional[int]  # extension: change list row (1 to 17), None when outside the list
+    kind: Literal["renamed"]  # extension: label/name change; status remains modified for compatibility
 
 
 class _ElementDiff(TypedDict):

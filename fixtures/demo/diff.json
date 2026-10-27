@@ -65,7 +65,7 @@
    "subtype": "column",
    "label": "C101",
    "story": "Roof",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -78,7 +78,16 @@
      1128.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "C1",
+     "after": "C101",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "column|L7|3600|0|0~Roof|3600|0|0",
@@ -170,7 +179,7 @@
    "subtype": "column",
    "label": "C102",
    "story": "Roof",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -183,7 +192,16 @@
      1128.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "C6",
+     "after": "C102",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "column|L7|3600|3000|0~Roof|3600|3000|0",
@@ -275,7 +293,7 @@
    "subtype": "column",
    "label": "C103",
    "story": "Roof",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -288,7 +306,16 @@
      1128.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "C11",
+     "after": "C103",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "column|L7|3600|6000|0~Roof|3600|6000|0",
@@ -380,7 +407,7 @@
    "subtype": "column",
    "label": "C104",
    "story": "Roof",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -393,7 +420,16 @@
      1128.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "C16",
+     "after": "C104",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "column|L7|3600|9000|0~Roof|3600|9000|0",
@@ -821,7 +857,7 @@
    "subtype": "beam",
    "label": "B101",
    "story": "Roof",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -834,7 +870,16 @@
      1128.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "B17",
+     "after": "B101",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "beam|Roof|0|3000|0~Roof|0|6000|0",
@@ -842,7 +887,7 @@
    "subtype": "beam",
    "label": "B102",
    "story": "Roof",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -855,7 +900,16 @@
      1128.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "B18",
+     "after": "B102",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "beam|Roof|0|6000|0~Roof|0|9000|0",
@@ -863,7 +917,7 @@
    "subtype": "beam",
    "label": "B103",
    "story": "Roof",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -876,7 +930,16 @@
      1128.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "B19",
+     "after": "B103",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "beam|Roof|3600|0|0~Roof|3600|3000|0",
@@ -1640,7 +1703,7 @@
    "subtype": "column",
    "label": "C101",
    "story": "L7",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -1653,7 +1716,16 @@
      972.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "C1",
+     "after": "C101",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "column|L6|3600|0|0~L7|3600|0|0",
@@ -1745,7 +1817,7 @@
    "subtype": "column",
    "label": "C102",
    "story": "L7",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -1758,7 +1830,16 @@
      972.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "C6",
+     "after": "C102",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "column|L6|3600|3000|0~L7|3600|3000|0",
@@ -1850,7 +1931,7 @@
    "subtype": "column",
    "label": "C103",
    "story": "L7",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -1863,7 +1944,16 @@
      972.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "C11",
+     "after": "C103",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "column|L6|3600|6000|0~L7|3600|6000|0",
@@ -1955,7 +2045,7 @@
    "subtype": "column",
    "label": "C104",
    "story": "L7",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -1968,7 +2058,16 @@
      972.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "C16",
+     "after": "C104",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "column|L6|3600|9000|0~L7|3600|9000|0",
@@ -2396,7 +2495,7 @@
    "subtype": "beam",
    "label": "B101",
    "story": "L7",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -2409,7 +2508,16 @@
      972.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "B17",
+     "after": "B101",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "beam|L7|0|3000|0~L7|0|6000|0",
@@ -2417,7 +2525,7 @@
    "subtype": "beam",
    "label": "B102",
    "story": "L7",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -2430,7 +2538,16 @@
      972.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "B18",
+     "after": "B102",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "beam|L7|0|6000|0~L7|0|9000|0",
@@ -2438,7 +2555,7 @@
    "subtype": "beam",
    "label": "B103",
    "story": "L7",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -2451,7 +2568,16 @@
      972.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "B19",
+     "after": "B103",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "beam|L7|3600|0|0~L7|3600|3000|0",
@@ -3047,7 +3173,7 @@
    "subtype": "column",
    "label": "C101",
    "story": "L6",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -3060,7 +3186,16 @@
      816.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "C1",
+     "after": "C101",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "column|L5|3600|0|0~L6|3600|0|0",
@@ -3152,7 +3287,7 @@
    "subtype": "column",
    "label": "C102",
    "story": "L6",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -3165,7 +3300,16 @@
      816.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "C6",
+     "after": "C102",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "column|L5|3600|3000|0~L6|3600|3000|0",
@@ -3257,7 +3401,7 @@
    "subtype": "column",
    "label": "C103",
    "story": "L6",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -3270,7 +3414,16 @@
      816.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "C11",
+     "after": "C103",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "column|L5|3600|6000|0~L6|3600|6000|0",
@@ -3372,7 +3525,7 @@
    "subtype": "column",
    "label": "C104",
    "story": "L6",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -3385,7 +3538,16 @@
      816.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "C16",
+     "after": "C104",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "column|L5|3600|9000|0~L6|3600|9000|0",
@@ -3813,7 +3975,7 @@
    "subtype": "beam",
    "label": "B101",
    "story": "L6",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -3826,7 +3988,16 @@
      816.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "B17",
+     "after": "B101",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "beam|L6|0|3000|0~L6|0|6000|0",
@@ -3834,7 +4005,7 @@
    "subtype": "beam",
    "label": "B102",
    "story": "L6",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -3847,7 +4018,16 @@
      816.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "B18",
+     "after": "B102",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "beam|L6|0|6000|0~L6|0|9000|0",
@@ -3855,7 +4035,7 @@
    "subtype": "beam",
    "label": "B103",
    "story": "L6",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -3868,7 +4048,16 @@
      816.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "B19",
+     "after": "B103",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "beam|L6|3600|0|0~L6|3600|3000|0",
@@ -4453,7 +4642,7 @@
    "subtype": "beam",
    "label": "B45",
    "story": "L6",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      900.05,
@@ -4466,7 +4655,16 @@
      816.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "B38",
+     "after": "B45",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "column|L4|0|0|0~L5|0|0|0",
@@ -4474,7 +4672,7 @@
    "subtype": "column",
    "label": "C101",
    "story": "L5",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -4487,7 +4685,16 @@
      660.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "C1",
+     "after": "C101",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "column|L4|3600|0|0~L5|3600|0|0",
@@ -4579,7 +4786,7 @@
    "subtype": "column",
    "label": "C102",
    "story": "L5",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -4592,7 +4799,16 @@
      660.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "C6",
+     "after": "C102",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "column|L4|3600|3000|0~L5|3600|3000|0",
@@ -4684,7 +4900,7 @@
    "subtype": "column",
    "label": "C103",
    "story": "L5",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -4697,7 +4913,16 @@
      660.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "C11",
+     "after": "C103",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "column|L4|3600|6000|0~L5|3600|6000|0",
@@ -4789,7 +5014,7 @@
    "subtype": "column",
    "label": "C104",
    "story": "L5",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -4802,7 +5027,16 @@
      660.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "C16",
+     "after": "C104",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "column|L4|3600|9000|0~L5|3600|9000|0",
@@ -5252,7 +5486,7 @@
    "subtype": "beam",
    "label": "B101",
    "story": "L5",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -5265,7 +5499,16 @@
      660.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "B17",
+     "after": "B101",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "beam|L5|0|3000|0~L5|0|6000|0",
@@ -5273,7 +5516,7 @@
    "subtype": "beam",
    "label": "B102",
    "story": "L5",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -5286,7 +5529,16 @@
      660.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "B18",
+     "after": "B102",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "beam|L5|0|6000|0~L5|0|9000|0",
@@ -5294,7 +5546,7 @@
    "subtype": "beam",
    "label": "B103",
    "story": "L5",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -5307,7 +5559,16 @@
      660.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "B19",
+     "after": "B103",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "beam|L5|3600|0|0~L5|3600|3000|0",
@@ -5882,7 +6143,7 @@
    "subtype": "column",
    "label": "C101",
    "story": "L4",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -5895,7 +6156,16 @@
      504.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "C1",
+     "after": "C101",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "column|L3|3600|0|0~L4|3600|0|0",
@@ -5987,7 +6257,7 @@
    "subtype": "column",
    "label": "C102",
    "story": "L4",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -6000,7 +6270,16 @@
      504.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "C6",
+     "after": "C102",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "column|L3|3600|3000|0~L4|3600|3000|0",
@@ -6092,7 +6371,7 @@
    "subtype": "column",
    "label": "C103",
    "story": "L4",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -6105,7 +6384,16 @@
      504.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "C11",
+     "after": "C103",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "column|L3|3600|6000|0~L4|3600|6000|0",
@@ -6197,7 +6485,7 @@
    "subtype": "column",
    "label": "C104",
    "story": "L4",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -6210,7 +6498,16 @@
      504.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "C16",
+     "after": "C104",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "column|L3|3600|9000|0~L4|3600|9000|0",
@@ -6638,7 +6935,7 @@
    "subtype": "beam",
    "label": "B101",
    "story": "L4",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -6651,7 +6948,16 @@
      504.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "B17",
+     "after": "B101",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "beam|L4|0|3000|0~L4|0|6000|0",
@@ -6659,7 +6965,7 @@
    "subtype": "beam",
    "label": "B102",
    "story": "L4",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -6672,7 +6978,16 @@
      504.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "B18",
+     "after": "B102",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "beam|L4|0|6000|0~L4|0|9000|0",
@@ -6680,7 +6995,7 @@
    "subtype": "beam",
    "label": "B103",
    "story": "L4",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -6693,7 +7008,16 @@
      504.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "B19",
+     "after": "B103",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "beam|L4|3600|0|0~L4|3600|3000|0",
@@ -7268,7 +7592,7 @@
    "subtype": "column",
    "label": "C101",
    "story": "L3",
-   "status": "affected",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -7282,6 +7606,14 @@
     ]
    ],
    "changes": [
+    {
+     "field": "label",
+     "before": "C1",
+     "after": "C101",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    },
     {
      "field": "frameSection:BOX16.TF",
      "before": 0.75,
@@ -7421,7 +7753,7 @@
    "subtype": "column",
    "label": "C102",
    "story": "L3",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -7434,7 +7766,16 @@
      336.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "C6",
+     "after": "C102",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "column|L2|3600|3000|0~L3|3600|3000|0",
@@ -7537,7 +7878,7 @@
    "subtype": "column",
    "label": "C103",
    "story": "L3",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -7550,7 +7891,16 @@
      336.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "C11",
+     "after": "C103",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "column|L2|3600|6000|0~L3|3600|6000|0",
@@ -7642,7 +7992,7 @@
    "subtype": "column",
    "label": "C104",
    "story": "L3",
-   "status": "affected",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -7656,6 +8006,14 @@
     ]
    ],
    "changes": [
+    {
+     "field": "label",
+     "before": "C16",
+     "after": "C104",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    },
     {
      "field": "frameSection:BOX16.TF",
      "before": 0.75,
@@ -8141,7 +8499,7 @@
    "subtype": "beam",
    "label": "B101",
    "story": "L3",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -8154,7 +8512,16 @@
      336.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "B17",
+     "after": "B101",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "beam|L3|0|3000|0~L3|0|6000|0",
@@ -8162,7 +8529,7 @@
    "subtype": "beam",
    "label": "B102",
    "story": "L3",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -8175,7 +8542,16 @@
      336.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "B18",
+     "after": "B102",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "beam|L3|0|6000|0~L3|0|9000|0",
@@ -8183,7 +8559,7 @@
    "subtype": "beam",
    "label": "B103",
    "story": "L3",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -8196,7 +8572,16 @@
      336.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "B19",
+     "after": "B103",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "beam|L3|3600|0|0~L3|3600|3000|0",
@@ -8792,7 +9177,7 @@
    "subtype": "column",
    "label": "C101",
    "story": "L2",
-   "status": "affected",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -8806,6 +9191,14 @@
     ]
    ],
    "changes": [
+    {
+     "field": "label",
+     "before": "C1",
+     "after": "C101",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    },
     {
      "field": "frameSection:BOX16.TF",
      "before": 0.75,
@@ -8945,7 +9338,7 @@
    "subtype": "column",
    "label": "C102",
    "story": "L2",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -8958,7 +9351,16 @@
      180.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "C6",
+     "after": "C102",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "column|Base|3600|3000|0~L2|3600|3000|0",
@@ -9071,7 +9473,7 @@
    "subtype": "column",
    "label": "C103",
    "story": "L2",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -9084,7 +9486,16 @@
      180.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "C11",
+     "after": "C103",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "column|Base|3600|6000|0~L2|3600|6000|0",
@@ -9176,7 +9587,7 @@
    "subtype": "column",
    "label": "C104",
    "story": "L2",
-   "status": "affected",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -9190,6 +9601,14 @@
     ]
    ],
    "changes": [
+    {
+     "field": "label",
+     "before": "C16",
+     "after": "C104",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    },
     {
      "field": "frameSection:BOX16.TF",
      "before": 0.75,
@@ -9721,7 +10140,7 @@
    "subtype": "beam",
    "label": "B101",
    "story": "L2",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -9734,7 +10153,16 @@
      180.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "B17",
+     "after": "B101",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "beam|L2|0|3000|0~L2|0|6000|0",
@@ -9742,7 +10170,7 @@
    "subtype": "beam",
    "label": "B102",
    "story": "L2",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -9755,7 +10183,16 @@
      180.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "B18",
+     "after": "B102",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "beam|L2|0|6000|0~L2|0|9000|0",
@@ -9763,7 +10200,7 @@
    "subtype": "beam",
    "label": "B103",
    "story": "L2",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -9776,7 +10213,16 @@
      180.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "B19",
+     "after": "B103",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "beam|L2|3600|0|0~L2|3600|3000|0",
@@ -10372,7 +10818,7 @@
    "subtype": "floor",
    "label": "F101",
    "story": "Roof",
-   "status": "affected",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -10396,6 +10842,14 @@
     ]
    ],
    "changes": [
+    {
+     "field": "label",
+     "before": "F1",
+     "after": "F101",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    },
     {
      "field": "material:LW3000.FC",
      "before": 3.0,
@@ -10592,7 +11046,7 @@
    "subtype": "floor",
    "label": "F102",
    "story": "Roof",
-   "status": "affected",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -10616,6 +11070,14 @@
     ]
    ],
    "changes": [
+    {
+     "field": "label",
+     "before": "F5",
+     "after": "F102",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    },
     {
      "field": "material:LW3000.FC",
      "before": 3.0,
@@ -10812,7 +11274,7 @@
    "subtype": "floor",
    "label": "F103",
    "story": "Roof",
-   "status": "affected",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -10836,6 +11298,14 @@
     ]
    ],
    "changes": [
+    {
+     "field": "label",
+     "before": "F9",
+     "after": "F103",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    },
     {
      "field": "material:LW3000.FC",
      "before": 3.0,
@@ -11032,7 +11502,7 @@
    "subtype": "floor",
    "label": "F101",
    "story": "L7",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -11055,7 +11525,16 @@
      972.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "F1",
+     "after": "F101",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "floor|L7|3600|0|0~L7|3600|3000|0~L7|7200|0|0~L7|7200|3000|0",
@@ -11156,7 +11635,7 @@
    "subtype": "floor",
    "label": "F102",
    "story": "L7",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -11179,7 +11658,16 @@
      972.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "F5",
+     "after": "F102",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "floor|L7|3600|3000|0~L7|3600|6000|0~L7|7200|3000|0~L7|7200|6000|0",
@@ -11249,7 +11737,7 @@
    "subtype": "floor",
    "label": "F103",
    "story": "L7",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -11272,7 +11760,16 @@
      972.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "F9",
+     "after": "F103",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "floor|L7|3600|6000|0~L7|3600|9000|0~L7|7200|6000|0~L7|7200|9000|0",
@@ -11373,7 +11870,7 @@
    "subtype": "floor",
    "label": "F101",
    "story": "L6",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -11396,7 +11893,16 @@
      816.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "F1",
+     "after": "F101",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "floor|L6|3600|0|0~L6|3600|3000|0~L6|7200|0|0~L6|7200|3000|0",
@@ -11497,7 +12003,7 @@
    "subtype": "floor",
    "label": "F102",
    "story": "L6",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -11520,7 +12026,16 @@
      816.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "F5",
+     "after": "F102",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "floor|L6|3600|3000|0~L6|3600|6000|0~L6|7200|3000|0~L6|7200|6000|0",
@@ -11621,7 +12136,7 @@
    "subtype": "floor",
    "label": "F103",
    "story": "L6",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -11644,7 +12159,16 @@
      816.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "F9",
+     "after": "F103",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "floor|L6|3600|6000|0~L6|3600|9000|0~L6|7200|6000|0~L6|7200|9000|0",
@@ -11745,7 +12269,7 @@
    "subtype": "floor",
    "label": "F101",
    "story": "L5",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -11768,7 +12292,16 @@
      660.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "F1",
+     "after": "F101",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "floor|L5|3600|0|0~L5|3600|3000|0~L5|7200|0|0~L5|7200|3000|0",
@@ -11869,7 +12402,7 @@
    "subtype": "floor",
    "label": "F102",
    "story": "L5",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -11892,7 +12425,16 @@
      660.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "F5",
+     "after": "F102",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "floor|L5|3600|3000|0~L5|3600|6000|0~L5|7200|3000|0~L5|7200|6000|0",
@@ -11993,7 +12535,7 @@
    "subtype": "floor",
    "label": "F103",
    "story": "L5",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -12016,7 +12558,16 @@
      660.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "F9",
+     "after": "F103",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "floor|L5|3600|6000|0~L5|3600|9000|0~L5|7200|6000|0~L5|7200|9000|0",
@@ -12117,7 +12668,7 @@
    "subtype": "floor",
    "label": "F101",
    "story": "L4",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -12140,7 +12691,16 @@
      504.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "F1",
+     "after": "F101",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "floor|L4|3600|0|0~L4|3600|3000|0~L4|7200|0|0~L4|7200|3000|0",
@@ -12241,7 +12801,7 @@
    "subtype": "floor",
    "label": "F102",
    "story": "L4",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -12264,7 +12824,16 @@
      504.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "F5",
+     "after": "F102",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "floor|L4|3600|3000|0~L4|3600|6000|0~L4|7200|3000|0~L4|7200|6000|0",
@@ -12365,7 +12934,7 @@
    "subtype": "floor",
    "label": "F103",
    "story": "L4",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -12388,7 +12957,16 @@
      504.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "F9",
+     "after": "F103",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "floor|L4|3600|6000|0~L4|3600|9000|0~L4|7200|6000|0~L4|7200|9000|0",
@@ -12489,7 +13067,7 @@
    "subtype": "floor",
    "label": "F101",
    "story": "L3",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -12512,7 +13090,16 @@
      336.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "F1",
+     "after": "F101",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "floor|L3|3600|0|0~L3|3600|3000|0~L3|7200|0|0~L3|7200|3000|0",
@@ -12613,7 +13200,7 @@
    "subtype": "floor",
    "label": "F102",
    "story": "L3",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -12636,7 +13223,16 @@
      336.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "F5",
+     "after": "F102",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "floor|L3|3600|3000|0~L3|3600|6000|0~L3|7200|3000|0~L3|7200|6000|0",
@@ -12759,7 +13355,7 @@
    "subtype": "floor",
    "label": "F103",
    "story": "L3",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -12782,7 +13378,16 @@
      336.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "F9",
+     "after": "F103",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "floor|L3|3600|6000|0~L3|3600|9000|0~L3|7200|6000|0~L3|7200|9000|0",
@@ -12883,7 +13488,7 @@
    "subtype": "floor",
    "label": "F101",
    "story": "L2",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -12906,7 +13511,16 @@
      180.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "F1",
+     "after": "F101",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "floor|L2|3600|0|0~L2|3600|3000|0~L2|7200|0|0~L2|7200|3000|0",
@@ -13018,7 +13632,7 @@
    "subtype": "floor",
    "label": "F102",
    "story": "L2",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -13041,7 +13655,16 @@
      180.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "F5",
+     "after": "F102",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "floor|L2|3600|3000|0~L2|3600|6000|0~L2|7200|3000|0~L2|7200|6000|0",
@@ -13142,7 +13765,7 @@
    "subtype": "floor",
    "label": "F103",
    "story": "L2",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -13165,7 +13788,16 @@
      180.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "F9",
+     "after": "F103",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "floor|L2|3600|6000|0~L2|3600|9000|0~L2|7200|6000|0~L2|7200|9000|0",
@@ -13282,7 +13914,7 @@
    "subtype": "joint",
    "label": "101",
    "story": "Base",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -13290,7 +13922,191 @@
      0.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "1",
+     "after": "101",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
+  },
+  {
+   "key": "L2|0|0|0",
+   "kind": "point",
+   "subtype": "joint",
+   "label": "101",
+   "story": "L2",
+   "status": "modified",
+   "geometry": [
+    [
+     0.0,
+     0.0,
+     180.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "label",
+     "before": "1",
+     "after": "101",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
+  },
+  {
+   "key": "L3|0|0|0",
+   "kind": "point",
+   "subtype": "joint",
+   "label": "101",
+   "story": "L3",
+   "status": "modified",
+   "geometry": [
+    [
+     0.0,
+     0.0,
+     336.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "label",
+     "before": "1",
+     "after": "101",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
+  },
+  {
+   "key": "L4|0|0|0",
+   "kind": "point",
+   "subtype": "joint",
+   "label": "101",
+   "story": "L4",
+   "status": "modified",
+   "geometry": [
+    [
+     0.0,
+     0.0,
+     504.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "label",
+     "before": "1",
+     "after": "101",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
+  },
+  {
+   "key": "L5|0|0|0",
+   "kind": "point",
+   "subtype": "joint",
+   "label": "101",
+   "story": "L5",
+   "status": "modified",
+   "geometry": [
+    [
+     0.0,
+     0.0,
+     660.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "label",
+     "before": "1",
+     "after": "101",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
+  },
+  {
+   "key": "L6|0|0|0",
+   "kind": "point",
+   "subtype": "joint",
+   "label": "101",
+   "story": "L6",
+   "status": "modified",
+   "geometry": [
+    [
+     0.0,
+     0.0,
+     816.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "label",
+     "before": "1",
+     "after": "101",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
+  },
+  {
+   "key": "L7|0|0|0",
+   "kind": "point",
+   "subtype": "joint",
+   "label": "101",
+   "story": "L7",
+   "status": "modified",
+   "geometry": [
+    [
+     0.0,
+     0.0,
+     972.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "label",
+     "before": "1",
+     "after": "101",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
+  },
+  {
+   "key": "Roof|0|0|0",
+   "kind": "point",
+   "subtype": "joint",
+   "label": "101",
+   "story": "Roof",
+   "status": "modified",
+   "geometry": [
+    [
+     0.0,
+     0.0,
+     1128.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "label",
+     "before": "1",
+     "after": "101",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "Base|0|3000|0",
@@ -13298,7 +14114,7 @@
    "subtype": "joint",
    "label": "102",
    "story": "Base",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -13306,7 +14122,191 @@
      0.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "6",
+     "after": "102",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
+  },
+  {
+   "key": "L2|0|3000|0",
+   "kind": "point",
+   "subtype": "joint",
+   "label": "102",
+   "story": "L2",
+   "status": "modified",
+   "geometry": [
+    [
+     0.0,
+     300.0,
+     180.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "label",
+     "before": "6",
+     "after": "102",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
+  },
+  {
+   "key": "L3|0|3000|0",
+   "kind": "point",
+   "subtype": "joint",
+   "label": "102",
+   "story": "L3",
+   "status": "modified",
+   "geometry": [
+    [
+     0.0,
+     300.0,
+     336.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "label",
+     "before": "6",
+     "after": "102",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
+  },
+  {
+   "key": "L4|0|3000|0",
+   "kind": "point",
+   "subtype": "joint",
+   "label": "102",
+   "story": "L4",
+   "status": "modified",
+   "geometry": [
+    [
+     0.0,
+     300.0,
+     504.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "label",
+     "before": "6",
+     "after": "102",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
+  },
+  {
+   "key": "L5|0|3000|0",
+   "kind": "point",
+   "subtype": "joint",
+   "label": "102",
+   "story": "L5",
+   "status": "modified",
+   "geometry": [
+    [
+     0.0,
+     300.0,
+     660.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "label",
+     "before": "6",
+     "after": "102",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
+  },
+  {
+   "key": "L6|0|3000|0",
+   "kind": "point",
+   "subtype": "joint",
+   "label": "102",
+   "story": "L6",
+   "status": "modified",
+   "geometry": [
+    [
+     0.0,
+     300.0,
+     816.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "label",
+     "before": "6",
+     "after": "102",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
+  },
+  {
+   "key": "L7|0|3000|0",
+   "kind": "point",
+   "subtype": "joint",
+   "label": "102",
+   "story": "L7",
+   "status": "modified",
+   "geometry": [
+    [
+     0.0,
+     300.0,
+     972.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "label",
+     "before": "6",
+     "after": "102",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
+  },
+  {
+   "key": "Roof|0|3000|0",
+   "kind": "point",
+   "subtype": "joint",
+   "label": "102",
+   "story": "Roof",
+   "status": "modified",
+   "geometry": [
+    [
+     0.0,
+     300.0,
+     1128.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "label",
+     "before": "6",
+     "after": "102",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "Base|0|6000|0",
@@ -13314,7 +14314,7 @@
    "subtype": "joint",
    "label": "103",
    "story": "Base",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -13322,7 +14322,191 @@
      0.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "11",
+     "after": "103",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
+  },
+  {
+   "key": "L2|0|6000|0",
+   "kind": "point",
+   "subtype": "joint",
+   "label": "103",
+   "story": "L2",
+   "status": "modified",
+   "geometry": [
+    [
+     0.0,
+     600.0,
+     180.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "label",
+     "before": "11",
+     "after": "103",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
+  },
+  {
+   "key": "L3|0|6000|0",
+   "kind": "point",
+   "subtype": "joint",
+   "label": "103",
+   "story": "L3",
+   "status": "modified",
+   "geometry": [
+    [
+     0.0,
+     600.0,
+     336.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "label",
+     "before": "11",
+     "after": "103",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
+  },
+  {
+   "key": "L4|0|6000|0",
+   "kind": "point",
+   "subtype": "joint",
+   "label": "103",
+   "story": "L4",
+   "status": "modified",
+   "geometry": [
+    [
+     0.0,
+     600.0,
+     504.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "label",
+     "before": "11",
+     "after": "103",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
+  },
+  {
+   "key": "L5|0|6000|0",
+   "kind": "point",
+   "subtype": "joint",
+   "label": "103",
+   "story": "L5",
+   "status": "modified",
+   "geometry": [
+    [
+     0.0,
+     600.0,
+     660.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "label",
+     "before": "11",
+     "after": "103",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
+  },
+  {
+   "key": "L6|0|6000|0",
+   "kind": "point",
+   "subtype": "joint",
+   "label": "103",
+   "story": "L6",
+   "status": "modified",
+   "geometry": [
+    [
+     0.0,
+     600.0,
+     816.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "label",
+     "before": "11",
+     "after": "103",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
+  },
+  {
+   "key": "L7|0|6000|0",
+   "kind": "point",
+   "subtype": "joint",
+   "label": "103",
+   "story": "L7",
+   "status": "modified",
+   "geometry": [
+    [
+     0.0,
+     600.0,
+     972.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "label",
+     "before": "11",
+     "after": "103",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
+  },
+  {
+   "key": "Roof|0|6000|0",
+   "kind": "point",
+   "subtype": "joint",
+   "label": "103",
+   "story": "Roof",
+   "status": "modified",
+   "geometry": [
+    [
+     0.0,
+     600.0,
+     1128.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "label",
+     "before": "11",
+     "after": "103",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "Base|0|9000|0",
@@ -13330,7 +14514,7 @@
    "subtype": "joint",
    "label": "104",
    "story": "Base",
-   "status": "unchanged",
+   "status": "modified",
    "geometry": [
     [
      0.0,
@@ -13338,7 +14522,191 @@
      0.0
     ]
    ],
-   "changes": []
+   "changes": [
+    {
+     "field": "label",
+     "before": "16",
+     "after": "104",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
+  },
+  {
+   "key": "L2|0|9000|0",
+   "kind": "point",
+   "subtype": "joint",
+   "label": "104",
+   "story": "L2",
+   "status": "modified",
+   "geometry": [
+    [
+     0.0,
+     900.0,
+     180.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "label",
+     "before": "16",
+     "after": "104",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
+  },
+  {
+   "key": "L3|0|9000|0",
+   "kind": "point",
+   "subtype": "joint",
+   "label": "104",
+   "story": "L3",
+   "status": "modified",
+   "geometry": [
+    [
+     0.0,
+     900.0,
+     336.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "label",
+     "before": "16",
+     "after": "104",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
+  },
+  {
+   "key": "L4|0|9000|0",
+   "kind": "point",
+   "subtype": "joint",
+   "label": "104",
+   "story": "L4",
+   "status": "modified",
+   "geometry": [
+    [
+     0.0,
+     900.0,
+     504.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "label",
+     "before": "16",
+     "after": "104",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
+  },
+  {
+   "key": "L5|0|9000|0",
+   "kind": "point",
+   "subtype": "joint",
+   "label": "104",
+   "story": "L5",
+   "status": "modified",
+   "geometry": [
+    [
+     0.0,
+     900.0,
+     660.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "label",
+     "before": "16",
+     "after": "104",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
+  },
+  {
+   "key": "L6|0|9000|0",
+   "kind": "point",
+   "subtype": "joint",
+   "label": "104",
+   "story": "L6",
+   "status": "modified",
+   "geometry": [
+    [
+     0.0,
+     900.0,
+     816.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "label",
+     "before": "16",
+     "after": "104",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
+  },
+  {
+   "key": "L7|0|9000|0",
+   "kind": "point",
+   "subtype": "joint",
+   "label": "104",
+   "story": "L7",
+   "status": "modified",
+   "geometry": [
+    [
+     0.0,
+     900.0,
+     972.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "label",
+     "before": "16",
+     "after": "104",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
+  },
+  {
+   "key": "Roof|0|9000|0",
+   "kind": "point",
+   "subtype": "joint",
+   "label": "104",
+   "story": "Roof",
+   "status": "modified",
+   "geometry": [
+    [
+     0.0,
+     900.0,
+     1128.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "label",
+     "before": "16",
+     "after": "104",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
+   ]
   },
   {
    "key": "Base|3600|6000|0",
@@ -13564,6 +14932,31 @@
    ],
    "via": [
     "pointSpring:Pad"
+   ]
+  },
+  {
+   "key": "L6|9000|0|0",
+   "kind": "point",
+   "subtype": "joint",
+   "label": "39",
+   "story": "L6",
+   "status": "modified",
+   "geometry": [
+    [
+     900.05,
+     0.0,
+     816.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "label",
+     "before": "23",
+     "after": "39",
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
+    }
    ]
   },
   {
@@ -14187,10 +15580,10 @@
   }
  },
  "summary": {
-  "unchanged": 525,
+  "unchanged": 457,
   "added": 3,
   "removed": 3,
-  "modified": 11,
-  "affected": 37
+  "modified": 115,
+  "affected": 30
  }
 }

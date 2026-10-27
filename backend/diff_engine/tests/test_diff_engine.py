@@ -90,8 +90,11 @@ class DiffEngineTest(unittest.TestCase):
     def test_relabel_invariance(self) -> None:
         relabeled = model(labels=dict(p1="91", p2="92", p3="93", p4="94", c1="X7", c2="X8", b1="Y1", f1="Z1"))
         before, after = diff_models(model(), model()), diff_models(model(), relabeled)
-        self.assertEqual(not_unchanged(after), [])
-        self.assertEqual(sorted(e["key"] for e in before["elements"]), sorted(e["key"] for e in after["elements"]))
+        self.assertTrue(all(c.get("kind") == "renamed" and c["affects"] == []
+                            for e in not_unchanged(after) for c in e["changes"]))
+        self.assertEqual(after["summary"]["added"] + after["summary"]["removed"], 0)
+        # Bare joints whose labels changed are now reportable too; all previously listed identities stay stable.
+        self.assertTrue({e["key"] for e in before["elements"]} <= {e["key"] for e in after["elements"]})
 
     def test_units_normalization(self) -> None:
         # Same model written in LB-IN: lengths / 0.0254, forces / 0.00444822162.

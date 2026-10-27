@@ -69,8 +69,12 @@ describe('engine adapter: seeded demo (8 stories)', () => {
     expect(dm.changes.filter((c) => c.type === 'removed' && c.group === 'G1')).toHaveLength(1);
   });
 
-  it('nothing is reported as label-only (the engine does not report renames)', () => {
-    expect(headlineCounts(dm).label_only).toBe(0);
+  it('reports each seeded label change separately from physical changes', () => {
+    expect(headlineCounts(dm).label_only).toBe(104);
+    const rename = dm.changes.find((c) => c.type === 'label_only' && c.before?.label === 'B38')!;
+    expect(rename.after).toEqual({ label: 'B45' });
+    expect(rename.group).toBe('G1');
+    expect(describeChange(rename, dm)).toContain('was renamed from B38 to B45');
   });
 });
 

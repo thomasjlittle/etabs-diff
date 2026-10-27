@@ -36,3 +36,26 @@ typecheck:
 # type-check, then run the diff engine tests
 test: typecheck
     python3 -m unittest discover -s backend/diff_engine/tests -t backend
+
+# --- UI (the React app in frontend/, needs node and npm) ---
+
+# install the UI's dependencies from package-lock.json
+ui-install:
+    cd frontend && npm ci
+
+# type-check and build the UI into frontend/dist/ (installs first if node_modules is missing)
+ui-build:
+    cd frontend && { [ -d node_modules ] || npm ci; } && npm run build
+    @echo "built into frontend/dist/"
+
+# run the UI dev server at http://127.0.0.1:5173 (Ctrl+C stops it)
+ui-dev:
+    cd frontend && npm run dev
+
+# run the UI tests
+ui-test:
+    cd frontend && npm test
+
+# serve the built UI from frontend/dist/ at http://127.0.0.1:4173 (run ui-build first)
+ui-preview:
+    cd frontend && npx vite preview --host 127.0.0.1

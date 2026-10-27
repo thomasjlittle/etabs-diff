@@ -183,7 +183,7 @@ function movedHtml(old, now) {
   const lift = st?.elevA != null && st?.elevB != null ? st.elevB - st.elevA : 0;
   const d = mid(now).sub(mid(old)).sub(new THREE.Vector3(0, 0, lift)).length();
   return '<button id="clear">Clear</button><h3>Element</h3><table>' + row('Label', old.label === now.label ? now.label : `${old.label} -> ${now.label}`) +
-    row('Story', now.story) + row('Kind', `${now.kind} / ${now.subtype}`) + row('Status', 'moved') +
+    row('Story', now.story) + row('Grid', now.grid ?? '—') + row('Kind', `${now.kind} / ${now.subtype}`) + row('Status', 'moved') +
     row('Distance moved', `${+d.toFixed(2)} in`) + (lift ? row('Story shift', `${+lift.toFixed(2)} in (story ${now.story} elevation change)`) : '') +
     '</table><h3>End coordinates (in)</h3><table><tr><th></th><th>Old</th><th>New</th></tr>' +
     old.geometry.map((p, i) => `<tr><th>${i ? 'j' : 'i'}</th><td>${xyz(p)}</td><td>${xyz(now.geometry[i] ?? [])}</td></tr>`).join('') +
@@ -195,7 +195,7 @@ function detailsHtml(el) {
   const p = partner(el);
   if (p) return el.movedTo ? movedHtml(el, p) : movedHtml(p, el);
   const row = (k, v) => `<tr><th>${k}</th><td>${esc(v ?? '')}</td></tr>`;
-  return '<button id="clear">Clear</button><h3>Element</h3><table>' + row('Label', el.label) + row('Story', el.story) +
+  return '<button id="clear">Clear</button><h3>Element</h3><table>' + row('Label', el.label) + row('Story', el.story) + row('Grid', el.grid ?? '—') +
     row('Kind', `${el.kind} / ${el.subtype}`) + row('Status', statusOf(el)) + '</table>' +
     (el.status === 'unchanged' ? '' : '<h3>Changes</h3>' + changeRows(el.changes)) +
     (el.via?.length ? '<h3>Via</h3><table>' + el.via.map(v => `<tr><td>${esc(v)}</td></tr>`).join('') + '</table>' : '');

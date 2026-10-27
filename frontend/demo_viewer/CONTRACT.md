@@ -40,6 +40,7 @@ One entry per element in the union of A and B. Unchanged elements are included s
 | `subtype` | Finer type: `beam`, `column`, `brace` (frames), `floor`, `wall` (areas), `joint` (points), or `other`. |
 | `label` | The element's ETABS label (like `B12` or `C3`) so people can find it in ETABS. **Display only.** Labels are not used for matching and can change between A and B. B's label is shown, or A's if the element was removed. |
 | `story` | The story the element belongs to. B's story, or A's if removed. |
+| `grid` | Plan location on the model's global Cartesian grid, e.g. `C/4`, `C-D/4`, or `C/3-4`. Areas can span ranges on both axes. B's grid is used, or A's for a removal. Every vertex must lie on a unique X/Y intersection within `meta.tolerance`; otherwise null. Multiple grid systems are qualified (`G2:C/4`); ambiguous, rotated, offset, and cylindrical systems return null. This is location metadata; edits to grid definitions are not yet compared. |
 | `status` | What happened to it. See the table below. |
 | `geometry` | Where to draw it, as `[x, y, z]` points in inches, global coordinates, Z up. A point has one, a frame has two (start and end), an area has its corners in order around the edge. B's position, or A's if removed. **For drawing only**: matching uses `key`, not these numbers. |
 | `changes` | What changed, as a list of `{ field, before, after, affects }`. Empty when unchanged. |

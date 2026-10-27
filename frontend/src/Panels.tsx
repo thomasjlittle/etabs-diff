@@ -312,7 +312,7 @@ function Row({ change: c, result, members, selected, onSelect }: {
       <td className="px-2 py-1">{TYPE_LABEL[c.type]}</td>
       <td className="px-2 py-1">{c.group}</td>
       <td className="px-2 py-1">
-        {c.subject ?? (first ? `${first.label} @ ${first.story}` : '—')}
+        {c.subject ?? (first ? `${first.label} @ ${first.story}${first.grid ? ` · ${first.grid}` : ''}` : '—')}
         {c.member_ids.length > 1 ? ` +${c.member_ids.length - 1}` : ''}
       </td>
       <td className="px-2 py-1">{values(c.before)}</td>

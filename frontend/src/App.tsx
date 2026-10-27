@@ -1,64 +1,49 @@
 import { useEffect, useState } from 'react'
-import type { Model, Diff } from './types'
+import { loadFixtures } from './shared/load'
+import { toViewModel } from './shared/toViewModel'
+import type { ViewModel } from './shared/viewModel'
+import { UiProvider } from './shared/uiState'
+import { SummarySection } from './levels/summary/SummarySection'
+import { CategorySection } from './levels/category/CategorySection'
+import { ElementSection } from './levels/element/ElementSection'
+
+/** The three review levels side by side, sharing one selection/filter state. */
+export function Shell({ vm }: { vm: ViewModel }) {
+  return (
+    <UiProvider>
+      <div className="grid min-h-0 flex-1 grid-cols-[18rem_18rem_1fr]">
+        <SummarySection groups={vm.summary} />
+        <CategorySection categories={vm.categories} />
+        <ElementSection rows={vm.rows} categories={vm.categories} />
+      </div>
+    </UiProvider>
+  )
+}
+
+type Load = { status: 'loading' } | { status: 'ready'; vm: ViewModel } | { status: 'error'; message: string }
 
 function App() {
-  const [data, setData] = useState<{ modelA: Model; modelB: Model; diff: Diff } | null>(null)
-  const [error, setError] = useState<string | null>(null)
+  const [load, setLoad] = useState<Load>({ status: 'loading' })
 
   useEffect(() => {
-    const loadFixtures = async () => {
-      try {
-        const [modelARes, modelBRes, diffRes] = await Promise.all([
-          fetch('/fixtures/model-a.json'),
-          fetch('/fixtures/model-b.json'),
-          fetch('/fixtures/diff.json'),
-        ])
-
-        const modelA = (await modelARes.json()) as unknown as Model
-        const modelB = (await modelBRes.json()) as unknown as Model
-        const diff = (await diffRes.json()) as unknown as Diff
-
-        setData({ modelA, modelB, diff })
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load fixtures')
-      }
-    }
-
     loadFixtures()
+      .then((raw) => setLoad({ status: 'ready', vm: toViewModel(raw) }))
+      .catch((err) => setLoad({ status: 'error', message: err instanceof Error ? err.message : 'Failed to load fixtures' }))
   }, [])
 
-  if (error) {
-    return <div style={{ color: 'red', padding: '20px' }}>Error: {error}</div>
-  }
-
-  if (!data) {
-    return <div style={{ padding: '20px' }}>Loading fixtures...</div>
-  }
-
-  const { diff } = data
-  const frameChanges = {
-    added: diff.frames.added.length,
-    removed: diff.frames.removed.length,
-    modified: Object.keys(diff.frames.modified).length,
-  }
-
   return (
-    <div style={{ padding: '20px', fontFamily: 'system-ui' }}>
-      <h1>ETABS Model Diff</h1>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px' }}>
-        <div style={{ border: '1px solid #ccc', padding: '15px' }}>
-          <div style={{ fontSize: '24px', fontWeight: 'bold' }}>{frameChanges.added}</div>
-          <div style={{ color: '#666' }}>Frames Added</div>
-        </div>
-        <div style={{ border: '1px solid #ccc', padding: '15px' }}>
-          <div style={{ fontSize: '24px', fontWeight: 'bold' }}>{frameChanges.removed}</div>
-          <div style={{ color: '#666' }}>Frames Removed</div>
-        </div>
-        <div style={{ border: '1px solid #ccc', padding: '15px' }}>
-          <div style={{ fontSize: '24px', fontWeight: 'bold' }}>{frameChanges.modified}</div>
-          <div style={{ color: '#666' }}>Frames Modified</div>
-        </div>
-      </div>
+    <div className="flex h-screen flex-col bg-white text-slate-900">
+      <header className="flex items-center gap-3 border-b border-slate-200 px-4 py-2">
+        <h1 className="font-semibold">ETABS Model Diff</h1>
+        {load.status === 'ready' && (
+          <span className="text-xs text-slate-500">
+            {load.vm.meta.baseline} → {load.vm.meta.revised} · {load.vm.meta.units.length}, {load.vm.meta.units.force}
+          </span>
+        )}
+      </header>
+      {load.status === 'loading' && <p className="p-4 text-sm text-slate-500">Loading fixtures…</p>}
+      {load.status === 'error' && <p role="alert" className="p-4 text-sm">Could not load the comparison: {load.message}</p>}
+      {load.status === 'ready' && <Shell vm={load.vm} />}
     </div>
   )
 }

@@ -32,7 +32,7 @@ class _ElementDiff(TypedDict):
     story: str  # story the element is tied to (B's, A's when removed)
     status: Status
     geometry: List[Vec3]  # point: [xyz]; frame: [i, j]; area: corners in drawing order
-    changes: List[Change]  # empty when unchanged, added, removed; for affected, the upstream definition changes
+    changes: List[Change]  # empty when unchanged, added, removed (but a moved pair's own changes ride on its removed half); for affected, the upstream definition changes
 
 
 class ElementDiff(_ElementDiff, total=False):

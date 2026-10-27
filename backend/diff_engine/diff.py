@@ -10,7 +10,7 @@ from typing import (
 from . import geometry
 from .contract import Change, DiffOutput, ElementDiff, Kind, Meta, ModelMeta, Status, Story, Subtype, TableDiff, Tables
 from .geometry import Element, End, Level
-from .match import match_elements, match_levels
+from .match import match_elements, match_levels, overlaps_on_line
 from .parser import DefTable, Model, Props, StrPath, parse_file
 from .rows import IGNORED_KEYS, affects, assign_row, definition_row
 
@@ -51,6 +51,8 @@ SUBTYPES: Dict[str, Subtype] = {"BEAM": "beam", "COLUMN": "column", "BRACE": "br
 ANGLE_KEYS = {"ANG"}
 ANGLE_TOL = 1e-3
 LEVEL_FIELDS: Tuple[Literal["name", "elevation", "height"], ...] = ("name", "elevation", "height")
+# Frame load keys that place a load along its member, relative (R...) or in inches from the I end.
+LOAD_POSITION_KEYS = {"DIST", "RDIST", "DSTART", "DEND", "RDSTART", "RDEND"}
 
 Hop = Tuple[str, str, str]  # (contract table, via prefix, definition name)
 
@@ -87,16 +89,19 @@ def diff_models(
 
     tables = {name: _table_diff(model_a[src], model_b[src], DEF_KIND[src]) for name, src, _ in TABLES}
     pairs, removed, added = match_elements(
-        geometry.elements(model_a), geometry.elements(model_b), b_to_a, elev_a, tol, move_tolerance
+        geometry.elements(model_a), geometry.elements(model_b), b_to_a, elev_a, tol, move_tolerance,
+        lambda a, b: not _assign_changes(a, b),
     )
 
     ctx = _Ctx(model_a, model_b, tables, a_to_b, tol)
-    # The contract has no moved status yet: a moved frame is removed plus added, linked by key.
+    # The contract has no moved status yet: a moved frame is removed plus added, linked by key. The pair's own
+    # changes (assigns, loads) ride on the removed half.
     entries: List[ElementDiff] = []
     moves: List[Tuple[ElementDiff, ElementDiff]] = []
     for a, b, how in pairs:
         if how == "moved":
             moves.append((_element(ctx, a, None), _element(ctx, None, b)))
+            moves[-1][0]["changes"] = _own_changes(*_loads_along_line(a, b, tol))
             entries += moves[-1]
         else:
             entries += _listed(_element(ctx, a, b), a, b)
@@ -236,6 +241,15 @@ def _element(ctx: _Ctx, a: Optional[Element], b: Optional[Element]) -> ElementDi
 
 
 def _own_changes(a: Element, b: Element) -> List[Change]:
+    out = _assign_changes(a, b)
+    la, lb = _loads_by_pattern(a["loads"]), _loads_by_pattern(b["loads"])
+    for pattern in sorted(set(la) | set(lb)):
+        if not same(la.get(pattern, []), lb.get(pattern, [])):
+            out.append(_change(f"loads:{pattern}", la.get(pattern, []), lb.get(pattern, []), 9))
+    return out
+
+
+def _assign_changes(a: Element, b: Element) -> List[Change]:
     out: List[Change] = []
     for key in sorted((set(a["props"]) | set(b["props"])) - IGNORED_KEYS):
         va, vb = a["props"].get(key), b["props"].get(key)
@@ -245,10 +259,52 @@ def _own_changes(a: Element, b: Element) -> List[Change]:
                 out.append(_change(key, va, vb, assign_row(key), key))
         elif not same(va, vb):
             out.append(_change(key, va, vb, assign_row(key), key))
-    la, lb = _loads_by_pattern(a["loads"]), _loads_by_pattern(b["loads"])
-    for pattern in sorted(set(la) | set(lb)):
-        if not same(la.get(pattern, []), lb.get(pattern, [])):
-            out.append(_change(f"loads:{pattern}", la.get(pattern, []), lb.get(pattern, []), 9))
+    return out
+
+
+def _loads_along_line(a: Element, b: Element, tol: float) -> Tuple[Element, Element]:
+    """For a moved frame that stays on its line (extended, shortened, slid), copies of a and b whose loads are
+    placed in inches from a's I end along that line, so a load that didn't move compares equal even though its
+    relative distance did. A uniform load becomes a trapezoid over the whole member. Other moves: a and b as is.
+    """
+    pa, pb = [end["xyz"] for end in a["ends"]], b["cmp"]
+    if not overlaps_on_line(pa, pb, tol):
+        return a, b
+    u = [(q - p) / math.dist(pa[0], pa[1]) for p, q in zip(pa[0], pa[1])]
+    out: List[Element] = []
+    for e, (p0, p1) in ((a, pa), (b, pb)):
+        start = sum((c - o) * k for c, o, k in zip(p0, pa[0], u))
+        sign = 1.0 if sum((q - p) * k for p, q, k in zip(p0, p1, u)) > 0 else -1.0
+        copy = e.copy()
+        copy["loads"] = [_load_on_line(load, start, sign, math.dist(p0, p1), tol) for load in e["loads"]]
+        out.append(copy)
+    return out[0], out[1]
+
+
+def _load_on_line(load: Props, start: float, sign: float, length: float, tol: float) -> Props:
+    """One frame load with its position(s) as DIST / DSTART..DEND measured on the shared line, rounded to tol.
+    Unknown load types pass through untouched."""
+    kind = str(load.get("TYPE", "")).upper()
+
+    def at(rel: str, absolute: str, default: float) -> float:
+        s = load.get(absolute)
+        if not isinstance(s, float):
+            r = load.get(rel)
+            s = r * length if isinstance(r, float) else default
+        return round((start + sign * s) / tol) * tol
+
+    out = {k: v for k, v in load.items() if k not in LOAD_POSITION_KEYS}
+    if kind in ("POINTF", "POINTM"):
+        out["DIST"] = at("RDIST", "DIST", 0.0)
+    elif kind in ("UNIFF", "UNIFM", "TRAPF", "TRAPM"):
+        lo, hi = at("RDSTART", "DSTART", 0.0), at("RDEND", "DEND", length)
+        f0, f1 = load.get("FSTART", load.get("FVAL")), load.get("FEND", load.get("FVAL"))
+        if lo > hi:
+            lo, hi, f0, f1 = hi, lo, f1, f0
+        out.pop("FVAL", None)
+        out.update(TYPE="TRAP" + kind[-1], DSTART=lo, DEND=hi, FSTART=f0, FEND=f1)
+    else:
+        return load
     return out
 
 

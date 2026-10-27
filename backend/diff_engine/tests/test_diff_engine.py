@@ -296,5 +296,80 @@ $ ANALYSIS OPTIONS
                          [("METHOD", 13)])
 
 
+UNIF_LOAD = 'LINELOAD  "B1"  "L1"  TYPE "UNIFF"  DIR "GRAV"  LC "SDL"  FVAL 2.5'
+
+
+def relined(beam: str, point5: str = "", load: str = UNIF_LOAD, extra: Sequence[Tuple[str, str]] = ()) -> Model:
+    """BASE with beam B1 (1 to 2, 6 m along X) swapped for `beam`, an optional point "5", and B1's load replaced."""
+    return model(replace=[
+        ('BEAM  "1"  "2"  0', beam),
+        ('POINT "4"  0 5', f'POINT "4"  0 5\n  POINT "5"  {point5}' if point5 else 'POINT "4"  0 5'),
+        (UNIF_LOAD, load), *extra,
+    ])
+
+
+def beams(result: DiffOutput) -> List[ElementDiff]:
+    return [e for e in result["elements"] if e["subtype"] == "beam"]
+
+
+class ColinearMoveTest(unittest.TestCase):
+    """A frame replaced by a same-type frame on the same line, overlapping and with identical assigns, is a move
+    whatever the end travel. Here B1 runs 6 m and its far end travels 2 m (79 in), past the 36 in rule."""
+
+    # Same loads as B1 (2.5 kN/m over 0 to 6 m, 10 kN at 3 m), placed relative to the 8 m member.
+    SAME_LOADS = ('LINELOAD  "B1"  "L1"  TYPE "TRAPF"  DIR "GRAV"  LC "SDL"  FSTART 2.5  FEND 2.5  RDSTART 0  RDEND 0.75\n'
+                  '  LINELOAD  "B1"  "L1"  TYPE "POINTF"  DIR "GRAV"  LC "SDL"  FVAL 10  RDIST 0.375')
+
+    def before(self) -> Model:
+        return model(replace=[(UNIF_LOAD, UNIF_LOAD + '\n  LINELOAD  "B1"  "L1"  TYPE "POINTF"  DIR "GRAV"  LC "SDL"  FVAL 10  RDIST 0.5')])
+
+    def assert_linked(self, result: DiffOutput, linked: bool) -> None:
+        got = beams(result)
+        self.assertEqual(sorted(e["status"] for e in got), ["added", "removed"])
+        self.assertEqual(any("movedTo" in e for e in got), linked)
+
+    def test_extension_with_loads_at_the_same_positions_is_a_clean_move(self) -> None:
+        result = diff_models(self.before(), relined('BEAM  "1"  "5"  0', "8 0", self.SAME_LOADS))
+        self.assert_linked(result, True)
+        self.assertEqual([e["changes"] for e in beams(result)], [[], []])
+
+    def test_reversed_extension_still_matches_loads_by_position(self) -> None:
+        # The new beam runs from the far end back to point 1, so 0.75 of it from its I end is 2 m from point 1.
+        flipped = ('LINELOAD  "B1"  "L1"  TYPE "TRAPF"  DIR "GRAV"  LC "SDL"  FSTART 2.5  FEND 2.5  RDSTART 0.25  RDEND 1\n'
+                   '  LINELOAD  "B1"  "L1"  TYPE "POINTF"  DIR "GRAV"  LC "SDL"  FVAL 10  RDIST 0.625')
+        result = diff_models(self.before(), relined('BEAM  "5"  "1"  0', "8 0", flipped))
+        self.assert_linked(result, True)
+        self.assertEqual([e["changes"] for e in beams(result)], [[], []])
+
+    def test_load_change_on_the_pair_is_a_change_on_the_move(self) -> None:
+        heavier = self.SAME_LOADS.replace("FSTART 2.5  FEND 2.5", "FSTART 3  FEND 3")
+        result = diff_models(self.before(), relined('BEAM  "1"  "5"  0', "8 0", heavier))
+        self.assert_linked(result, True)
+        gone = next(e for e in beams(result) if "movedTo" in e)
+        self.assertEqual([(c["field"], c.get("row")) for c in gone["changes"]], [("loads:SDL", 9)])
+
+    def test_different_section_stays_removed_plus_added(self) -> None:
+        resized = relined('BEAM  "1"  "5"  0', "8 0", extra=[('"B1"  "L1"  SECTION "BM"', '"B1"  "L1"  SECTION "COL"')])
+        self.assert_linked(diff_models(model(), resized), False)
+
+    def test_colinear_but_only_touching_stays_removed_plus_added(self) -> None:
+        self.assert_linked(diff_models(model(), relined('BEAM  "2"  "5"  0', "12 0")), False)
+
+    def test_parallel_but_offset_stays_removed_plus_added(self) -> None:
+        self.assert_linked(diff_models(model(), relined('BEAM  "4"  "5"  0', "8 5")), False)
+
+    def test_split_beam_is_not_linked(self) -> None:
+        # B1 becomes two halves meeting at 3 m. Each overlaps B1, so neither is the one move: removed plus two added.
+        split = relined('BEAM  "1"  "5"  0', "3 0", extra=[
+            ('LINEASSIGN  "B1"  "L1"  SECTION "BM"  RELEASE "M3I M3J"',
+             'LINEASSIGN  "B1"  "L1"  SECTION "BM"  RELEASE "M3I M3J"\n'
+             '  LINEASSIGN  "B9"  "L1"  SECTION "BM"  RELEASE "M3I M3J"'),
+            ('$ AREA CONNECTIVITIES', '  LINE  "B9"  BEAM  "5"  "2"  0\n$ AREA CONNECTIVITIES'),
+        ])
+        got = beams(diff_models(model(), split))
+        self.assertEqual(sorted(e["status"] for e in got), ["added", "added", "removed"])
+        self.assertFalse(any("movedTo" in e or "movedFrom" in e for e in got))
+
+
 if __name__ == "__main__":
     unittest.main()

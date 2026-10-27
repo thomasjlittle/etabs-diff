@@ -97,13 +97,13 @@ const STATUSES = ['added', 'removed', 'moved', 'modified', 'affected'], AFFECTS 
 const params = new URLSearchParams(location.search);
 const listParam = (k, all) => params.has(k) ? new Set(params.get(k).split(',').filter(v => all.includes(v))) : new Set(all);
 const filt = { status: listParam('status', STATUSES), affects: listParam('affects', AFFECTS), story: params.get('story') || '' };
-// ponytail: elements with no tagged changes (added/removed) pass the affects filter; only their status gates them
+// ponytail: elements with no tagged changes (added/removed) and linked moves pass the affects filter; only their status gates them
 // A linked move (removed with movedTo, added with movedFrom, partner present) counts as one 'moved' pair.
 let byKey = new Map();
 const partner = el => byKey.get(el.movedTo ?? el.movedFrom);
 const statusOf = el => partner(el) ? 'moved' : el.status;
 const isRed = el => filt.status.has(statusOf(el)) &&
-  (!el.changes?.some(c => c.affects?.length) || el.changes.some(c => c.affects?.some(a => filt.affects.has(a))));
+  (partner(el) || !el.changes?.some(c => c.affects?.length) || el.changes.some(c => c.affects?.some(a => filt.affects.has(a))));
 const onStory = el => !filt.story || el.story === filt.story;
 
 function syncUrl() {

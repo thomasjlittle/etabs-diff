@@ -87,6 +87,8 @@ async function save(upload: File, rev: Revision, dirs: SaveDirs): Promise<Respon
 
   // latin1 maps every byte to one char and back, so only the scrubbed paths change.
   const { text: scrubbed, replaced } = scrubPaths(Buffer.from(await upload.arrayBuffer()).toString('latin1'));
+  // The engine reads any text as a (possibly empty) model, so check this is an ETABS text export first.
+  if (!/^\$ PROGRAM INFORMATION/m.test(scrubbed)) return fail(400, `${upload.name} is not an ETABS text export (no $ PROGRAM INFORMATION section).`);
   const modelPath = join(dirs.models, rev.file);
   const diffs = await snapshot(dirs.diffs);
   try {

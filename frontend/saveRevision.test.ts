@@ -58,6 +58,7 @@ describe('POST /local/revisions', () => {
       [400, post({}, null)],
       [400, post({}, new File(['x'], 'notes.txt'))],
       [400, post({}, new File([], 'empty.e2k'))],
+      [400, post({}, new File(['not a model\r\n'], 'junk.e2k'))],
       [400, post({ file: '../Hack_v07.e2k' })],
       [400, post({ file: 'Hack_v04.e2k' })],
       [400, post({ parents: 'Hack_v99.e2k' })],

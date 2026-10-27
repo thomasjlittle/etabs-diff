@@ -1,0 +1,2135 @@
+{
+ "schemaVersion": "0.1",
+ "meta": {
+  "a": {
+   "file": "Example_v1.e2k",
+   "etabsVersion": "21.0.0",
+   "units": "kip, ft, F"
+  },
+  "b": {
+   "file": "Example_v2.e2k",
+   "etabsVersion": "21.0.0",
+   "units": "kip, ft, F"
+  },
+  "lengthUnit": "in",
+  "tolerance": 0.5
+ },
+ "stories": [
+  {
+   "name": "Base",
+   "elevA": 0.0,
+   "elevB": 0.0
+  },
+  {
+   "name": "Story1",
+   "elevA": 144.0,
+   "elevB": 144.0
+  },
+  {
+   "name": "Story2",
+   "elevA": 288.0,
+   "elevB": 288.0
+  },
+  {
+   "name": "Story3",
+   "elevA": 432.0,
+   "elevB": 432.0
+  }
+ ],
+ "elements": [
+  {
+   "key": "Base|0.0|0.0|0.0",
+   "kind": "point",
+   "subtype": "joint",
+   "label": "A1",
+   "story": "Base",
+   "status": "modified",
+   "geometry": [
+    [
+     0.0,
+     0.0,
+     0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "restraint",
+     "before": "UX UY UZ",
+     "after": "UX UY UZ RX RY RZ",
+     "affects": [
+      "stiffness"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "Base|360.0|0.0|0.0",
+   "kind": "point",
+   "subtype": "joint",
+   "label": "B1",
+   "story": "Base",
+   "status": "unchanged",
+   "geometry": [
+    [
+     360.0,
+     0.0,
+     0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Base|720.0|0.0|0.0",
+   "kind": "point",
+   "subtype": "joint",
+   "label": "C1",
+   "story": "Base",
+   "status": "unchanged",
+   "geometry": [
+    [
+     720.0,
+     0.0,
+     0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Base|0.0|360.0|0.0",
+   "kind": "point",
+   "subtype": "joint",
+   "label": "A2",
+   "story": "Base",
+   "status": "unchanged",
+   "geometry": [
+    [
+     0.0,
+     360.0,
+     0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Base|360.0|360.0|0.0",
+   "kind": "point",
+   "subtype": "joint",
+   "label": "B2",
+   "story": "Base",
+   "status": "unchanged",
+   "geometry": [
+    [
+     360.0,
+     360.0,
+     0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Base|720.0|360.0|0.0",
+   "kind": "point",
+   "subtype": "joint",
+   "label": "C2",
+   "story": "Base",
+   "status": "unchanged",
+   "geometry": [
+    [
+     720.0,
+     360.0,
+     0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Base|0.0|720.0|0.0",
+   "kind": "point",
+   "subtype": "joint",
+   "label": "A3",
+   "story": "Base",
+   "status": "unchanged",
+   "geometry": [
+    [
+     0.0,
+     720.0,
+     0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Base|360.0|720.0|0.0",
+   "kind": "point",
+   "subtype": "joint",
+   "label": "B3",
+   "story": "Base",
+   "status": "unchanged",
+   "geometry": [
+    [
+     360.0,
+     720.0,
+     0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Base|720.0|720.0|0.0",
+   "kind": "point",
+   "subtype": "joint",
+   "label": "C3",
+   "story": "Base",
+   "status": "unchanged",
+   "geometry": [
+    [
+     720.0,
+     720.0,
+     0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story1|0.0|0.0|-144.0",
+   "kind": "frame",
+   "subtype": "column",
+   "label": "CA1",
+   "story": "Story1",
+   "status": "affected",
+   "geometry": [
+    [
+     0.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     144.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "material:A992Fy50.Fy",
+     "before": 50,
+     "after": 55,
+     "affects": [
+      "stiffness"
+     ]
+    }
+   ],
+   "via": [
+    "frameSection:W12X65",
+    "material:A992Fy50"
+   ]
+  },
+  {
+   "key": "Story1|360.0|0.0|-144.0",
+   "kind": "frame",
+   "subtype": "column",
+   "label": "CB1",
+   "story": "Story1",
+   "status": "affected",
+   "geometry": [
+    [
+     360.0,
+     0.0,
+     0.0
+    ],
+    [
+     360.0,
+     0.0,
+     144.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "material:A992Fy50.Fy",
+     "before": 50,
+     "after": 55,
+     "affects": [
+      "stiffness"
+     ]
+    }
+   ],
+   "via": [
+    "frameSection:W12X65",
+    "material:A992Fy50"
+   ]
+  },
+  {
+   "key": "Story1|720.0|0.0|-144.0",
+   "kind": "frame",
+   "subtype": "column",
+   "label": "CC1",
+   "story": "Story1",
+   "status": "affected",
+   "geometry": [
+    [
+     720.0,
+     0.0,
+     0.0
+    ],
+    [
+     720.0,
+     0.0,
+     144.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "material:A992Fy50.Fy",
+     "before": 50,
+     "after": 55,
+     "affects": [
+      "stiffness"
+     ]
+    }
+   ],
+   "via": [
+    "frameSection:W12X65",
+    "material:A992Fy50"
+   ]
+  },
+  {
+   "key": "Story1|0.0|360.0|-144.0",
+   "kind": "frame",
+   "subtype": "column",
+   "label": "CA2",
+   "story": "Story1",
+   "status": "affected",
+   "geometry": [
+    [
+     0.0,
+     360.0,
+     0.0
+    ],
+    [
+     0.0,
+     360.0,
+     144.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "material:A992Fy50.Fy",
+     "before": 50,
+     "after": 55,
+     "affects": [
+      "stiffness"
+     ]
+    }
+   ],
+   "via": [
+    "frameSection:W12X65",
+    "material:A992Fy50"
+   ]
+  },
+  {
+   "key": "Story1|360.0|360.0|-144.0",
+   "kind": "frame",
+   "subtype": "column",
+   "label": "CB2",
+   "story": "Story1",
+   "status": "affected",
+   "geometry": [
+    [
+     360.0,
+     360.0,
+     0.0
+    ],
+    [
+     360.0,
+     360.0,
+     144.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "material:A992Fy50.Fy",
+     "before": 50,
+     "after": 55,
+     "affects": [
+      "stiffness"
+     ]
+    }
+   ],
+   "via": [
+    "frameSection:W12X65",
+    "material:A992Fy50"
+   ]
+  },
+  {
+   "key": "Story1|720.0|360.0|-144.0",
+   "kind": "frame",
+   "subtype": "column",
+   "label": "CC2",
+   "story": "Story1",
+   "status": "affected",
+   "geometry": [
+    [
+     720.0,
+     360.0,
+     0.0
+    ],
+    [
+     720.0,
+     360.0,
+     144.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "material:A992Fy50.Fy",
+     "before": 50,
+     "after": 55,
+     "affects": [
+      "stiffness"
+     ]
+    }
+   ],
+   "via": [
+    "frameSection:W12X65",
+    "material:A992Fy50"
+   ]
+  },
+  {
+   "key": "Story1|0.0|720.0|-144.0",
+   "kind": "frame",
+   "subtype": "column",
+   "label": "CA3",
+   "story": "Story1",
+   "status": "affected",
+   "geometry": [
+    [
+     0.0,
+     720.0,
+     0.0
+    ],
+    [
+     0.0,
+     720.0,
+     144.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "material:A992Fy50.Fy",
+     "before": 50,
+     "after": 55,
+     "affects": [
+      "stiffness"
+     ]
+    }
+   ],
+   "via": [
+    "frameSection:W12X65",
+    "material:A992Fy50"
+   ]
+  },
+  {
+   "key": "Story1|360.0|720.0|-144.0",
+   "kind": "frame",
+   "subtype": "column",
+   "label": "CB3",
+   "story": "Story1",
+   "status": "affected",
+   "geometry": [
+    [
+     360.0,
+     720.0,
+     0.0
+    ],
+    [
+     360.0,
+     720.0,
+     144.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "material:A992Fy50.Fy",
+     "before": 50,
+     "after": 55,
+     "affects": [
+      "stiffness"
+     ]
+    }
+   ],
+   "via": [
+    "frameSection:W12X65",
+    "material:A992Fy50"
+   ]
+  },
+  {
+   "key": "Story1|720.0|720.0|-144.0",
+   "kind": "frame",
+   "subtype": "column",
+   "label": "CC3",
+   "story": "Story1",
+   "status": "affected",
+   "geometry": [
+    [
+     720.0,
+     720.0,
+     0.0
+    ],
+    [
+     720.0,
+     720.0,
+     144.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "material:A992Fy50.Fy",
+     "before": 50,
+     "after": 55,
+     "affects": [
+      "stiffness"
+     ]
+    }
+   ],
+   "via": [
+    "frameSection:W12X65",
+    "material:A992Fy50"
+   ]
+  },
+  {
+   "key": "Story1|180.0|0.0|0.0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B1",
+   "story": "Story1",
+   "status": "unchanged",
+   "geometry": [
+    [
+     0.0,
+     0.0,
+     144.0
+    ],
+    [
+     360.0,
+     0.0,
+     144.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story1|0.0|180.0|0.0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B2",
+   "story": "Story1",
+   "status": "unchanged",
+   "geometry": [
+    [
+     0.0,
+     0.0,
+     144.0
+    ],
+    [
+     0.0,
+     360.0,
+     144.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story1|540.0|0.0|0.0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B3",
+   "story": "Story1",
+   "status": "unchanged",
+   "geometry": [
+    [
+     360.0,
+     0.0,
+     144.0
+    ],
+    [
+     720.0,
+     0.0,
+     144.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story1|360.0|180.0|0.0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B4",
+   "story": "Story1",
+   "status": "unchanged",
+   "geometry": [
+    [
+     360.0,
+     0.0,
+     144.0
+    ],
+    [
+     360.0,
+     360.0,
+     144.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story1|720.0|180.0|0.0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B5",
+   "story": "Story1",
+   "status": "unchanged",
+   "geometry": [
+    [
+     720.0,
+     0.0,
+     144.0
+    ],
+    [
+     720.0,
+     360.0,
+     144.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story1|180.0|360.0|0.0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B6",
+   "story": "Story1",
+   "status": "unchanged",
+   "geometry": [
+    [
+     0.0,
+     360.0,
+     144.0
+    ],
+    [
+     360.0,
+     360.0,
+     144.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story1|0.0|540.0|0.0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B7",
+   "story": "Story1",
+   "status": "unchanged",
+   "geometry": [
+    [
+     0.0,
+     360.0,
+     144.0
+    ],
+    [
+     0.0,
+     720.0,
+     144.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story1|540.0|360.0|0.0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B8",
+   "story": "Story1",
+   "status": "unchanged",
+   "geometry": [
+    [
+     360.0,
+     360.0,
+     144.0
+    ],
+    [
+     720.0,
+     360.0,
+     144.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story1|360.0|540.0|0.0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B9",
+   "story": "Story1",
+   "status": "unchanged",
+   "geometry": [
+    [
+     360.0,
+     360.0,
+     144.0
+    ],
+    [
+     360.0,
+     720.0,
+     144.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story1|720.0|540.0|0.0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B10",
+   "story": "Story1",
+   "status": "unchanged",
+   "geometry": [
+    [
+     720.0,
+     360.0,
+     144.0
+    ],
+    [
+     720.0,
+     720.0,
+     144.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story1|180.0|720.0|0.0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B11",
+   "story": "Story1",
+   "status": "unchanged",
+   "geometry": [
+    [
+     0.0,
+     720.0,
+     144.0
+    ],
+    [
+     360.0,
+     720.0,
+     144.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story1|540.0|720.0|0.0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B12",
+   "story": "Story1",
+   "status": "unchanged",
+   "geometry": [
+    [
+     360.0,
+     720.0,
+     144.0
+    ],
+    [
+     720.0,
+     720.0,
+     144.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story1|180.0|180.0|0.0",
+   "kind": "area",
+   "subtype": "floor",
+   "label": "F1",
+   "story": "Story1",
+   "status": "unchanged",
+   "geometry": [
+    [
+     0.0,
+     0.0,
+     144.0
+    ],
+    [
+     360.0,
+     0.0,
+     144.0
+    ],
+    [
+     360.0,
+     360.0,
+     144.0
+    ],
+    [
+     0.0,
+     360.0,
+     144.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story1|180.0|540.0|0.0",
+   "kind": "area",
+   "subtype": "floor",
+   "label": "F2",
+   "story": "Story1",
+   "status": "unchanged",
+   "geometry": [
+    [
+     0.0,
+     360.0,
+     144.0
+    ],
+    [
+     360.0,
+     360.0,
+     144.0
+    ],
+    [
+     360.0,
+     720.0,
+     144.0
+    ],
+    [
+     0.0,
+     720.0,
+     144.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story1|540.0|180.0|0.0",
+   "kind": "area",
+   "subtype": "floor",
+   "label": "F3",
+   "story": "Story1",
+   "status": "unchanged",
+   "geometry": [
+    [
+     360.0,
+     0.0,
+     144.0
+    ],
+    [
+     720.0,
+     0.0,
+     144.0
+    ],
+    [
+     720.0,
+     360.0,
+     144.0
+    ],
+    [
+     360.0,
+     360.0,
+     144.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story1|540.0|540.0|0.0",
+   "kind": "area",
+   "subtype": "floor",
+   "label": "F4",
+   "story": "Story1",
+   "status": "unchanged",
+   "geometry": [
+    [
+     360.0,
+     360.0,
+     144.0
+    ],
+    [
+     720.0,
+     360.0,
+     144.0
+    ],
+    [
+     720.0,
+     720.0,
+     144.0
+    ],
+    [
+     360.0,
+     720.0,
+     144.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story2|0.0|0.0|-144.0",
+   "kind": "frame",
+   "subtype": "column",
+   "label": "CA1",
+   "story": "Story2",
+   "status": "unchanged",
+   "geometry": [
+    [
+     0.0,
+     0.0,
+     144.0
+    ],
+    [
+     0.0,
+     0.0,
+     288.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story2|360.0|0.0|-144.0",
+   "kind": "frame",
+   "subtype": "column",
+   "label": "CB1",
+   "story": "Story2",
+   "status": "unchanged",
+   "geometry": [
+    [
+     360.0,
+     0.0,
+     144.0
+    ],
+    [
+     360.0,
+     0.0,
+     288.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story2|720.0|0.0|-144.0",
+   "kind": "frame",
+   "subtype": "column",
+   "label": "CC1",
+   "story": "Story2",
+   "status": "unchanged",
+   "geometry": [
+    [
+     720.0,
+     0.0,
+     144.0
+    ],
+    [
+     720.0,
+     0.0,
+     288.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story2|0.0|360.0|-144.0",
+   "kind": "frame",
+   "subtype": "column",
+   "label": "CA2",
+   "story": "Story2",
+   "status": "unchanged",
+   "geometry": [
+    [
+     0.0,
+     360.0,
+     144.0
+    ],
+    [
+     0.0,
+     360.0,
+     288.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story2|360.0|360.0|-144.0",
+   "kind": "frame",
+   "subtype": "column",
+   "label": "CB2",
+   "story": "Story2",
+   "status": "unchanged",
+   "geometry": [
+    [
+     360.0,
+     360.0,
+     144.0
+    ],
+    [
+     360.0,
+     360.0,
+     288.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story2|720.0|360.0|-144.0",
+   "kind": "frame",
+   "subtype": "column",
+   "label": "CC2",
+   "story": "Story2",
+   "status": "unchanged",
+   "geometry": [
+    [
+     720.0,
+     360.0,
+     144.0
+    ],
+    [
+     720.0,
+     360.0,
+     288.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story2|0.0|720.0|-144.0",
+   "kind": "frame",
+   "subtype": "column",
+   "label": "CA3",
+   "story": "Story2",
+   "status": "unchanged",
+   "geometry": [
+    [
+     0.0,
+     720.0,
+     144.0
+    ],
+    [
+     0.0,
+     720.0,
+     288.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story2|360.0|720.0|-144.0",
+   "kind": "frame",
+   "subtype": "column",
+   "label": "CB3",
+   "story": "Story2",
+   "status": "unchanged",
+   "geometry": [
+    [
+     360.0,
+     720.0,
+     144.0
+    ],
+    [
+     360.0,
+     720.0,
+     288.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story2|720.0|720.0|-144.0",
+   "kind": "frame",
+   "subtype": "column",
+   "label": "CC3",
+   "story": "Story2",
+   "status": "unchanged",
+   "geometry": [
+    [
+     720.0,
+     720.0,
+     144.0
+    ],
+    [
+     720.0,
+     720.0,
+     288.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story2|180.0|0.0|0.0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B1",
+   "story": "Story2",
+   "status": "modified",
+   "geometry": [
+    [
+     0.0,
+     0.0,
+     288.0
+    ],
+    [
+     360.0,
+     0.0,
+     288.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "section",
+     "before": "W14X22",
+     "after": "W16X26",
+     "affects": [
+      "stiffness",
+      "mass"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "Story2|0.0|180.0|0.0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B2",
+   "story": "Story2",
+   "status": "unchanged",
+   "geometry": [
+    [
+     0.0,
+     0.0,
+     288.0
+    ],
+    [
+     0.0,
+     360.0,
+     288.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story2|540.0|0.0|0.0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B3",
+   "story": "Story2",
+   "status": "unchanged",
+   "geometry": [
+    [
+     360.0,
+     0.0,
+     288.0
+    ],
+    [
+     720.0,
+     0.0,
+     288.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story2|360.0|180.0|0.0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B4",
+   "story": "Story2",
+   "status": "unchanged",
+   "geometry": [
+    [
+     360.0,
+     0.0,
+     288.0
+    ],
+    [
+     360.0,
+     360.0,
+     288.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story2|720.0|180.0|0.0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B5",
+   "story": "Story2",
+   "status": "unchanged",
+   "geometry": [
+    [
+     720.0,
+     0.0,
+     288.0
+    ],
+    [
+     720.0,
+     360.0,
+     288.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story2|180.0|360.0|0.0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B6",
+   "story": "Story2",
+   "status": "unchanged",
+   "geometry": [
+    [
+     0.0,
+     360.0,
+     288.0
+    ],
+    [
+     360.0,
+     360.0,
+     288.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story2|0.0|540.0|0.0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B7",
+   "story": "Story2",
+   "status": "unchanged",
+   "geometry": [
+    [
+     0.0,
+     360.0,
+     288.0
+    ],
+    [
+     0.0,
+     720.0,
+     288.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story2|540.0|360.0|0.0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B8",
+   "story": "Story2",
+   "status": "unchanged",
+   "geometry": [
+    [
+     360.0,
+     360.0,
+     288.0
+    ],
+    [
+     720.0,
+     360.0,
+     288.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story2|360.0|540.0|0.0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B9",
+   "story": "Story2",
+   "status": "unchanged",
+   "geometry": [
+    [
+     360.0,
+     360.0,
+     288.0
+    ],
+    [
+     360.0,
+     720.0,
+     288.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story2|720.0|540.0|0.0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B10",
+   "story": "Story2",
+   "status": "unchanged",
+   "geometry": [
+    [
+     720.0,
+     360.0,
+     288.0
+    ],
+    [
+     720.0,
+     720.0,
+     288.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story2|180.0|720.0|0.0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B11",
+   "story": "Story2",
+   "status": "unchanged",
+   "geometry": [
+    [
+     0.0,
+     720.0,
+     288.0
+    ],
+    [
+     360.0,
+     720.0,
+     288.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story2|540.0|720.0|0.0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B12",
+   "story": "Story2",
+   "status": "unchanged",
+   "geometry": [
+    [
+     360.0,
+     720.0,
+     288.0
+    ],
+    [
+     720.0,
+     720.0,
+     288.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story2|180.0|180.0|0.0",
+   "kind": "area",
+   "subtype": "floor",
+   "label": "F1",
+   "story": "Story2",
+   "status": "unchanged",
+   "geometry": [
+    [
+     0.0,
+     0.0,
+     288.0
+    ],
+    [
+     360.0,
+     0.0,
+     288.0
+    ],
+    [
+     360.0,
+     360.0,
+     288.0
+    ],
+    [
+     0.0,
+     360.0,
+     288.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story2|180.0|540.0|0.0",
+   "kind": "area",
+   "subtype": "floor",
+   "label": "F2",
+   "story": "Story2",
+   "status": "unchanged",
+   "geometry": [
+    [
+     0.0,
+     360.0,
+     288.0
+    ],
+    [
+     360.0,
+     360.0,
+     288.0
+    ],
+    [
+     360.0,
+     720.0,
+     288.0
+    ],
+    [
+     0.0,
+     720.0,
+     288.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story2|540.0|180.0|0.0",
+   "kind": "area",
+   "subtype": "floor",
+   "label": "F3",
+   "story": "Story2",
+   "status": "unchanged",
+   "geometry": [
+    [
+     360.0,
+     0.0,
+     288.0
+    ],
+    [
+     720.0,
+     0.0,
+     288.0
+    ],
+    [
+     720.0,
+     360.0,
+     288.0
+    ],
+    [
+     360.0,
+     360.0,
+     288.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story2|540.0|540.0|0.0",
+   "kind": "area",
+   "subtype": "floor",
+   "label": "F4",
+   "story": "Story2",
+   "status": "unchanged",
+   "geometry": [
+    [
+     360.0,
+     360.0,
+     288.0
+    ],
+    [
+     720.0,
+     360.0,
+     288.0
+    ],
+    [
+     720.0,
+     720.0,
+     288.0
+    ],
+    [
+     360.0,
+     720.0,
+     288.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story3|0.0|0.0|-144.0",
+   "kind": "frame",
+   "subtype": "column",
+   "label": "CA1",
+   "story": "Story3",
+   "status": "unchanged",
+   "geometry": [
+    [
+     0.0,
+     0.0,
+     288.0
+    ],
+    [
+     0.0,
+     0.0,
+     432.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story3|360.0|0.0|-144.0",
+   "kind": "frame",
+   "subtype": "column",
+   "label": "CB1",
+   "story": "Story3",
+   "status": "unchanged",
+   "geometry": [
+    [
+     360.0,
+     0.0,
+     288.0
+    ],
+    [
+     360.0,
+     0.0,
+     432.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story3|720.0|0.0|-144.0",
+   "kind": "frame",
+   "subtype": "column",
+   "label": "CC1",
+   "story": "Story3",
+   "status": "unchanged",
+   "geometry": [
+    [
+     720.0,
+     0.0,
+     288.0
+    ],
+    [
+     720.0,
+     0.0,
+     432.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story3|0.0|360.0|-144.0",
+   "kind": "frame",
+   "subtype": "column",
+   "label": "CA2",
+   "story": "Story3",
+   "status": "unchanged",
+   "geometry": [
+    [
+     0.0,
+     360.0,
+     288.0
+    ],
+    [
+     0.0,
+     360.0,
+     432.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story3|360.0|360.0|-144.0",
+   "kind": "frame",
+   "subtype": "column",
+   "label": "CB2",
+   "story": "Story3",
+   "status": "unchanged",
+   "geometry": [
+    [
+     360.0,
+     360.0,
+     288.0
+    ],
+    [
+     360.0,
+     360.0,
+     432.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story3|720.0|360.0|-144.0",
+   "kind": "frame",
+   "subtype": "column",
+   "label": "CC2",
+   "story": "Story3",
+   "status": "unchanged",
+   "geometry": [
+    [
+     720.0,
+     360.0,
+     288.0
+    ],
+    [
+     720.0,
+     360.0,
+     432.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story3|0.0|720.0|-144.0",
+   "kind": "frame",
+   "subtype": "column",
+   "label": "CA3",
+   "story": "Story3",
+   "status": "unchanged",
+   "geometry": [
+    [
+     0.0,
+     720.0,
+     288.0
+    ],
+    [
+     0.0,
+     720.0,
+     432.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story3|360.0|720.0|-144.0",
+   "kind": "frame",
+   "subtype": "column",
+   "label": "CB3",
+   "story": "Story3",
+   "status": "unchanged",
+   "geometry": [
+    [
+     360.0,
+     720.0,
+     288.0
+    ],
+    [
+     360.0,
+     720.0,
+     432.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story3|720.0|720.0|-144.0",
+   "kind": "frame",
+   "subtype": "column",
+   "label": "CC3",
+   "story": "Story3",
+   "status": "unchanged",
+   "geometry": [
+    [
+     720.0,
+     720.0,
+     288.0
+    ],
+    [
+     720.0,
+     720.0,
+     432.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story3|180.0|0.0|0.0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B1",
+   "story": "Story3",
+   "status": "unchanged",
+   "geometry": [
+    [
+     0.0,
+     0.0,
+     432.0
+    ],
+    [
+     360.0,
+     0.0,
+     432.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story3|0.0|180.0|0.0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B2",
+   "story": "Story3",
+   "status": "unchanged",
+   "geometry": [
+    [
+     0.0,
+     0.0,
+     432.0
+    ],
+    [
+     0.0,
+     360.0,
+     432.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story3|540.0|0.0|0.0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B3",
+   "story": "Story3",
+   "status": "unchanged",
+   "geometry": [
+    [
+     360.0,
+     0.0,
+     432.0
+    ],
+    [
+     720.0,
+     0.0,
+     432.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story3|360.0|180.0|0.0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B4",
+   "story": "Story3",
+   "status": "unchanged",
+   "geometry": [
+    [
+     360.0,
+     0.0,
+     432.0
+    ],
+    [
+     360.0,
+     360.0,
+     432.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story3|720.0|180.0|0.0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B5",
+   "story": "Story3",
+   "status": "unchanged",
+   "geometry": [
+    [
+     720.0,
+     0.0,
+     432.0
+    ],
+    [
+     720.0,
+     360.0,
+     432.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story3|180.0|360.0|0.0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B6",
+   "story": "Story3",
+   "status": "unchanged",
+   "geometry": [
+    [
+     0.0,
+     360.0,
+     432.0
+    ],
+    [
+     360.0,
+     360.0,
+     432.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story3|0.0|540.0|0.0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B7",
+   "story": "Story3",
+   "status": "unchanged",
+   "geometry": [
+    [
+     0.0,
+     360.0,
+     432.0
+    ],
+    [
+     0.0,
+     720.0,
+     432.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story3|540.0|360.0|0.0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B8",
+   "story": "Story3",
+   "status": "unchanged",
+   "geometry": [
+    [
+     360.0,
+     360.0,
+     432.0
+    ],
+    [
+     720.0,
+     360.0,
+     432.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story3|360.0|540.0|0.0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B9",
+   "story": "Story3",
+   "status": "removed",
+   "geometry": [
+    [
+     360.0,
+     360.0,
+     432.0
+    ],
+    [
+     360.0,
+     720.0,
+     432.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story3|720.0|540.0|0.0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B10",
+   "story": "Story3",
+   "status": "unchanged",
+   "geometry": [
+    [
+     720.0,
+     360.0,
+     432.0
+    ],
+    [
+     720.0,
+     720.0,
+     432.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story3|180.0|720.0|0.0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B11",
+   "story": "Story3",
+   "status": "unchanged",
+   "geometry": [
+    [
+     0.0,
+     720.0,
+     432.0
+    ],
+    [
+     360.0,
+     720.0,
+     432.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story3|540.0|720.0|0.0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B12",
+   "story": "Story3",
+   "status": "unchanged",
+   "geometry": [
+    [
+     360.0,
+     720.0,
+     432.0
+    ],
+    [
+     720.0,
+     720.0,
+     432.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story3|180.0|180.0|0.0",
+   "kind": "area",
+   "subtype": "floor",
+   "label": "F1",
+   "story": "Story3",
+   "status": "unchanged",
+   "geometry": [
+    [
+     0.0,
+     0.0,
+     432.0
+    ],
+    [
+     360.0,
+     0.0,
+     432.0
+    ],
+    [
+     360.0,
+     360.0,
+     432.0
+    ],
+    [
+     0.0,
+     360.0,
+     432.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story3|180.0|540.0|0.0",
+   "kind": "area",
+   "subtype": "floor",
+   "label": "F2",
+   "story": "Story3",
+   "status": "unchanged",
+   "geometry": [
+    [
+     0.0,
+     360.0,
+     432.0
+    ],
+    [
+     360.0,
+     360.0,
+     432.0
+    ],
+    [
+     360.0,
+     720.0,
+     432.0
+    ],
+    [
+     0.0,
+     720.0,
+     432.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story3|540.0|180.0|0.0",
+   "kind": "area",
+   "subtype": "floor",
+   "label": "F3",
+   "story": "Story3",
+   "status": "unchanged",
+   "geometry": [
+    [
+     360.0,
+     0.0,
+     432.0
+    ],
+    [
+     720.0,
+     0.0,
+     432.0
+    ],
+    [
+     720.0,
+     360.0,
+     432.0
+    ],
+    [
+     360.0,
+     360.0,
+     432.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story3|540.0|540.0|0.0",
+   "kind": "area",
+   "subtype": "floor",
+   "label": "F4",
+   "story": "Story3",
+   "status": "added",
+   "geometry": [
+    [
+     360.0,
+     360.0,
+     432.0
+    ],
+    [
+     720.0,
+     360.0,
+     432.0
+    ],
+    [
+     720.0,
+     720.0,
+     432.0
+    ],
+    [
+     360.0,
+     720.0,
+     432.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story1|180.0|0.0|-72.0",
+   "kind": "frame",
+   "subtype": "brace",
+   "label": "D1",
+   "story": "Story1",
+   "status": "added",
+   "geometry": [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     360.0,
+     0,
+     144.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story3|180.0|360.0|0.0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B99",
+   "story": "Story3",
+   "status": "added",
+   "geometry": [
+    [
+     180.0,
+     0,
+     432.0
+    ],
+    [
+     180.0,
+     720.0,
+     432.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Story3|360.0|360.0|0.0",
+   "kind": "point",
+   "subtype": "joint",
+   "label": "B2",
+   "story": "Story3",
+   "status": "modified",
+   "geometry": [
+    [
+     360.0,
+     360.0,
+     432.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "load:LIVE.FZ",
+     "before": -5.0,
+     "after": -12.0,
+     "affects": [
+      "load"
+     ]
+    }
+   ]
+  }
+ ],
+ "tables": {
+  "stories": {
+   "added": [],
+   "removed": [],
+   "modified": {}
+  },
+  "materials": {
+   "added": [],
+   "removed": [],
+   "modified": {
+    "A992Fy50": [
+     {
+      "field": "material:A992Fy50.Fy",
+      "before": 50,
+      "after": 55,
+      "affects": [
+       "stiffness"
+      ]
+     }
+    ]
+   }
+  },
+  "frameSections": {
+   "added": [
+    "W16X26"
+   ],
+   "removed": [],
+   "modified": {}
+  },
+  "shellSections": {
+   "added": [],
+   "removed": [],
+   "modified": {}
+  },
+  "pointSprings": {
+   "added": [],
+   "removed": [],
+   "modified": {}
+  },
+  "loadPatterns": {
+   "added": [],
+   "removed": [],
+   "modified": {}
+  }
+ },
+ "summary": {
+  "unchanged": 71,
+  "added": 3,
+  "removed": 1,
+  "modified": 3,
+  "affected": 9
+ }
+}

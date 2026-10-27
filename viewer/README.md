@@ -21,8 +21,13 @@ Either works:
 
 - **From disk:** double-click `index.html`. Load a diff with the file picker or by dragging the JSON onto the page. The "Load example" button can't read neighboring files from a `file://` page (browsers block it), so it opens the picker and you pick `example-diff.json`.
 - **From a static server** (makes "Load example" one click): from this folder run `python -m http.server 8000` and open http://localhost:8000.
+- **Straight to a diff:** put the JSON in the served folder and open `index.html?diff=<relative path>`, e.g. http://localhost:8000/?diff=example-diff.json. Handy for sharing a link to one comparison.
 
-Controls: left drag to orbit, right drag to pan, scroll to zoom. The top right shows the counts per status from the diff's `summary`.
+Controls: left drag to orbit, right drag to pan, scroll to zoom. The top right shows the counts per status from the diff's `summary` plus the number of table changes. If nothing in 3D changed but the tables did, a red note under the counts says so.
+
+Click (or tap) an element to see its label, story, kind, status, each change (field, before, after, affects) and, for affected elements, the `via` list. Click empty space or Clear to drop the selection. The selected element turns blue.
+
+The side panel also lists every table in the diff's `tables` (stories, materials, sections, load patterns, and any extra tables the engine adds) as added, removed, or modified with before and after values. Click a modified row to highlight in blue every member whose `via` names it.
 
 ## Loading a Real Engine Output
 
@@ -42,10 +47,8 @@ The engine is still being built on a separate branch, so until it lands, `exampl
 
 Not built yet, in rough priority order:
 
-1. Click an element to see its `label`, `story`, `status`, `changes`, and `via`.
-2. Separate colors per status (e.g. green added, red removed, orange modified, yellow affected), with toggles to hide each.
-3. Story filter or isolate, using `stories` and each element's `story`.
-4. A panel for `tables` (materials, sections, load patterns that changed).
-5. Thicker lines for red frames (WebGL lines are always 1px; three.js `Line2` fixes this).
-6. Proper triangulation for non-convex areas (L-shaped slabs or walls) with `THREE.ShapeUtils`.
-7. Warn when `schemaVersion` isn't `"0.1"`.
+1. Separate colors per status (e.g. green added, red removed, orange modified, yellow affected), with toggles to hide each.
+2. Story filter or isolate, using `stories` and each element's `story`.
+3. Thicker lines for red frames (WebGL lines are always 1px; three.js `Line2` fixes this).
+4. Proper triangulation for non-convex areas (L-shaped slabs or walls) with `THREE.ShapeUtils`.
+5. Warn when `schemaVersion` isn't `"0.1"`.

@@ -41,7 +41,7 @@ export async function loadScenario(name: string, pair: Pair = { original: MODELS
     return adaptEngine(((await load()) as { default: EngineDiff }).default, { mock: false });
   }
   if (name === 'seeded-demo') {
-    // Synthetic pair (same as `just demo-seeded`), committed by the engine owner.
+    // Synthetic pair (fixtures/demo/, the pair the engine tests use), committed by the engine owner.
     const d = await import('../../fixtures/demo/diff.json');
     return adaptEngine(d.default as unknown as EngineDiff, { mock: true });
   }

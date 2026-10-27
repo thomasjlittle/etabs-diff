@@ -1,7 +1,7 @@
 """Precompute the viewer's bundled comparisons: every ordered pair of the models in frontend/demo_viewer/models/.
 
 The viewer is static, so its Before/After dropdowns read these files instead of running the engine.
-python -m diff_engine.demo_diffs (just demo-diffs) rewrites frontend/demo_viewer/diffs/; a test keeps them current.
+python3 -m diff_engine.demo_diffs (from backend/) rewrites frontend/demo_viewer/diffs/; a test keeps them current.
 """
 
 import json

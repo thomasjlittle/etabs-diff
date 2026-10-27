@@ -37,6 +37,7 @@ class _ElementDiff(TypedDict):
 
 
 class ElementDiff(_ElementDiff, total=False):
+    grid: Optional[str]  # extension: global Cartesian plan reference, None when off-grid or ambiguous
     via: List[str]  # e.g. ["frameSection:W14X22", "material:A992Fy50"]
     movedTo: str  # extension: key of the added entry this removed frame moved to
     movedFrom: str  # extension: key of the removed entry this added frame moved from

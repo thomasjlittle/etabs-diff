@@ -68,7 +68,8 @@
      ],
      "row": 6
     }
-   ]
+   ],
+   "grid": "A/1"
   },
   {
    "key": "column|Base|0|1440|0~Story1|0|1440|0",
@@ -89,7 +90,8 @@
      144.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "A/2"
   },
   {
    "key": "column|Base|2400|0|0~Story1|2400|0|0",
@@ -121,7 +123,8 @@
      ],
      "row": 2
     }
-   ]
+   ],
+   "grid": "B/1"
   },
   {
    "key": "column|Base|2400|1440|0~Story1|2400|1440|0",
@@ -142,7 +145,8 @@
      144.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "B/2"
   },
   {
    "key": "beam|Story1|0|0|0~Story1|2400|0|0",
@@ -163,7 +167,8 @@
      144.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "A-B/1"
   },
   {
    "key": "beam|Story1|0|1440|0~Story1|2400|1440|0",
@@ -196,6 +201,7 @@
      "row": 3
     }
    ],
+   "grid": "A-B/2",
    "via": [
     "frameSection:Conc16x10"
    ]
@@ -219,7 +225,8 @@
      144.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "A/1-2"
   },
   {
    "key": "beam|Story1|2400|0|0~Story1|2400|1440|0",
@@ -240,7 +247,8 @@
      144.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "B/1-2"
   },
   {
    "key": "floor|Story1|0|0|0~Story1|0|1440|0~Story1|2400|0|0~Story1|2400|1440|0",
@@ -271,7 +279,8 @@
      144.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "A-B/1-2"
   },
   {
    "key": "Base|0|0|0",
@@ -287,7 +296,8 @@
      0.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "A/1"
   },
   {
    "key": "Base|0|1440|0",
@@ -303,7 +313,8 @@
      0.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "A/2"
   },
   {
    "key": "Base|2400|0|0",
@@ -319,7 +330,8 @@
      0.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "B/1"
   },
   {
    "key": "Base|2400|1440|0",
@@ -335,7 +347,8 @@
      0.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "B/2"
   }
  ],
  "tables": {

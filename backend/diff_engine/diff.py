@@ -10,6 +10,7 @@ from typing import (
 from . import geometry
 from .contract import Change, DiffOutput, ElementDiff, Kind, Meta, ModelMeta, Status, Story, Subtype, TableDiff, Tables
 from .geometry import Element, End, Level
+from .grids import grid_reference
 from .match import match_elements, match_levels, overlaps_on_line
 from .parser import DefTable, Model, Props, StrPath, parse_file
 from .rows import IGNORED_KEYS, affects, assign_row, definition_row
@@ -274,6 +275,7 @@ def _element(ctx: _Ctx, a: Optional[Element], b: Optional[Element]) -> ElementDi
         status=status,
         geometry=[list(end["xyz"]) for end in some["ends"]],
         changes=own + upstream if status in ("modified", "affected") else [],
+        grid=grid_reference(ctx.a if b is None else ctx.b, some, ctx.tol),
     )
     if via and status in ("modified", "affected"):
         entry["via"] = via

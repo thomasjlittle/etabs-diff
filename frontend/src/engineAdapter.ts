@@ -13,7 +13,7 @@ interface EChange { field: string; before: unknown; after: unknown; affects: str
 interface EElement {
   key: string; kind: 'point' | 'frame' | 'area'; subtype: string; label: string; story: string;
   status: 'unchanged' | 'added' | 'removed' | 'modified' | 'affected';
-  geometry: Vec3[]; changes: EChange[]; via?: string[]; movedTo?: string; movedFrom?: string;
+  geometry: Vec3[]; changes: EChange[]; via?: string[]; movedTo?: string; movedFrom?: string; grid?: string | null;
 }
 interface ETable { added: string[]; removed: string[]; modified: Record<string, EChange[]> }
 export interface EngineDiff {
@@ -80,6 +80,7 @@ export function adaptEngine(d: EngineDiff, opts: { mock: boolean }): Result {
     end_nodes: [key(e.geometry[0]), key(e.geometry[1])],
     label: e.label,
     story: e.story,
+    grid: e.grid ?? undefined,
     side: sideOf(e.status),
   }));
   const draft: Omit<Change, 'id'>[] = [];

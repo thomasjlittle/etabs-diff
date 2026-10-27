@@ -15,6 +15,7 @@ export type ElementDiff = {
   subtype: 'beam' | 'column' | 'brace' | 'floor' | 'wall' | 'other' | 'joint';
   label: string;                        // display only, so people can find it in ETABS (B's label, A's when removed)
   story: string;                        // story the element is tied to (B's, A's when removed)
+  grid?: string | null;                 // Cartesian plan reference; null when off-grid, ambiguous or unsupported
   status: 'unchanged' | 'added' | 'removed' | 'modified' | 'affected';
   geometry: Vec3[];                     // point: [xyz]; frame: [i, j]; area: corners in drawing order
   changes: Change[];                    // empty when unchanged; for affected, the upstream definition changes

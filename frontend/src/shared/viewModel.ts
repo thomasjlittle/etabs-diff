@@ -4,74 +4,90 @@
 
 export type Affects = 'geometry' | 'stiffness' | 'mass' | 'load'
 
-/** label_only: a rename or reversed end order. Reported, but never counted as a physical change. */
-export type ChangeKind = 'added' | 'removed' | 'modified' | 'label_only'
+/** moved: a linked removed/added pair or changed end nodes. renamed: same element, new label. */
+export type ChangeKind = 'added' | 'removed' | 'modified' | 'moved' | 'renamed'
 
-/** Planning-board tier for a group. */
-export type Tier = 'MVP' | '2nd pass' | '3rd pass' | 'Stretch' | 'Info'
+// ---------- Level 3: Element ----------
 
-/** compared: diffed. seen_not_compared: in the file but not diffed yet (shown as such, never as zero). */
-export type Coverage = 'compared' | 'seen_not_compared' | 'none'
-
-export type Counts = Record<ChangeKind, number>
+/** One individual change: one element (or definition) and one property. An element with several
+ *  changes has several rows, so each row sits in exactly one subcategory. */
+export interface ChangeRow {
+  id: string            // unique row id
+  elementId: string     // id in the raw diff, e.g. 'C2@L1' or '4000Psi'
+  elementType: string   // 'beam', 'column', 'brace', 'wall', 'slab', 'joint', 'link', or a definition type, e.g. 'material'
+  label: string         // ETABS label, e.g. 'C2'
+  story?: string
+  grid?: string         // filled once the engine reports it (#21)
+  kind: ChangeKind
+  categoryId: string    // CATEGORIES id, e.g. 'assignments'
+  subcategoryId: string // e.g. 'assignments/section'
+  property: string      // e.g. 'Section', 'I33 modifier'
+  before: string        // formatted for display, '—' when absent
+  after: string
+  unit?: string         // filled once the engine reports it (#22)
+  affects: Affects[]
+  matchedBy?: 'label' | 'geometry'
+  groupId?: string      // ChangeGroup this row belongs to
+}
 
 // ---------- Level 1: Summary ----------
 
-/** One line per planning-board group (G1 geometry, 1A section reassigned, ...), in board order. */
-export interface SummaryGroup {
-  id: string            // e.g. 'G1', '1A', 'T3'
-  title: string
-  tier: Tier
-  counts: Counts
-  coverage: Coverage
+/** Identical changes across elements, e.g. 312 beams: Section W18X35 -> W21X44. A single change is a
+ *  group of 1. Same (subcategoryId, elementType, property, before, after) means same group. */
+export interface ChangeGroup {
+  id: string
+  categoryId: string
+  subcategoryId: string
+  kind: ChangeKind
+  elementType: string
+  property: string
+  before: string
+  after: string
+  unit?: string
+  count: number
+  stories: string[]     // top to bottom
+  rowIds: string[]
+  usedBy?: number       // definition changes only: elements using the definition
+}
+
+export interface Summary {
+  total: number         // number of ChangeRows
+  groups: ChangeGroup[]
 }
 
 // ---------- Level 2: Category ----------
 
-/** Tree under a group: group -> record type (frames, materials, ...) -> optional sub-levels. */
-export interface CategoryNode {
-  id: string            // unique across the tree, e.g. 'G1/frames'
-  groupId: string       // SummaryGroup.id this node belongs to
-  label: string
-  counts: Counts
-  children: CategoryNode[]
-  rowIds: string[]      // ElementRow ids directly under this node
-}
-
-// ---------- Level 3: Element ----------
-
-export interface FieldChange {
-  field: string         // e.g. 'section', 'modI33', 'E'
-  before: string        // formatted for display, '—' when absent
-  after: string
-  unit?: string
-}
-
-/** One changed element or definition (a frame, a material, a load, ...). */
-export interface ElementRow {
-  id: string            // unique row id
-  elementId: string     // id in the raw diff, e.g. 'C2@L1' or '4000Psi'
-  label: string         // display name, e.g. 'Column C2 @ L1' or 'Material 4000Psi'
-  story?: string
-  kind: ChangeKind
-  groupId: string
+export interface SubcategoryNode {
+  id: string
   categoryId: string
-  fields: FieldChange[]
-  affects: Affects[]
-  matchedBy?: 'label' | 'geometry'
+  label: string
+  count: number         // 0 when nothing changed; always present
+  rowIds: string[]
+}
+
+/** One of the 7 categories (or Other). Two levels only: category -> subcategory. */
+export interface CategoryNode {
+  id: string
+  label: string
+  count: number         // sum of its subcategories
+  subcategories: SubcategoryNode[]
 }
 
 // ---------- whole view model ----------
 
-export interface ViewModel {
-  meta: {
-    baseline: string    // source file names
-    revised: string
-    units: { length: 'in'; force: 'kip' }
-  }
-  summary: SummaryGroup[]
-  categories: CategoryNode[]
-  rows: ElementRow[]
+export interface ModelInfo {
+  file: string
+  etabsVersion: string
 }
 
-export const emptyCounts = (): Counts => ({ added: 0, removed: 0, modified: 0, label_only: 0 })
+export interface ViewModel {
+  meta: {
+    baseline: ModelInfo
+    revised: ModelInfo
+    units: { length: 'in'; force: 'kip' }
+    notCompared: string[] // file sections not parsed yet; shown as "not compared", never as 0
+  }
+  summary: Summary
+  categories: CategoryNode[]
+  rows: ChangeRow[]
+}

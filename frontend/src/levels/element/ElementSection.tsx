@@ -1,11 +1,11 @@
-// Level 3: changed elements that pass the Summary / Category filter. Clicking a row selects it.
+// Level 3: individual changes that pass the Summary / Category filter. Clicking a row selects it.
 // Placeholder layout; issue #18 builds this out.
-import type { CategoryNode, ElementRow } from '../../shared/viewModel'
+import type { ChangeGroup, ChangeRow } from '../../shared/viewModel'
 import { useUi, visibleRows } from '../../shared/uiState'
 
-export function ElementSection({ rows, categories }: { rows: ElementRow[]; categories: CategoryNode[] }) {
+export function ElementSection({ rows, groups }: { rows: ChangeRow[]; groups: ChangeGroup[] }) {
   const { state, dispatch } = useUi()
-  const shown = visibleRows(rows, categories, state.filter)
+  const shown = visibleRows(rows, groups, state.filter)
   return (
     <section aria-label="Element" className="flex min-h-0 flex-col">
       <h2 className="border-b border-slate-200 px-3 py-2 text-sm font-semibold">Element</h2>
@@ -20,7 +20,7 @@ export function ElementSection({ rows, categories }: { rows: ElementRow[]; categ
                   onClick={() => dispatch({ type: 'select_row', rowId: r.id })}
                   className={`w-full px-3 py-1 text-left ${state.selectedRowId === r.id ? 'bg-blue-100' : 'hover:bg-slate-50'}`}
                 >
-                  {r.label}
+                  {r.label}{r.story && ` @ ${r.story}`}: {r.property} {r.before} → {r.after}
                 </button>
               </li>
             ))}

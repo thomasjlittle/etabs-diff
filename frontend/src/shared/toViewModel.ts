@@ -1,35 +1,21 @@
-// Raw team contract -> view model. Foundations only: the planning-board groups are listed with
-// zero counts and no rows. Mapping fields to groups and categories is issue #15.
+// Raw team contract -> view model. Stub for now: the full category tree with zero counts, no rows
+// and no groups, so the levels render real structure. Mapping changes onto subcategories and
+// grouping them is #15 PR 2.
 import type { RawResult } from './load'
-import { emptyCounts, type SummaryGroup, type Tier, type ViewModel } from './viewModel'
-
-// Planning-board groups in board order.
-export const GROUPS: [string, string, Tier][] = [
-  ['G1', 'Geometry / level changes', 'MVP'],
-  ['1A', 'Section reassigned', 'MVP'],
-  ['1B', 'Section definition edited', 'MVP'],
-  ['1C', 'Material edited', 'MVP'],
-  ['1D', 'Property modifiers', '2nd pass'],
-  ['1E', 'End releases / end offsets / insertion point / local axis', '2nd pass'],
-  ['2A', 'Supports and springs', '2nd pass'],
-  ['2B', 'Applied loads', '2nd pass'],
-  ['T3', 'Tables only: mass, load patterns, load cases, combos', '3rd pass'],
-  ['ST', 'Stretch: walls/slabs, diaphragm assigns, spectrum/time history', 'Stretch'],
-  ['LO', 'Label-only / not physical', 'Info'],
-]
+import { emptyCategories } from './categories'
+import type { ViewModel } from './viewModel'
 
 export function toViewModel(raw: RawResult): ViewModel {
-  const summary: SummaryGroup[] = GROUPS.map(([id, title, tier]) => ({
-    id, title, tier, counts: emptyCounts(), coverage: 'none',
-  }))
+  const { modelA, modelB } = raw
   return {
     meta: {
-      baseline: raw.modelA.meta.file,
-      revised: raw.modelB.meta.file,
+      baseline: { file: modelA.meta.file, etabsVersion: modelA.meta.etabsVersion },
+      revised: { file: modelB.meta.file, etabsVersion: modelB.meta.etabsVersion },
       units: { length: 'in', force: 'kip' },
+      notCompared: [...new Set([...(modelA.unparsed ?? []), ...(modelB.unparsed ?? [])])],
     },
-    summary,
-    categories: [], // TODO(#15): group -> record type tree
-    rows: [],       // TODO(#15): one row per changed element / definition
+    summary: { total: 0, groups: [] }, // TODO(#15): group identical changes
+    categories: emptyCategories(),     // TODO(#15): counts and rowIds per subcategory
+    rows: [],                          // TODO(#15): one row per individual change
   }
 }

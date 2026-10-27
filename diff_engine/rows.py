@@ -59,4 +59,6 @@ def definition_row(kind, key):
         return 6 if _MODIFIER.fullmatch(key) else 4
     if kind == "spring":
         return 8
+    if kind == "mass_source":
+        return 10
     return 9

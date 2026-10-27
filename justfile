@@ -6,6 +6,10 @@ default:
 view before after:
     python3 -m diff_engine "{{before}}" "{{after}}" --view
 
+# diff two .e2k/.$et files and write the changes as a CSV report
+csv before after out:
+    python3 -m diff_engine "{{before}}" "{{after}}" --csv "{{out}}" --summary
+
 # diff the bundled demo pair (fixtures/demo/) and open the viewer on it
 demo:
     python3 -m diff_engine fixtures/demo/before.e2k fixtures/demo/after.e2k --view

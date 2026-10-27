@@ -1,4 +1,4 @@
-"""CLI: python -m diff_engine before.e2k after.e2k [-o out.json] [--view]"""
+"""CLI: python -m diff_engine before.e2k after.e2k [-o out.json] [--csv changes.csv] [--view]"""
 
 import argparse
 import json
@@ -14,6 +14,7 @@ def main(argv=None):
     ap.add_argument("before", help="older .e2k or .$et")
     ap.add_argument("after", help="newer .e2k or .$et")
     ap.add_argument("-o", "--output", help="write JSON here instead of stdout")
+    ap.add_argument("--csv", help="also write a CSV change report here, one row per change")
     ap.add_argument("--tolerance", type=float, default=None,
                     help="node match tolerance in inches (default: PREFERENCE MERGETOL of the before file)")
     ap.add_argument("--move-tolerance", type=float, default=DEFAULT_MOVE_TOLERANCE,
@@ -30,6 +31,13 @@ def main(argv=None):
     except (OSError, ValueError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 1
+    if args.csv:
+        from .report import write_csv
+        try:
+            write_csv(result, args.csv)
+        except OSError as exc:
+            print(f"error: {exc}", file=sys.stderr)
+            return 1
     if args.view:
         return _view(result, args.output)
     text = json.dumps(result["summary"] if args.summary else result, indent=1)

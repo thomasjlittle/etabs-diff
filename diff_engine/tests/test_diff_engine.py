@@ -172,6 +172,36 @@ class DiffEngineTest(unittest.TestCase):
         self.assertEqual(rows, {3, 7, 8, 9})
         self.assertEqual(statuses(result, "point"), ["modified", "unchanged"])
 
+    def test_cases_combos_and_mass_source_compare_by_term(self):
+        analysis = """
+$ LOAD CASES
+  LOADCASE "G"  TYPE  "Linear Static"  INITCOND  "PRESET"
+  LOADCASE "G"  LOADPAT  "SDL"  SF  1
+  LOADCASE "G"  LOADPAT  "DL"  SF  1
+  LOADCASE "RS"  TYPE  "Response Spectrum"  MODALCASE  "Modal"
+  LOADCASE "RS"  ACCEL  "U1"  FUNC  "Spec"  SF  9.80665
+  LOADCASE "PO"  LOADCONTROL "Displ"  DOF "U1"  JOINT "7" "L1"
+$ LOAD COMBINATIONS
+  COMBO "ULS"  TYPE "Linear Add"
+  COMBO "ULS"  LOADCASE "G"  SF 1.2
+  COMBO "ULS"  LOADCASE "Q"  SF 1.5
+$ MASS SOURCE
+  MASSSOURCE  "MsSrc1"    INCLUDELOADS "Yes"    ISDEFAULT "Yes"
+  MASSSOURCELOAD  "MsSrc1"  "SDL"  1
+  MASSSOURCELOAD  "MsSrc1"  "Q"  0.3
+"""
+        text = BASE.format(**LABELS) + analysis
+        parsed = parse_text(text)
+        self.assertEqual(parsed["load_cases"]["G"]["LOADPAT:DL"], 1.0)  # repeated LOADPAT lines both kept
+        self.assertAlmostEqual(parsed["load_cases"]["RS"]["ACCEL:U1"]["SF"], 9.80665 / 0.0254)  # g in in/s2
+        self.assertEqual(parsed["load_cases"]["PO"]["JOINT"], "7@L1")
+        self.assertEqual(parsed["combos"]["ULS"], {"TYPE": "Linear Add", "LOADCASE:G": 1.2, "LOADCASE:Q": 1.5})
+        edited = text.replace('SF 1.5', 'SF 1.6').replace('"Q"  0.3', '"Q"  0.25')
+        tables = diff_models(parsed, parse_text(edited))["tables"]
+        self.assertEqual([c["field"] for c in tables["combos"]["modified"]["ULS"]], ["LOADCASE:Q"])
+        mass = tables["massSource"]["modified"]["MsSrc1"]
+        self.assertEqual([(c["field"], c["affects"], c["row"]) for c in mass], [("LOADPAT:Q", ["mass"], 10)])
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -44,6 +44,8 @@ One entry per element in the union of A and B. Unchanged elements are included s
 | `geometry` | Where to draw it, as `[x, y, z]` points in inches, global coordinates, Z up. A point has one, a frame has two (start and end), an area has its corners in order around the edge. B's position, or A's if removed. **For drawing only**: matching uses `key`, not these numbers. |
 | `changes` | What changed, as a list of `{ field, before, after, affects }`. Empty when unchanged. |
 | `via` | Only on `affected` elements: which definitions it inherited the change from. |
+| `movedTo` | Optional, only on `removed` elements: the `key` of the `added` element it moved to. |
+| `movedFrom` | Optional, only on `added` elements: the `key` of the `removed` element it moved from. |
 
 ### `status` values
 
@@ -54,6 +56,10 @@ One entry per element in the union of A and B. Unchanged elements are included s
 | `removed` | Only in A. Its geometry is A's position. |
 | `modified` | In both, and something on the element itself changed (its section, a release, a load on it, a support). `changes` lists what. |
 | `affected` | The element itself is the same, but something it uses changed upstream, like its section's properties or its material's strength. `changes` lists the upstream changes and `via` says the path, e.g. `["frameSection:W14X22", "material:A992Fy50"]`. |
+
+### Moved members
+
+When the engine decides a removed element and an added element are the same member in a new spot, it links them: the old one gets `movedTo` and the new one gets `movedFrom`, each pointing at the other's `key`. Both keep their `removed` / `added` status (and `summary` still counts them that way). The viewer shows a linked pair as one "moved" member: old position dashed, a thin arrow to the new position, and old and new end coordinates in the details. Removals and additions without a link are drawn as plain removals and additions.
 
 ### `changes`
 
@@ -69,13 +75,15 @@ Not every joint. Only points that carry something of their own: a support (restr
 
 ## `tables`
 
-Definitions that aren't elements in space: `stories`, `materials`, `frameSections`, `shellSections`, `pointSprings`, `loadPatterns`. Each one is:
+Definitions that aren't elements in space: `stories`, `materials`, `frameSections`, `shellSections`, `pointSprings`, `loadPatterns`, plus `loadCases`, `combos` and `massSource` when the engine compares them. Each one is:
 
 - `added`: names only in B.
 - `removed`: names only in A.
 - `modified`: an object from name to its list of `changes` (same shape as above).
 
 These are the upstream causes behind `affected` elements. The viewer lists them in its side panel.
+
+Load cases, combos and the mass source are lists of load terms, so each term is its own change: `field` is `LOADPAT:Live` (a pattern in a case or the mass source), `LOADCASE:Dead` or `LOADCOMBO:1.4D` (a term in a combo), and `before` / `after` is its scale factor, `null` when the term is missing on that side. They don't make any element `affected`.
 
 ## `summary`
 

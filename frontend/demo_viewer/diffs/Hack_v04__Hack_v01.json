@@ -1,0 +1,1001 @@
+{
+ "schemaVersion": "0.1",
+ "meta": {
+  "a": {
+   "file": "Hack_v04.e2k",
+   "etabsVersion": "23.1.1",
+   "units": "KIP IN F"
+  },
+  "b": {
+   "file": "Hack_v01.e2k",
+   "etabsVersion": "23.1.1",
+   "units": "KIP IN F"
+  },
+  "lengthUnit": "in",
+  "forceUnit": "kip",
+  "tolerance": 0.1,
+  "moveTolerance": 36.0
+ },
+ "stories": [
+  {
+   "name": "Base",
+   "elevA": 0.0,
+   "elevB": 0.0
+  },
+  {
+   "name": "Story1",
+   "elevA": 144.0,
+   "elevB": 144.0
+  },
+  {
+   "name": "Story2",
+   "elevA": 288.0,
+   "elevB": 288.0
+  },
+  {
+   "name": "Story3",
+   "elevA": 408.0,
+   "elevB": 408.0
+  }
+ ],
+ "elements": [
+  {
+   "key": "column|Base|0|0|0~Story1|0|0|0",
+   "kind": "frame",
+   "subtype": "column",
+   "label": "C1",
+   "story": "Story1",
+   "status": "modified",
+   "geometry": [
+    [
+     0.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     144.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "ANG",
+     "before": 90.0,
+     "after": 0.0,
+     "affects": [
+      "stiffness"
+     ],
+     "row": 6
+    },
+    {
+     "field": "SECTION",
+     "before": "W12X58",
+     "after": "W10X60",
+     "affects": [
+      "stiffness",
+      "mass"
+     ],
+     "row": 2
+    }
+   ]
+  },
+  {
+   "key": "column|Base|0|1440|0~Story1|0|1440|0",
+   "kind": "frame",
+   "subtype": "column",
+   "label": "C2",
+   "story": "Story1",
+   "status": "modified",
+   "geometry": [
+    [
+     0.0,
+     144.0,
+     0.0
+    ],
+    [
+     0.0,
+     144.0,
+     144.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "SECTION",
+     "before": "W12X58",
+     "after": "W10X60",
+     "affects": [
+      "stiffness",
+      "mass"
+     ],
+     "row": 2
+    }
+   ]
+  },
+  {
+   "key": "column|Base|2400|0|0~Story1|2400|0|0",
+   "kind": "frame",
+   "subtype": "column",
+   "label": "C3",
+   "story": "Story1",
+   "status": "modified",
+   "geometry": [
+    [
+     240.0,
+     0.0,
+     0.0
+    ],
+    [
+     240.0,
+     0.0,
+     144.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "SECTION",
+     "before": "W16X36",
+     "after": "W10X60",
+     "affects": [
+      "stiffness",
+      "mass"
+     ],
+     "row": 2
+    }
+   ]
+  },
+  {
+   "key": "column|Base|2400|1440|0~Story1|2400|1440|0",
+   "kind": "frame",
+   "subtype": "column",
+   "label": "C4",
+   "story": "Story1",
+   "status": "unchanged",
+   "geometry": [
+    [
+     240.0,
+     144.0,
+     0.0
+    ],
+    [
+     240.0,
+     144.0,
+     144.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "beam|Story1|0|1440|0~Story1|2400|1440|0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B2",
+   "story": "Story1",
+   "status": "modified",
+   "geometry": [
+    [
+     0.0,
+     144.0,
+     144.0
+    ],
+    [
+     240.0,
+     144.0,
+     144.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "SECTION",
+     "before": "Conc16x10",
+     "after": "W18X60",
+     "affects": [
+      "stiffness",
+      "mass"
+     ],
+     "row": 2
+    },
+    {
+     "field": "loads:Dead",
+     "before": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.083333336
+      }
+     ],
+     "after": [],
+     "affects": [
+      "load"
+     ],
+     "row": 9
+    },
+    {
+     "field": "loads:Live",
+     "before": [
+      {
+       "TYPE": "POINTF",
+       "DIR": "GRAV",
+       "FVAL": 5.0,
+       "RDIST": 0.5
+      }
+     ],
+     "after": [],
+     "affects": [
+      "load"
+     ],
+     "row": 9
+    },
+    {
+     "field": "loadPattern:Dead.SELFWEIGHT",
+     "before": 0.0,
+     "after": 1.0,
+     "affects": [
+      "load"
+     ],
+     "row": 12
+    }
+   ],
+   "via": [
+    "loadPattern:Dead"
+   ]
+  },
+  {
+   "key": "beam|Story1|0|0|0~Story1|0|1440|0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B3",
+   "story": "Story1",
+   "status": "modified",
+   "geometry": [
+    [
+     0.0,
+     0.0,
+     144.0
+    ],
+    [
+     0.0,
+     144.0,
+     144.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "PROPMODI22",
+     "before": 0.5,
+     "after": null,
+     "affects": [
+      "stiffness",
+      "mass"
+     ],
+     "row": 5
+    },
+    {
+     "field": "PROPMODI33",
+     "before": 0.5,
+     "after": null,
+     "affects": [
+      "stiffness",
+      "mass"
+     ],
+     "row": 5
+    }
+   ]
+  },
+  {
+   "key": "beam|Story1|2400|0|0~Story1|2400|1440|0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B4",
+   "story": "Story1",
+   "status": "modified",
+   "geometry": [
+    [
+     240.0,
+     0.0,
+     144.0
+    ],
+    [
+     240.0,
+     144.0,
+     144.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "RELEASE",
+     "before": "PINNED",
+     "after": null,
+     "affects": [
+      "stiffness"
+     ],
+     "row": 6
+    }
+   ]
+  },
+  {
+   "key": "floor|Story1|0|0|0~Story1|0|1440|0~Story1|2400|0|0~Story1|2400|1440|0",
+   "kind": "area",
+   "subtype": "floor",
+   "label": "F2",
+   "story": "Story1",
+   "status": "affected",
+   "geometry": [
+    [
+     240.0,
+     0.0,
+     144.0
+    ],
+    [
+     240.0,
+     144.0,
+     144.0
+    ],
+    [
+     0.0,
+     144.0,
+     144.0
+    ],
+    [
+     0.0,
+     0.0,
+     144.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "shellSection:Slab1.MATERIAL",
+     "before": "4Ksi",
+     "after": "4000Psi",
+     "affects": [
+      "stiffness",
+      "mass"
+     ],
+     "row": 3
+    }
+   ],
+   "via": [
+    "shellSection:Slab1"
+   ]
+  },
+  {
+   "key": "Base|0|0|0",
+   "kind": "point",
+   "subtype": "joint",
+   "label": "1",
+   "story": "Base",
+   "status": "modified",
+   "geometry": [
+    [
+     0.0,
+     0.0,
+     0.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "RESTRAINT",
+     "before": "UX UY UZ",
+     "after": "UX UY UZ RX RY RZ",
+     "affects": [
+      "stiffness"
+     ],
+     "row": 8
+    }
+   ]
+  },
+  {
+   "key": "Base|0|1440|0",
+   "kind": "point",
+   "subtype": "joint",
+   "label": "2",
+   "story": "Base",
+   "status": "modified",
+   "geometry": [
+    [
+     0.0,
+     144.0,
+     0.0
+    ]
+   ],
+   "changes": [
+    {
+     "field": "RESTRAINT",
+     "before": "UX UY UZ",
+     "after": "UX UY UZ RX RY RZ",
+     "affects": [
+      "stiffness"
+     ],
+     "row": 8
+    }
+   ]
+  },
+  {
+   "key": "Base|2400|0|0",
+   "kind": "point",
+   "subtype": "joint",
+   "label": "3",
+   "story": "Base",
+   "status": "unchanged",
+   "geometry": [
+    [
+     240.0,
+     0.0,
+     0.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Base|2400|1440|0",
+   "kind": "point",
+   "subtype": "joint",
+   "label": "4",
+   "story": "Base",
+   "status": "unchanged",
+   "geometry": [
+    [
+     240.0,
+     144.0,
+     0.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "beam|Story1|0|0|0~Story1|3000|0|0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B7",
+   "story": "Story1",
+   "status": "removed",
+   "geometry": [
+    [
+     0.0,
+     0.0,
+     144.0
+    ],
+    [
+     300.0,
+     0.0,
+     144.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "beam|Story1|1200|0|0~Story1|1200|1440|0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B5",
+   "story": "Story1",
+   "status": "removed",
+   "geometry": [
+    [
+     120.0,
+     0.0,
+     144.0
+    ],
+    [
+     120.0,
+     144.0,
+     144.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "beam|Story1|2400|1440|0~Story1|2880|1440|0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B8",
+   "story": "Story1",
+   "status": "removed",
+   "geometry": [
+    [
+     240.0,
+     144.0,
+     144.0
+    ],
+    [
+     288.0,
+     144.0,
+     144.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "column|Story1|0|0|0~Story2|0|0|0",
+   "kind": "frame",
+   "subtype": "column",
+   "label": "C1",
+   "story": "Story2",
+   "status": "removed",
+   "geometry": [
+    [
+     0.0,
+     0.0,
+     144.0
+    ],
+    [
+     0.0,
+     0.0,
+     288.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "column|Story1|0|1440|0~Story2|0|1440|0",
+   "kind": "frame",
+   "subtype": "column",
+   "label": "C2",
+   "story": "Story2",
+   "status": "removed",
+   "geometry": [
+    [
+     0.0,
+     144.0,
+     144.0
+    ],
+    [
+     0.0,
+     144.0,
+     288.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "column|Story1|2400|0|0~Story2|2400|0|0",
+   "kind": "frame",
+   "subtype": "column",
+   "label": "C3",
+   "story": "Story2",
+   "status": "removed",
+   "geometry": [
+    [
+     240.0,
+     0.0,
+     144.0
+    ],
+    [
+     240.0,
+     0.0,
+     288.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "column|Story1|2400|1440|0~Story2|2400|1440|0",
+   "kind": "frame",
+   "subtype": "column",
+   "label": "C4",
+   "story": "Story2",
+   "status": "removed",
+   "geometry": [
+    [
+     240.0,
+     144.0,
+     144.0
+    ],
+    [
+     240.0,
+     144.0,
+     288.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "beam|Story2|0|0|0~Story2|3000|0|0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B7",
+   "story": "Story2",
+   "status": "removed",
+   "geometry": [
+    [
+     0.0,
+     0.0,
+     288.0
+    ],
+    [
+     300.0,
+     0.0,
+     288.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "beam|Story2|0|1440|0~Story2|2400|1440|0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B2",
+   "story": "Story2",
+   "status": "removed",
+   "geometry": [
+    [
+     0.0,
+     144.0,
+     288.0
+    ],
+    [
+     240.0,
+     144.0,
+     288.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "beam|Story2|0|0|0~Story2|0|1440|0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B3",
+   "story": "Story2",
+   "status": "removed",
+   "geometry": [
+    [
+     0.0,
+     0.0,
+     288.0
+    ],
+    [
+     0.0,
+     144.0,
+     288.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "beam|Story2|2400|0|0~Story2|2400|1440|0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B4",
+   "story": "Story2",
+   "status": "removed",
+   "geometry": [
+    [
+     240.0,
+     0.0,
+     288.0
+    ],
+    [
+     240.0,
+     144.0,
+     288.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "beam|Story2|1200|0|0~Story2|1200|1440|0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B5",
+   "story": "Story2",
+   "status": "removed",
+   "geometry": [
+    [
+     120.0,
+     0.0,
+     288.0
+    ],
+    [
+     120.0,
+     144.0,
+     288.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "beam|Story2|2400|1440|0~Story2|2880|1440|0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B8",
+   "story": "Story2",
+   "status": "removed",
+   "geometry": [
+    [
+     240.0,
+     144.0,
+     288.0
+    ],
+    [
+     288.0,
+     144.0,
+     288.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "floor|Story2|0|0|0~Story2|0|1440|0~Story2|2400|0|0~Story2|2400|1440|0",
+   "kind": "area",
+   "subtype": "floor",
+   "label": "F2",
+   "story": "Story2",
+   "status": "removed",
+   "geometry": [
+    [
+     240.0,
+     0.0,
+     288.0
+    ],
+    [
+     240.0,
+     144.0,
+     288.0
+    ],
+    [
+     0.0,
+     144.0,
+     288.0
+    ],
+    [
+     0.0,
+     0.0,
+     288.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "beam|Story1|0|0|0~Story1|2400|0|0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B1",
+   "story": "Story1",
+   "status": "added",
+   "geometry": [
+    [
+     0.0,
+     0.0,
+     144.0
+    ],
+    [
+     240.0,
+     0.0,
+     144.0
+    ]
+   ],
+   "changes": []
+  }
+ ],
+ "tables": {
+  "stories": {
+   "added": [],
+   "removed": [],
+   "modified": {}
+  },
+  "materials": {
+   "added": [
+    "4000Psi"
+   ],
+   "removed": [
+    "4Ksi",
+    "6Ksi"
+   ],
+   "modified": {}
+  },
+  "frameSections": {
+   "added": [],
+   "removed": [
+    "Conc16x10",
+    "Conc24x10"
+   ],
+   "modified": {
+    "ConcBm": [
+     {
+      "field": "MATERIAL",
+      "before": "4Ksi",
+      "after": "4000Psi",
+      "affects": [
+       "stiffness",
+       "mass"
+      ],
+      "row": 3
+     }
+    ],
+    "ConcCol": [
+     {
+      "field": "MATERIAL",
+      "before": "4Ksi",
+      "after": "4000Psi",
+      "affects": [
+       "stiffness",
+       "mass"
+      ],
+      "row": 3
+     }
+    ]
+   }
+  },
+  "shellSections": {
+   "added": [],
+   "removed": [],
+   "modified": {
+    "Deck1": [
+     {
+      "field": "CONCMATERIAL",
+      "before": "4Ksi",
+      "after": "4000Psi",
+      "affects": [
+       "stiffness",
+       "mass"
+      ],
+      "row": 3
+     }
+    ],
+    "Plank1": [
+     {
+      "field": "MATERIAL",
+      "before": "4Ksi",
+      "after": "4000Psi",
+      "affects": [
+       "stiffness",
+       "mass"
+      ],
+      "row": 3
+     }
+    ],
+    "Slab1": [
+     {
+      "field": "MATERIAL",
+      "before": "4Ksi",
+      "after": "4000Psi",
+      "affects": [
+       "stiffness",
+       "mass"
+      ],
+      "row": 3
+     }
+    ],
+    "Wall1": [
+     {
+      "field": "MATERIAL",
+      "before": "4Ksi",
+      "after": "4000Psi",
+      "affects": [
+       "stiffness",
+       "mass"
+      ],
+      "row": 3
+     }
+    ]
+   }
+  },
+  "pointSprings": {
+   "added": [],
+   "removed": [],
+   "modified": {}
+  },
+  "loadPatterns": {
+   "added": [],
+   "removed": [
+    "SW"
+   ],
+   "modified": {
+    "Dead": [
+     {
+      "field": "SELFWEIGHT",
+      "before": 0.0,
+      "after": 1.0,
+      "affects": [
+       "load"
+      ],
+      "row": 12
+     }
+    ]
+   }
+  },
+  "lineSprings": {
+   "added": [],
+   "removed": [],
+   "modified": {}
+  },
+  "areaSprings": {
+   "added": [],
+   "removed": [],
+   "modified": {}
+  },
+  "loadSets": {
+   "added": [],
+   "removed": [],
+   "modified": {}
+  },
+  "loadCases": {
+   "added": [
+    "Dead",
+    "Live"
+   ],
+   "removed": [
+    "DL",
+    "LL"
+   ],
+   "modified": {}
+  },
+  "combos": {
+   "added": [],
+   "removed": [
+    "1.2D+1.6L",
+    "1.4D"
+   ],
+   "modified": {}
+  },
+  "massSource": {
+   "added": [],
+   "removed": [
+    "MsSrc_dumby"
+   ],
+   "modified": {
+    "MsSrc1": [
+     {
+      "field": "INCLUDEELEMENTS",
+      "before": "No",
+      "after": "Yes",
+      "affects": [
+       "mass"
+      ],
+      "row": 11
+     },
+     {
+      "field": "INCLUDELOADS",
+      "before": "Yes",
+      "after": "No",
+      "affects": [
+       "mass"
+      ],
+      "row": 11
+     },
+     {
+      "field": "LOADPAT:Dead",
+      "before": 1.0,
+      "after": null,
+      "affects": [
+       "mass"
+      ],
+      "row": 11
+     },
+     {
+      "field": "LOADPAT:SW",
+      "before": 1.0,
+      "after": null,
+      "affects": [
+       "mass"
+      ],
+      "row": 11
+     }
+    ]
+   }
+  },
+  "diaphragms": {
+   "added": [],
+   "removed": [],
+   "modified": {}
+  },
+  "functions": {
+   "added": [],
+   "removed": [],
+   "modified": {}
+  },
+  "analysisOptions": {
+   "added": [],
+   "removed": [],
+   "modified": {}
+  }
+ },
+ "summary": {
+  "unchanged": 3,
+  "added": 1,
+  "removed": 14,
+  "modified": 8,
+  "affected": 1
+ }
+}

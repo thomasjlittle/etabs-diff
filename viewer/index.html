@@ -104,9 +104,18 @@ async function loadFile(file) {
   catch (e) { alert(`Could not load ${file.name}: ${e.message}`); }
 }
 
+async function loadUrl(url) {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  show(await res.json());
+}
+
 document.getElementById('file').addEventListener('change', e => e.target.files[0] && loadFile(e.target.files[0]));
+// index.html?diff=<relative path> opens straight to that diff (needs a served page, like the example button)
+const diffParam = new URLSearchParams(location.search).get('diff');
+if (diffParam) loadUrl(diffParam).catch(e => alert(`Could not load ${diffParam}: ${e.message}`));
 document.getElementById('example').addEventListener('click', async () => {
-  try { show(await (await fetch('example-diff.json')).json()); }
+  try { await loadUrl('example-diff.json'); }
   catch {
     // file:// pages cannot fetch neighbors, so fall back to the picker
     alert('Browsers block loading files next to a page opened from disk. Pick example-diff.json in the next dialog, or serve this folder (see README).');

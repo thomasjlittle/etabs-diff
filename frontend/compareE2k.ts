@@ -12,7 +12,7 @@ export const COMPARE_ROUTE = '/local/compare';
 // Required on every request: a custom header makes the browser preflight, so another site can't post here.
 export const COMPARE_HEADER = 'x-vantage-compare';
 const BACKEND = fileURLToPath(new URL('../backend', import.meta.url));
-const MAX_BYTES = 200 * 1024 * 1024;
+export const MAX_BYTES = 200 * 1024 * 1024;
 
 export interface Upload { name: string; bytes: Uint8Array }
 
@@ -48,8 +48,8 @@ export async function compareE2k(a: Upload, b: Upload): Promise<string> {
   }
 }
 
-const json = (status: number, body: string) => new Response(body, { status, headers: { 'content-type': 'application/json' } });
-const fail = (status: number, error: string) => json(status, JSON.stringify({ error }));
+export const json = (status: number, body: string) => new Response(body, { status, headers: { 'content-type': 'application/json' } });
+export const fail = (status: number, error: string) => json(status, JSON.stringify({ error }));
 
 /** POST multipart form with files "a" (original) and "b" (second). */
 export async function handleCompare(req: Request): Promise<Response> {
@@ -71,11 +71,12 @@ export async function handleCompare(req: Request): Promise<Response> {
   }
 }
 
-export function compareE2kPlugin(): Plugin {
+/** Dev-server plugin serving `handle` at `route`, with the request body capped at MAX_BYTES. */
+export function localRoute(name: string, route: string, handle: (req: Request) => Promise<Response>): Plugin {
   return {
-    name: 'vantage-compare-e2k',
+    name,
     configureServer(server) {
-      server.middlewares.use(COMPARE_ROUTE, async (req, res) => {
+      server.middlewares.use(route, async (req, res) => {
         const chunks: Buffer[] = [];
         let size = 0;
         for await (const chunk of req) {
@@ -90,7 +91,7 @@ export function compareE2kPlugin(): Plugin {
         const headers = new Headers();
         for (const [k, v] of Object.entries(req.headers)) if (typeof v === 'string') headers.set(k, v);
         const body = req.method === 'POST' ? Buffer.concat(chunks) : undefined;
-        const r = await handleCompare(new Request(`http://127.0.0.1${COMPARE_ROUTE}`, { method: req.method, headers, body }));
+        const r = await handle(new Request(`http://127.0.0.1${route}`, { method: req.method, headers, body }));
         res.statusCode = r.status;
         res.setHeader('content-type', 'application/json');
         res.end(await r.text());
@@ -98,3 +99,5 @@ export function compareE2kPlugin(): Plugin {
     },
   };
 }
+
+export const compareE2kPlugin = () => localRoute('vantage-compare-e2k', COMPARE_ROUTE, handleCompare);

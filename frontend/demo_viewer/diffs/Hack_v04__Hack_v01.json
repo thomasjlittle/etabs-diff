@@ -344,18 +344,17 @@
    ],
    "changes": [
     {
-     "field": "shellSection:Slab1.MATERIAL",
+     "field": "material:4000Psi.name",
      "before": "4Ksi",
      "after": "4000Psi",
-     "affects": [
-      "stiffness",
-      "mass"
-     ],
-     "row": 3
+     "affects": [],
+     "row": null,
+     "kind": "renamed"
     }
    ],
    "via": [
-    "shellSection:Slab1"
+    "shellSection:Slab1",
+    "material:4000Psi"
    ]
   },
   {
@@ -775,14 +774,22 @@
    "modified": {}
   },
   "materials": {
-   "added": [
-    "4000Psi"
-   ],
+   "added": [],
    "removed": [
-    "4Ksi",
     "6Ksi"
    ],
-   "modified": {}
+   "modified": {
+    "4000Psi": [
+     {
+      "field": "name",
+      "before": "4Ksi",
+      "after": "4000Psi",
+      "affects": [],
+      "row": null,
+      "kind": "renamed"
+     }
+    ]
+   }
   },
   "frameSections": {
    "added": [],
@@ -790,86 +797,12 @@
     "Conc16x10",
     "Conc24x10"
    ],
-   "modified": {
-    "ConcBm": [
-     {
-      "field": "MATERIAL",
-      "before": "4Ksi",
-      "after": "4000Psi",
-      "affects": [
-       "stiffness",
-       "mass"
-      ],
-      "row": 3
-     }
-    ],
-    "ConcCol": [
-     {
-      "field": "MATERIAL",
-      "before": "4Ksi",
-      "after": "4000Psi",
-      "affects": [
-       "stiffness",
-       "mass"
-      ],
-      "row": 3
-     }
-    ]
-   }
+   "modified": {}
   },
   "shellSections": {
    "added": [],
    "removed": [],
-   "modified": {
-    "Deck1": [
-     {
-      "field": "CONCMATERIAL",
-      "before": "4Ksi",
-      "after": "4000Psi",
-      "affects": [
-       "stiffness",
-       "mass"
-      ],
-      "row": 3
-     }
-    ],
-    "Plank1": [
-     {
-      "field": "MATERIAL",
-      "before": "4Ksi",
-      "after": "4000Psi",
-      "affects": [
-       "stiffness",
-       "mass"
-      ],
-      "row": 3
-     }
-    ],
-    "Slab1": [
-     {
-      "field": "MATERIAL",
-      "before": "4Ksi",
-      "after": "4000Psi",
-      "affects": [
-       "stiffness",
-       "mass"
-      ],
-      "row": 3
-     }
-    ],
-    "Wall1": [
-     {
-      "field": "MATERIAL",
-      "before": "4Ksi",
-      "after": "4000Psi",
-      "affects": [
-       "stiffness",
-       "mass"
-      ],
-      "row": 3
-     }
-    ]
-   }
+   "modified": {}
   },
   "pointSprings": {
    "added": [],
@@ -912,14 +845,23 @@
   },
   "loadCases": {
    "added": [
-    "Dead",
-    "Live"
+    "Dead"
    ],
    "removed": [
-    "DL",
-    "LL"
+    "DL"
    ],
-   "modified": {}
+   "modified": {
+    "Live": [
+     {
+      "field": "name",
+      "before": "LL",
+      "after": "Live",
+      "affects": [],
+      "row": null,
+      "kind": "renamed"
+     }
+    ]
+   }
   },
   "combos": {
    "added": [],

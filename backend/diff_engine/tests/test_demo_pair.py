@@ -24,17 +24,30 @@ class DemoPairTest(unittest.TestCase):
         cls.seeded = json.loads((DEMO / "seeded-changes.json").read_text(encoding="utf-8"))
 
     def test_elements_are_exactly_the_seeded_ones(self) -> None:
+        renames = {(r["after"], r["story"], r["kind"]): r for r in self.seeded.get("renames", [])}
+        listed = {(e["label"], e["story"]) for change in self.seeded["changes"] for e in change["elements"]}
         expected = sorted(
-            (e["status"], e["label"], e["story"], tuple(e["fields"]), e["moved"])
+            ("modified" if any(k[:2] == (e["label"], e["story"]) for k in renames) else e["status"],
+             e["label"], e["story"],
+             tuple(sorted(e["fields"] + (["label"] if any(k[:2] == (e["label"], e["story"]) for k in renames) else []))), e["moved"])
             for change in self.seeded["changes"]
             for e in change["elements"]
         )
+        expected = sorted(expected + [("modified", r["after"], r["story"], ("label",), False)
+                                      for r in renames.values() if (r["after"], r["story"]) not in listed])
         got = sorted(
             (e["status"], e["label"], e["story"], tuple(sorted(c["field"] for c in e["changes"])),
              "movedTo" in e or "movedFrom" in e)
             for e in self.result["elements"]
             if e["status"] != "unchanged"
         )
+        self.assertEqual(got, expected)
+
+    def test_label_changes_are_exactly_the_seeded_renames(self) -> None:
+        got = sorted((c["before"], c["after"], e["story"], e["kind"])
+                     for e in self.result["elements"] for c in e["changes"]
+                     if c.get("kind") == "renamed" and c["field"] == "label")
+        expected = sorted((r["before"], r["after"], r["story"], r["kind"]) for r in self.seeded["renames"])
         self.assertEqual(got, expected)
 
     def test_every_list_row_is_seeded(self) -> None:

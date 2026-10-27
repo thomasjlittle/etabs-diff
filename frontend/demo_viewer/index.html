@@ -43,7 +43,7 @@
   <button id="example">Load example</button>
   <span id="pair" hidden><b>Before</b><select id="before"></select><b>After</b><select id="after"></select></span>
   <span id="filters">
-    <b>Red</b><label><input type="checkbox" name="status" value="added">added</label><label><input type="checkbox" name="status" value="removed">removed</label><label><input type="checkbox" name="status" value="moved">moved</label><label><input type="checkbox" name="status" value="modified">modified</label><label><input type="checkbox" name="status" value="affected">affected</label>
+    <b>Red</b><label><input type="checkbox" name="status" value="added">added</label><label><input type="checkbox" name="status" value="removed">removed</label><label><input type="checkbox" name="status" value="moved">moved</label><label><input type="checkbox" name="status" value="modified">modified</label><label><input type="checkbox" name="status" value="renamed">renamed</label><label><input type="checkbox" name="status" value="affected">affected</label>
     <b>Affects</b><label><input type="checkbox" name="affects" value="geometry">geometry</label><label><input type="checkbox" name="affects" value="stiffness">stiffness</label><label><input type="checkbox" name="affects" value="mass">mass</label><label><input type="checkbox" name="affects" value="load">load</label>
     <b>Story</b><select id="story"><option value="">all</option></select>
   </span>
@@ -93,7 +93,7 @@ function arrays(els) {
 
 // Filters: a filtered-out change draws gray like unchanged, so the model stays whole.
 // State lives in the URL (?status=...&affects=...&story=...) so a filtered view is a shareable link.
-const STATUSES = ['added', 'removed', 'moved', 'modified', 'affected'], AFFECTS = ['geometry', 'stiffness', 'mass', 'load'];
+const STATUSES = ['added', 'removed', 'moved', 'modified', 'renamed', 'affected'], AFFECTS = ['geometry', 'stiffness', 'mass', 'load'];
 const params = new URLSearchParams(location.search);
 const listParam = (k, all) => params.has(k) ? new Set(params.get(k).split(',').filter(v => all.includes(v))) : new Set(all);
 const filt = { status: listParam('status', STATUSES), affects: listParam('affects', AFFECTS), story: params.get('story') || '' };
@@ -101,7 +101,7 @@ const filt = { status: listParam('status', STATUSES), affects: listParam('affect
 // A linked move (removed with movedTo, added with movedFrom, partner present) counts as one 'moved' pair.
 let byKey = new Map();
 const partner = el => byKey.get(el.movedTo ?? el.movedFrom);
-const statusOf = el => partner(el) ? 'moved' : el.status;
+const statusOf = el => partner(el) ? 'moved' : el.changes?.length && el.changes.every(c => c.kind === 'renamed') && el.changes.some(c => c.field === 'label') ? 'renamed' : el.status;
 const isRed = el => filt.status.has(statusOf(el)) &&
   (partner(el) || !el.changes?.some(c => c.affects?.length) || el.changes.some(c => c.affects?.some(a => filt.affects.has(a))));
 const onStory = el => !filt.story || el.story === filt.story;
@@ -196,7 +196,7 @@ function detailsHtml(el) {
   if (p) return el.movedTo ? movedHtml(el, p) : movedHtml(p, el);
   const row = (k, v) => `<tr><th>${k}</th><td>${esc(v ?? '')}</td></tr>`;
   return '<button id="clear">Clear</button><h3>Element</h3><table>' + row('Label', el.label) + row('Story', el.story) +
-    row('Kind', `${el.kind} / ${el.subtype}`) + row('Status', el.status) + '</table>' +
+    row('Kind', `${el.kind} / ${el.subtype}`) + row('Status', statusOf(el)) + '</table>' +
     (el.status === 'unchanged' ? '' : '<h3>Changes</h3>' + changeRows(el.changes)) +
     (el.via?.length ? '<h3>Via</h3><table>' + el.via.map(v => `<tr><td>${esc(v)}</td></tr>`).join('') + '</table>' : '');
 }
@@ -213,7 +213,7 @@ function tablesHtml(tables, selected) {
       const ref = viaRef(table, name);
       const n = diff.elements.filter(el => el.via?.includes(ref)).length;
       const cls = `pick${ref === selected ? ' on' : ''}`;
-      const status = `modified${n ? ` (${n} member${n === 1 ? '' : 's'})` : ''}`;
+      const status = `${changes.length && changes.every(c => c.kind === 'renamed') ? 'renamed' : 'modified'}${n ? ` (${n} member${n === 1 ? '' : 's'})` : ''}`;
       (changes.length ? changes : [{}]).forEach((c, i) => rows.push(`<tr class="${cls}" data-ref="${esc(ref)}">` +
         `<td>${i ? '' : esc(name)}</td><td>${i ? '' : status}</td><td>${esc(c.field ?? '')}</td><td>${val(c.before)}</td><td>${val(c.after)}</td></tr>`));
     }
@@ -271,7 +271,7 @@ function redraw() {
   const tabled = Object.values(diff.tables || {}).reduce((sum, t) => sum + tableEntries(t), 0);
   document.getElementById('legend').innerHTML =
     `<span class="gray">gray ${shown.filter(el => !isRed(el)).length}</span> | <span class="red">red: added ${n('added')}, ` +
-    `removed ${n('removed')}, moved ${n('moved')}, modified ${n('modified')}, affected ${n('affected')}</span> | table changes ${tabled}`;
+    `removed ${n('removed')}, moved ${n('moved')}, modified ${n('modified')}, renamed ${n('renamed')}, affected ${n('affected')}</span> | table changes ${tabled}`;
   syncUrl();
 }
 

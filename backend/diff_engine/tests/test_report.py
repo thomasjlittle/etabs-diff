@@ -52,6 +52,10 @@ class ReportTest(unittest.TestCase):
                         continue
                     rows = [r for r in self.rows if (r["table"], r["label"], r["story"], r["status"])
                             == ("elements", e["label"], e["story"], e["status"])]
+                    # A relabeled affected element now has an own change, so its physical upstream rows are modified.
+                    if not rows and e["status"] == "affected":
+                        rows = [r for r in self.rows if (r["table"], r["label"], r["story"], r["status"])
+                                == ("elements", e["label"], e["story"], "modified")]
                     self.assertTrue(rows)
                     self.assertEqual(sorted(r["field"] for r in rows if r["field"]), sorted(e["fields"]))
 

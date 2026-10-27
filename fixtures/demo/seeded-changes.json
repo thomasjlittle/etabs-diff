@@ -788,7 +788,632 @@
  ],
  "unchanged": [
   "Column C7 at L7 local axis written as 360 degrees, same as no angle",
-  "Infill beam B38 at L6 redrawn as B45 0.05 in along X, inside the 0.1 in merge tolerance",
-  "Grid line X=0 relabeled (points, columns, beams, floors), same geometry: 1->101, C1->C101, 6->102, C6->C102, 11->103, C11->C103, 16->104, C16->C104, B17->B101, F1->F101, B18->B102, F5->F102, B19->B103, F9->F103"
+  "Infill beam B38 at L6 redrawn 0.05 in along X, inside merge tolerance: only the B38 to B45 rename is reported"
+ ],
+ "renames": [
+  {
+   "before": "C1",
+   "after": "C101",
+   "story": "Roof",
+   "kind": "frame"
+  },
+  {
+   "before": "C6",
+   "after": "C102",
+   "story": "Roof",
+   "kind": "frame"
+  },
+  {
+   "before": "C11",
+   "after": "C103",
+   "story": "Roof",
+   "kind": "frame"
+  },
+  {
+   "before": "C16",
+   "after": "C104",
+   "story": "Roof",
+   "kind": "frame"
+  },
+  {
+   "before": "B17",
+   "after": "B101",
+   "story": "Roof",
+   "kind": "frame"
+  },
+  {
+   "before": "B18",
+   "after": "B102",
+   "story": "Roof",
+   "kind": "frame"
+  },
+  {
+   "before": "B19",
+   "after": "B103",
+   "story": "Roof",
+   "kind": "frame"
+  },
+  {
+   "before": "C1",
+   "after": "C101",
+   "story": "L7",
+   "kind": "frame"
+  },
+  {
+   "before": "C6",
+   "after": "C102",
+   "story": "L7",
+   "kind": "frame"
+  },
+  {
+   "before": "C11",
+   "after": "C103",
+   "story": "L7",
+   "kind": "frame"
+  },
+  {
+   "before": "C16",
+   "after": "C104",
+   "story": "L7",
+   "kind": "frame"
+  },
+  {
+   "before": "B17",
+   "after": "B101",
+   "story": "L7",
+   "kind": "frame"
+  },
+  {
+   "before": "B18",
+   "after": "B102",
+   "story": "L7",
+   "kind": "frame"
+  },
+  {
+   "before": "B19",
+   "after": "B103",
+   "story": "L7",
+   "kind": "frame"
+  },
+  {
+   "before": "C1",
+   "after": "C101",
+   "story": "L6",
+   "kind": "frame"
+  },
+  {
+   "before": "C6",
+   "after": "C102",
+   "story": "L6",
+   "kind": "frame"
+  },
+  {
+   "before": "C11",
+   "after": "C103",
+   "story": "L6",
+   "kind": "frame"
+  },
+  {
+   "before": "C16",
+   "after": "C104",
+   "story": "L6",
+   "kind": "frame"
+  },
+  {
+   "before": "B17",
+   "after": "B101",
+   "story": "L6",
+   "kind": "frame"
+  },
+  {
+   "before": "B18",
+   "after": "B102",
+   "story": "L6",
+   "kind": "frame"
+  },
+  {
+   "before": "B19",
+   "after": "B103",
+   "story": "L6",
+   "kind": "frame"
+  },
+  {
+   "before": "B38",
+   "after": "B45",
+   "story": "L6",
+   "kind": "frame"
+  },
+  {
+   "before": "C1",
+   "after": "C101",
+   "story": "L5",
+   "kind": "frame"
+  },
+  {
+   "before": "C6",
+   "after": "C102",
+   "story": "L5",
+   "kind": "frame"
+  },
+  {
+   "before": "C11",
+   "after": "C103",
+   "story": "L5",
+   "kind": "frame"
+  },
+  {
+   "before": "C16",
+   "after": "C104",
+   "story": "L5",
+   "kind": "frame"
+  },
+  {
+   "before": "B17",
+   "after": "B101",
+   "story": "L5",
+   "kind": "frame"
+  },
+  {
+   "before": "B18",
+   "after": "B102",
+   "story": "L5",
+   "kind": "frame"
+  },
+  {
+   "before": "B19",
+   "after": "B103",
+   "story": "L5",
+   "kind": "frame"
+  },
+  {
+   "before": "C1",
+   "after": "C101",
+   "story": "L4",
+   "kind": "frame"
+  },
+  {
+   "before": "C6",
+   "after": "C102",
+   "story": "L4",
+   "kind": "frame"
+  },
+  {
+   "before": "C11",
+   "after": "C103",
+   "story": "L4",
+   "kind": "frame"
+  },
+  {
+   "before": "C16",
+   "after": "C104",
+   "story": "L4",
+   "kind": "frame"
+  },
+  {
+   "before": "B17",
+   "after": "B101",
+   "story": "L4",
+   "kind": "frame"
+  },
+  {
+   "before": "B18",
+   "after": "B102",
+   "story": "L4",
+   "kind": "frame"
+  },
+  {
+   "before": "B19",
+   "after": "B103",
+   "story": "L4",
+   "kind": "frame"
+  },
+  {
+   "before": "C1",
+   "after": "C101",
+   "story": "L3",
+   "kind": "frame"
+  },
+  {
+   "before": "C6",
+   "after": "C102",
+   "story": "L3",
+   "kind": "frame"
+  },
+  {
+   "before": "C11",
+   "after": "C103",
+   "story": "L3",
+   "kind": "frame"
+  },
+  {
+   "before": "C16",
+   "after": "C104",
+   "story": "L3",
+   "kind": "frame"
+  },
+  {
+   "before": "B17",
+   "after": "B101",
+   "story": "L3",
+   "kind": "frame"
+  },
+  {
+   "before": "B18",
+   "after": "B102",
+   "story": "L3",
+   "kind": "frame"
+  },
+  {
+   "before": "B19",
+   "after": "B103",
+   "story": "L3",
+   "kind": "frame"
+  },
+  {
+   "before": "C1",
+   "after": "C101",
+   "story": "L2",
+   "kind": "frame"
+  },
+  {
+   "before": "C6",
+   "after": "C102",
+   "story": "L2",
+   "kind": "frame"
+  },
+  {
+   "before": "C11",
+   "after": "C103",
+   "story": "L2",
+   "kind": "frame"
+  },
+  {
+   "before": "C16",
+   "after": "C104",
+   "story": "L2",
+   "kind": "frame"
+  },
+  {
+   "before": "B17",
+   "after": "B101",
+   "story": "L2",
+   "kind": "frame"
+  },
+  {
+   "before": "B18",
+   "after": "B102",
+   "story": "L2",
+   "kind": "frame"
+  },
+  {
+   "before": "B19",
+   "after": "B103",
+   "story": "L2",
+   "kind": "frame"
+  },
+  {
+   "before": "F1",
+   "after": "F101",
+   "story": "Roof",
+   "kind": "area"
+  },
+  {
+   "before": "F5",
+   "after": "F102",
+   "story": "Roof",
+   "kind": "area"
+  },
+  {
+   "before": "F9",
+   "after": "F103",
+   "story": "Roof",
+   "kind": "area"
+  },
+  {
+   "before": "F1",
+   "after": "F101",
+   "story": "L7",
+   "kind": "area"
+  },
+  {
+   "before": "F5",
+   "after": "F102",
+   "story": "L7",
+   "kind": "area"
+  },
+  {
+   "before": "F9",
+   "after": "F103",
+   "story": "L7",
+   "kind": "area"
+  },
+  {
+   "before": "F1",
+   "after": "F101",
+   "story": "L6",
+   "kind": "area"
+  },
+  {
+   "before": "F5",
+   "after": "F102",
+   "story": "L6",
+   "kind": "area"
+  },
+  {
+   "before": "F9",
+   "after": "F103",
+   "story": "L6",
+   "kind": "area"
+  },
+  {
+   "before": "F1",
+   "after": "F101",
+   "story": "L5",
+   "kind": "area"
+  },
+  {
+   "before": "F5",
+   "after": "F102",
+   "story": "L5",
+   "kind": "area"
+  },
+  {
+   "before": "F9",
+   "after": "F103",
+   "story": "L5",
+   "kind": "area"
+  },
+  {
+   "before": "F1",
+   "after": "F101",
+   "story": "L4",
+   "kind": "area"
+  },
+  {
+   "before": "F5",
+   "after": "F102",
+   "story": "L4",
+   "kind": "area"
+  },
+  {
+   "before": "F9",
+   "after": "F103",
+   "story": "L4",
+   "kind": "area"
+  },
+  {
+   "before": "F1",
+   "after": "F101",
+   "story": "L3",
+   "kind": "area"
+  },
+  {
+   "before": "F5",
+   "after": "F102",
+   "story": "L3",
+   "kind": "area"
+  },
+  {
+   "before": "F9",
+   "after": "F103",
+   "story": "L3",
+   "kind": "area"
+  },
+  {
+   "before": "F1",
+   "after": "F101",
+   "story": "L2",
+   "kind": "area"
+  },
+  {
+   "before": "F5",
+   "after": "F102",
+   "story": "L2",
+   "kind": "area"
+  },
+  {
+   "before": "F9",
+   "after": "F103",
+   "story": "L2",
+   "kind": "area"
+  },
+  {
+   "before": "1",
+   "after": "101",
+   "story": "Base",
+   "kind": "point"
+  },
+  {
+   "before": "1",
+   "after": "101",
+   "story": "L2",
+   "kind": "point"
+  },
+  {
+   "before": "1",
+   "after": "101",
+   "story": "L3",
+   "kind": "point"
+  },
+  {
+   "before": "1",
+   "after": "101",
+   "story": "L4",
+   "kind": "point"
+  },
+  {
+   "before": "1",
+   "after": "101",
+   "story": "L5",
+   "kind": "point"
+  },
+  {
+   "before": "1",
+   "after": "101",
+   "story": "L6",
+   "kind": "point"
+  },
+  {
+   "before": "1",
+   "after": "101",
+   "story": "L7",
+   "kind": "point"
+  },
+  {
+   "before": "1",
+   "after": "101",
+   "story": "Roof",
+   "kind": "point"
+  },
+  {
+   "before": "6",
+   "after": "102",
+   "story": "Base",
+   "kind": "point"
+  },
+  {
+   "before": "6",
+   "after": "102",
+   "story": "L2",
+   "kind": "point"
+  },
+  {
+   "before": "6",
+   "after": "102",
+   "story": "L3",
+   "kind": "point"
+  },
+  {
+   "before": "6",
+   "after": "102",
+   "story": "L4",
+   "kind": "point"
+  },
+  {
+   "before": "6",
+   "after": "102",
+   "story": "L5",
+   "kind": "point"
+  },
+  {
+   "before": "6",
+   "after": "102",
+   "story": "L6",
+   "kind": "point"
+  },
+  {
+   "before": "6",
+   "after": "102",
+   "story": "L7",
+   "kind": "point"
+  },
+  {
+   "before": "6",
+   "after": "102",
+   "story": "Roof",
+   "kind": "point"
+  },
+  {
+   "before": "11",
+   "after": "103",
+   "story": "Base",
+   "kind": "point"
+  },
+  {
+   "before": "11",
+   "after": "103",
+   "story": "L2",
+   "kind": "point"
+  },
+  {
+   "before": "11",
+   "after": "103",
+   "story": "L3",
+   "kind": "point"
+  },
+  {
+   "before": "11",
+   "after": "103",
+   "story": "L4",
+   "kind": "point"
+  },
+  {
+   "before": "11",
+   "after": "103",
+   "story": "L5",
+   "kind": "point"
+  },
+  {
+   "before": "11",
+   "after": "103",
+   "story": "L6",
+   "kind": "point"
+  },
+  {
+   "before": "11",
+   "after": "103",
+   "story": "L7",
+   "kind": "point"
+  },
+  {
+   "before": "11",
+   "after": "103",
+   "story": "Roof",
+   "kind": "point"
+  },
+  {
+   "before": "16",
+   "after": "104",
+   "story": "Base",
+   "kind": "point"
+  },
+  {
+   "before": "16",
+   "after": "104",
+   "story": "L2",
+   "kind": "point"
+  },
+  {
+   "before": "16",
+   "after": "104",
+   "story": "L3",
+   "kind": "point"
+  },
+  {
+   "before": "16",
+   "after": "104",
+   "story": "L4",
+   "kind": "point"
+  },
+  {
+   "before": "16",
+   "after": "104",
+   "story": "L5",
+   "kind": "point"
+  },
+  {
+   "before": "16",
+   "after": "104",
+   "story": "L6",
+   "kind": "point"
+  },
+  {
+   "before": "16",
+   "after": "104",
+   "story": "L7",
+   "kind": "point"
+  },
+  {
+   "before": "16",
+   "after": "104",
+   "story": "Roof",
+   "kind": "point"
+  },
+  {
+   "before": "23",
+   "after": "39",
+   "story": "L6",
+   "kind": "point"
+  }
  ]
 }

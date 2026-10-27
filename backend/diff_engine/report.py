@@ -68,7 +68,8 @@ def _element_rows(elements: List[ElementDiff]) -> Iterator[CsvRow]:
             out["after" if e["status"] == "added" else "before"] = _position(e["geometry"])
             yield out
         for c in e["changes"]:
-            yield {**base, "field": c["field"], "before": _value(c["before"]), "after": _value(c["after"]),
+            yield {**base, "status": "renamed" if c["field"] == "label" and c.get("kind") == "renamed" else base["status"],
+                   "field": c["field"], "before": _value(c["before"]), "after": _value(c["after"]),
                    "affects": " ".join(c["affects"]), "row": _value(c.get("row"))}
 
 
@@ -81,7 +82,7 @@ def _table_rows(tables: Tables) -> Iterator[CsvRow]:
                 yield {"table": name, "key": entry, "label": entry, "status": status}
         for entry in sorted(table["modified"]):
             for c in table["modified"][entry]:
-                yield {"table": name, "key": entry, "label": entry, "status": "modified", "field": c["field"],
+                yield {"table": name, "key": entry, "label": entry, "status": c.get("kind", "modified"), "field": c["field"],
                        "before": _value(c["before"]), "after": _value(c["after"]),
                        "affects": " ".join(c["affects"]), "row": _value(c.get("row"))}
 

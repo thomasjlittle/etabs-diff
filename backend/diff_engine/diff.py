@@ -55,6 +55,7 @@ LEVEL_FIELDS: Tuple[Literal["name", "elevation", "height"], ...] = ("name", "ele
 LOAD_POSITION_KEYS = {"DIST", "RDIST", "DSTART", "DEND", "RDSTART", "RDEND"}
 
 Hop = Tuple[str, str, str]  # (contract table, via prefix, definition name)
+Aliases = Dict[str, Dict[str, str]]  # table -> old name -> revised name
 
 
 class _Ctx(NamedTuple):
@@ -63,6 +64,7 @@ class _Ctx(NamedTuple):
     tables: Dict[str, TableDiff]
     a_to_b: Dict[str, str]  # level names
     tol: float
+    aliases: Aliases
 
 
 def diff_files(
@@ -87,13 +89,19 @@ def diff_models(
     a_to_b = {a: b for b, a in b_to_a.items()}
     elev_a = {lv["name"]: lv["elevation"] for lv in levels_a}
 
-    tables = {name: _table_diff(model_a[src], model_b[src], DEF_KIND[src]) for name, src, _ in TABLES}
+    tables: Dict[str, TableDiff] = {}
+    aliases: Aliases = {}
+    for name, src, _ in TABLES:
+        before = {key: _renamed_refs(props, aliases) for key, props in model_a[src].items()}
+        tables[name] = _table_diff(before, model_b[src], DEF_KIND[src])
+        aliases[name] = {c["before"]: c["after"] for cs in tables[name]["modified"].values()
+                         for c in cs if c.get("kind") == "renamed"}
     pairs, removed, added = match_elements(
         geometry.elements(model_a), geometry.elements(model_b), b_to_a, elev_a, tol, move_tolerance,
-        lambda a, b: not _assign_changes(a, b),
+        lambda a, b: not _assign_changes(a, b, aliases),
     )
 
-    ctx = _Ctx(model_a, model_b, tables, a_to_b, tol)
+    ctx = _Ctx(model_a, model_b, tables, a_to_b, tol, aliases)
     # The contract has no moved status yet: a moved frame is removed plus added, linked by key. The pair's own
     # changes (assigns, loads) ride on the removed half.
     entries: List[ElementDiff] = []
@@ -101,7 +109,8 @@ def diff_models(
     for a, b, how in pairs:
         if how == "moved":
             moves.append((_element(ctx, a, None), _element(ctx, None, b)))
-            moves[-1][0]["changes"] = _own_changes(*_loads_along_line(a, b, tol))
+            moved_a, moved_b = _loads_along_line(a, b, tol)
+            moves[-1][0]["changes"] = _own_changes(moved_a, moved_b, aliases)
             entries += moves[-1]
         else:
             entries += _listed(_element(ctx, a, b), a, b)
@@ -201,6 +210,18 @@ def _stories(
 
 def _table_diff(defs_a: Dict[str, Props], defs_b: Dict[str, Props], kind: str) -> TableDiff:
     table = TableDiff(added=sorted(set(defs_b) - set(defs_a)), removed=sorted(set(defs_a) - set(defs_b)), modified={})
+    # Pair only unambiguous identical definitions. Multiple identical candidates stay added/removed.
+    def meaningful(props: Props) -> Props:
+        return {k: v for k, v in props.items() if k not in IGNORED_KEYS}
+    candidates = {old: [new for new in table["added"] if same(meaningful(defs_a[old]), meaningful(defs_b[new]))]
+                  for old in table["removed"]}
+    for old, matches in candidates.items():
+        if len(matches) != 1 or sum(matches[0] in names for names in candidates.values()) != 1:
+            continue
+        new = matches[0]
+        table["removed"].remove(old)
+        table["added"].remove(new)
+        table["modified"][new] = [Change(field="name", before=old, after=new, affects=[], row=None, kind="renamed")]
     for name in sorted(set(defs_a) & set(defs_b)):
         a, b = defs_a[name], defs_b[name]
         changes = [
@@ -213,12 +234,31 @@ def _table_diff(defs_a: Dict[str, Props], defs_b: Dict[str, Props], kind: str) -
     return table
 
 
+def _renamed_refs(props: Props, aliases: Aliases, section_table: str = "") -> Props:
+    """Compare references by definition identity, without flagging a renamed section/material as a reassignment."""
+    out: Props = {}
+    for key, value in props.items():
+        table = ("materials" if key in (*SECTION_MATERIAL_KEYS, "MATERIALOVERWRITE") else
+                 section_table if key == "SECTION" else "loadPatterns" if key == "LC" else
+                 "loadSets" if key == "SET" else "diaphragms" if key == "DIAPH" else "")
+        if isinstance(value, str) and table:
+            value = aliases.get(table, {}).get(value, value)
+        term, separator, name = key.partition(":")
+        term_table = {"LOADPAT": "loadPatterns", "LOADCASE": "loadCases", "LOADCOMBO": "combos"}.get(term, "")
+        if separator and term_table:
+            key = f"{term}:{aliases.get(term_table, {}).get(name, name)}"
+        out[key] = value
+    return out
+
+
 # Elements -----------------------------------------------------------------------------------------
 
 def _element(ctx: _Ctx, a: Optional[Element], b: Optional[Element]) -> ElementDiff:
     """One contract ElementDiff. a or b is None for removed / added, never both."""
     some = cast(Element, b or a)
-    own = _own_changes(a, b) if a and b else []
+    own = _own_changes(a, b, ctx.aliases) if a and b else []
+    if a and b and a["label"] != b["label"]:
+        own.append(Change(field="label", before=a["label"], after=b["label"], affects=[], row=None, kind="renamed"))
     via, upstream = _upstream(ctx, a, b)
     status: Status
     if a is None or b is None:
@@ -240,19 +280,21 @@ def _element(ctx: _Ctx, a: Optional[Element], b: Optional[Element]) -> ElementDi
     return entry
 
 
-def _own_changes(a: Element, b: Element) -> List[Change]:
-    out = _assign_changes(a, b)
-    la, lb = _loads_by_pattern(a["loads"]), _loads_by_pattern(b["loads"])
+def _own_changes(a: Element, b: Element, aliases: Optional[Aliases] = None) -> List[Change]:
+    out = _assign_changes(a, b, aliases)
+    la = _loads_by_pattern([_renamed_refs(load, aliases or {}) for load in a["loads"]])
+    lb = _loads_by_pattern(b["loads"])
     for pattern in sorted(set(la) | set(lb)):
         if not same(la.get(pattern, []), lb.get(pattern, [])):
             out.append(_change(f"loads:{pattern}", la.get(pattern, []), lb.get(pattern, []), 9))
     return out
 
 
-def _assign_changes(a: Element, b: Element) -> List[Change]:
+def _assign_changes(a: Element, b: Element, aliases: Optional[Aliases] = None) -> List[Change]:
     out: List[Change] = []
+    before = _renamed_refs(a["props"], aliases or {}, "frameSections" if a["kind"] == "frame" else "shellSections")
     for key in sorted((set(a["props"]) | set(b["props"])) - IGNORED_KEYS):
-        va, vb = a["props"].get(key), b["props"].get(key)
+        va, vb = before.get(key), b["props"].get(key)
         if key in ANGLE_KEYS:
             va, vb = _angle(va), _angle(vb)
             if not _same_angle(va, vb):
@@ -336,6 +378,8 @@ def _upstream(ctx: _Ctx, a: Optional[Element], b: Optional[Element]) -> Tuple[Li
         if e is None:
             continue
         for path in _definition_paths(model, e):
+            if model is ctx.a:
+                path = [(table, prefix, ctx.aliases.get(table, {}).get(name, name)) for table, prefix, name in path]
             table, prefix, name = path[-1]
             diffs = ctx.tables[table]["modified"].get(name)
             if not diffs:

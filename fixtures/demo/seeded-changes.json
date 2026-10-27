@@ -31,7 +31,7 @@
    "tables": {}
   },
   {
-   "row": 2,
+   "row": 1,
    "what": "Infill beam B36 at L4 moved 24 in along X (redrawn as B44)",
    "elements": [
     {
@@ -52,7 +52,7 @@
    "tables": {}
   },
   {
-   "row": 2,
+   "row": 1,
    "what": "L4 story height 156 in to 168 in. Shows once per story in the stories table, no element changes",
    "elements": [],
    "tables": {
@@ -77,7 +77,7 @@
    }
   },
   {
-   "row": 3,
+   "row": 2,
    "what": "Column C7 at L3 reassigned W14X120 to W14X132",
    "elements": [
     {
@@ -93,7 +93,7 @@
    "tables": {}
   },
   {
-   "row": 4,
+   "row": 3,
    "what": "User section BOX16 walls 0.75 in to 1 in (corner columns L2, L3)",
    "elements": [
     {
@@ -187,7 +187,7 @@
    }
   },
   {
-   "row": 4,
+   "row": 3,
    "what": "User section GIRDER-USER material A992Fy50 to A572Gr50 (L2 girders on grid Y=0)",
    "elements": [
     {
@@ -236,7 +236,7 @@
    }
   },
   {
-   "row": 5,
+   "row": 4,
    "what": "Material LW3000 f'c 3 to 4 ksi and unit weight 110 to 115 pcf (roof slab)",
    "elements": [
     {
@@ -370,7 +370,7 @@
    }
   },
   {
-   "row": 6,
+   "row": 5,
    "what": "Section W12X26 I3 modifier 1 to 1.4 (roof infill beams)",
    "elements": [
     {
@@ -491,7 +491,24 @@
    }
   },
   {
-   "row": 7,
+   "row": 5,
+   "what": "Column C8 at L2 gets member modifiers I22 and I33 of 0.7 (cracked section)",
+   "elements": [
+    {
+     "status": "modified",
+     "label": "C8",
+     "story": "L2",
+     "fields": [
+      "PROPMODI22",
+      "PROPMODI33"
+     ],
+     "moved": false
+    }
+   ],
+   "tables": {}
+  },
+  {
+   "row": 6,
    "what": "Beam B27 at L6 end releases removed (now a moment connection)",
    "elements": [
     {
@@ -507,7 +524,7 @@
    "tables": {}
   },
   {
-   "row": 7,
+   "row": 6,
    "what": "Girder B6 at L3 insertion point 8 (top center) to 2 (bottom center)",
    "elements": [
     {
@@ -523,8 +540,8 @@
    "tables": {}
   },
   {
-   "row": 7,
-   "what": "Column C13 at L6 rotated 90 degrees (local axis)",
+   "row": 6,
+   "what": "Column C13 at L6 rotated 90 degrees (local axis, 0 to 90)",
    "elements": [
     {
      "status": "modified",
@@ -532,6 +549,22 @@
      "story": "L6",
      "fields": [
       "ANG"
+     ],
+     "moved": false
+    }
+   ],
+   "tables": {}
+  },
+  {
+   "row": 7,
+   "what": "Bare joint 25 at L3 (infill beam end) assigned to diaphragm D1",
+   "elements": [
+    {
+     "status": "modified",
+     "label": "25",
+     "story": "L3",
+     "fields": [
+      "DIAPH"
      ],
      "moved": false
     }
@@ -553,6 +586,28 @@
     }
    ],
    "tables": {}
+  },
+  {
+   "row": 8,
+   "what": "Point spring Pad vertical stiffness 500 to 650 kip/in (bearing pad under point 3)",
+   "elements": [
+    {
+     "status": "affected",
+     "label": "3",
+     "story": "Base",
+     "fields": [
+      "pointSpring:Pad.UZ"
+     ],
+     "moved": false
+    }
+   ],
+   "tables": {
+    "pointSprings": {
+     "Pad": [
+      "UZ"
+     ]
+    }
+   }
   },
   {
    "row": 9,
@@ -603,7 +658,43 @@
    "tables": {}
   },
   {
-   "row": 9,
+   "row": 11,
+   "what": "Mass source MsSrc1 adds 25% of Live",
+   "elements": [],
+   "tables": {
+    "massSource": {
+     "MsSrc1": [
+      "LOADPAT:Live"
+     ]
+    }
+   }
+  },
+  {
+   "row": 12,
+   "what": "Seismic pattern EQX response modification R 6 to 8",
+   "elements": [],
+   "tables": {
+    "loadPatterns": {
+     "EQX": [
+      "SEISMIC:R"
+     ]
+    }
+   }
+  },
+  {
+   "row": 12,
+   "what": "Wind pattern WX basic wind speed 115 to 120",
+   "elements": [],
+   "tables": {
+    "loadPatterns": {
+     "WX": [
+      "WIND:VB"
+     ]
+    }
+   }
+  },
+  {
+   "row": 13,
    "what": "Load case Live no longer double counts roof live Lr (it has its own case)",
    "elements": [],
    "tables": {
@@ -615,7 +706,19 @@
    }
   },
   {
-   "row": 9,
+   "row": 13,
+   "what": "Response spectrum case RSX scale factor up 10% (base shear scaling)",
+   "elements": [],
+   "tables": {
+    "loadCases": {
+     "RSX": [
+      "ACCEL:U1"
+     ]
+    }
+   }
+  },
+  {
+   "row": 14,
    "what": "Combo 1.2D+1.6L+0.5Lr gets its missing 0.5 Lr term",
    "elements": [],
    "tables": {
@@ -627,19 +730,64 @@
    }
   },
   {
-   "row": 10,
-   "what": "Mass source MsSrc1 adds 25% of Live",
+   "row": 15,
+   "what": "Concrete wall W1 added at L2 on grid X=1440 between Y=0 and Y=300",
+   "elements": [
+    {
+     "status": "added",
+     "label": "W1",
+     "story": "L2",
+     "fields": [],
+     "moved": false
+    }
+   ],
+   "tables": {}
+  },
+  {
+   "row": 15,
+   "what": "Floor slab F8 removed at L7 (new stair opening)",
+   "elements": [
+    {
+     "status": "removed",
+     "label": "F8",
+     "story": "L7",
+     "fields": [],
+     "moved": false
+    }
+   ],
+   "tables": {}
+  },
+  {
+   "row": 16,
+   "what": "Floor F3 at L2 moved from rigid diaphragm D1 to semi-rigid D2",
+   "elements": [
+    {
+     "status": "modified",
+     "label": "F3",
+     "story": "L2",
+     "fields": [
+      "DIAPH"
+     ],
+     "moved": false
+    }
+   ],
+   "tables": {}
+  },
+  {
+   "row": 17,
+   "what": "Response spectrum function DemoRS long-period ordinates up (site class revision)",
    "elements": [],
    "tables": {
-    "massSource": {
-     "MsSrc1": [
-      "LOADPAT:Live"
+    "functions": {
+     "DemoRS": [
+      "TIMEVAL"
      ]
     }
    }
   }
  ],
  "unchanged": [
+  "Column C7 at L7 local axis written as 360 degrees, same as no angle",
   "Infill beam B38 at L6 redrawn as B45 0.05 in along X, inside the 0.1 in merge tolerance",
   "Grid line X=0 relabeled (points, columns, beams, floors), same geometry: 1->101, C1->C101, 6->102, C6->C102, 11->103, C11->C103, 16->104, C16->C104, B17->B101, F1->F101, B18->B102, F5->F102, B19->B103, F9->F103"
  ]

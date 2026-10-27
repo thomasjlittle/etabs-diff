@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+build/
+dist/
+*.egg-info/
+
+# Node (viewer)
+node_modules/
+
+# Editors and OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Secrets
+.env
+.env.*
+
+# Real model data: never commit client ETABS models or exports
+*.[eE][dD][bB]
+*.$et
+*.ebk
+*.LOG
+*.OUT
+*.msh
+*.zip
+*.e2k
+# Synthetic fixtures are fine
+!tests/**/*.e2k
+!fixtures/**/*.e2k

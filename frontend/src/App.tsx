@@ -9,6 +9,7 @@ import { adapt } from './adapter';
 import { adaptEngine, type EngineDiff } from './engineAdapter';
 import manifest from '../demo_viewer/diffs/manifest.json';
 import { RevisionLog } from './RevisionLog';
+import { UploadStart } from './UploadStart';
 
 // Loaded separately so tests (no WebGL) never import three.js.
 const Viewer = lazy(() => import('./Viewer'));
@@ -18,12 +19,12 @@ const MOCKS = import.meta.glob('./mock/*.json');
 
 // Data sources in the top-bar dropdown. "team-fixture" is the team's reference case in schema.py format.
 const SOURCES: [string, string][] = [
-  ['e2k-upload', 'Upload two models (.e2k / .$et)'],
-  ['diff-file', 'Open a diff file (.json from diff_engine)'],
-  ['hack-models', 'Hack models, real ETABS (pick two)'],
-  ['seeded-demo', 'Seeded demo, 8 stories (engine output)'],
-  ['team-fixture', 'Team fixture (fixtures/*.json)'],
-  ['mock-result', 'Vantage mock'],
+  ['e2k-upload', 'Your models (.e2k / .$et)'],
+  ['diff-file', 'Dev: open a diff file (.json from diff_engine)'],
+  ['hack-models', 'Sample: Hack models, real ETABS (pick two)'],
+  ['seeded-demo', 'Sample: Seeded demo, 8 stories (engine output)'],
+  ['team-fixture', 'Dev: team fixture (fixtures/*.json)'],
+  ['mock-result', 'Dev: Vantage mock'],
 ];
 
 // Real ETABS models from frontend/demo_viewer/models/, diffed by the engine for every ordered pair
@@ -136,6 +137,7 @@ function Toggle<T extends string>({ label, value, options, onChange }: {
       {options.map(([v, text]) => (
         <button
           key={v}
+          aria-pressed={value === v}
           onClick={() => onChange(v)}
           className={`rounded px-2 py-0.5 ${value === v ? 'bg-slate-800 text-white' : 'bg-slate-100 hover:bg-slate-200'}`}
         >
@@ -155,13 +157,16 @@ export default function App() {
   const [story, setStory] = useState<string | null>(null);
   const [zoomTick, setZoomTick] = useState(0);
   const [resetTick, setResetTick] = useState(0);
-  const [source, setSource] = useState('hack-models');
+  const [source, setSource] = useState('e2k-upload');
   const [original, setOriginal] = useState(MODELS[0]);
   const [second, setSecond] = useState(MODELS[1]);
   const [diffFile, setDiffFile] = useState<File | null>(null);
   const [originalFile, setOriginalFile] = useState<File | null>(null);
-  const [secondFile, setSecondFile] = useState<File | null>(null);
-  const waitingForFile = (source === 'diff-file' && !diffFile) || (source === 'e2k-upload' && !(originalFile && secondFile));
+  const [revisedFile, setRevisedFile] = useState<File | null>(null);
+  // The pair last sent to Compare. Picking files alone doesn't run anything.
+  const [compared, setCompared] = useState<[File, File] | null>(null);
+  const [retryTick, setRetryTick] = useState(0);
+  const waitingForFile = (source === 'diff-file' && !diffFile) || (source === 'e2k-upload' && !compared);
   const [page, setPage] = useState<'review' | 'log'>('review');
 
   // Each load starts from a clean slate: previous result, selection and story filter are dropped.
@@ -171,13 +176,13 @@ export default function App() {
     setStory(null);
     if (waitingForFile) return;
     const loading = source === 'diff-file' && diffFile ? openDiffFile(diffFile)
-      : source === 'e2k-upload' && originalFile && secondFile ? compareModels(originalFile, secondFile)
+      : source === 'e2k-upload' && compared ? compareModels(...compared)
         : loadScenario(source, { original, second });
     loading
       .then((result) => current && dispatch({ type: 'load_ok', result }))
       .catch((e: Error) => current && dispatch({ type: 'load_fail', message: e.message }));
     return () => { current = false; }; // ignore a slow load that was superseded
-  }, [source, original, second, diffFile, originalFile, secondFile, waitingForFile]);
+  }, [source, original, second, diffFile, compared, retryTick, waitingForFile]);
 
   const modelSelect = (label: string, value: string, onChange: (v: string) => void) => (
     <label className="text-xs text-slate-500">{label}{' '}
@@ -192,17 +197,11 @@ export default function App() {
     setSource(v);
     setDiffFile(null);
     setOriginalFile(null);
-    setSecondFile(null);
+    setRevisedFile(null);
+    setCompared(null);
   };
   // From the revision log: review that pair of Hack models.
   const openPair = (a: string, b: string) => { changeSource('hack-models'); setOriginal(a); setSecond(b); setPage('review'); };
-
-  const modelFile = (label: string, onChange: (f: File | null) => void) => (
-    <label className="text-xs text-slate-500">{label}{' '}
-      <input type="file" accept=".e2k,.$et" aria-label={`${label} model file`} className="text-xs text-slate-900"
-        onChange={(e) => onChange(e.target.files?.[0] ?? null)} />
-    </label>
-  );
 
   const { load } = state;
   return (
@@ -211,11 +210,14 @@ export default function App() {
         <h1 className="font-semibold">Vantage</h1>
         <Toggle label="Page" value={page} onChange={setPage} options={[['review', 'Review'], ['log', 'Revision log']]} />
         {/* Always visible: says whether what's on screen is synthetic or a real model. */}
-        <span className="rounded bg-slate-900 px-2 py-0.5 text-xs font-bold tracking-wide text-white">
-          {load.status === 'ready' && !load.result.mock ? 'REAL ETABS MODELS' : 'MOCK DATA'}
-        </span>
-        <label className="text-xs text-slate-500">Data{' '}
-          <select value={source} onChange={(e) => changeSource(e.target.value)} className="rounded border px-1 text-slate-900">
+        {/* Only once something is loaded: while waiting or comparing, there is no data to label. */}
+        {load.status === 'ready' && (
+          <span className="rounded bg-slate-900 px-2 py-0.5 text-xs font-bold tracking-wide text-white">
+            {load.result.mock ? 'MOCK DATA' : 'REAL ETABS MODELS'}
+          </span>
+        )}
+        <label className="text-xs text-slate-500">Source{' '}
+          <select aria-label="Source" value={source} onChange={(e) => changeSource(e.target.value)} className="rounded border px-1 text-slate-900">
             {SOURCES.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
           </select>
         </label>
@@ -223,15 +225,14 @@ export default function App() {
           <div className="flex items-center gap-2">
             {modelSelect('Original', original, setOriginal)}
             <span className="text-slate-400">→</span>
-            {modelSelect('Second', second, setSecond)}
+            {modelSelect('Revised', second, setSecond)}
           </div>
         )}
-        {source === 'e2k-upload' && (
-          <div className="flex items-center gap-2">
-            {modelFile('Original', setOriginalFile)}
-            <span className="text-slate-400">→</span>
-            {modelFile('Second', setSecondFile)}
-          </div>
+        {source === 'e2k-upload' && compared && (
+          <span className="flex items-center gap-2 rounded bg-slate-100 px-2 py-0.5 text-xs">
+            <span className="font-mono">{compared[0].name} → {compared[1].name}</span>
+            <button className="text-blue-700 underline" onClick={() => setCompared(null)}>Change files</button>
+          </span>
         )}
         {source === 'diff-file' && (
           <label className="text-xs text-slate-500">Diff file{' '}
@@ -240,7 +241,7 @@ export default function App() {
           </label>
         )}
         <Toggle label="Show" value={viewMode} onChange={setViewMode}
-          options={[['baseline', 'Baseline'], ['overlay', 'Overlay'], ['revised', 'Revised']]} />
+          options={[['baseline', 'Original'], ['overlay', 'Overlay'], ['revised', 'Revised']]} />
         <Toggle label="View" value={cameraMode} onChange={setCameraMode}
           options={[['3d', '3D'], ['plan', 'Plan'], ['N', 'N'], ['S', 'S'], ['E', 'E'], ['W', 'W']]} />
         <Toggle label="Color by" value={colorBy} onChange={setColorBy}
@@ -256,11 +257,11 @@ export default function App() {
         )}
       </header>
       {page === 'log' && <RevisionLog onOpen={openPair} />}
-      {page === 'review' && waitingForFile && source === 'e2k-upload' && (
-        <p className="p-4 text-sm text-slate-500">
-          Choose an Original and a Second model (.e2k or .$et). They are compared by the diff engine on this machine
-          (127.0.0.1) and are not kept.
-        </p>
+      {page === 'review' && source === 'e2k-upload' && load.status !== 'ready' && (
+        <UploadStart original={originalFile} revised={revisedFile} onOriginal={setOriginalFile} onRevised={setRevisedFile}
+          onCompare={() => originalFile && revisedFile && setCompared([originalFile, revisedFile])}
+          onSample={() => changeSource('hack-models')}
+          busy={!!compared && load.status === 'loading'} error={compared && load.status === 'error' ? load.message : null} />
       )}
       {page === 'review' && waitingForFile && source === 'diff-file' && (
         <p className="p-4 text-sm text-slate-500">
@@ -268,8 +269,16 @@ export default function App() {
           browser only.
         </p>
       )}
-      {page === 'review' && load.status === 'loading' && !waitingForFile && <p className="p-4 text-sm text-slate-500">Loading…</p>}
-      {page === 'review' && load.status === 'error' && <p role="alert" className="p-4 text-sm">Could not load the comparison: {load.message}</p>}
+      {page === 'review' && source !== 'e2k-upload' && load.status === 'loading' && !waitingForFile && (
+        <p className="p-4 text-sm text-slate-500">Loading…</p>
+      )}
+      {page === 'review' && source !== 'e2k-upload' && load.status === 'error' && (
+        <div role="alert" className="m-4 flex items-center gap-3 rounded border border-red-200 bg-red-50 p-3 text-sm text-red-800">
+          <span>Could not load the comparison: {load.message}</span>
+          <button className="rounded bg-white px-2 py-0.5 text-xs ring-1 ring-red-300 hover:bg-red-100"
+            onClick={() => setRetryTick((t) => t + 1)}>Try again</button>
+        </div>
+      )}
       {page === 'review' && load.status === 'ready' && (
         <Workspace
           result={load.result}

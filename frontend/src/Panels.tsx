@@ -123,7 +123,7 @@ function SummaryItem({ change, result, selected, onSelect }: {
 
 // ---------------- detail panel ----------------
 
-export function DetailPanel({ result, selectedId, onSelect }: PanelProps) {
+export function DetailPanel({ result, selectedId }: PanelProps) {
   const change = result.changes.find((c) => c.id === selectedId);
   if (!change) return <p className="p-4 text-sm text-slate-500">Select a change to see its details.</p>;
   const members = memberMap(result);
@@ -143,7 +143,7 @@ export function DetailPanel({ result, selectedId, onSelect }: PanelProps) {
 
       <table className="w-full text-xs">
         <thead>
-          <tr className="text-left text-slate-500"><th>Field</th><th>Before</th><th>After</th></tr>
+          <tr className="text-left text-slate-500"><th>Field</th><th>Original</th><th>Revised</th></tr>
         </thead>
         <tbody>
           {fields.map((f) => (
@@ -158,13 +158,11 @@ export function DetailPanel({ result, selectedId, onSelect }: PanelProps) {
 
       <div>
         <h3 className="text-xs font-semibold text-slate-700">Affected members ({change.member_ids.length})</h3>
-        {/* Clicking a member re-selects its change; member-level focus in the viewer comes with step 2. */}
+        {/* Plain text until member-level focus in the viewer exists: a link that does nothing reads as broken. */}
         <ul className="mt-1 max-h-32 overflow-y-auto text-xs">
           {change.member_ids.map((id) => (
             <li key={id}>
-              <button className="text-blue-700 hover:underline" onClick={() => onSelect(change.id)}>
-                {memberName(members.get(id))}
-              </button>
+              <span className="text-slate-800">{memberName(members.get(id))}</span>
               <span className="ml-1 font-mono text-[10px] text-slate-400">{id}</span>
             </li>
           ))}
@@ -182,7 +180,7 @@ export function DetailPanel({ result, selectedId, onSelect }: PanelProps) {
             return (
               <div key={file} className="rounded border border-slate-200 bg-slate-50 p-2">
                 <div className="text-[10px] uppercase text-slate-500">
-                  {file}: {file === 'baseline' ? result.meta.source.baseline : result.meta.source.revised}
+                  {file === 'baseline' ? 'Original' : 'Revised'}: {file === 'baseline' ? result.meta.source.baseline : result.meta.source.revised}
                 </div>
                 {ev ? (
                   <pre className="mt-1 overflow-x-auto text-[10px] leading-4">
@@ -252,8 +250,11 @@ export function ChangeTable({ result, selectedId, onSelect }: PanelProps) {
     });
 
   const header = (key: SortKey, label: string) => (
-    <th className="cursor-pointer px-2 py-1" onClick={() => setSort((s) => ({ key, asc: s.key === key ? !s.asc : true }))}>
-      {label}{sort.key === key ? (sort.asc ? ' ▲' : ' ▼') : ''}
+    <th className="px-2 py-1" aria-sort={sort.key === key ? (sort.asc ? 'ascending' : 'descending') : 'none'}>
+      <button className="hover:text-slate-800"
+        onClick={() => setSort((s) => ({ key, asc: s.key === key ? !s.asc : true }))}>
+        {label}{sort.key === key ? (sort.asc ? ' ▲' : ' ▼') : ''}
+      </button>
     </th>
   );
 
@@ -278,7 +279,7 @@ export function ChangeTable({ result, selectedId, onSelect }: PanelProps) {
           <thead className="sticky top-0 bg-white text-slate-500">
             <tr>
               {header('id', 'ID')}{header('type', 'Type')}{header('group', 'Group')}
-              <th className="px-2 py-1">Member(s)</th><th className="px-2 py-1">Before</th><th className="px-2 py-1">After</th>
+              <th className="px-2 py-1">Member(s)</th><th className="px-2 py-1">Original</th><th className="px-2 py-1">Revised</th>
               {header('extent', 'Extent')}
             </tr>
           </thead>

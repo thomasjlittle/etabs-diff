@@ -8,6 +8,7 @@ import type { Diff, Model } from './types';
 import { adapt } from './adapter';
 import { adaptEngine, type EngineDiff } from './engineAdapter';
 import manifest from '../demo_viewer/diffs/manifest.json';
+import { RevisionLog } from './RevisionLog';
 
 // Loaded separately so tests (no WebGL) never import three.js.
 const Viewer = lazy(() => import('./Viewer'));
@@ -161,6 +162,7 @@ export default function App() {
   const [originalFile, setOriginalFile] = useState<File | null>(null);
   const [secondFile, setSecondFile] = useState<File | null>(null);
   const waitingForFile = (source === 'diff-file' && !diffFile) || (source === 'e2k-upload' && !(originalFile && secondFile));
+  const [page, setPage] = useState<'review' | 'log'>('review');
 
   // Each load starts from a clean slate: previous result, selection and story filter are dropped.
   useEffect(() => {
@@ -192,6 +194,8 @@ export default function App() {
     setOriginalFile(null);
     setSecondFile(null);
   };
+  // From the revision log: review that pair of Hack models.
+  const openPair = (a: string, b: string) => { changeSource('hack-models'); setOriginal(a); setSecond(b); setPage('review'); };
 
   const modelFile = (label: string, onChange: (f: File | null) => void) => (
     <label className="text-xs text-slate-500">{label}{' '}
@@ -205,6 +209,7 @@ export default function App() {
     <div className="flex h-screen flex-col bg-white text-slate-900">
       <header className="flex flex-wrap items-center gap-x-4 gap-y-1 border-b border-slate-200 px-4 py-2">
         <h1 className="font-semibold">Vantage</h1>
+        <Toggle label="Page" value={page} onChange={setPage} options={[['review', 'Review'], ['log', 'Revision log']]} />
         {/* Always visible: says whether what's on screen is synthetic or a real model. */}
         <span className="rounded bg-slate-900 px-2 py-0.5 text-xs font-bold tracking-wide text-white">
           {load.status === 'ready' && !load.result.mock ? 'REAL ETABS MODELS' : 'MOCK DATA'}
@@ -250,21 +255,22 @@ export default function App() {
           </span>
         )}
       </header>
-      {waitingForFile && source === 'e2k-upload' && (
+      {page === 'log' && <RevisionLog onOpen={openPair} />}
+      {page === 'review' && waitingForFile && source === 'e2k-upload' && (
         <p className="p-4 text-sm text-slate-500">
           Choose an Original and a Second model (.e2k or .$et). They are compared by the diff engine on this machine
           (127.0.0.1) and are not kept.
         </p>
       )}
-      {waitingForFile && source === 'diff-file' && (
+      {page === 'review' && waitingForFile && source === 'diff-file' && (
         <p className="p-4 text-sm text-slate-500">
           Choose a diff file. Make one from <code>backend/</code> with <code>{MAKE_DIFF}</code>. The file is read in this
           browser only.
         </p>
       )}
-      {load.status === 'loading' && !waitingForFile && <p className="p-4 text-sm text-slate-500">Loading…</p>}
-      {load.status === 'error' && <p role="alert" className="p-4 text-sm">Could not load the comparison: {load.message}</p>}
-      {load.status === 'ready' && (
+      {page === 'review' && load.status === 'loading' && !waitingForFile && <p className="p-4 text-sm text-slate-500">Loading…</p>}
+      {page === 'review' && load.status === 'error' && <p role="alert" className="p-4 text-sm">Could not load the comparison: {load.message}</p>}
+      {page === 'review' && load.status === 'ready' && (
         <Workspace
           result={load.result}
           selectedId={state.selectedChangeId}

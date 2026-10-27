@@ -53,18 +53,18 @@ describe('CategorySection', () => {
   it('shows the 7 categories in order with counts, including 0, and hides an empty Other', () => {
     render(<Shell vm={vmFor(rows)} />)
     const names = ['Model Settings', 'Definitions', 'Objects', 'Assignments', 'Loading', 'Analysis', 'Design']
-    const buttons = names.map((name) => within(category()).getByRole('button', { name: new RegExp(`^${name}\\d+$`) }))
+    const buttons = names.map((name) => within(category()).getByRole('button', { name: new RegExp(`^${name} \\d+$`) }))
     expect(buttons.map((b) => b.textContent)).toEqual([
       'Model Settings0', 'Definitions2', 'Objects0', 'Assignments2', 'Loading0', 'Analysis0', 'Design0',
     ])
-    expect(within(category()).getByRole('button', { name: 'Section assignment1' })).toBeTruthy()
-    expect(within(category()).getByRole('button', { name: 'Meshing0' })).toBeTruthy()
+    expect(within(category()).getByRole('button', { name: 'Section assignment 1' })).toBeTruthy()
+    expect(within(category()).getByRole('button', { name: 'Meshing 0' })).toBeTruthy()
     expect(within(category()).queryByRole('button', { name: /^Other/ })).toBeNull()
   })
 
   it('shows Other when a change landed in it', () => {
     render(<Shell vm={vmFor([...rows, row('r9', 'X', 'other/uncategorized')])} />)
-    expect(within(category()).getByRole('button', { name: 'Other1' })).toBeTruthy()
+    expect(within(category()).getByRole('button', { name: 'Other 1' })).toBeTruthy()
   })
 
   it('lists each changed definition once with how many elements use it', () => {
@@ -75,8 +75,8 @@ describe('CategorySection', () => {
 
   it('clicking a category, then a subcategory, filters the Element level; clicking again clears', () => {
     render(<Shell vm={vmFor(rows)} />)
-    const assignments = within(category()).getByRole('button', { name: 'Assignments2' })
-    const modifiers = within(category()).getByRole('button', { name: 'Property modifiers1' })
+    const assignments = within(category()).getByRole('button', { name: 'Assignments 2' })
+    const modifiers = within(category()).getByRole('button', { name: 'Property modifiers 1' })
 
     fireEvent.click(assignments)
     expect(assignments.getAttribute('aria-pressed')).toBe('true')

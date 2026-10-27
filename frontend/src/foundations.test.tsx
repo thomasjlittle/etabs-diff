@@ -47,14 +47,16 @@ describe('categories', () => {
 
 describe('shell', () => {
   it('shows the three sections, with the category tree and no element changes', async () => {
-    render(<Shell vm={toViewModel(await loadFixtures())} />)
+    const raw = await loadFixtures()
+    raw.diff = { frames: { added: [], removed: [], modified: {}, matchedBy: {} }, tables: {} }
+    render(<Shell vm={toViewModel(raw)} />)
     for (const name of ['Summary', 'Category', 'Element']) expect(screen.getByRole('region', { name })).toBeTruthy()
     expect(screen.getByRole('region', { name: 'Category' }).textContent).toContain('Assignments')
     expect(screen.getByText('No element changes to show.')).toBeTruthy()
   })
 })
 
-// Hand-made rows and groups, since mapping and grouping (#15 PR 2) are not built yet.
+// Hand-made rows and groups isolate filter behavior from fixture mapping.
 const row = (id: string, subcategoryId: string): ChangeRow => ({
   id, elementId: id, elementType: 'beam', label: id, kind: 'modified',
   categoryId: subcategoryId.split('/')[0], subcategoryId,

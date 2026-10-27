@@ -35,6 +35,19 @@ class ServeTest(unittest.TestCase):
             thread.join(timeout=5)
             self.assertFalse(thread.is_alive())
 
+    def test_without_a_diff_serves_the_bundled_comparisons(self) -> None:
+        server, url = make_server()
+        thread = threading.Thread(target=server.serve_forever, daemon=True)
+        thread.start()
+        try:
+            self.assertTrue(url.endswith("/index.html"))
+            with urlopen(url.rsplit("/", 1)[0] + "/diffs/manifest.json", timeout=5) as res:
+                self.assertIn("Hack_v01a", json.load(res)["models"])
+        finally:
+            server.shutdown()
+            server.server_close()
+        thread.join(timeout=5)
+
 
 if __name__ == "__main__":
     unittest.main()

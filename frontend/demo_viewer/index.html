@@ -26,7 +26,7 @@
   #side .hint { color: #888; font-size: 12px; margin: 6px 0 0; }
   #side button { float: right; margin-top: 10px; }
   #filters label { white-space: nowrap; margin-right: 6px; }
-  #filters b { font-weight: 500; color: #666; margin: 0 4px 0 8px; }
+  #filters b, #pair b { font-weight: 500; color: #666; margin: 0 4px 0 8px; }
   tr.pick { cursor: pointer; } tr.pick:hover, tr.on { background: #e3ecfb; }
   @media (max-width: 640px) { #side { top: auto; left: 8px; width: auto; max-height: 45vh; } }
 </style>
@@ -41,6 +41,7 @@
 <div id="bar">
   <input type="file" id="file" accept=".json,application/json">
   <button id="example">Load example</button>
+  <span id="pair" hidden><b>Before</b><select id="before"></select><b>After</b><select id="after"></select></span>
   <span id="filters">
     <b>Red</b><label><input type="checkbox" name="status" value="added">added</label><label><input type="checkbox" name="status" value="removed">removed</label><label><input type="checkbox" name="status" value="moved">moved</label><label><input type="checkbox" name="status" value="modified">modified</label><label><input type="checkbox" name="status" value="affected">affected</label>
     <b>Affects</b><label><input type="checkbox" name="affects" value="geometry">geometry</label><label><input type="checkbox" name="affects" value="stiffness">stiffness</label><label><input type="checkbox" name="affects" value="mass">mass</label><label><input type="checkbox" name="affects" value="load">load</label>
@@ -308,7 +309,25 @@ function show(data) {
   select();
 }
 
+// Bundled comparisons (diffs/, built by just demo-diffs): Before/After pick a pair, kept in the URL as ?before=&after=.
+const before = document.getElementById('before'), after = document.getElementById('after');
+function clearPair() {
+  before.value = after.value = '';
+  params.delete('before'); params.delete('after');
+}
+async function loadPair() {
+  if (!before.value || !after.value) return;
+  params.delete('diff');
+  params.set('before', before.value); params.set('after', after.value);
+  const url = `diffs/${encodeURIComponent(before.value)}__${encodeURIComponent(after.value)}.json`;
+  try { await loadUrl(url); }
+  catch (e) { alert(`Could not load ${url}: ${e.message}`); }
+}
+before.addEventListener('change', loadPair);
+after.addEventListener('change', loadPair);
+
 async function loadFile(file) {
+  clearPair();
   try { show(JSON.parse(await file.text())); }
   catch (e) { alert(`Could not load ${file.name}: ${e.message}`); }
 }
@@ -323,7 +342,20 @@ document.getElementById('file').addEventListener('change', e => e.target.files[0
 // index.html?diff=<relative path> opens straight to that diff (needs a served page, like the example button)
 const diffParam = new URLSearchParams(location.search).get('diff');
 if (diffParam) loadUrl(diffParam).catch(e => alert(`Could not load ${diffParam}: ${e.message}`));
+// ponytail: no manifest (file:// page, or a folder without diffs/) just leaves the dropdowns hidden
+fetch('diffs/manifest.json').then(res => res.ok ? res.json() : null).then(m => {
+  const models = m?.models || [];
+  if (!models.length) return;
+  for (const s of [before, after]) s.replaceChildren(new Option('', ''), ...models.map(name => new Option(name, name)));
+  document.getElementById('pair').hidden = false;
+  if (diffParam) return;
+  const pick = (k, dflt) => models.includes(params.get(k)) ? params.get(k) : dflt;
+  before.value = pick('before', models[0]);
+  after.value = pick('after', models[1] ?? models[0]);
+  loadPair();
+}).catch(() => {});
 document.getElementById('example').addEventListener('click', async () => {
+  clearPair();
   try { await loadUrl('example-diff.json'); }
   catch {
     // file:// pages cannot fetch neighbors, so fall back to the picker

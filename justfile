@@ -13,9 +13,13 @@ view before after:
 csv before after out:
     python3 -m diff_engine "{{before}}" "{{after}}" --csv "{{out}}" --summary
 
-# diff the hackathon example pair (fixtures/hack/) and open the viewer on it
+# open the viewer on the hackathon models (frontend/demo_viewer/models/), Before/After dropdowns on Hack_v01a to Hack_v02
 demo:
-    python3 -m diff_engine fixtures/hack/Hack_v01a.e2k fixtures/hack/Hack_v02.e2k --view
+    python3 -m diff_engine.serve
+
+# rediff every pair of the hackathon models into frontend/demo_viewer/diffs/ (run after adding or changing a model)
+demo-diffs:
+    python3 -m diff_engine.demo_diffs
 
 # diff the seeded synthetic demo pair (fixtures/demo/) and open the viewer on it
 demo-seeded:

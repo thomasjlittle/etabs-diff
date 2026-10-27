@@ -1,0 +1,390 @@
+{
+ "schemaVersion": "0.1",
+ "meta": {
+  "a": {
+   "file": "Hack_v01a.e2k",
+   "etabsVersion": "23.1.1",
+   "units": "KIP IN F"
+  },
+  "b": {
+   "file": "Hack_v01a.e2k",
+   "etabsVersion": "23.1.1",
+   "units": "KIP IN F"
+  },
+  "lengthUnit": "in",
+  "forceUnit": "kip",
+  "tolerance": 0.1,
+  "moveTolerance": 36.0
+ },
+ "stories": [
+  {
+   "name": "Base",
+   "elevA": 0.0,
+   "elevB": 0.0
+  },
+  {
+   "name": "Story1",
+   "elevA": 144.0,
+   "elevB": 144.0
+  },
+  {
+   "name": "Story2",
+   "elevA": 288.0,
+   "elevB": 288.0
+  },
+  {
+   "name": "Story3",
+   "elevA": 408.0,
+   "elevB": 408.0
+  }
+ ],
+ "elements": [
+  {
+   "key": "column|Base|0|0|0~Story1|0|0|0",
+   "kind": "frame",
+   "subtype": "column",
+   "label": "C1",
+   "story": "Story1",
+   "status": "unchanged",
+   "geometry": [
+    [
+     0.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     144.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "column|Base|0|1440|0~Story1|0|1440|0",
+   "kind": "frame",
+   "subtype": "column",
+   "label": "C2",
+   "story": "Story1",
+   "status": "unchanged",
+   "geometry": [
+    [
+     0.0,
+     144.0,
+     0.0
+    ],
+    [
+     0.0,
+     144.0,
+     144.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "column|Base|2400|0|0~Story1|2400|0|0",
+   "kind": "frame",
+   "subtype": "column",
+   "label": "C3",
+   "story": "Story1",
+   "status": "unchanged",
+   "geometry": [
+    [
+     240.0,
+     0.0,
+     0.0
+    ],
+    [
+     240.0,
+     0.0,
+     144.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "column|Base|2400|1440|0~Story1|2400|1440|0",
+   "kind": "frame",
+   "subtype": "column",
+   "label": "C4",
+   "story": "Story1",
+   "status": "unchanged",
+   "geometry": [
+    [
+     240.0,
+     144.0,
+     0.0
+    ],
+    [
+     240.0,
+     144.0,
+     144.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "beam|Story1|0|0|0~Story1|2400|0|0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B1",
+   "story": "Story1",
+   "status": "unchanged",
+   "geometry": [
+    [
+     0.0,
+     0.0,
+     144.0
+    ],
+    [
+     240.0,
+     0.0,
+     144.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "beam|Story1|0|1440|0~Story1|2400|1440|0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B2",
+   "story": "Story1",
+   "status": "unchanged",
+   "geometry": [
+    [
+     0.0,
+     144.0,
+     144.0
+    ],
+    [
+     240.0,
+     144.0,
+     144.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "beam|Story1|0|0|0~Story1|0|1440|0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B3",
+   "story": "Story1",
+   "status": "unchanged",
+   "geometry": [
+    [
+     0.0,
+     0.0,
+     144.0
+    ],
+    [
+     0.0,
+     144.0,
+     144.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "beam|Story1|2400|0|0~Story1|2400|1440|0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B4",
+   "story": "Story1",
+   "status": "unchanged",
+   "geometry": [
+    [
+     240.0,
+     0.0,
+     144.0
+    ],
+    [
+     240.0,
+     144.0,
+     144.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "floor|Story1|0|0|0~Story1|0|1440|0~Story1|2400|0|0~Story1|2400|1440|0",
+   "kind": "area",
+   "subtype": "floor",
+   "label": "F2",
+   "story": "Story1",
+   "status": "unchanged",
+   "geometry": [
+    [
+     240.0,
+     0.0,
+     144.0
+    ],
+    [
+     240.0,
+     144.0,
+     144.0
+    ],
+    [
+     0.0,
+     144.0,
+     144.0
+    ],
+    [
+     0.0,
+     0.0,
+     144.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Base|0|0|0",
+   "kind": "point",
+   "subtype": "joint",
+   "label": "1",
+   "story": "Base",
+   "status": "unchanged",
+   "geometry": [
+    [
+     0.0,
+     0.0,
+     0.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Base|0|1440|0",
+   "kind": "point",
+   "subtype": "joint",
+   "label": "2",
+   "story": "Base",
+   "status": "unchanged",
+   "geometry": [
+    [
+     0.0,
+     144.0,
+     0.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Base|2400|0|0",
+   "kind": "point",
+   "subtype": "joint",
+   "label": "3",
+   "story": "Base",
+   "status": "unchanged",
+   "geometry": [
+    [
+     240.0,
+     0.0,
+     0.0
+    ]
+   ],
+   "changes": []
+  },
+  {
+   "key": "Base|2400|1440|0",
+   "kind": "point",
+   "subtype": "joint",
+   "label": "4",
+   "story": "Base",
+   "status": "unchanged",
+   "geometry": [
+    [
+     240.0,
+     144.0,
+     0.0
+    ]
+   ],
+   "changes": []
+  }
+ ],
+ "tables": {
+  "stories": {
+   "added": [],
+   "removed": [],
+   "modified": {}
+  },
+  "materials": {
+   "added": [],
+   "removed": [],
+   "modified": {}
+  },
+  "frameSections": {
+   "added": [],
+   "removed": [],
+   "modified": {}
+  },
+  "shellSections": {
+   "added": [],
+   "removed": [],
+   "modified": {}
+  },
+  "pointSprings": {
+   "added": [],
+   "removed": [],
+   "modified": {}
+  },
+  "loadPatterns": {
+   "added": [],
+   "removed": [],
+   "modified": {}
+  },
+  "lineSprings": {
+   "added": [],
+   "removed": [],
+   "modified": {}
+  },
+  "areaSprings": {
+   "added": [],
+   "removed": [],
+   "modified": {}
+  },
+  "loadSets": {
+   "added": [],
+   "removed": [],
+   "modified": {}
+  },
+  "loadCases": {
+   "added": [],
+   "removed": [],
+   "modified": {}
+  },
+  "combos": {
+   "added": [],
+   "removed": [],
+   "modified": {}
+  },
+  "massSource": {
+   "added": [],
+   "removed": [],
+   "modified": {}
+  },
+  "diaphragms": {
+   "added": [],
+   "removed": [],
+   "modified": {}
+  },
+  "functions": {
+   "added": [],
+   "removed": [],
+   "modified": {}
+  },
+  "analysisOptions": {
+   "added": [],
+   "removed": [],
+   "modified": {}
+  }
+ },
+ "summary": {
+  "unchanged": 13,
+  "added": 0,
+  "removed": 0,
+  "modified": 0,
+  "affected": 0
+ }
+}

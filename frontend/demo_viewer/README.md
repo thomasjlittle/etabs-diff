@@ -14,6 +14,8 @@ It's one static HTML file. There's no install and no build step. It loads three.
 | `contract.ts` | The exact shape of the diff JSON. This is the source of truth. |
 | `CONTRACT.md` | The same contract explained field by field. Start here. |
 | `example-diff.json` | A made-up 3-story, 2x2-bay steel building with elements in every status, so you can work on the viewer without the engine. |
+| `models/` | Five versions of a small hackathon model (`Hack_v01a`, `Hack_v02`, `Hack_v02a` in lb and ft, `Hack_v03`, `Hack_v04`). |
+| `diffs/` | The engine's diff of every ordered pair of `models/`, plus `manifest.json` listing the models. Rebuild with `just demo-diffs`. |
 
 ## Opening It
 
@@ -22,6 +24,10 @@ Either works:
 - **From disk:** double-click `index.html`. Load a diff with the file picker or by dragging the JSON onto the page. The "Load example" button can't read neighboring files from a `file://` page (browsers block it), so it opens the picker and you pick `example-diff.json`.
 - **From a static server** (makes "Load example" one click): from this folder run `python -m http.server 8000` and open http://localhost:8000.
 - **Straight to a diff:** put the JSON in the served folder and open `index.html?diff=<relative path>`, e.g. http://localhost:8000/?diff=example-diff.json. Handy for sharing a link to one comparison.
+
+**Comparing the bundled models:** when the page is served, Before and After dropdowns show up next to the file picker, filled from `diffs/manifest.json`. Changing either one loads that pair from `diffs/`, and the pair goes in the URL (`?before=Hack_v03&after=Hack_v04`) so a comparison can be shared. Picking the same model on both sides draws everything gray. With no `?diff=` or pair in the URL it opens on the first two models. `just demo` from the repo root serves this folder and opens it.
+
+![Before/After dropdowns on Hack_v03 to Hack_v04](compare.png)
 
 Controls: left drag to orbit, right drag to pan, scroll to zoom. The top right shows the counts per status plus the number of table changes. If nothing in 3D changed but the tables did, a red note under the counts says so.
 

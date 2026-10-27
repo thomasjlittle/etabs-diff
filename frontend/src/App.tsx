@@ -17,6 +17,8 @@ const MOCKS = import.meta.glob('./mock/*.json');
 
 // Data sources in the top-bar dropdown. "team-fixture" is the team's reference case in schema.py format.
 const SOURCES: [string, string][] = [
+  ['e2k-upload', 'Upload two models (.e2k / .$et)'],
+  ['diff-file', 'Open a diff file (.json from diff_engine)'],
   ['hack-models', 'Hack models, real ETABS (pick two)'],
   ['seeded-demo', 'Seeded demo, 8 stories (engine output)'],
   ['team-fixture', 'Team fixture (fixtures/*.json)'],
@@ -52,6 +54,54 @@ export async function loadScenario(name: string, pair: Pair = { original: MODELS
   if (data.warnings?.error) throw new Error(data.warnings.error);
   if (data.mock !== true) throw new Error('This file is not marked "mock": true, so it was not loaded.');
   return data;
+}
+
+export const MAKE_DIFF = 'python3 -m diff_engine before.e2k after.e2k -o diff.json';
+
+/** Open a diff written by the engine CLI (MAKE_DIFF). Read in the browser only; nothing is sent anywhere. */
+export async function openDiffFile(file: File): Promise<Result> {
+  const notADiff = new Error(`${file.name} is not a diff_engine output file. Make one from backend/ with: ${MAKE_DIFF}`);
+  // FileReader rather than file.text(): same result in browsers, and it also exists in jsdom for tests.
+  const text = await new Promise<string>((ok, fail) => {
+    const reader = new FileReader();
+    reader.onload = () => ok(reader.result as string);
+    reader.onerror = () => fail(new Error(`Could not read ${file.name}.`));
+    reader.readAsText(file);
+  });
+  let d: EngineDiff;
+  try {
+    d = JSON.parse(text);
+  } catch {
+    throw notADiff; // e.g. the .e2k itself was picked
+  }
+  if (!d || !Array.isArray(d.elements) || !Array.isArray(d.stories) || !d.meta?.a || !d.tables) throw notADiff;
+  return adaptEngine(d, { mock: false });
+}
+
+// Served by compareE2k.ts on the dev server (npm run dev); kept as a literal so node code stays out of the bundle.
+const COMPARE_ROUTE = '/local/compare';
+
+/** Diff two uploaded models with the engine, through the local dev server. Files go to 127.0.0.1 only. */
+export async function compareModels(original: File, second: File): Promise<Result> {
+  const body = new FormData();
+  body.append('a', original);
+  body.append('b', second);
+  let res: Response;
+  try {
+    res = await fetch(COMPARE_ROUTE, { method: 'POST', body, headers: { 'x-vantage-compare': '1' } });
+  } catch {
+    throw new Error('The local dev server did not answer. Start it from frontend/ with: npm run dev');
+  }
+  if (res.status === 404) throw new Error('Uploading models needs the dev server. Start it from frontend/ with: npm run dev');
+  const text = await res.text();
+  let data: unknown;
+  try {
+    data = JSON.parse(text);
+  } catch {
+    throw new Error(`The dev server sent back something that is not JSON (status ${res.status}).`);
+  }
+  if (!res.ok) throw new Error((data as { error?: string })?.error ?? `The dev server returned status ${res.status}.`);
+  return adaptEngine(data as EngineDiff, { mock: false });
 }
 
 /** The review panels, sharing one selected change. The viewer is passed in so tests can leave it out. */
@@ -107,23 +157,46 @@ export default function App() {
   const [source, setSource] = useState('hack-models');
   const [original, setOriginal] = useState(MODELS[0]);
   const [second, setSecond] = useState(MODELS[1]);
+  const [diffFile, setDiffFile] = useState<File | null>(null);
+  const [originalFile, setOriginalFile] = useState<File | null>(null);
+  const [secondFile, setSecondFile] = useState<File | null>(null);
+  const waitingForFile = (source === 'diff-file' && !diffFile) || (source === 'e2k-upload' && !(originalFile && secondFile));
 
   // Each load starts from a clean slate: previous result, selection and story filter are dropped.
   useEffect(() => {
     let current = true;
     dispatch({ type: 'load_start' });
     setStory(null);
-    loadScenario(source, { original, second })
+    if (waitingForFile) return;
+    const loading = source === 'diff-file' && diffFile ? openDiffFile(diffFile)
+      : source === 'e2k-upload' && originalFile && secondFile ? compareModels(originalFile, secondFile)
+        : loadScenario(source, { original, second });
+    loading
       .then((result) => current && dispatch({ type: 'load_ok', result }))
       .catch((e: Error) => current && dispatch({ type: 'load_fail', message: e.message }));
     return () => { current = false; }; // ignore a slow load that was superseded
-  }, [source, original, second]);
+  }, [source, original, second, diffFile, originalFile, secondFile, waitingForFile]);
 
   const modelSelect = (label: string, value: string, onChange: (v: string) => void) => (
     <label className="text-xs text-slate-500">{label}{' '}
       <select aria-label={label} value={value} onChange={(e) => onChange(e.target.value)} className="rounded border px-1 text-slate-900">
         {MODELS.map((m) => <option key={m} value={m}>{m}</option>)}
       </select>
+    </label>
+  );
+
+  // File pickers remount empty when their source is shown again, so drop what they held.
+  const changeSource = (v: string) => {
+    setSource(v);
+    setDiffFile(null);
+    setOriginalFile(null);
+    setSecondFile(null);
+  };
+
+  const modelFile = (label: string, onChange: (f: File | null) => void) => (
+    <label className="text-xs text-slate-500">{label}{' '}
+      <input type="file" accept=".e2k,.$et" aria-label={`${label} model file`} className="text-xs text-slate-900"
+        onChange={(e) => onChange(e.target.files?.[0] ?? null)} />
     </label>
   );
 
@@ -137,7 +210,7 @@ export default function App() {
           {load.status === 'ready' && !load.result.mock ? 'REAL ETABS MODELS' : 'MOCK DATA'}
         </span>
         <label className="text-xs text-slate-500">Data{' '}
-          <select value={source} onChange={(e) => setSource(e.target.value)} className="rounded border px-1 text-slate-900">
+          <select value={source} onChange={(e) => changeSource(e.target.value)} className="rounded border px-1 text-slate-900">
             {SOURCES.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
           </select>
         </label>
@@ -147,6 +220,19 @@ export default function App() {
             <span className="text-slate-400">→</span>
             {modelSelect('Second', second, setSecond)}
           </div>
+        )}
+        {source === 'e2k-upload' && (
+          <div className="flex items-center gap-2">
+            {modelFile('Original', setOriginalFile)}
+            <span className="text-slate-400">→</span>
+            {modelFile('Second', setSecondFile)}
+          </div>
+        )}
+        {source === 'diff-file' && (
+          <label className="text-xs text-slate-500">Diff file{' '}
+            <input type="file" accept=".json" aria-label="Diff file" className="text-xs text-slate-900"
+              onChange={(e) => setDiffFile(e.target.files?.[0] ?? null)} />
+          </label>
         )}
         <Toggle label="Show" value={viewMode} onChange={setViewMode}
           options={[['baseline', 'Baseline'], ['overlay', 'Overlay'], ['revised', 'Revised']]} />
@@ -164,7 +250,19 @@ export default function App() {
           </span>
         )}
       </header>
-      {load.status === 'loading' && <p className="p-4 text-sm text-slate-500">Loading…</p>}
+      {waitingForFile && source === 'e2k-upload' && (
+        <p className="p-4 text-sm text-slate-500">
+          Choose an Original and a Second model (.e2k or .$et). They are compared by the diff engine on this machine
+          (127.0.0.1) and are not kept.
+        </p>
+      )}
+      {waitingForFile && source === 'diff-file' && (
+        <p className="p-4 text-sm text-slate-500">
+          Choose a diff file. Make one from <code>backend/</code> with <code>{MAKE_DIFF}</code>. The file is read in this
+          browser only.
+        </p>
+      )}
+      {load.status === 'loading' && !waitingForFile && <p className="p-4 text-sm text-slate-500">Loading…</p>}
       {load.status === 'error' && <p role="alert" className="p-4 text-sm">Could not load the comparison: {load.message}</p>}
       {load.status === 'ready' && (
         <Workspace

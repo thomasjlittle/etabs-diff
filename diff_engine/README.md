@@ -72,7 +72,8 @@ Follows the viewer's `output-contract.ts`. The same contract lives in [`contract
     "stories": {"added": [], "removed": [], "modified": {"L2": [{"field": "elevation", ...}]}},
     "materials": {...}, "frameSections": {...}, "shellSections": {...},
     "pointSprings": {...}, "loadPatterns": {...},
-    "lineSprings": {...}, "areaSprings": {...}, "loadSets": {...}     // extensions, same shape
+    "lineSprings": {...}, "areaSprings": {...}, "loadSets": {...},    // extensions, same shape
+    "loadCases": {...}, "combos": {...}, "massSource": {...}           // extensions, same shape
   },
   "summary": {"unchanged": 937, "added": 0, "removed": 26, "modified": 56, "affected": 344}
 }
@@ -84,6 +85,7 @@ Follows the viewer's `output-contract.ts`. The same contract lives in [`contract
 - **`added` / `removed`**: `changes` is empty. Loads and assigns on a removed member go with it. Moved frames carry `movedTo` (on the removed entry) or `movedFrom` (on the added one), set to the other entry's `key` (extension).
 - Only definitions that exist in both files and were edited make members `affected`. Moving a member onto a new section is a `SECTION` change on the member.
 - **Tables** diff definitions by name: `added` and `removed` are name lists, `modified` maps a name to its changes. `SEISMIC` auto-lateral parameters are folded into their load pattern as a `SEISMIC` field.
+- **`loadCases`, `combos`, `massSource`** are records spread over several lines, one per load term, so each term is its own field: `LOADPAT:<pattern>` for a case's or the mass source's patterns, `ACCEL:<dir>` for a response spectrum direction (`{FUNC, SF}`), and `LOADCASE:<case>` / `LOADCOMBO:<combo>` for a combo's terms. The value is the scale factor, so a dropped term is `before: 1, after: null`. Every other key (`TYPE`, `INITCOND`, `INCLUDELOADS`, ...) compares as usual.
 - A changed story height moves every story above it, so each of those gets an `elevation` change in `tables.stories` (and no `height` change). The elements on them stay `unchanged`.
 - **`key`** is `story|x|y|dz` per node, each rounded to the tolerance, and `subtype|` plus the sorted node keys joined with `~` for frames and areas. It uses B's story names (and B's coordinates; A's for removed elements). Matching itself is a nearest-node search, not a key lookup, so the key is just a stable id. Duplicates get `#2`, `#3`.
 
@@ -101,8 +103,8 @@ Each `Change` carries `row`, the line of the property table it belongs to, so th
 | 6 | Property modifiers | any `*MOD` key, on a section or on an assign |
 | 7 | Releases, offsets, insertion point, local axis | `RELEASE*`, `PARTIALFIX*`, `*CARDINAL*`, `ANG`, `LENOFFI/J`, `RIGIDZONE`, `OFFSET*`, `LOCALAXIS*`, `TRANSFORMSTIFFNESSFOROFFSETS` |
 | 8 | Supports and springs | `RESTRAINT`, any key containing `SPRING`, spring tables |
-| 9 | Loads | `loads:*` fields, `loadPatterns`, `loadSets` |
-| 10 | Additional mass | any assign key containing `MASS` |
+| 9 | Loads | `loads:*` fields, `loadPatterns`, `loadSets`, `loadCases`, `combos` |
+| 10 | Additional mass | any assign key containing `MASS`, `massSource` |
 
 `affects` follows the row (`stiffness`/`mass` for rows 3 to 6, `stiffness` for 7 and 8, `load` for 9, `mass` for 10, `geometry` for stories), except `WEIGHTPERVOLUME`, `MMOD` and `WMOD`, which are `mass` only.
 
@@ -114,6 +116,7 @@ Each `Change` carries `row`, the line of the property table it belongs to, so th
 - **Not seen in any real export we had, so matched by keyword family and unconfirmed:** spring assignments (springs are defined but never assigned in the samples), additional mass assigns, frame end length offsets and insertion offsets, and per-member property modifiers on assigns. If ETABS writes these with different keywords they come through with `row: null` rather than being dropped.
 - **Library sections** (`SHAPE "W14X90"` with no dimensions) only carry the shape name, so a change to the library's values can't be seen. A change of shape name or material can.
 - **Ignored:** `USERJOINT` flags and the library `FILE` key. Joints with nothing on them aren't listed.
-- **Not compared:** load cases, combinations, mass source, rebar (`CONCRETESECTION`), groups, links, design preferences, grids. The parser skips them.
+- **Load cases.** A response spectrum `ACCEL ... SF` is g in the file's length units, so it is scaled like a length (9.80665 m becomes 386.09 in). A pushover `JOINT "label" "story"` is stored as `label@story`.
+- **Not compared:** rebar (`CONCRETESECTION`), groups, links, design preferences, grids. The parser skips them.
 - **One-to-one.** Duplicate frames on the same two nodes pair in file order. A frame split in two comes out as removed plus two added, linked as a move only if one piece's far end is within `move_tolerance` of the old one.
 - **Comments.** Lines between `STARTCOMMENTS` and `ENDCOMMENTS` are user text and are skipped. Malformed record lines are skipped with a warning.

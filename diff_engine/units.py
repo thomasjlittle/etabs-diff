@@ -63,6 +63,9 @@ DIMENSIONS = {
     "LINELOAD:TRAPM": dict.fromkeys(["FVAL", "FSTART", "FEND"], F) | dict.fromkeys(["DSTART", "DEND"], L),
     "AREALOAD": {"FVAL": F_L2},
     "SHELLUNIFORMLOADSET": {"VALUE": F_L2},
+    "LOADCASE": {"DISPLMAG": L},
+    # Response spectrum scale factor is an acceleration (g in the file's length units).
+    "LOADCASE:ACCEL": {"SF": L},
 }
 
 # Thermal coefficients are per degree, so they scale the other way from temperatures.

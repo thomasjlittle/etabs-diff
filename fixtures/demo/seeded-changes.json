@@ -601,6 +601,42 @@
     }
    ],
    "tables": {}
+  },
+  {
+   "row": 9,
+   "what": "Load case Live no longer double counts roof live Lr (it has its own case)",
+   "elements": [],
+   "tables": {
+    "loadCases": {
+     "Live": [
+      "LOADPAT:Lr"
+     ]
+    }
+   }
+  },
+  {
+   "row": 9,
+   "what": "Combo 1.2D+1.6L+0.5Lr gets its missing 0.5 Lr term",
+   "elements": [],
+   "tables": {
+    "combos": {
+     "1.2D+1.6L+0.5Lr": [
+      "LOADCASE:Lr"
+     ]
+    }
+   }
+  },
+  {
+   "row": 10,
+   "what": "Mass source MsSrc1 adds 25% of Live",
+   "elements": [],
+   "tables": {
+    "massSource": {
+     "MsSrc1": [
+      "LOADPAT:Live"
+     ]
+    }
+   }
   }
  ],
  "unchanged": [

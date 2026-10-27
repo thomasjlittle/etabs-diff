@@ -13917,6 +13917,57 @@
    "added": [],
    "removed": [],
    "modified": {}
+  },
+  "loadCases": {
+   "added": [],
+   "removed": [],
+   "modified": {
+    "Live": [
+     {
+      "field": "LOADPAT:Lr",
+      "before": 1.0,
+      "after": null,
+      "affects": [
+       "load"
+      ],
+      "row": 9
+     }
+    ]
+   }
+  },
+  "combos": {
+   "added": [],
+   "removed": [],
+   "modified": {
+    "1.2D+1.6L+0.5Lr": [
+     {
+      "field": "LOADCASE:Lr",
+      "before": null,
+      "after": 0.5,
+      "affects": [
+       "load"
+      ],
+      "row": 9
+     }
+    ]
+   }
+  },
+  "massSource": {
+   "added": [],
+   "removed": [],
+   "modified": {
+    "MsSrc1": [
+     {
+      "field": "LOADPAT:Live",
+      "before": null,
+      "after": 0.25,
+      "affects": [
+       "mass"
+      ],
+      "row": 10
+     }
+    ]
+   }
   }
  },
  "summary": {

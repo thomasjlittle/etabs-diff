@@ -36,6 +36,7 @@ export type DiffOutput = {
   tables: {
     stories: TableDiff; materials: TableDiff; frameSections: TableDiff;
     shellSections: TableDiff; pointSprings: TableDiff; loadPatterns: TableDiff;
+    loadCases?: TableDiff; combos?: TableDiff; massSource?: TableDiff;  // one change per load term, e.g. "LOADPAT:Live"
   };
   summary: Record<ElementDiff['status'], number>;
 };

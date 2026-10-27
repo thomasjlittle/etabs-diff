@@ -1,0 +1,610 @@
+{
+ "before": "before.e2k",
+ "after": "after.e2k",
+ "changes": [
+  {
+   "row": 1,
+   "what": "Interior beam B24 removed at L5",
+   "elements": [
+    {
+     "status": "removed",
+     "label": "B24",
+     "story": "L5",
+     "fields": [],
+     "moved": false
+    }
+   ],
+   "tables": {}
+  },
+  {
+   "row": 1,
+   "what": "Brace D9 added at L2 in a new bay on grid Y=0",
+   "elements": [
+    {
+     "status": "added",
+     "label": "D9",
+     "story": "L2",
+     "fields": [],
+     "moved": false
+    }
+   ],
+   "tables": {}
+  },
+  {
+   "row": 2,
+   "what": "Infill beam B36 at L4 moved 24 in along X (redrawn as B44)",
+   "elements": [
+    {
+     "status": "removed",
+     "label": "B36",
+     "story": "L4",
+     "fields": [],
+     "moved": true
+    },
+    {
+     "status": "added",
+     "label": "B44",
+     "story": "L4",
+     "fields": [],
+     "moved": true
+    }
+   ],
+   "tables": {}
+  },
+  {
+   "row": 2,
+   "what": "L4 story height 156 in to 168 in. Shows once per story in the stories table, no element changes",
+   "elements": [],
+   "tables": {
+    "stories": {
+     "L4": [
+      "elevation",
+      "height"
+     ],
+     "L5": [
+      "elevation"
+     ],
+     "L6": [
+      "elevation"
+     ],
+     "L7": [
+      "elevation"
+     ],
+     "Roof": [
+      "elevation"
+     ]
+    }
+   }
+  },
+  {
+   "row": 3,
+   "what": "Column C7 at L3 reassigned W14X120 to W14X132",
+   "elements": [
+    {
+     "status": "modified",
+     "label": "C7",
+     "story": "L3",
+     "fields": [
+      "SECTION"
+     ],
+     "moved": false
+    }
+   ],
+   "tables": {}
+  },
+  {
+   "row": 4,
+   "what": "User section BOX16 walls 0.75 in to 1 in (corner columns L2, L3)",
+   "elements": [
+    {
+     "status": "affected",
+     "label": "C101",
+     "story": "L2",
+     "fields": [
+      "frameSection:BOX16.TF",
+      "frameSection:BOX16.TW"
+     ],
+     "moved": false
+    },
+    {
+     "status": "affected",
+     "label": "C101",
+     "story": "L3",
+     "fields": [
+      "frameSection:BOX16.TF",
+      "frameSection:BOX16.TW"
+     ],
+     "moved": false
+    },
+    {
+     "status": "affected",
+     "label": "C5",
+     "story": "L2",
+     "fields": [
+      "frameSection:BOX16.TF",
+      "frameSection:BOX16.TW"
+     ],
+     "moved": false
+    },
+    {
+     "status": "affected",
+     "label": "C5",
+     "story": "L3",
+     "fields": [
+      "frameSection:BOX16.TF",
+      "frameSection:BOX16.TW"
+     ],
+     "moved": false
+    },
+    {
+     "status": "affected",
+     "label": "C104",
+     "story": "L2",
+     "fields": [
+      "frameSection:BOX16.TF",
+      "frameSection:BOX16.TW"
+     ],
+     "moved": false
+    },
+    {
+     "status": "affected",
+     "label": "C104",
+     "story": "L3",
+     "fields": [
+      "frameSection:BOX16.TF",
+      "frameSection:BOX16.TW"
+     ],
+     "moved": false
+    },
+    {
+     "status": "affected",
+     "label": "C20",
+     "story": "L2",
+     "fields": [
+      "frameSection:BOX16.TF",
+      "frameSection:BOX16.TW"
+     ],
+     "moved": false
+    },
+    {
+     "status": "affected",
+     "label": "C20",
+     "story": "L3",
+     "fields": [
+      "frameSection:BOX16.TF",
+      "frameSection:BOX16.TW"
+     ],
+     "moved": false
+    }
+   ],
+   "tables": {
+    "frameSections": {
+     "BOX16": [
+      "TF",
+      "TW"
+     ]
+    }
+   }
+  },
+  {
+   "row": 4,
+   "what": "User section GIRDER-USER material A992Fy50 to A572Gr50 (L2 girders on grid Y=0)",
+   "elements": [
+    {
+     "status": "affected",
+     "label": "B1",
+     "story": "L2",
+     "fields": [
+      "frameSection:GIRDER-USER.MATERIAL"
+     ],
+     "moved": false
+    },
+    {
+     "status": "affected",
+     "label": "B2",
+     "story": "L2",
+     "fields": [
+      "frameSection:GIRDER-USER.MATERIAL"
+     ],
+     "moved": false
+    },
+    {
+     "status": "affected",
+     "label": "B3",
+     "story": "L2",
+     "fields": [
+      "frameSection:GIRDER-USER.MATERIAL"
+     ],
+     "moved": false
+    },
+    {
+     "status": "affected",
+     "label": "B4",
+     "story": "L2",
+     "fields": [
+      "frameSection:GIRDER-USER.MATERIAL"
+     ],
+     "moved": false
+    }
+   ],
+   "tables": {
+    "frameSections": {
+     "GIRDER-USER": [
+      "MATERIAL"
+     ]
+    }
+   }
+  },
+  {
+   "row": 5,
+   "what": "Material LW3000 f'c 3 to 4 ksi and unit weight 110 to 115 pcf (roof slab)",
+   "elements": [
+    {
+     "status": "affected",
+     "label": "F101",
+     "story": "Roof",
+     "fields": [
+      "material:LW3000.FC",
+      "material:LW3000.WEIGHTPERVOLUME"
+     ],
+     "moved": false
+    },
+    {
+     "status": "affected",
+     "label": "F2",
+     "story": "Roof",
+     "fields": [
+      "material:LW3000.FC",
+      "material:LW3000.WEIGHTPERVOLUME"
+     ],
+     "moved": false
+    },
+    {
+     "status": "affected",
+     "label": "F3",
+     "story": "Roof",
+     "fields": [
+      "material:LW3000.FC",
+      "material:LW3000.WEIGHTPERVOLUME"
+     ],
+     "moved": false
+    },
+    {
+     "status": "affected",
+     "label": "F4",
+     "story": "Roof",
+     "fields": [
+      "material:LW3000.FC",
+      "material:LW3000.WEIGHTPERVOLUME"
+     ],
+     "moved": false
+    },
+    {
+     "status": "affected",
+     "label": "F102",
+     "story": "Roof",
+     "fields": [
+      "material:LW3000.FC",
+      "material:LW3000.WEIGHTPERVOLUME"
+     ],
+     "moved": false
+    },
+    {
+     "status": "affected",
+     "label": "F6",
+     "story": "Roof",
+     "fields": [
+      "material:LW3000.FC",
+      "material:LW3000.WEIGHTPERVOLUME"
+     ],
+     "moved": false
+    },
+    {
+     "status": "affected",
+     "label": "F7",
+     "story": "Roof",
+     "fields": [
+      "material:LW3000.FC",
+      "material:LW3000.WEIGHTPERVOLUME"
+     ],
+     "moved": false
+    },
+    {
+     "status": "affected",
+     "label": "F8",
+     "story": "Roof",
+     "fields": [
+      "material:LW3000.FC",
+      "material:LW3000.WEIGHTPERVOLUME"
+     ],
+     "moved": false
+    },
+    {
+     "status": "affected",
+     "label": "F103",
+     "story": "Roof",
+     "fields": [
+      "material:LW3000.FC",
+      "material:LW3000.WEIGHTPERVOLUME"
+     ],
+     "moved": false
+    },
+    {
+     "status": "affected",
+     "label": "F10",
+     "story": "Roof",
+     "fields": [
+      "material:LW3000.FC",
+      "material:LW3000.WEIGHTPERVOLUME"
+     ],
+     "moved": false
+    },
+    {
+     "status": "affected",
+     "label": "F11",
+     "story": "Roof",
+     "fields": [
+      "material:LW3000.FC",
+      "material:LW3000.WEIGHTPERVOLUME"
+     ],
+     "moved": false
+    },
+    {
+     "status": "affected",
+     "label": "F12",
+     "story": "Roof",
+     "fields": [
+      "material:LW3000.FC",
+      "material:LW3000.WEIGHTPERVOLUME"
+     ],
+     "moved": false
+    }
+   ],
+   "tables": {
+    "materials": {
+     "LW3000": [
+      "FC",
+      "WEIGHTPERVOLUME"
+     ]
+    }
+   }
+  },
+  {
+   "row": 6,
+   "what": "Section W12X26 I3 modifier 1 to 1.4 (roof infill beams)",
+   "elements": [
+    {
+     "status": "affected",
+     "label": "B32",
+     "story": "Roof",
+     "fields": [
+      "frameSection:W12X26.I3MOD"
+     ],
+     "moved": false
+    },
+    {
+     "status": "affected",
+     "label": "B33",
+     "story": "Roof",
+     "fields": [
+      "frameSection:W12X26.I3MOD"
+     ],
+     "moved": false
+    },
+    {
+     "status": "affected",
+     "label": "B34",
+     "story": "Roof",
+     "fields": [
+      "frameSection:W12X26.I3MOD"
+     ],
+     "moved": false
+    },
+    {
+     "status": "affected",
+     "label": "B35",
+     "story": "Roof",
+     "fields": [
+      "frameSection:W12X26.I3MOD"
+     ],
+     "moved": false
+    },
+    {
+     "status": "affected",
+     "label": "B36",
+     "story": "Roof",
+     "fields": [
+      "frameSection:W12X26.I3MOD"
+     ],
+     "moved": false
+    },
+    {
+     "status": "affected",
+     "label": "B37",
+     "story": "Roof",
+     "fields": [
+      "frameSection:W12X26.I3MOD"
+     ],
+     "moved": false
+    },
+    {
+     "status": "affected",
+     "label": "B38",
+     "story": "Roof",
+     "fields": [
+      "frameSection:W12X26.I3MOD"
+     ],
+     "moved": false
+    },
+    {
+     "status": "affected",
+     "label": "B39",
+     "story": "Roof",
+     "fields": [
+      "frameSection:W12X26.I3MOD"
+     ],
+     "moved": false
+    },
+    {
+     "status": "affected",
+     "label": "B40",
+     "story": "Roof",
+     "fields": [
+      "frameSection:W12X26.I3MOD"
+     ],
+     "moved": false
+    },
+    {
+     "status": "affected",
+     "label": "B41",
+     "story": "Roof",
+     "fields": [
+      "frameSection:W12X26.I3MOD"
+     ],
+     "moved": false
+    },
+    {
+     "status": "affected",
+     "label": "B42",
+     "story": "Roof",
+     "fields": [
+      "frameSection:W12X26.I3MOD"
+     ],
+     "moved": false
+    },
+    {
+     "status": "affected",
+     "label": "B43",
+     "story": "Roof",
+     "fields": [
+      "frameSection:W12X26.I3MOD"
+     ],
+     "moved": false
+    }
+   ],
+   "tables": {
+    "frameSections": {
+     "W12X26": [
+      "I3MOD"
+     ]
+    }
+   }
+  },
+  {
+   "row": 7,
+   "what": "Beam B27 at L6 end releases removed (now a moment connection)",
+   "elements": [
+    {
+     "status": "modified",
+     "label": "B27",
+     "story": "L6",
+     "fields": [
+      "RELEASE"
+     ],
+     "moved": false
+    }
+   ],
+   "tables": {}
+  },
+  {
+   "row": 7,
+   "what": "Girder B6 at L3 insertion point 8 (top center) to 2 (bottom center)",
+   "elements": [
+    {
+     "status": "modified",
+     "label": "B6",
+     "story": "L3",
+     "fields": [
+      "CARDINALPT"
+     ],
+     "moved": false
+    }
+   ],
+   "tables": {}
+  },
+  {
+   "row": 7,
+   "what": "Column C13 at L6 rotated 90 degrees (local axis)",
+   "elements": [
+    {
+     "status": "modified",
+     "label": "C13",
+     "story": "L6",
+     "fields": [
+      "ANG"
+     ],
+     "moved": false
+    }
+   ],
+   "tables": {}
+  },
+  {
+   "row": 8,
+   "what": "Base support at point 20 pinned to fixed",
+   "elements": [
+    {
+     "status": "modified",
+     "label": "20",
+     "story": "Base",
+     "fields": [
+      "RESTRAINT"
+     ],
+     "moved": false
+    }
+   ],
+   "tables": {}
+  },
+  {
+   "row": 9,
+   "what": "Roof unit load at point 8 12 to 18 kip",
+   "elements": [
+    {
+     "status": "modified",
+     "label": "8",
+     "story": "Roof",
+     "fields": [
+      "loads:SDL"
+     ],
+     "moved": false
+    }
+   ],
+   "tables": {}
+  },
+  {
+   "row": 9,
+   "what": "Cladding line load on B2 at L5 400 to 600 plf",
+   "elements": [
+    {
+     "status": "modified",
+     "label": "B2",
+     "story": "L5",
+     "fields": [
+      "loads:SDL"
+     ],
+     "moved": false
+    }
+   ],
+   "tables": {}
+  },
+  {
+   "row": 9,
+   "what": "Floor F6 at L3 live load 50 to 125 psf (storage)",
+   "elements": [
+    {
+     "status": "modified",
+     "label": "F6",
+     "story": "L3",
+     "fields": [
+      "loads:Live"
+     ],
+     "moved": false
+    }
+   ],
+   "tables": {}
+  }
+ ],
+ "unchanged": [
+  "Infill beam B38 at L6 redrawn as B45 0.05 in along X, inside the 0.1 in merge tolerance",
+  "Grid line X=0 relabeled (points, columns, beams, floors), same geometry: 1->101, C1->C101, 6->102, C6->C102, 11->103, C11->C103, 16->104, C16->C104, B17->B101, F1->F101, B18->B102, F5->F102, B19->B103, F9->F103"
+ ]
+}

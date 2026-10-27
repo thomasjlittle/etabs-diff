@@ -1,6 +1,7 @@
 // Revision log page: one row per model version, newest first, with a branch graph like `git log --graph`.
 // Click a row to review it against its first parent; tick two rows to compare those two.
 import { useEffect, useMemo, useState } from 'react';
+import { AddVersion } from './AddVersion';
 import { layoutGraph, modelName, REVISIONS, type GraphRow, type Revision } from './revisions';
 
 type Counts = Record<'added' | 'removed' | 'modified' | 'affected', number>;
@@ -82,6 +83,7 @@ export function RevisionLog({ onOpen, revisions = REVISIONS }: {
         <button className="rounded bg-slate-800 px-2 py-0.5 text-white disabled:opacity-40"
           disabled={picked.length !== 2} onClick={compare}>Compare selected</button>
       </div>
+      <AddVersion revisions={revisions} />
       <ol>
         {rows.map((row) => {
           const { rev } = row;

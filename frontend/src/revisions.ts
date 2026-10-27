@@ -1,6 +1,6 @@
 // Revision log: model history from frontend/demo_viewer/models/revisions.json, laid out like `git log --graph`.
-// The manifest is edited by hand and lists parents before children (oldest first), which is checked
-// in revisions.test.ts and is what keeps the history free of cycles.
+// The manifest is edited by hand or appended by the Add version form (saveRevision.ts). It lists parents before
+// children (oldest first), which is checked in revisions.test.ts and is what keeps the history free of cycles.
 import manifest from '../demo_viewer/models/revisions.json';
 
 export interface Revision {

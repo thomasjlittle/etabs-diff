@@ -7,6 +7,7 @@
 // evidence, ambiguous matches. Areas (floors, walls) are listed as changes but not drawn.
 import type { Change, Coverage, Group, Member, Node, Result, Side, Value, Vec3 } from './vantageTypes';
 import { GROUPS } from './adapter';
+import { fieldCategory, tableCategory } from './categories';
 
 // ---- engine contract (subset this adapter reads) ----
 interface EChange { field: string; before: unknown; after: unknown; affects: string[]; kind?: 'renamed' }
@@ -106,7 +107,7 @@ export function adaptEngine(d: EngineDiff, opts: { mock: boolean }): Result {
     if (ends.length === 0) continue; // only the story moved
     const shift = Math.max(...old.geometry.map((p) => lift.get(p[2]) ?? 0));
     draft.push({
-      type: 'modified', group: 'G1', member_ids: [old.key, now.key],
+      type: 'modified', group: 'G1', category: 'objects', member_ids: [old.key, now.key],
       extent: { members: 1, distance: Math.max(...ends.map(([, p, q]) => dist(p, q))) },
       before: Object.fromEntries(ends.map(([k, , , r]) => [k, r])),
       after: { ...Object.fromEntries(ends.map(([k, , q]) => [k, q])), ...(shift ? { story_shift: shift } : {}) },
@@ -121,22 +122,26 @@ export function adaptEngine(d: EngineDiff, opts: { mock: boolean }): Result {
     const drawn = e.kind === 'frame';
     if (e.status === 'added' || e.status === 'removed') {
       draft.push({
-        type: e.status, group: e.kind === 'area' ? 'ST' : 'G1', member_ids: drawn ? [e.key] : [],
+        type: e.status, group: e.kind === 'area' ? 'ST' : 'G1', category: 'objects', member_ids: drawn ? [e.key] : [],
         extent: { members: drawn ? 1 : 0, distance: 0 }, before: null, after: null, evidence: [],
         ...(drawn ? {} : { subject: subjectOf(e) }),
       });
       continue;
     }
-    // modified: one change per group of fields
+    // modified: one change per group and category of fields
     const byGroup = new Map<string, EChange[]>();
-    for (const c of e.changes) {
+    // "material:4Ksi.name" etc. belong to a definition: reported once as its table change, with this member.
+    for (const c of e.changes.filter((x) => !isDefinitionField(x.field))) {
       const g = c.kind === 'renamed' && c.field === 'label' ? 'rename' : e.kind === 'area' ? 'ST' : engineFieldGroup(c.field.split(':')[0]);
-      byGroup.set(g, [...(byGroup.get(g) ?? []), c]);
+      const k = `${g}|${fieldCategory(c.field)}`;
+      byGroup.set(k, [...(byGroup.get(k) ?? []), c]);
     }
-    for (const [group, cs] of byGroup) {
+    for (const [k, cs] of byGroup) {
+      const [group, category] = k.split('|');
       const field = (c: EChange) => (group === '1A' ? 'section' : c.field);
       draft.push({
-        type: group === 'rename' ? 'label_only' : 'modified', group: group === 'rename' ? 'G1' : group, member_ids: drawn ? [e.key] : [],
+        type: group === 'rename' ? 'label_only' : 'modified', group: group === 'rename' ? 'G1' : group, category,
+        member_ids: drawn ? [e.key] : [],
         extent: { members: drawn ? 1 : 0, distance: 0 },
         before: Object.fromEntries(cs.map((c) => [field(c), toValue(c.before)])),
         after: Object.fromEntries(cs.map((c) => [field(c), toValue(c.after)])),
@@ -151,14 +156,16 @@ export function adaptEngine(d: EngineDiff, opts: { mock: boolean }): Result {
     frames.filter((e) => e.via?.includes(viaRef(table, name))).map((e) => e.key);
   for (const [table, t] of Object.entries(d.tables)) {
     const [group, , prefix] = TABLES[table] ?? ['T3', table, table];
-    for (const name of t.added) draft.push({ ...defChange('added', group, [], null, null), subject: `${prefix} ${name}` });
-    for (const name of t.removed) draft.push({ ...defChange('removed', group, [], null, null), subject: `${prefix} ${name}` });
+    const category = tableCategory(table);
+    for (const name of t.added) draft.push({ ...defChange('added', group, [], null, null), category, subject: `${prefix} ${name}` });
+    for (const name of t.removed) draft.push({ ...defChange('removed', group, [], null, null), category, subject: `${prefix} ${name}` });
     for (const [name, cs] of Object.entries(t.modified)) {
       const ids = table === 'stories' ? [] : users(table, name); // story moves are not member changes
       draft.push({
         ...defChange(cs.every((c) => c.kind === 'renamed') ? 'label_only' : 'modified', group, ids,
           Object.fromEntries(cs.map((c) => [defField(c.field), toValue(c.before)])),
           Object.fromEntries(cs.map((c) => [defField(c.field), toValue(c.after)]))),
+        category,
         subject: `${prefix} ${name}`,
         ...(table === 'stories' ? { units: Object.fromEntries(cs.map((c) => [c.field, 'length'])) } : {}),
       });
@@ -207,6 +214,10 @@ export function adaptEngine(d: EngineDiff, opts: { mock: boolean }): Result {
     warnings: { coverage, ambiguous: [], error: null },
   };
 }
+
+/** A definition's field carried onto an element, e.g. "material:4Ksi.name"; not a load like "load:LIVE.FZ". */
+const DEFINITION_REFS = new Set(Object.keys(TABLES).map((t) => viaRef(t, '').slice(0, -1)));
+const isDefinitionField = (f: string) => f.includes(':') && DEFINITION_REFS.has(f.split(':')[0]);
 
 /** "material:A992Fy50.Fy" -> "Fy"; the subject already names the definition. */
 const defField = (f: string) => f.replace(/^[A-Za-z]+:[^.]*\./, '');

@@ -7,6 +7,7 @@
 // Not available from schema.py: source line evidence, ambiguous matches. Those stay empty.
 import type { Diff, Frame, Model, SetDiff } from './types';
 import type { Change, Coverage, Group, Member, Node, Result, Side, Value, Vec3 } from './vantageTypes';
+import { fieldCategory, tableCategory } from './categories';
 
 export interface TeamResult { modelA: Model; modelB: Model; diff: Diff }
 
@@ -97,16 +98,20 @@ export function adapt({ modelA, modelB, diff }: TeamResult): Result {
 
   // ---- frame changes ----
   for (const id of diff.frames.added)
-    draft.push(change('added', 'G1', [id], 1, 0, null, null));
+    draft.push({ ...change('added', 'G1', [id], 1, 0, null, null), category: 'objects' });
   for (const id of diff.frames.removed)
-    draft.push(change('removed', 'G1', [`${id}~A`], 1, 0, framesA.get(id) ? { section: framesA.get(id)!.section } : null, null));
+    draft.push({ ...change('removed', 'G1', [`${id}~A`], 1, 0, framesA.get(id) ? { section: framesA.get(id)!.section } : null, null), category: 'objects' });
 
   for (const id of Object.keys(diff.frames.modified).sort()) {
     const fb = framesB.get(id)!;
     const byGroup = new Map<string, typeof diff.frames.modified[string]>();
-    for (const c of diff.frames.modified[id]) byGroup.set(frameFieldGroup(c.field), [...(byGroup.get(frameFieldGroup(c.field)) ?? []), c]);
+    for (const c of diff.frames.modified[id]) {
+      const k = `${frameFieldGroup(c.field)}|${fieldCategory(c.field)}`;
+      byGroup.set(k, [...(byGroup.get(k) ?? []), c]);
+    }
 
-    for (const [group, cs] of byGroup) {
+    for (const [k, cs] of byGroup) {
+      const [group, category] = k.split('|');
       if (group === 'G1') {
         const fa = moved.get(id);
         if (fa) {
@@ -115,7 +120,7 @@ export function adapt({ modelA, modelB, diff }: TeamResult): Result {
           const before = Object.fromEntries(ends.map((e) => [`end_${e}`, fa[e]]));
           const after = Object.fromEntries(ends.map((e) => [`end_${e}`, fb[e]]));
           const d = Math.max(...ends.map((e) => dist(fa[e], fb[e])));
-          draft.push({ ...change('modified', 'G1', [`${id}~A`, `${id}~B`], 1, d, before, after),
+          draft.push({ ...change('modified', 'G1', [`${id}~A`, `${id}~B`], 1, d, before, after), category: 'objects',
             units: Object.fromEntries(ends.map((e) => [`end_${e}`, 'length'])) });
         } else {
           // Node list changed but positions did not: reversed end order, not physical.
@@ -126,7 +131,7 @@ export function adapt({ modelA, modelB, diff }: TeamResult): Result {
       }
       const before = Object.fromEntries(cs.map((c) => [fieldName(c.field), toValue(c.before)]));
       const after = Object.fromEntries(cs.map((c) => [fieldName(c.field), toValue(c.after)]));
-      draft.push(change(group === 'LO' ? 'label_only' : 'modified', group, [mid(id)], group === 'LO' ? 0 : 1, 0, before, after));
+      draft.push({ ...change(group === 'LO' ? 'label_only' : 'modified', group, [mid(id)], group === 'LO' ? 0 : 1, 0, before, after), category });
     }
   }
 
@@ -137,22 +142,24 @@ export function adapt({ modelA, modelB, diff }: TeamResult): Result {
 
   for (const [table, set] of Object.entries(diff.tables) as [string, SetDiff][]) {
     const [group, , prefix] = TABLES[table] ?? ['T3', table, table];
+    const category = tableCategory(table);
     const users = (name: string) => table === 'frameSections' ? sectionUsers(name) : table === 'materials' ? materialUsers(name) : [];
     for (const name of set.added) {
       if (table === 'stories') {
         const ids = modelB.frames.filter((f) => f.story === name && added.has(f.id)).map((f) => f.id);
         const elev = modelB.stories.find((s) => s.name === name)?.elev ?? null;
-        draft.push({ ...change('added', 'G1', ids, ids.length, 0, null, { story: name, elevation: elev }), units: { elevation: 'length' } });
-      } else draft.push({ ...change('added', group, users(name), users(name).length, 0, null, null), subject: `${prefix} ${name}` });
+        draft.push({ ...change('added', 'G1', ids, ids.length, 0, null, { story: name, elevation: elev }), category, units: { elevation: 'length' } });
+      } else draft.push({ ...change('added', group, users(name), users(name).length, 0, null, null), category, subject: `${prefix} ${name}` });
     }
     for (const name of set.removed)
-      draft.push({ ...change('removed', group, [], 0, 0, null, null), subject: `${prefix} ${name}` });
+      draft.push({ ...change('removed', group, [], 0, 0, null, null), category, subject: `${prefix} ${name}` });
     for (const [name, cs] of Object.entries(set.modified)) {
       const before = Object.fromEntries(cs.map((c) => [fieldName(c.field), toValue(c.before)]));
       const after = Object.fromEntries(cs.map((c) => [fieldName(c.field), toValue(c.after)]));
       const u = users(name);
       draft.push({
         ...change('modified', group, u, u.length, 0, before, after),
+        category,
         subject: `${prefix} ${name}`,
         ...(table === 'stories' ? { units: { elev: 'length' } } : {}),
       });

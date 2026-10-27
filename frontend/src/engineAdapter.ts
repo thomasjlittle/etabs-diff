@@ -1,4 +1,4 @@
-// Adapter: diff_engine output (frontend/demo_viewer/contract.ts, schemaVersion 0.1) -> keepTABS Result.
+// Adapter: diff_engine output (frontend/demo_viewer/contract.ts, schemaVersion 0.2) -> keepTABS Result.
 // This is what `just demo` feeds Thomas's viewer, so real .e2k pairs can be reviewed in keepTABS.
 //
 // Element-level changes go to the planning-board group for their field. "affected" elements carry

@@ -66,7 +66,8 @@
      "affects": [
       "stiffness"
      ],
-     "row": 6
+     "row": 6,
+     "unit": "deg"
     },
     {
      "field": "material:A992Fy50.E",
@@ -76,7 +77,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 4
+     "row": 4,
+     "unit": "ksi"
     }
    ],
    "grid": "A/1",
@@ -113,7 +115,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 4
+     "row": 4,
+     "unit": "ksi"
     }
    ],
    "grid": "A/2",
@@ -150,7 +153,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 2
+     "row": 2,
+     "unit": null
     },
     {
      "field": "material:A992Fy50.E",
@@ -160,7 +164,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 4
+     "row": 4,
+     "unit": "ksi"
     }
    ],
    "grid": "B/1",
@@ -198,7 +203,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 4
+     "row": 4,
+     "unit": "ksi"
     }
    ],
    "grid": "B/2",
@@ -235,7 +241,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 3
+     "row": 3,
+     "unit": null
     },
     {
      "field": "material:6Ksi.WEIGHTPERVOLUME",
@@ -244,7 +251,8 @@
      "affects": [
       "mass"
      ],
-     "row": 4
+     "row": 4,
+     "unit": "kip/in^3"
     }
    ],
    "grid": "A-B/2",
@@ -281,7 +289,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 4
+     "row": 4,
+     "unit": "ksi"
     }
    ],
    "grid": "A/1-2",
@@ -318,7 +327,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 4
+     "row": 4,
+     "unit": "ksi"
     }
    ],
    "grid": "B/1-2",
@@ -381,7 +391,8 @@
      "affects": [
       "stiffness"
      ],
-     "row": 8
+     "row": 8,
+     "unit": null
     }
    ],
    "grid": "A/1"
@@ -776,7 +787,8 @@
       "affects": [
        "mass"
       ],
-      "row": 4
+      "row": 4,
+      "unit": "kip/in^3"
      }
     ],
     "A992Fy50": [
@@ -788,7 +800,8 @@
        "stiffness",
        "mass"
       ],
-      "row": 4
+      "row": 4,
+      "unit": "ksi"
      }
     ]
    }
@@ -808,7 +821,8 @@
        "stiffness",
        "mass"
       ],
-      "row": 3
+      "row": 3,
+      "unit": null
      }
     ]
    }

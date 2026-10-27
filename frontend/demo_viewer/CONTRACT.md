@@ -8,6 +8,10 @@ Version 0.1 is close to final but not frozen. Field names and shapes should hold
 
 All lengths and coordinates are in **inches**, whatever units the ETABS files used. The engine converts on parse. `meta.lengthUnit` is always `"in"` so you can check.
 
+Each current-engine `changes` entry has `unit`: a normalized display string such as `in`, `kip`, `ksi`, `kip-in`, `kip/in`, `deg`, or null. Names, modifiers and scale factors are unitless. Unrecognized dimensions also return null rather than an inferred unit; this does not certify that an unrecognized numeric keyword is dimensionless. Older saved diffs may omit the field.
+
+Structured changes (such as a load record containing force and distance together) have `unit: null` and, when known dimensions exist, `valueUnits: { before: { "0.FVAL": "kip", "0.DIST": "in", "0.TYPE": null }, after: ... }`. Keys are dot-separated paths into that side's JSON value, including array indices. Render units next to their individual values. A response-spectrum case's acceleration factor is `in/s^2`; spring stiffness follows its translational/rotational definition. The CSV includes both `unit` and `valueUnits` columns.
+
 ## Top Level
 
 | Field | What it is |

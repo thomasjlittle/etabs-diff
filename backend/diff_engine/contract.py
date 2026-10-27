@@ -18,11 +18,13 @@ class _Change(TypedDict):
     before: Any  # raw e2k value (number, string, list, nested dict), genuinely untyped
     after: Any
     affects: List[Affect]
+    unit: Optional[str]  # normalized display unit, None for unitless/unknown/structured values
 
 
 class Change(_Change, total=False):
     row: Optional[int]  # extension: change list row (1 to 17), None when outside the list
     kind: Literal["renamed"]  # extension: label/name change; status remains modified for compatibility
+    valueUnits: Dict[str, Dict[str, Optional[str]]]  # structured values: before/after -> leaf path -> unit
 
 
 class _ElementDiff(TypedDict):

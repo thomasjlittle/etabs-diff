@@ -9,7 +9,10 @@ import type { Change, Coverage, Group, Member, Node, Result, Side, Value, Vec3 }
 import { GROUPS } from './adapter';
 
 // ---- engine contract (subset this adapter reads) ----
-interface EChange { field: string; before: unknown; after: unknown; affects: string[]; kind?: 'renamed' }
+interface EChange {
+  field: string; before: unknown; after: unknown; affects: string[]; kind?: 'renamed'; unit?: string | null;
+  valueUnits?: Record<'before' | 'after', Record<string, string | null>>;
+}
 interface EElement {
   key: string; kind: 'point' | 'frame' | 'area'; subtype: string; label: string; story: string;
   status: 'unchanged' | 'added' | 'removed' | 'modified' | 'affected';
@@ -65,6 +68,16 @@ function toValue(v: unknown): Value {
   }
   return JSON.stringify(v);
 }
+
+function withValueUnits(value: unknown, units: Record<string, string | null>, path = ''): unknown {
+  if (Array.isArray(value)) return value.map((v, i) => withValueUnits(v, units, path ? `${path}.${i}` : String(i)));
+  if (value !== null && typeof value === 'object') return Object.fromEntries(Object.entries(value)
+    .map(([key, v]) => [key, withValueUnits(v, units, path ? `${path}.${key}` : key)]));
+  return typeof value === 'number' && units[path] ? `${value} ${units[path]}` : value;
+}
+const changeValue = (c: EChange, side: 'before' | 'after') => toValue(withValueUnits(c[side], c.valueUnits?.[side] ?? {}));
+const changeUnits = (cs: EChange[], field: (c: EChange) => string) => cs.some((c) => c.unit)
+  ? { units: Object.fromEntries(cs.filter((c) => c.unit).map((c) => [field(c), c.unit!])) } : {};
 
 const dist = (p: Vec3, q: Vec3) => Math.hypot(p[0] - q[0], p[1] - q[1], p[2] - q[2]);
 const key = (p: Vec3) => `N(${p.join(',')})`;
@@ -139,8 +152,9 @@ export function adaptEngine(d: EngineDiff, opts: { mock: boolean }): Result {
       draft.push({
         type: group === 'rename' ? 'label_only' : 'modified', group: group === 'rename' ? 'G1' : group, member_ids: drawn ? [e.key] : [],
         extent: { members: drawn ? 1 : 0, distance: 0 },
-        before: Object.fromEntries(cs.map((c) => [field(c), toValue(c.before)])),
-        after: Object.fromEntries(cs.map((c) => [field(c), toValue(c.after)])),
+        before: Object.fromEntries(cs.map((c) => [field(c), changeValue(c, 'before')])),
+        after: Object.fromEntries(cs.map((c) => [field(c), changeValue(c, 'after')])),
+        ...changeUnits(cs, field),
         evidence: [],
         ...(drawn ? {} : { subject: subjectOf(e) }),
       });
@@ -158,10 +172,12 @@ export function adaptEngine(d: EngineDiff, opts: { mock: boolean }): Result {
       const ids = table === 'stories' ? [] : users(table, name); // story moves are not member changes
       draft.push({
         ...defChange(cs.every((c) => c.kind === 'renamed') ? 'label_only' : 'modified', group, ids,
-          Object.fromEntries(cs.map((c) => [defField(c.field), toValue(c.before)])),
-          Object.fromEntries(cs.map((c) => [defField(c.field), toValue(c.after)]))),
+          Object.fromEntries(cs.map((c) => [defField(c.field), changeValue(c, 'before')])),
+          Object.fromEntries(cs.map((c) => [defField(c.field), changeValue(c, 'after')]))),
+        ...changeUnits(cs, (c) => defField(c.field)),
         subject: `${prefix} ${name}`,
-        ...(table === 'stories' ? { units: Object.fromEntries(cs.map((c) => [c.field, 'length'])) } : {}),
+        ...(table === 'stories' && !cs.some((c) => c.unit)
+          ? { units: Object.fromEntries(cs.filter((c) => ['height', 'elevation'].includes(c.field)).map((c) => [c.field, 'length'])) } : {}),
       });
     }
   }

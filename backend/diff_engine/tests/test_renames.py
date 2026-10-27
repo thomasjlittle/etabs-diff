@@ -18,7 +18,7 @@ class RenameTest(unittest.TestCase):
         self.assertEqual(beam["key"], original["key"])
         self.assertEqual(beam["status"], "modified")
         self.assertEqual(beam["changes"], [{"field": "label", "before": "B1", "after": "B9",
-                                           "affects": [], "row": None, "kind": "renamed"}])
+                                           "affects": [], "unit": None, "row": None, "kind": "renamed"}])
         self.assertEqual(result["summary"]["added"] + result["summary"]["removed"], 0)
         self.assertEqual([r.get("status") for r in change_rows(result)], ["renamed"])
 
@@ -35,7 +35,7 @@ class RenameTest(unittest.TestCase):
             self.assertEqual(changes["added"], [])
             self.assertEqual(changes["removed"], [])
             self.assertEqual(changes["modified"][new][0], {"field": "name", "before": old, "after": new,
-                                                        "kind": "renamed", "row": None, "affects": []})
+                                                        "kind": "renamed", "row": None, "affects": [], "unit": None})
         self.assertFalse(any(c["field"] == "SECTION" for e in result["elements"] for c in e["changes"]))
         self.assertFalse(any(c["field"].endswith(".MATERIAL") for e in result["elements"] for c in e["changes"]))
 

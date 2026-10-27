@@ -164,13 +164,21 @@ function highlight(els) {
 
 const esc = v => String(v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 const val = v => v == null ? '<i class="gray">none</i>' : esc(typeof v === 'string' ? v : JSON.stringify(v));
+function annotateUnits(value, units, path = '') {
+  if (Array.isArray(value)) return value.map((v, i) => annotateUnits(v, units, path ? `${path}.${i}` : String(i)));
+  if (value !== null && typeof value === 'object') return Object.fromEntries(Object.entries(value)
+    .map(([key, v]) => [key, annotateUnits(v, units, path ? `${path}.${key}` : key)]));
+  return typeof value === 'number' && units[path] ? `${value} ${units[path]}` : value;
+}
+const changeVal = (change, side) => val(annotateUnits(change[side], change.valueUnits?.[side] || {})) +
+  (change.unit && change[side] != null ? ` ${esc(change.unit)}` : '');
 const tableEntries = t => (t?.added?.length || 0) + (t?.removed?.length || 0) + Object.keys(t?.modified || {}).length;
 const viaRef = (table, name) => `${table.replace(/ies$/, 'y').replace(/s$/, '')}:${name}`;  // materials -> material:NAME
 
 function changeRows(changes) {
   if (!changes?.length) return '<p class="hint">No field changes recorded.</p>';
   return '<table><tr><th>Field</th><th>Before</th><th>After</th><th>Affects</th></tr>' + changes.map(c =>
-    `<tr><td>${esc(c.field)}</td><td>${val(c.before)}</td><td>${val(c.after)}</td><td>${esc((c.affects || []).join(', '))}</td></tr>`).join('') + '</table>';
+    `<tr><td>${esc(c.field)}</td><td>${changeVal(c, 'before')}</td><td>${changeVal(c, 'after')}</td><td>${esc((c.affects || []).join(', '))}</td></tr>`).join('') + '</table>';
 }
 
 const xyz = p => p.map(v => +v.toFixed(2)).join(', ');
@@ -215,7 +223,7 @@ function tablesHtml(tables, selected) {
       const cls = `pick${ref === selected ? ' on' : ''}`;
       const status = `${changes.length && changes.every(c => c.kind === 'renamed') ? 'renamed' : 'modified'}${n ? ` (${n} member${n === 1 ? '' : 's'})` : ''}`;
       (changes.length ? changes : [{}]).forEach((c, i) => rows.push(`<tr class="${cls}" data-ref="${esc(ref)}">` +
-        `<td>${i ? '' : esc(name)}</td><td>${i ? '' : status}</td><td>${esc(c.field ?? '')}</td><td>${val(c.before)}</td><td>${val(c.after)}</td></tr>`));
+        `<td>${i ? '' : esc(name)}</td><td>${i ? '' : status}</td><td>${esc(c.field ?? '')}</td><td>${changeVal(c, 'before')}</td><td>${changeVal(c, 'after')}</td></tr>`));
     }
     out.push(`<h3>${esc(table)}</h3><table><tr><th>Name</th><th>Status</th><th>Field</th><th>Before</th><th>After</th></tr>${rows.join('')}</table>`);
   }

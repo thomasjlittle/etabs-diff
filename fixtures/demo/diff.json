@@ -84,6 +84,7 @@
      "before": "C1",
      "after": "C101",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -203,6 +204,7 @@
      "before": "C6",
      "after": "C102",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -322,6 +324,7 @@
      "before": "C11",
      "after": "C103",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -441,6 +444,7 @@
      "before": "C16",
      "after": "C104",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -912,6 +916,7 @@
      "before": "B17",
      "after": "B101",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -943,6 +948,7 @@
      "before": "B18",
      "after": "B102",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -974,6 +980,7 @@
      "before": "B19",
      "after": "B103",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -1272,7 +1279,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 5
+     "row": 5,
+     "unit": null
     }
    ],
    "grid": null,
@@ -1308,7 +1316,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 5
+     "row": 5,
+     "unit": null
     }
    ],
    "grid": null,
@@ -1344,7 +1353,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 5
+     "row": 5,
+     "unit": null
     }
    ],
    "grid": null,
@@ -1380,7 +1390,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 5
+     "row": 5,
+     "unit": null
     }
    ],
    "grid": null,
@@ -1416,7 +1427,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 5
+     "row": 5,
+     "unit": null
     }
    ],
    "grid": null,
@@ -1452,7 +1464,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 5
+     "row": 5,
+     "unit": null
     }
    ],
    "grid": null,
@@ -1488,7 +1501,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 5
+     "row": 5,
+     "unit": null
     }
    ],
    "grid": null,
@@ -1524,7 +1538,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 5
+     "row": 5,
+     "unit": null
     }
    ],
    "grid": null,
@@ -1560,7 +1575,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 5
+     "row": 5,
+     "unit": null
     }
    ],
    "grid": null,
@@ -1596,7 +1612,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 5
+     "row": 5,
+     "unit": null
     }
    ],
    "grid": null,
@@ -1632,7 +1649,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 5
+     "row": 5,
+     "unit": null
     }
    ],
    "grid": null,
@@ -1668,7 +1686,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 5
+     "row": 5,
+     "unit": null
     }
    ],
    "grid": null,
@@ -1789,6 +1808,7 @@
      "before": "C1",
      "after": "C101",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -1908,6 +1928,7 @@
      "before": "C6",
      "after": "C102",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -2027,6 +2048,7 @@
      "before": "C11",
      "after": "C103",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -2146,6 +2168,7 @@
      "before": "C16",
      "after": "C104",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -2617,6 +2640,7 @@
      "before": "B17",
      "after": "B101",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -2648,6 +2672,7 @@
      "before": "B18",
      "after": "B102",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -2679,6 +2704,7 @@
      "before": "B19",
      "after": "B103",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -3326,6 +3352,7 @@
      "before": "C1",
      "after": "C101",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -3445,6 +3472,7 @@
      "before": "C6",
      "after": "C102",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -3564,6 +3592,7 @@
      "before": "C11",
      "after": "C103",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -3619,7 +3648,8 @@
      "affects": [
       "stiffness"
      ],
-     "row": 6
+     "row": 6,
+     "unit": "deg"
     }
    ],
    "grid": "C/3"
@@ -3693,6 +3723,7 @@
      "before": "C16",
      "after": "C104",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -4164,6 +4195,7 @@
      "before": "B17",
      "after": "B101",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -4195,6 +4227,7 @@
      "before": "B18",
      "after": "B102",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -4226,6 +4259,7 @@
      "before": "B19",
      "after": "B103",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -4413,7 +4447,8 @@
      "affects": [
       "stiffness"
      ],
-     "row": 6
+     "row": 6,
+     "unit": null
     }
    ],
    "grid": "D/2-3"
@@ -4861,6 +4896,7 @@
      "before": "B38",
      "after": "B45",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -4892,6 +4928,7 @@
      "before": "C1",
      "after": "C101",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -5011,6 +5048,7 @@
      "before": "C6",
      "after": "C102",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -5130,6 +5168,7 @@
      "before": "C11",
      "after": "C103",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -5249,6 +5288,7 @@
      "before": "C16",
      "after": "C104",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -5404,7 +5444,20 @@
      "affects": [
       "load"
      ],
-     "row": 9
+     "row": 9,
+     "unit": null,
+     "valueUnits": {
+      "before": {
+       "0.TYPE": null,
+       "0.DIR": null,
+       "0.FVAL": "kip/in"
+      },
+      "after": {
+       "0.TYPE": null,
+       "0.DIR": null,
+       "0.FVAL": "kip/in"
+      }
+     }
     }
    ],
    "grid": "B-C/1"
@@ -5742,6 +5795,7 @@
      "before": "B17",
      "after": "B101",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -5773,6 +5827,7 @@
      "before": "B18",
      "after": "B102",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -5804,6 +5859,7 @@
      "before": "B19",
      "after": "B103",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -6429,6 +6485,7 @@
      "before": "C1",
      "after": "C101",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -6548,6 +6605,7 @@
      "before": "C6",
      "after": "C102",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -6667,6 +6725,7 @@
      "before": "C11",
      "after": "C103",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -6786,6 +6845,7 @@
      "before": "C16",
      "after": "C104",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -7257,6 +7317,7 @@
      "before": "B17",
      "after": "B101",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -7288,6 +7349,7 @@
      "before": "B18",
      "after": "B102",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -7319,6 +7381,7 @@
      "before": "B19",
      "after": "B103",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -7944,6 +8007,7 @@
      "before": "C1",
      "after": "C101",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     },
@@ -7955,7 +8019,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 3
+     "row": 3,
+     "unit": "in"
     },
     {
      "field": "frameSection:BOX16.TW",
@@ -7965,7 +8030,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 3
+     "row": 3,
+     "unit": "in"
     }
    ],
    "grid": "A/1",
@@ -8067,7 +8133,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 3
+     "row": 3,
+     "unit": "in"
     },
     {
      "field": "frameSection:BOX16.TW",
@@ -8077,7 +8144,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 3
+     "row": 3,
+     "unit": "in"
     }
    ],
    "grid": "E/1",
@@ -8110,6 +8178,7 @@
      "before": "C6",
      "after": "C102",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -8144,7 +8213,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 2
+     "row": 2,
+     "unit": null
     }
    ],
    "grid": "B/2"
@@ -8240,6 +8310,7 @@
      "before": "C11",
      "after": "C103",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -8359,6 +8430,7 @@
      "before": "C16",
      "after": "C104",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     },
@@ -8370,7 +8442,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 3
+     "row": 3,
+     "unit": "in"
     },
     {
      "field": "frameSection:BOX16.TW",
@@ -8380,7 +8453,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 3
+     "row": 3,
+     "unit": "in"
     }
    ],
    "grid": "A/4",
@@ -8482,7 +8556,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 3
+     "row": 3,
+     "unit": "in"
     },
     {
      "field": "frameSection:BOX16.TW",
@@ -8492,7 +8567,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 3
+     "row": 3,
+     "unit": "in"
     }
    ],
    "grid": "E/4",
@@ -8637,7 +8713,8 @@
      "affects": [
       "stiffness"
      ],
-     "row": 6
+     "row": 6,
+     "unit": null
     }
    ],
    "grid": "B-C/2"
@@ -8887,6 +8964,7 @@
      "before": "B17",
      "after": "B101",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -8918,6 +8996,7 @@
      "before": "B18",
      "after": "B102",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -8949,6 +9028,7 @@
      "before": "B19",
      "after": "B103",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -9596,6 +9676,7 @@
      "before": "C1",
      "after": "C101",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     },
@@ -9607,7 +9688,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 3
+     "row": 3,
+     "unit": "in"
     },
     {
      "field": "frameSection:BOX16.TW",
@@ -9617,7 +9699,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 3
+     "row": 3,
+     "unit": "in"
     }
    ],
    "grid": "A/1",
@@ -9719,7 +9802,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 3
+     "row": 3,
+     "unit": "in"
     },
     {
      "field": "frameSection:BOX16.TW",
@@ -9729,7 +9813,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 3
+     "row": 3,
+     "unit": "in"
     }
    ],
    "grid": "E/1",
@@ -9762,6 +9847,7 @@
      "before": "C6",
      "after": "C102",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -9818,7 +9904,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 5
+     "row": 5,
+     "unit": null
     },
     {
      "field": "PROPMODI33",
@@ -9828,7 +9915,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 5
+     "row": 5,
+     "unit": null
     }
    ],
    "grid": "C/2"
@@ -9902,6 +9990,7 @@
      "before": "C11",
      "after": "C103",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -10021,6 +10110,7 @@
      "before": "C16",
      "after": "C104",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     },
@@ -10032,7 +10122,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 3
+     "row": 3,
+     "unit": "in"
     },
     {
      "field": "frameSection:BOX16.TW",
@@ -10042,7 +10133,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 3
+     "row": 3,
+     "unit": "in"
     }
    ],
    "grid": "A/4",
@@ -10144,7 +10236,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 3
+     "row": 3,
+     "unit": "in"
     },
     {
      "field": "frameSection:BOX16.TW",
@@ -10154,7 +10247,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 3
+     "row": 3,
+     "unit": "in"
     }
    ],
    "grid": "E/4",
@@ -10190,7 +10284,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 3
+     "row": 3,
+     "unit": null
     }
    ],
    "grid": "A-B/1",
@@ -10226,7 +10321,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 3
+     "row": 3,
+     "unit": null
     }
    ],
    "grid": "B-C/1",
@@ -10262,7 +10358,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 3
+     "row": 3,
+     "unit": null
     }
    ],
    "grid": "C-D/1",
@@ -10298,7 +10395,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 3
+     "row": 3,
+     "unit": null
     }
    ],
    "grid": "D-E/1",
@@ -10595,6 +10693,7 @@
      "before": "B17",
      "after": "B101",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -10626,6 +10725,7 @@
      "before": "B18",
      "after": "B102",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -10657,6 +10757,7 @@
      "before": "B19",
      "after": "B103",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -11314,6 +11415,7 @@
      "before": "F1",
      "after": "F101",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     },
@@ -11325,7 +11427,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 4
+     "row": 4,
+     "unit": "ksi"
     },
     {
      "field": "material:LW3000.WEIGHTPERVOLUME",
@@ -11334,7 +11437,8 @@
      "affects": [
       "mass"
      ],
-     "row": 4
+     "row": 4,
+     "unit": "kip/in^3"
     }
    ],
    "grid": "A-B/1-2",
@@ -11381,7 +11485,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 4
+     "row": 4,
+     "unit": "ksi"
     },
     {
      "field": "material:LW3000.WEIGHTPERVOLUME",
@@ -11390,7 +11495,8 @@
      "affects": [
       "mass"
      ],
-     "row": 4
+     "row": 4,
+     "unit": "kip/in^3"
     }
    ],
    "grid": "B-C/1-2",
@@ -11437,7 +11543,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 4
+     "row": 4,
+     "unit": "ksi"
     },
     {
      "field": "material:LW3000.WEIGHTPERVOLUME",
@@ -11446,7 +11553,8 @@
      "affects": [
       "mass"
      ],
-     "row": 4
+     "row": 4,
+     "unit": "kip/in^3"
     }
    ],
    "grid": "C-D/1-2",
@@ -11493,7 +11601,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 4
+     "row": 4,
+     "unit": "ksi"
     },
     {
      "field": "material:LW3000.WEIGHTPERVOLUME",
@@ -11502,7 +11611,8 @@
      "affects": [
       "mass"
      ],
-     "row": 4
+     "row": 4,
+     "unit": "kip/in^3"
     }
    ],
    "grid": "D-E/1-2",
@@ -11546,6 +11656,7 @@
      "before": "F5",
      "after": "F102",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     },
@@ -11557,7 +11668,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 4
+     "row": 4,
+     "unit": "ksi"
     },
     {
      "field": "material:LW3000.WEIGHTPERVOLUME",
@@ -11566,7 +11678,8 @@
      "affects": [
       "mass"
      ],
-     "row": 4
+     "row": 4,
+     "unit": "kip/in^3"
     }
    ],
    "grid": "A-B/2-3",
@@ -11613,7 +11726,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 4
+     "row": 4,
+     "unit": "ksi"
     },
     {
      "field": "material:LW3000.WEIGHTPERVOLUME",
@@ -11622,7 +11736,8 @@
      "affects": [
       "mass"
      ],
-     "row": 4
+     "row": 4,
+     "unit": "kip/in^3"
     }
    ],
    "grid": "B-C/2-3",
@@ -11669,7 +11784,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 4
+     "row": 4,
+     "unit": "ksi"
     },
     {
      "field": "material:LW3000.WEIGHTPERVOLUME",
@@ -11678,7 +11794,8 @@
      "affects": [
       "mass"
      ],
-     "row": 4
+     "row": 4,
+     "unit": "kip/in^3"
     }
    ],
    "grid": "C-D/2-3",
@@ -11725,7 +11842,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 4
+     "row": 4,
+     "unit": "ksi"
     },
     {
      "field": "material:LW3000.WEIGHTPERVOLUME",
@@ -11734,7 +11852,8 @@
      "affects": [
       "mass"
      ],
-     "row": 4
+     "row": 4,
+     "unit": "kip/in^3"
     }
    ],
    "grid": "D-E/2-3",
@@ -11778,6 +11897,7 @@
      "before": "F9",
      "after": "F103",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     },
@@ -11789,7 +11909,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 4
+     "row": 4,
+     "unit": "ksi"
     },
     {
      "field": "material:LW3000.WEIGHTPERVOLUME",
@@ -11798,7 +11919,8 @@
      "affects": [
       "mass"
      ],
-     "row": 4
+     "row": 4,
+     "unit": "kip/in^3"
     }
    ],
    "grid": "A-B/3-4",
@@ -11845,7 +11967,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 4
+     "row": 4,
+     "unit": "ksi"
     },
     {
      "field": "material:LW3000.WEIGHTPERVOLUME",
@@ -11854,7 +11977,8 @@
      "affects": [
       "mass"
      ],
-     "row": 4
+     "row": 4,
+     "unit": "kip/in^3"
     }
    ],
    "grid": "B-C/3-4",
@@ -11901,7 +12025,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 4
+     "row": 4,
+     "unit": "ksi"
     },
     {
      "field": "material:LW3000.WEIGHTPERVOLUME",
@@ -11910,7 +12035,8 @@
      "affects": [
       "mass"
      ],
-     "row": 4
+     "row": 4,
+     "unit": "kip/in^3"
     }
    ],
    "grid": "C-D/3-4",
@@ -11957,7 +12083,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 4
+     "row": 4,
+     "unit": "ksi"
     },
     {
      "field": "material:LW3000.WEIGHTPERVOLUME",
@@ -11966,7 +12093,8 @@
      "affects": [
       "mass"
      ],
-     "row": 4
+     "row": 4,
+     "unit": "kip/in^3"
     }
    ],
    "grid": "D-E/3-4",
@@ -12010,6 +12138,7 @@
      "before": "F1",
      "after": "F101",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -12147,6 +12276,7 @@
      "before": "F5",
      "after": "F102",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -12252,6 +12382,7 @@
      "before": "F9",
      "after": "F103",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -12389,6 +12520,7 @@
      "before": "F1",
      "after": "F101",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -12526,6 +12658,7 @@
      "before": "F5",
      "after": "F102",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -12663,6 +12796,7 @@
      "before": "F9",
      "after": "F103",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -12800,6 +12934,7 @@
      "before": "F1",
      "after": "F101",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -12937,6 +13072,7 @@
      "before": "F5",
      "after": "F102",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -13074,6 +13210,7 @@
      "before": "F9",
      "after": "F103",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -13211,6 +13348,7 @@
      "before": "F1",
      "after": "F101",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -13348,6 +13486,7 @@
      "before": "F5",
      "after": "F102",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -13485,6 +13624,7 @@
      "before": "F9",
      "after": "F103",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -13622,6 +13762,7 @@
      "before": "F1",
      "after": "F101",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -13759,6 +13900,7 @@
      "before": "F5",
      "after": "F102",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -13814,7 +13956,20 @@
      "affects": [
       "load"
      ],
-     "row": 9
+     "row": 9,
+     "unit": null,
+     "valueUnits": {
+      "before": {
+       "0.TYPE": null,
+       "0.DIR": null,
+       "0.FVAL": "ksi"
+      },
+      "after": {
+       "0.TYPE": null,
+       "0.DIR": null,
+       "0.FVAL": "ksi"
+      }
+     }
     }
    ],
    "grid": "B-C/2-3"
@@ -13918,6 +14073,7 @@
      "before": "F9",
      "after": "F103",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -14055,6 +14211,7 @@
      "before": "F1",
      "after": "F101",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -14131,7 +14288,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 16
+     "row": 16,
+     "unit": null
     }
    ],
    "grid": "C-D/1-2"
@@ -14203,6 +14361,7 @@
      "before": "F5",
      "after": "F102",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -14340,6 +14499,7 @@
      "before": "F9",
      "after": "F103",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -14479,6 +14639,7 @@
      "before": "1",
      "after": "101",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -14505,6 +14666,7 @@
      "before": "1",
      "after": "101",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -14531,6 +14693,7 @@
      "before": "1",
      "after": "101",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -14557,6 +14720,7 @@
      "before": "1",
      "after": "101",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -14583,6 +14747,7 @@
      "before": "1",
      "after": "101",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -14609,6 +14774,7 @@
      "before": "1",
      "after": "101",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -14635,6 +14801,7 @@
      "before": "1",
      "after": "101",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -14661,6 +14828,7 @@
      "before": "1",
      "after": "101",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -14687,6 +14855,7 @@
      "before": "6",
      "after": "102",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -14713,6 +14882,7 @@
      "before": "6",
      "after": "102",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -14739,6 +14909,7 @@
      "before": "6",
      "after": "102",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -14765,6 +14936,7 @@
      "before": "6",
      "after": "102",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -14791,6 +14963,7 @@
      "before": "6",
      "after": "102",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -14817,6 +14990,7 @@
      "before": "6",
      "after": "102",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -14843,6 +15017,7 @@
      "before": "6",
      "after": "102",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -14869,6 +15044,7 @@
      "before": "6",
      "after": "102",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -14895,6 +15071,7 @@
      "before": "11",
      "after": "103",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -14921,6 +15098,7 @@
      "before": "11",
      "after": "103",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -14947,6 +15125,7 @@
      "before": "11",
      "after": "103",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -14973,6 +15152,7 @@
      "before": "11",
      "after": "103",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -14999,6 +15179,7 @@
      "before": "11",
      "after": "103",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -15025,6 +15206,7 @@
      "before": "11",
      "after": "103",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -15051,6 +15233,7 @@
      "before": "11",
      "after": "103",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -15077,6 +15260,7 @@
      "before": "11",
      "after": "103",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -15103,6 +15287,7 @@
      "before": "16",
      "after": "104",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -15129,6 +15314,7 @@
      "before": "16",
      "after": "104",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -15155,6 +15341,7 @@
      "before": "16",
      "after": "104",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -15181,6 +15368,7 @@
      "before": "16",
      "after": "104",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -15207,6 +15395,7 @@
      "before": "16",
      "after": "104",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -15233,6 +15422,7 @@
      "before": "16",
      "after": "104",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -15259,6 +15449,7 @@
      "before": "16",
      "after": "104",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -15285,6 +15476,7 @@
      "before": "16",
      "after": "104",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -15466,7 +15658,8 @@
      "affects": [
       "stiffness"
      ],
-     "row": 8
+     "row": 8,
+     "unit": null
     }
    ],
    "grid": "E/4"
@@ -15494,7 +15687,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 16
+     "row": 16,
+     "unit": null
     }
    ],
    "grid": null
@@ -15521,7 +15715,8 @@
      "affects": [
       "stiffness"
      ],
-     "row": 8
+     "row": 8,
+     "unit": "kip/in"
     }
    ],
    "grid": "C/1",
@@ -15549,6 +15744,7 @@
      "before": "23",
      "after": "39",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -15665,7 +15861,28 @@
      "affects": [
       "load"
      ],
-     "row": 9
+     "row": 9,
+     "unit": null,
+     "valueUnits": {
+      "before": {
+       "0.TYPE": null,
+       "0.FX": "kip",
+       "0.FY": "kip",
+       "0.FZ": "kip",
+       "0.MX": "kip-in",
+       "0.MY": "kip-in",
+       "0.MZ": "kip-in"
+      },
+      "after": {
+       "0.TYPE": null,
+       "0.FX": "kip",
+       "0.FY": "kip",
+       "0.FZ": "kip",
+       "0.MX": "kip-in",
+       "0.MY": "kip-in",
+       "0.MZ": "kip-in"
+      }
+     }
     }
    ],
    "grid": "C/2"
@@ -15857,7 +16074,8 @@
        "stiffness",
        "mass"
       ],
-      "row": 1
+      "row": 1,
+      "unit": "in"
      },
      {
       "field": "height",
@@ -15868,7 +16086,8 @@
        "stiffness",
        "mass"
       ],
-      "row": 1
+      "row": 1,
+      "unit": "in"
      }
     ],
     "L5": [
@@ -15881,7 +16100,8 @@
        "stiffness",
        "mass"
       ],
-      "row": 1
+      "row": 1,
+      "unit": "in"
      }
     ],
     "L6": [
@@ -15894,7 +16114,8 @@
        "stiffness",
        "mass"
       ],
-      "row": 1
+      "row": 1,
+      "unit": "in"
      }
     ],
     "L7": [
@@ -15907,7 +16128,8 @@
        "stiffness",
        "mass"
       ],
-      "row": 1
+      "row": 1,
+      "unit": "in"
      }
     ],
     "Roof": [
@@ -15920,7 +16142,8 @@
        "stiffness",
        "mass"
       ],
-      "row": 1
+      "row": 1,
+      "unit": "in"
      }
     ]
    }
@@ -15938,7 +16161,8 @@
        "stiffness",
        "mass"
       ],
-      "row": 4
+      "row": 4,
+      "unit": "ksi"
      },
      {
       "field": "WEIGHTPERVOLUME",
@@ -15947,7 +16171,8 @@
       "affects": [
        "mass"
       ],
-      "row": 4
+      "row": 4,
+      "unit": "kip/in^3"
      }
     ]
    }
@@ -15965,7 +16190,8 @@
        "stiffness",
        "mass"
       ],
-      "row": 3
+      "row": 3,
+      "unit": "in"
      },
      {
       "field": "TW",
@@ -15975,7 +16201,8 @@
        "stiffness",
        "mass"
       ],
-      "row": 3
+      "row": 3,
+      "unit": "in"
      }
     ],
     "GIRDER-USER": [
@@ -15987,7 +16214,8 @@
        "stiffness",
        "mass"
       ],
-      "row": 3
+      "row": 3,
+      "unit": null
      }
     ],
     "W12X26": [
@@ -15999,7 +16227,8 @@
        "stiffness",
        "mass"
       ],
-      "row": 5
+      "row": 5,
+      "unit": null
      }
     ]
    }
@@ -16021,7 +16250,8 @@
       "affects": [
        "stiffness"
       ],
-      "row": 8
+      "row": 8,
+      "unit": "kip/in"
      }
     ]
    }
@@ -16038,7 +16268,8 @@
       "affects": [
        "load"
       ],
-      "row": 12
+      "row": 12,
+      "unit": null
      }
     ],
     "WX": [
@@ -16049,7 +16280,8 @@
       "affects": [
        "load"
       ],
-      "row": 12
+      "row": 12,
+      "unit": null
      }
     ]
    }
@@ -16081,7 +16313,8 @@
       "affects": [
        "load"
       ],
-      "row": 13
+      "row": 13,
+      "unit": null
      }
     ],
     "RSX": [
@@ -16098,7 +16331,18 @@
       "affects": [
        "load"
       ],
-      "row": 13
+      "row": 13,
+      "unit": null,
+      "valueUnits": {
+       "before": {
+        "FUNC": null,
+        "SF": "in/s^2"
+       },
+       "after": {
+        "FUNC": null,
+        "SF": "in/s^2"
+       }
+      }
      }
     ]
    }
@@ -16115,7 +16359,8 @@
       "affects": [
        "load"
       ],
-      "row": 14
+      "row": 14,
+      "unit": null
      }
     ]
    }
@@ -16132,7 +16377,8 @@
       "affects": [
        "mass"
       ],
-      "row": 11
+      "row": 11,
+      "unit": null
      }
     ]
    }
@@ -16176,7 +16422,8 @@
       "affects": [
        "load"
       ],
-      "row": 17
+      "row": 17,
+      "unit": null
      }
     ]
    }

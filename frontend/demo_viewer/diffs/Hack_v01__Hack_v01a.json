@@ -67,7 +67,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 2
+     "row": 2,
+     "unit": null
     }
    ],
    "grid": "A/1"
@@ -100,7 +101,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 2
+     "row": 2,
+     "unit": null
     }
    ],
    "grid": "A/2"
@@ -177,7 +179,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 2
+     "row": 2,
+     "unit": null
     },
     {
      "field": "loads:Dead",
@@ -192,7 +195,16 @@
      "affects": [
       "load"
      ],
-     "row": 9
+     "row": 9,
+     "unit": null,
+     "valueUnits": {
+      "before": {},
+      "after": {
+       "0.TYPE": null,
+       "0.DIR": null,
+       "0.FVAL": "kip/in"
+      }
+     }
     },
     {
      "field": "loads:Live",
@@ -208,7 +220,17 @@
      "affects": [
       "load"
      ],
-     "row": 9
+     "row": 9,
+     "unit": null,
+     "valueUnits": {
+      "before": {},
+      "after": {
+       "0.TYPE": null,
+       "0.DIR": null,
+       "0.FVAL": "kip",
+       "0.RDIST": null
+      }
+     }
     },
     {
      "field": "loadPattern:Dead.SELFWEIGHT",
@@ -217,7 +239,8 @@
      "affects": [
       "load"
      ],
-     "row": 12
+     "row": 12,
+     "unit": null
     }
    ],
    "grid": "A-B/1",
@@ -253,7 +276,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 2
+     "row": 2,
+     "unit": null
     },
     {
      "field": "loads:Dead",
@@ -268,7 +292,16 @@
      "affects": [
       "load"
      ],
-     "row": 9
+     "row": 9,
+     "unit": null,
+     "valueUnits": {
+      "before": {},
+      "after": {
+       "0.TYPE": null,
+       "0.DIR": null,
+       "0.FVAL": "kip/in"
+      }
+     }
     },
     {
      "field": "loads:Live",
@@ -284,13 +317,24 @@
      "affects": [
       "load"
      ],
-     "row": 9
+     "row": 9,
+     "unit": null,
+     "valueUnits": {
+      "before": {},
+      "after": {
+       "0.TYPE": null,
+       "0.DIR": null,
+       "0.FVAL": "kip",
+       "0.RDIST": null
+      }
+     }
     },
     {
      "field": "material:4Ksi.name",
      "before": "4000Psi",
      "after": "4Ksi",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     },
@@ -301,7 +345,8 @@
      "affects": [
       "load"
      ],
-     "row": 12
+     "row": 12,
+     "unit": null
     }
    ],
    "grid": "A-B/2",
@@ -339,7 +384,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 5
+     "row": 5,
+     "unit": null
     },
     {
      "field": "PROPMODI33",
@@ -349,7 +395,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 5
+     "row": 5,
+     "unit": null
     }
    ],
    "grid": "A/1-2"
@@ -381,7 +428,8 @@
      "affects": [
       "stiffness"
      ],
-     "row": 6
+     "row": 6,
+     "unit": null
     }
    ],
    "grid": "B/1-2"
@@ -421,6 +469,7 @@
      "before": "4000Psi",
      "after": "4Ksi",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
@@ -453,7 +502,8 @@
      "affects": [
       "stiffness"
      ],
-     "row": 8
+     "row": 8,
+     "unit": null
     }
    ],
    "grid": "A/1"
@@ -480,7 +530,8 @@
      "affects": [
       "stiffness"
      ],
-     "row": 8
+     "row": 8,
+     "unit": null
     }
    ],
    "grid": "A/2"
@@ -538,6 +589,7 @@
       "before": "4000Psi",
       "after": "4Ksi",
       "affects": [],
+      "unit": null,
       "row": null,
       "kind": "renamed"
      }
@@ -576,7 +628,8 @@
       "affects": [
        "load"
       ],
-      "row": 12
+      "row": 12,
+      "unit": null
      }
     ]
    }
@@ -610,6 +663,7 @@
       "before": "Live",
       "after": "LL",
       "affects": [],
+      "unit": null,
       "row": null,
       "kind": "renamed"
      }
@@ -638,7 +692,8 @@
       "affects": [
        "mass"
       ],
-      "row": 11
+      "row": 11,
+      "unit": null
      },
      {
       "field": "INCLUDELOADS",
@@ -647,7 +702,8 @@
       "affects": [
        "mass"
       ],
-      "row": 11
+      "row": 11,
+      "unit": null
      },
      {
       "field": "LOADPAT:Dead",
@@ -656,7 +712,8 @@
       "affects": [
        "mass"
       ],
-      "row": 11
+      "row": 11,
+      "unit": null
      },
      {
       "field": "LOADPAT:SW",
@@ -665,7 +722,8 @@
       "affects": [
        "mass"
       ],
-      "row": 11
+      "row": 11,
+      "unit": null
      }
     ]
    }

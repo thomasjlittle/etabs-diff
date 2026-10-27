@@ -7,7 +7,11 @@
 
 export type Vec3 = [number, number, number];   // global X, Y, Z in inches, for drawing only (B's coordinates; A's for removed)
 export type Affect = 'geometry' | 'stiffness' | 'mass' | 'load';
-export type Change = { field: string; before: unknown; after: unknown; affects: Affect[]; kind?: 'renamed' };
+export type Change = {
+  field: string; before: unknown; after: unknown; affects: Affect[]; kind?: 'renamed';
+  unit?: string | null; // present on current engine output; optional for older saved diffs
+  valueUnits?: Record<'before' | 'after', Record<string, string | null>>;
+};
 
 export type ElementDiff = {
   key: string;                          // geometric match key: level-relative (story, x, y, dz), tolerance-rounded; never a label

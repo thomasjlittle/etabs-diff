@@ -66,7 +66,8 @@
      "affects": [
       "stiffness"
      ],
-     "row": 6
+     "row": 6,
+     "unit": "deg"
     }
    ],
    "grid": "A/1"
@@ -121,7 +122,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 2
+     "row": 2,
+     "unit": null
     }
    ],
    "grid": "B/1"
@@ -176,7 +178,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 3
+     "row": 3,
+     "unit": null
     }
    ],
    "grid": "A-B/2",
@@ -695,7 +698,8 @@
        "stiffness",
        "mass"
       ],
-      "row": 3
+      "row": 3,
+      "unit": null
      }
     ]
    }

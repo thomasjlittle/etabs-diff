@@ -308,7 +308,8 @@
      "affects": [
       "stiffness"
      ],
-     "row": 6
+     "row": 6,
+     "unit": null
     }
    ],
    "grid": "A/2"
@@ -398,7 +399,22 @@
      "affects": [
       "load"
      ],
-     "row": 9
+     "row": 9,
+     "unit": null,
+     "valueUnits": {
+      "before": {
+       "0.TYPE": null,
+       "0.DIR": null,
+       "0.FVAL": "kip",
+       "0.RDIST": null
+      },
+      "after": {
+       "0.TYPE": null,
+       "0.DIR": null,
+       "0.FVAL": "kip",
+       "0.RDIST": null
+      }
+     }
     }
    ],
    "grid": null
@@ -577,7 +593,8 @@
      "affects": [
       "stiffness"
      ],
-     "row": 8
+     "row": 8,
+     "unit": null
     }
    ],
    "grid": "A/1"

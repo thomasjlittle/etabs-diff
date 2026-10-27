@@ -313,7 +313,8 @@
      "affects": [
       "stiffness"
      ],
-     "row": 8
+     "row": 8,
+     "unit": null
     }
    ],
    "grid": "A/1"

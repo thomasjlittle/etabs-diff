@@ -39,7 +39,7 @@ A frame or area at several stories is one element per story, the same way ETABS 
 
 ## Output Shape
 
-Follows the viewer's `output-contract.ts`. Extra fields beyond the contract are marked *extension*; a viewer can ignore them.
+Follows the viewer's `output-contract.ts`. The same contract lives in [`contract.py`](contract.py) as `TypedDict`s with identical field names, and the engine builds its result through them, so the dict it returns is the JSON. Extra fields beyond the contract are marked *extension*; a viewer can ignore them.
 
 ```jsonc
 {

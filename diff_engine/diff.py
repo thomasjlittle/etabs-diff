@@ -5,6 +5,7 @@ from collections import Counter, defaultdict
 from pathlib import Path
 
 from . import geometry
+from .contract import Change, DiffOutput, ElementDiff, Meta, ModelMeta, Story, TableDiff, Tables
 from .match import match_elements, match_levels
 from .parser import parse_file
 from .rows import IGNORED_KEYS, affects, assign_row, definition_row
@@ -36,7 +37,7 @@ SPRING_SOURCE = {"point": "point_springs", "frame": "line_springs", "area": "are
 SUBTYPES = {"BEAM": "beam", "COLUMN": "column", "BRACE": "brace", "FLOOR": "floor", "PANEL": "wall", "POINT": "joint"}
 
 
-def diff_files(path_a, path_b, tolerance=None, move_tolerance=DEFAULT_MOVE_TOLERANCE):
+def diff_files(path_a, path_b, tolerance=None, move_tolerance=DEFAULT_MOVE_TOLERANCE) -> DiffOutput:
     """Diff two .e2k/.$et files. Returns a JSON-ready dict; see diff_engine/README.md for the shape."""
     result = diff_models(parse_file(path_a), parse_file(path_b), tolerance, move_tolerance)
     result["meta"]["a"]["file"] = Path(path_a).name
@@ -44,7 +45,7 @@ def diff_files(path_a, path_b, tolerance=None, move_tolerance=DEFAULT_MOVE_TOLER
     return result
 
 
-def diff_models(model_a, model_b, tolerance=None, move_tolerance=DEFAULT_MOVE_TOLERANCE):
+def diff_models(model_a, model_b, tolerance=None, move_tolerance=DEFAULT_MOVE_TOLERANCE) -> DiffOutput:
     """tolerance and move_tolerance are in inches. tolerance defaults to model A's MERGETOL."""
     tol = tolerance if tolerance is not None else (model_a["merge_tol"] or FALLBACK_TOLERANCE)
     if tol <= 0:
@@ -75,25 +76,19 @@ def diff_models(model_a, model_b, tolerance=None, move_tolerance=DEFAULT_MOVE_TO
         gone["movedTo"], new["movedFrom"] = new["key"], gone["key"]
 
     stories, story_table = _stories(levels_a, levels_b, b_to_a)
-    return {
-        "schemaVersion": "0.1",
-        "meta": {
-            "a": _meta(model_a),
-            "b": _meta(model_b),
-            "lengthUnit": "in",
-            "forceUnit": "kip",
-            "tolerance": tol,
-            "moveTolerance": move_tolerance,
-        },
-        "stories": stories,
-        "elements": entries,
-        "tables": {"stories": story_table, **tables},
-        "summary": {s: sum(e["status"] == s for e in entries) for s in STATUSES},
-    }
+    return DiffOutput(
+        schemaVersion="0.1",
+        meta=Meta(a=_meta(model_a), b=_meta(model_b), lengthUnit="in", forceUnit="kip", tolerance=tol,
+                  moveTolerance=move_tolerance),
+        stories=stories,
+        elements=entries,
+        tables=Tables(stories=story_table, **tables),
+        summary={s: sum(e["status"] == s for e in entries) for s in STATUSES},
+    )
 
 
-def _meta(model):
-    return {"file": "", "etabsVersion": str(model["program"].get("VERSION", "")), "units": " ".join(model["units"] or [])}
+def _meta(model) -> ModelMeta:
+    return ModelMeta(file="", etabsVersion=str(model["program"].get("VERSION", "")), units=" ".join(model["units"] or []))
 
 
 # Value comparison ---------------------------------------------------------------------------------
@@ -119,8 +114,8 @@ def same(a, b):
     return a == b
 
 
-def _change(field, before, after, row, key=""):
-    return {"field": field, "before": before, "after": after, "affects": affects(row, key), "row": row}
+def _change(field, before, after, row, key="") -> Change:
+    return Change(field=field, before=before, after=after, affects=affects(row, key), row=row)
 
 
 # Stories and definition tables ---------------------------------------------------------------------
@@ -128,10 +123,10 @@ def _change(field, before, after, row, key=""):
 def _stories(levels_a, levels_b, b_to_a):
     """Bottom-up story list (B's names) and the stories TableDiff."""
     by_a = {lv["name"]: lv for lv in levels_a}
-    rows, table = [], {"added": [], "removed": [], "modified": {}}
+    rows, table = [], TableDiff(added=[], removed=[], modified={})
     for b in levels_b:
         a = by_a.get(b_to_a.get(b["name"]))
-        rows.append({"name": b["name"], "elevA": a["elevation"] if a else None, "elevB": b["elevation"]})
+        rows.append(Story(name=b["name"], elevA=a["elevation"] if a else None, elevB=b["elevation"]))
         if a is None:
             table["added"].append(b["name"])
             continue
@@ -140,14 +135,14 @@ def _stories(levels_a, levels_b, b_to_a):
             table["modified"][b["name"]] = changes
     for a in levels_a:
         if a["name"] not in b_to_a.values():
-            rows.append({"name": a["name"], "elevA": a["elevation"], "elevB": None})
+            rows.append(Story(name=a["name"], elevA=a["elevation"], elevB=None))
             table["removed"].append(a["name"])
     rows.sort(key=lambda r: r["elevB"] if r["elevB"] is not None else r["elevA"])
     return rows, table
 
 
-def _table_diff(defs_a, defs_b, kind):
-    table = {"added": sorted(set(defs_b) - set(defs_a)), "removed": sorted(set(defs_a) - set(defs_b)), "modified": {}}
+def _table_diff(defs_a, defs_b, kind) -> TableDiff:
+    table = TableDiff(added=sorted(set(defs_b) - set(defs_a)), removed=sorted(set(defs_a) - set(defs_b)), modified={})
     for name in sorted(set(defs_a) & set(defs_b)):
         a, b = defs_a[name], defs_b[name]
         changes = [
@@ -162,7 +157,7 @@ def _table_diff(defs_a, defs_b, kind):
 
 # Elements -----------------------------------------------------------------------------------------
 
-def _element(ctx, a, b):
+def _element(ctx, a, b) -> ElementDiff:
     """One contract ElementDiff. a or b is None for removed / added."""
     some = b or a
     own = _own_changes(a, b) if a and b else []
@@ -171,16 +166,16 @@ def _element(ctx, a, b):
         status = "added" if a is None else "removed"
     else:
         status = "modified" if own else "affected" if via else "unchanged"
-    entry = {
-        "key": _key(ctx, some, from_a=b is None),
-        "kind": some["kind"],
-        "subtype": SUBTYPES.get(some["type"].upper(), "other"),
-        "label": some["label"],
-        "story": some["story"],
-        "status": status,
-        "geometry": [list(end["xyz"]) for end in some["ends"]],
-        "changes": own + upstream if status in ("modified", "affected") else [],
-    }
+    entry = ElementDiff(
+        key=_key(ctx, some, from_a=b is None),
+        kind=some["kind"],
+        subtype=SUBTYPES.get(some["type"].upper(), "other"),
+        label=some["label"],
+        story=some["story"],
+        status=status,
+        geometry=[list(end["xyz"]) for end in some["ends"]],
+        changes=own + upstream if status in ("modified", "affected") else [],
+    )
     if via and status in ("modified", "affected"):
         entry["via"] = via
     return entry
@@ -225,7 +220,7 @@ def _upstream(ctx, a, b):
             for c in diffs:
                 field = f"{prefix}:{name}.{c['field']}"
                 if all(x["field"] != field for x in changes):
-                    changes.append({**c, "field": field})
+                    changes.append(Change(c, field=field))
     return via, changes
 
 

@@ -59,7 +59,7 @@ One entry per element in the union of A and B. Unchanged elements are included s
 
 ### Moved members
 
-When the engine decides a removed element and an added element are the same member in a new spot, it links them: the old one gets `movedTo` and the new one gets `movedFrom`, each pointing at the other's `key`. Both keep their `removed` / `added` status (and `summary` still counts them that way). The viewer shows a linked pair as one "moved" member: old position dashed, a thin arrow to the new position, and old and new end coordinates in the details. Removals and additions without a link are drawn as plain removals and additions.
+When the engine decides a removed element and an added element are the same member in a new spot, it links them: the old one gets `movedTo` and the new one gets `movedFrom`, each pointing at the other's `key`. Both keep their `removed` / `added` status (and `summary` still counts them that way). Any change on the pair itself (a load, an assign) is in the removed one's `changes`. The viewer shows a linked pair as one "moved" member: old position dashed, a thin arrow to the new position, and old and new end coordinates in the details. Removals and additions without a link are drawn as plain removals and additions.
 
 ### `changes`
 

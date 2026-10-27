@@ -60,6 +60,22 @@ class UnitsOnlyTest(unittest.TestCase):
         self.assertTrue(all(s["elevA"] == s["elevB"] for s in result["stories"]))
 
 
+class ExtendedBeamTest(unittest.TestCase):
+    """Hack_v03 replaces Story1's B1 (0,0 to 240,0) with B7 (0,0 to 300,0): same section and assigns, same line,
+    far end 60 in out. Its loads are the same ones written relative to the longer member (point load at 0.5 x 240
+    vs 0.4 x 300, uniform over 240 in vs a trapezoid over the first 80%), so it is one clean move."""
+
+    def test_b1_to_b7_is_one_move_with_no_changes(self) -> None:
+        for before in ("Hack_v02", "Hack_v02a"):
+            with self.subTest(before=before):
+                result = diff_files(HACK / f"{before}.e2k", HACK / "Hack_v03.e2k")
+                gone = next(e for e in result["elements"] if e["label"] == "B1")
+                new = next(e for e in result["elements"] if e["label"] == "B7")
+                self.assertEqual((gone["status"], gone.get("movedTo")), ("removed", new["key"]))
+                self.assertEqual((new["status"], new.get("movedFrom")), ("added", gone["key"]))
+                self.assertEqual((gone["changes"], new["changes"]), ([], []))
+
+
 class BundledDiffsTest(unittest.TestCase):
     def test_committed_diffs_match_a_fresh_run(self) -> None:
         committed = {p.name: p.read_text(encoding="utf-8") for p in DIFFS_DIR.glob("*.json")}

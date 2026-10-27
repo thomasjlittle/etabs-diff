@@ -300,7 +300,8 @@
      144.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "movedTo": "beam|Story1|0|0|0~Story1|3000|0|0"
   },
   {
    "key": "beam|Story1|0|0|0~Story1|3000|0|0",
@@ -321,7 +322,8 @@
      144.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "movedFrom": "beam|Story1|0|0|0~Story1|2400|0|0"
   },
   {
    "key": "beam|Story1|1200|0|0~Story1|1200|1440|0",

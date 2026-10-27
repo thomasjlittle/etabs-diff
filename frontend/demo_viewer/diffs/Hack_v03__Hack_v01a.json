@@ -335,7 +335,30 @@
      144.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "movedTo": "beam|Story1|0|0|0~Story1|2400|0|0"
+  },
+  {
+   "key": "beam|Story1|0|0|0~Story1|2400|0|0",
+   "kind": "frame",
+   "subtype": "beam",
+   "label": "B1",
+   "story": "Story1",
+   "status": "added",
+   "geometry": [
+    [
+     0.0,
+     0.0,
+     144.0
+    ],
+    [
+     240.0,
+     0.0,
+     144.0
+    ]
+   ],
+   "changes": [],
+   "movedFrom": "beam|Story1|0|0|0~Story1|3000|0|0"
   },
   {
    "key": "beam|Story1|1200|0|0~Story1|1200|1440|0",
@@ -374,27 +397,6 @@
     [
      288.0,
      144.0,
-     144.0
-    ]
-   ],
-   "changes": []
-  },
-  {
-   "key": "beam|Story1|0|0|0~Story1|2400|0|0",
-   "kind": "frame",
-   "subtype": "beam",
-   "label": "B1",
-   "story": "Story1",
-   "status": "added",
-   "geometry": [
-    [
-     0.0,
-     0.0,
-     144.0
-    ],
-    [
-     240.0,
-     0.0,
      144.0
     ]
    ],

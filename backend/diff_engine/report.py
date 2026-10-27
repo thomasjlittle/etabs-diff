@@ -2,7 +2,8 @@
 
 Element rows come first in the diff's own order, then table rows by table and name. Unchanged elements
 are left out. A moved frame (a removed entry linked to an added one) is one "moved" row with the old
-position under `before` and the new one under `after`.
+position under `before` and the new one under `after`, then a "moved" row per change on the pair (a load,
+say).
 """
 
 import csv
@@ -57,8 +58,9 @@ def _element_rows(elements: List[ElementDiff]) -> Iterator[CsvRow]:
                 "via": ";".join(e.get("via", []))}
         if "movedTo" in e:
             to = by_key[e["movedTo"]]
-            yield {**base, "key": to["key"], "label": f"{e['label']} -> {to['label']}", "story": to["story"],
-                   "status": "moved", "before": _position(e["geometry"]), "after": _position(to["geometry"]),
+            base = {**base, "key": to["key"], "label": f"{e['label']} -> {to['label']}", "story": to["story"],
+                    "status": "moved"}
+            yield {**base, "before": _position(e["geometry"]), "after": _position(to["geometry"]),
                    "affects": " ".join(affects(1)), "row": 1}
         elif e["status"] in ("added", "removed"):
             row = 15 if e["kind"] == "area" else 1  # walls and slabs have their own row

@@ -39,6 +39,18 @@ test: typecheck
 
 # --- UI (the React app in frontend/, needs node and npm) ---
 
+# show the UI: install if needed, start the dev server at http://127.0.0.1:5173, try to open a browser (Ctrl+C stops it)
+ui:
+    #!/usr/bin/env sh
+    set -e
+    cd frontend
+    if [ ! -d node_modules ] || [ package-lock.json -nt node_modules ]; then npm ci; fi
+    echo ""
+    echo "  UI: http://127.0.0.1:5173  (Ctrl+C stops it)"
+    echo ""
+    (sleep 2; wslview http://127.0.0.1:5173 || xdg-open http://127.0.0.1:5173 || open http://127.0.0.1:5173) >/dev/null 2>&1 &
+    exec npm run dev
+
 # install the UI's dependencies from package-lock.json
 ui-install:
     cd frontend && npm ci

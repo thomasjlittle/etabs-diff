@@ -4,8 +4,11 @@ Run from the repo root: python -m unittest discover -s diff_engine/tests -t .
 """
 
 import unittest
+from typing import Dict, List, Optional, Sequence, Tuple, cast
 
-from diff_engine import diff_models, parse_text
+from diff_engine import DiffOutput, diff_models, parse_text
+from diff_engine.contract import ElementDiff, TableDiff
+from diff_engine.parser import Model
 
 # Two levels, four corner columns, one beam, one floor. Units kN, m.
 BASE = """
@@ -53,44 +56,44 @@ $ SHELL OBJECT LOADS
 LABELS = dict(p1="1", p2="2", p3="3", p4="4", c1="C1", c2="C2", b1="B1", f1="F1")
 
 
-def model(**edits):
-    """Parse BASE after plain text replacements given as old=new pairs in `edits['replace']`."""
-    text = BASE.format(**(edits.get("labels") or LABELS))
-    for old, new in edits.get("replace", []):
+def model(labels: Optional[Dict[str, str]] = None, replace: Sequence[Tuple[str, str]] = ()) -> Model:
+    """Parse BASE with `labels` filled in, after plain text replacements given as (old, new) pairs."""
+    text = BASE.format(**(labels or LABELS))
+    for old, new in replace:
         assert old in text, old
         text = text.replace(old, new)
     return parse_text(text)
 
 
-def statuses(result, kind=None):
+def statuses(result: DiffOutput, kind: Optional[str] = None) -> List[str]:
     return sorted(e["status"] for e in result["elements"] if kind in (None, e["kind"]))
 
 
-def not_unchanged(result):
+def not_unchanged(result: DiffOutput) -> List[ElementDiff]:
     return [e for e in result["elements"] if e["status"] != "unchanged"]
 
 
 class DiffEngineTest(unittest.TestCase):
-    def test_identical_models_list_every_element_unchanged(self):
+    def test_identical_models_list_every_element_unchanged(self) -> None:
         result = diff_models(model(), model())
         # 2 columns, 1 beam, 1 floor, 2 supported joints
         self.assertEqual(len(result["elements"]), 6)
         self.assertEqual(result["summary"]["unchanged"], 6)
         self.assertEqual(result["tables"]["stories"], {"added": [], "removed": [], "modified": {}})
 
-    def test_match_tolerance(self):
+    def test_match_tolerance(self) -> None:
         # 1 mm is 0.039 in, inside the 0.1 in fallback tolerance but outside 0.01 in.
         nudged = model(replace=[('POINT "2"  6 0', 'POINT "2"  6.001 0')])
         self.assertEqual(not_unchanged(diff_models(model(), nudged)), [])
         self.assertTrue(not_unchanged(diff_models(model(), nudged, tolerance=0.01)))
 
-    def test_relabel_invariance(self):
+    def test_relabel_invariance(self) -> None:
         relabeled = model(labels=dict(p1="91", p2="92", p3="93", p4="94", c1="X7", c2="X8", b1="Y1", f1="Z1"))
         before, after = diff_models(model(), model()), diff_models(model(), relabeled)
         self.assertEqual(not_unchanged(after), [])
         self.assertEqual(sorted(e["key"] for e in before["elements"]), sorted(e["key"] for e in after["elements"]))
 
-    def test_units_normalization(self):
+    def test_units_normalization(self) -> None:
         # Same model written in LB-IN: lengths / 0.0254, forces / 0.00444822162.
         kn, m = 0.00444822162, 0.0254
         imperial = model(replace=[
@@ -111,11 +114,11 @@ class DiffEngineTest(unittest.TestCase):
         ])
         result = diff_models(model(), imperial)
         self.assertEqual(not_unchanged(result), [])
-        self.assertTrue(all(not t["modified"] for t in result["tables"].values()))
+        self.assertTrue(all(not t["modified"] for t in cast(Dict[str, TableDiff], result["tables"]).values()))
         beam = next(e for e in result["elements"] if e["subtype"] == "beam")
         self.assertAlmostEqual(beam["geometry"][1][0], 6 / m, places=4)  # geometry is in inches
 
-    def test_moved_member_is_removed_plus_added_with_link(self):
+    def test_moved_member_is_removed_plus_added_with_link(self) -> None:
         # Point 2 moves 0.3 m (11.8 in) in plan: the column on it and the beam's J end move.
         moved = diff_models(model(), model(replace=[('POINT "2"  6 0', 'POINT "2"  6.3 0')]))
         frames = [e for e in moved["elements"] if e["kind"] == "frame" and e["status"] != "unchanged"]
@@ -127,14 +130,14 @@ class DiffEngineTest(unittest.TestCase):
         no_pass = diff_models(model(), model(replace=[('POINT "2"  6 0', 'POINT "2"  6.3 0')]), move_tolerance=0)
         self.assertFalse(any("movedTo" in e for e in no_pass["elements"]))
 
-    def test_moved_pass_is_bounded(self):
+    def test_moved_pass_is_bounded(self) -> None:
         # The beam's J end jumps 5 m to point 4: a removal plus an addition with no link.
         far = diff_models(model(), model(replace=[('BEAM  "1"  "2"  0', 'BEAM  "1"  "4"  0')]))
         beams = [e for e in far["elements"] if e["subtype"] == "beam"]
         self.assertEqual(sorted(e["status"] for e in beams), ["added", "removed"])
         self.assertFalse(any("movedTo" in e or "movedFrom" in e for e in beams))
 
-    def test_parser_quirks_comments_and_frame_point_loads(self):
+    def test_parser_quirks_comments_and_frame_point_loads(self) -> None:
         text = BASE.format(**LABELS)
         text += '  STARTCOMMENTS\n  UNITS changed by hand\n  STORY heights revised\n  ENDCOMMENTS\n'
         text += '  LINELOAD  "B1"  "L1"  TYPE "POINTF"  DIR "GRAV"  LC "SDL"  FVAL 10 RDIST 0.5\n'
@@ -148,31 +151,31 @@ class DiffEngineTest(unittest.TestCase):
         point_load = parsed["line_loads"][("B1", "L1")][-1]
         self.assertAlmostEqual(point_load["FVAL"], 10 / 4.44822162)  # kN to kip, not kN/m to kip/in
 
-    def test_level_elevation_change_is_one_story_change(self):
+    def test_level_elevation_change_is_one_story_change(self) -> None:
         result = diff_models(model(), model(replace=[("HEIGHT 4", "HEIGHT 4.5")]))
         self.assertEqual(not_unchanged(result), [])
         self.assertEqual(list(result["tables"]["stories"]["modified"]), ["L1"])
 
-    def test_material_change_reaches_members_through_sections(self):
+    def test_material_change_reaches_members_through_sections(self) -> None:
         result = diff_models(model(), model(replace=[("E 2E+08", "E 2.1E+08")]))
         self.assertEqual(list(result["tables"]["materials"]["modified"]), ["STEEL"])
         affected = [e for e in result["elements"] if e["status"] == "affected"]
         self.assertEqual(len(affected), 4)  # two columns, one beam, one floor
-        self.assertTrue(all("material:STEEL" in e["via"] for e in affected))
+        self.assertTrue(all("material:STEEL" in e.get("via", []) for e in affected))
         self.assertTrue(all(c["field"] == "material:STEEL.E" for e in affected for c in e["changes"]))
 
-    def test_property_rows(self):
+    def test_property_rows(self) -> None:
         edited = model(replace=[
             ('SECTION "BM"  RELEASE "M3I M3J"', 'SECTION "COL"'),
             ('RESTRAINT "UX UY UZ RX RY RZ"\n  POINTASSIGN  "2"', 'RESTRAINT "UX UY UZ"\n  POINTASSIGN  "2"'),
             ("FVAL 2.5", "FVAL 3"),
         ])
         result = diff_models(model(), edited)
-        rows = {c["row"] for e in result["elements"] for c in e["changes"]}
+        rows = {c.get("row") for e in result["elements"] for c in e["changes"]}
         self.assertEqual(rows, {3, 7, 8, 9})
         self.assertEqual(statuses(result, "point"), ["modified", "unchanged"])
 
-    def test_cases_combos_and_mass_source_compare_by_term(self):
+    def test_cases_combos_and_mass_source_compare_by_term(self) -> None:
         analysis = """
 $ LOAD CASES
   LOADCASE "G"  TYPE  "Linear Static"  INITCOND  "PRESET"
@@ -198,9 +201,10 @@ $ MASS SOURCE
         self.assertEqual(parsed["combos"]["ULS"], {"TYPE": "Linear Add", "LOADCASE:G": 1.2, "LOADCASE:Q": 1.5})
         edited = text.replace('SF 1.5', 'SF 1.6').replace('"Q"  0.3', '"Q"  0.25')
         tables = diff_models(parsed, parse_text(edited))["tables"]
+        assert "combos" in tables and "massSource" in tables
         self.assertEqual([c["field"] for c in tables["combos"]["modified"]["ULS"]], ["LOADCASE:Q"])
         mass = tables["massSource"]["modified"]["MsSrc1"]
-        self.assertEqual([(c["field"], c["affects"], c["row"]) for c in mass], [("LOADPAT:Q", ["mass"], 10)])
+        self.assertEqual([(c["field"], c["affects"], c.get("row")) for c in mass], [("LOADPAT:Q", ["mass"], 10)])
 
 
 if __name__ == "__main__":

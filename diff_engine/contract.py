@@ -15,7 +15,7 @@ Subtype = Literal["beam", "column", "brace", "floor", "wall", "other", "joint"]
 
 class _Change(TypedDict):
     field: str
-    before: Any
+    before: Any  # raw e2k value (number, string, list, nested dict), genuinely untyped
     after: Any
     affects: List[Affect]
 

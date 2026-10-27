@@ -5,11 +5,13 @@ import json
 import logging
 import sys
 import tempfile
+from typing import Optional, Sequence
 
+from .contract import DiffOutput
 from .diff import DEFAULT_MOVE_TOLERANCE, diff_files
 
 
-def main(argv=None):
+def main(argv: Optional[Sequence[str]] = None) -> int:
     ap = argparse.ArgumentParser(prog="python -m diff_engine", description=__doc__)
     ap.add_argument("before", help="older .e2k or .$et")
     ap.add_argument("after", help="newer .e2k or .$et")
@@ -49,7 +51,7 @@ def main(argv=None):
     return 0
 
 
-def _view(result, output):
+def _view(result: DiffOutput, output: Optional[str]) -> int:
     from .serve import run
     # temp dir unless -o was given, never viewer/, so real model output stays out of the repo
     with tempfile.TemporaryDirectory(prefix="etabs-diff-") as tmp:

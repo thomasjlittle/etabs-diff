@@ -3,9 +3,18 @@
 import math
 from collections import defaultdict
 from itertools import product
+from typing import DefaultDict, Dict, List, Literal, Optional, Sequence, Set, Tuple, Union
+
+from .geometry import Element, End, Level
+from .parser import XYZ
+
+# A's level name, or ("B", name) for a B level with no A match so it can never share a node with A.
+NodeLevel = Union[str, Tuple[str, str]]
+Cell = Tuple[NodeLevel, int, int, int]
+Pair = Tuple[Element, Element, Literal["exact", "moved"]]
 
 
-def match_levels(levels_a, levels_b):
+def match_levels(levels_a: List[Level], levels_b: List[Level]) -> Dict[str, str]:
     """Map level names in B to level names in A.
 
     Same name first. If the leftover levels on both sides are equal in number, pair them by order
@@ -23,17 +32,19 @@ def match_levels(levels_a, levels_b):
 class NodeIndex:
     """Nodes keyed on (level, x, y, dz) with a tolerance on x, y, dz. Levels must match exactly."""
 
-    def __init__(self, tol):
+    def __init__(self, tol: float) -> None:
         self.tol = tol
-        self.cells = defaultdict(list)
+        self.cells: DefaultDict[Cell, List[Tuple[int, XYZ]]] = defaultdict(list)
         self.count = 0
 
-    def _cell(self, level, p):
-        return (level, *(math.floor(v / self.tol) for v in p))
+    def _cell(self, level: NodeLevel, p: XYZ) -> Cell:
+        x, y, dz = p
+        return (level, math.floor(x / self.tol), math.floor(y / self.tol), math.floor(dz / self.tol))
 
-    def find(self, level, p):
+    def find(self, level: NodeLevel, p: XYZ) -> Optional[int]:
         lv, cx, cy, cz = self._cell(level, p)
-        best, best_d = None, self.tol
+        best: Optional[int] = None
+        best_d = self.tol
         for dx, dy, dzc in product((-1, 0, 1), repeat=3):
             for node_id, q in self.cells[(lv, cx + dx, cy + dy, cz + dzc)]:
                 d = math.dist(p, q)
@@ -41,7 +52,7 @@ class NodeIndex:
                     best, best_d = node_id, d
         return best
 
-    def find_or_add(self, level, p):
+    def find_or_add(self, level: NodeLevel, p: XYZ) -> int:
         found = self.find(level, p)
         if found is not None:
             return found
@@ -50,7 +61,10 @@ class NodeIndex:
         return self.count
 
 
-def match_elements(elems_a, elems_b, b_to_a, elev_a, tol, move_tol):
+def match_elements(
+    elems_a: List[Element], elems_b: List[Element], b_to_a: Dict[str, str], elev_a: Dict[str, float], tol: float,
+    move_tol: float,
+) -> Tuple[List[Pair], List[Element], List[Element]]:
     """Return (pairs, removed, added). pairs are (a, b, how) with how 'exact' or 'moved'."""
     nodes = NodeIndex(tol)
     for e in elems_a:
@@ -61,10 +75,11 @@ def match_elements(elems_a, elems_b, b_to_a, elev_a, tol, move_tol):
             for end in e["ends"]
         ]
 
-    by_key = defaultdict(list)
+    by_key: DefaultDict[Tuple[str, Tuple[int, ...]], List[Element]] = defaultdict(list)
     for e in elems_a:
         by_key[(e["kind"], tuple(sorted(e["nodes"])))].append(e)
-    pairs, added = [], []
+    pairs: List[Pair] = []
+    added: List[Element] = []
     for e in elems_b:
         bucket = by_key.get((e["kind"], tuple(sorted(e["nodes"]))))
         if bucket:
@@ -75,13 +90,13 @@ def match_elements(elems_a, elems_b, b_to_a, elev_a, tol, move_tol):
 
     moved = _moved_pass(removed, added, b_to_a, elev_a, move_tol)
     moved_ids = {id(x) for a, b in moved for x in (a, b)}
-    pairs += [(a, b, "moved") for a, b in moved]
+    pairs.extend((a, b, "moved") for a, b in moved)
     removed = [e for e in removed if id(e) not in moved_ids]
     added = [e for e in added if id(e) not in moved_ids]
     return pairs, removed, added
 
 
-def _compare_xyz(end, b_to_a, elev_a):
+def _compare_xyz(end: End, b_to_a: Dict[str, str], elev_a: Dict[str, float]) -> XYZ:
     """B end coordinates measured against A's level elevations, so a shifted level adds no distance."""
     x, y, z = end["xyz"]
     a_level = b_to_a.get(end["level"])
@@ -90,7 +105,9 @@ def _compare_xyz(end, b_to_a, elev_a):
     return (x, y, z)
 
 
-def _moved_pass(removed, added, b_to_a, elev_a, move_tol):
+def _moved_pass(
+    removed: List[Element], added: List[Element], b_to_a: Dict[str, str], elev_a: Dict[str, float], move_tol: float
+) -> List[Tuple[Element, Element]]:
     """Pair leftover frames of the same type as moved when neither end travelled more than move_tol.
     Frames sharing an end node are always candidates; closest pairs win. Areas and points are not paired here.
     """
@@ -98,15 +115,15 @@ def _moved_pass(removed, added, b_to_a, elev_a, move_tol):
     add = [e for e in added if e["kind"] == "frame"]
     if not rem or not add or move_tol <= 0:
         return []
-    by_node = defaultdict(list)
-    by_cell = defaultdict(list)
+    by_node: DefaultDict[int, List[int]] = defaultdict(list)
+    by_cell: DefaultDict[Tuple[int, ...], List[int]] = defaultdict(list)
     for j, b in enumerate(add):
         b["cmp"] = [_compare_xyz(end, b_to_a, elev_a) for end in b["ends"]]
         for n in b["nodes"]:
             by_node[n].append(j)
         by_cell[_mid_cell(b["cmp"], move_tol)].append(j)
 
-    candidates = []
+    candidates: List[Tuple[float, int, int]] = []
     for i, a in enumerate(rem):
         pa = [end["xyz"] for end in a["ends"]]
         cx, cy, cz = _mid_cell(pa, move_tol)
@@ -125,7 +142,9 @@ def _moved_pass(removed, added, b_to_a, elev_a, move_tol):
                 candidates.append((sum(disp), i, j))
 
     candidates.sort()
-    used_a, used_b, out = set(), set(), []
+    used_a: Set[int] = set()
+    used_b: Set[int] = set()
+    out: List[Tuple[Element, Element]] = []
     for _, i, j in candidates:
         if i not in used_a and j not in used_b:
             used_a.add(i)
@@ -134,5 +153,5 @@ def _moved_pass(removed, added, b_to_a, elev_a, move_tol):
     return out
 
 
-def _mid_cell(pts, size):
+def _mid_cell(pts: Sequence[XYZ], size: float) -> Tuple[int, ...]:
     return tuple(math.floor((p + q) / 2 / size) for p, q in zip(*pts))

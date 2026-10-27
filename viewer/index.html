@@ -25,6 +25,8 @@
   #side th { color: #666; font-weight: 500; white-space: nowrap; }
   #side .hint { color: #888; font-size: 12px; margin: 6px 0 0; }
   #side button { float: right; margin-top: 10px; }
+  #filters label { white-space: nowrap; margin-right: 6px; }
+  #filters b { font-weight: 500; color: #666; margin: 0 4px 0 8px; }
   tr.pick { cursor: pointer; } tr.pick:hover, tr.on { background: #e3ecfb; }
   @media (max-width: 640px) { #side { top: auto; left: 8px; width: auto; max-height: 45vh; } }
 </style>
@@ -39,6 +41,11 @@
 <div id="bar">
   <input type="file" id="file" accept=".json,application/json">
   <button id="example">Load example</button>
+  <span id="filters">
+    <b>Red</b><label><input type="checkbox" name="status" value="added">added</label><label><input type="checkbox" name="status" value="removed">removed</label><label><input type="checkbox" name="status" value="modified">modified</label><label><input type="checkbox" name="status" value="affected">affected</label>
+    <b>Affects</b><label><input type="checkbox" name="affects" value="geometry">geometry</label><label><input type="checkbox" name="affects" value="stiffness">stiffness</label><label><input type="checkbox" name="affects" value="mass">mass</label><label><input type="checkbox" name="affects" value="load">load</label>
+    <b>Story</b><select id="story"><option value="">all</option></select>
+  </span>
   <span id="legend" class="gray">Load a diff JSON (file picker or drag and drop)</span>
   <span id="notice"></span>
 </div>
@@ -83,17 +90,37 @@ function arrays(els) {
   return a;
 }
 
+// Filters: a filtered-out change draws gray like unchanged, so the model stays whole.
+// State lives in the URL (?status=...&affects=...&story=...) so a filtered view is a shareable link.
+const STATUSES = ['added', 'removed', 'modified', 'affected'], AFFECTS = ['geometry', 'stiffness', 'mass', 'load'];
+const params = new URLSearchParams(location.search);
+const listParam = (k, all) => params.has(k) ? new Set(params.get(k).split(',').filter(v => all.includes(v))) : new Set(all);
+const filt = { status: listParam('status', STATUSES), affects: listParam('affects', AFFECTS), story: params.get('story') || '' };
+// ponytail: elements with no tagged changes (added/removed) pass the affects filter; only their status gates them
+const isRed = el => filt.status.has(el.status) &&
+  (!el.changes?.some(c => c.affects?.length) || el.changes.some(c => c.affects?.some(a => filt.affects.has(a))));
+const onStory = el => !filt.story || el.story === filt.story;
+
+function syncUrl() {
+  const set = (k, v, dflt) => v === dflt ? params.delete(k) : params.set(k, v);
+  set('status', STATUSES.filter(s => filt.status.has(s)).join(','), STATUSES.join(','));
+  set('affects', AFFECTS.filter(a => filt.affects.has(a)).join(','), AFFECTS.join(','));
+  set('story', filt.story, '');
+  history.replaceState(null, '', params.size ? `?${params}` : location.pathname);
+}
+
 const geo = arr => new THREE.BufferGeometry().setAttribute('position', new THREE.Float32BufferAttribute(arr, 3));
 
-// One mesh per (kind, changed) bucket keeps draw calls low on large models.
+// One mesh per (kind, red, on chosen story) bucket keeps draw calls low on large models.
 function build(diff) {
   const group = new THREE.Group();
-  for (const red of [false, true]) {
-    const b = arrays(diff.elements.filter(el => (el.status === 'unchanged') !== red));
-    const look = { color: red ? RED : GRAY, transparent: !red, opacity: red ? 1 : 0.3, depthWrite: red };
+  for (const red of [false, true]) for (const near of [true, false]) {
+    const b = arrays(diff.elements.filter(el => isRed(el) === red && onStory(el) === near));
+    const fade = near ? 1 : 0.25;  // off the chosen story, everything fades further
+    const look = { color: red ? RED : GRAY, transparent: !red || !near, opacity: (red ? 1 : 0.3) * fade, depthWrite: red && near };
     const add = (obj, els) => { obj.userData.els = els; if (red) obj.renderOrder = 1; group.add(obj); };  // red over the gray ghost
     if (b.tris.length) add(new THREE.Mesh(geo(b.tris),
-      new THREE.MeshBasicMaterial({ ...look, side: THREE.DoubleSide, opacity: red ? 0.6 : 0.12, transparent: true })), b.triEls);
+      new THREE.MeshBasicMaterial({ ...look, side: THREE.DoubleSide, opacity: (red ? 0.6 : 0.12) * fade, transparent: true })), b.triEls);
     if (b.lines.length) add(new THREE.LineSegments(geo(b.lines), new THREE.LineBasicMaterial(look)), b.lineEls);
     if (b.pts.length) add(new THREE.Points(geo(b.pts),
       new THREE.PointsMaterial({ ...look, size: red ? 9 : 6, sizeAttenuation: false })), b.ptEls);
@@ -194,12 +221,37 @@ renderer.domElement.addEventListener('pointerup', e => {
   down = null;
 });
 
-function show(data) {
-  if (!Array.isArray(data?.elements)) throw new Error('not an etabs-diff output: no elements array');
+// Rebuild the scene and counts from the current filters, keeping the camera where it is.
+function redraw() {
+  if (!diff) return;
   if (model) scene.remove(model);
-  diff = data;
   model = build(diff);
   scene.add(model);
+  const shown = diff.elements.filter(onStory);
+  const n = s => shown.filter(el => el.status === s && isRed(el)).length;
+  const tabled = Object.values(diff.tables || {}).reduce((sum, t) => sum + tableEntries(t), 0);
+  document.getElementById('legend').innerHTML =
+    `<span class="gray">gray ${shown.filter(el => !isRed(el)).length}</span> | <span class="red">red: added ${n('added')}, ` +
+    `removed ${n('removed')}, modified ${n('modified')}, affected ${n('affected')}</span> | table changes ${tabled}`;
+  syncUrl();
+}
+
+const story = document.getElementById('story');
+for (const box of document.querySelectorAll('#filters input')) box.checked = filt[box.name].has(box.value);
+document.getElementById('filters').addEventListener('change', e => {
+  if (e.target === story) filt.story = story.value;
+  else filt[e.target.name][e.target.checked ? 'add' : 'delete'](e.target.value);
+  redraw();
+});
+
+function show(data) {
+  if (!Array.isArray(data?.elements)) throw new Error('not an etabs-diff output: no elements array');
+  diff = data;
+  const names = [...new Set([...(diff.stories || []).map(s => s.name), ...diff.elements.map(el => el.story)])].filter(Boolean);
+  story.replaceChildren(new Option('all', ''), ...names.map(name => new Option(name, name)));
+  if (!names.includes(filt.story)) filt.story = '';
+  story.value = filt.story;
+  redraw();
   const box = new THREE.Box3().setFromObject(model);
   const center = box.getCenter(new THREE.Vector3());
   const size = box.getSize(new THREE.Vector3()).length() || 1;
@@ -208,13 +260,9 @@ function show(data) {
   camera.near = size / 1000; camera.far = size * 100;
   camera.updateProjectionMatrix();
   raycaster.params.Line.threshold = raycaster.params.Points.threshold = size / 150;
-  const n = k => Number(diff.summary?.[k]) || 0;  // Number() so file text never lands in innerHTML
-  document.getElementById('legend').innerHTML =
-    `<span class="gray">unchanged ${n('unchanged')}</span> | <span class="red">added ${n('added')}, ` +
-    `removed ${n('removed')}, modified ${n('modified')}, affected ${n('affected')}</span>`;
+  const n = k => Number(diff.summary?.[k]) || 0;
   const drawn = n('added') + n('removed') + n('modified') + n('affected');
   const tabled = Object.values(diff.tables || {}).reduce((sum, t) => sum + tableEntries(t), 0);
-  document.getElementById('legend').innerHTML += ` | table changes ${tabled}`;
   document.getElementById('notice').textContent = drawn ? '' : tabled
     ? `No differences in the 3D view. ${tabled} table change${tabled === 1 ? '' : 's'} listed in the side panel.`
     : 'No differences found.';

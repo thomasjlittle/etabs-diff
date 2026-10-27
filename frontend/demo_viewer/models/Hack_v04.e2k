@@ -1,4 +1,4 @@
-$ File C:\Users\mkkretschmar\OneDrive - Simpson Gumpertz & Heger Inc\CoPilot Inputs\Hackathon\Hack_v04.e2k saved 10/27/2026 1:27:15 PM
+$ File C:\Models\Hackathon\Hack_v04.e2k saved 10/27/2026 1:27:15 PM
  
 $ PROGRAM INFORMATION
   PROGRAM  "ETABS"  VERSION "23.1.1"  
@@ -494,14 +494,14 @@ $ PROJECT INFORMATION
 $ LOG
   STARTCOMMENTS  
 
-ETABS Nonlinear 23.1.1 File saved as C:\Users\mkkretschmar\OneDrive - Simpson Gumpertz & Heger Inc\CoPilot Inputs\Hackathon\Hack_v01.EDB at 10/27/2026 11:49:17 AM
-ETABS Nonlinear 23.1.1 File saved as C:\Users\mkkretschmar\OneDrive - Simpson Gumpertz & Heger Inc\CoPilot Inputs\Hackathon\Hack_v01.EDB at 10/27/2026 11:54:40 AM
-ETABS Nonlinear 23.1.1 File saved as C:\Users\mkkretschmar\OneDrive - Simpson Gumpertz & Heger Inc\CoPilot Inputs\Hackathon\Hack_v01.EDB at 10/27/2026 11:56:04 AM
-ETABS Nonlinear 23.1.1 File saved as C:\Users\mkkretschmar\OneDrive - Simpson Gumpertz & Heger Inc\CoPilot Inputs\Hackathon\Hack_v01a.EDB at 10/27/2026 12:53:55 PM
-ETABS Nonlinear 23.1.1 File saved as C:\Users\mkkretschmar\OneDrive - Simpson Gumpertz & Heger Inc\CoPilot Inputs\Hackathon\Hack_v02.EDB at 10/27/2026 1:09:38 PM
-ETABS Nonlinear 23.1.1 File saved as C:\Users\mkkretschmar\OneDrive - Simpson Gumpertz & Heger Inc\CoPilot Inputs\Hackathon\Hack_v03.EDB at 10/27/2026 1:21:03 PM
-ETABS Nonlinear 23.1.1 File saved as C:\Users\mkkretschmar\OneDrive - Simpson Gumpertz & Heger Inc\CoPilot Inputs\Hackathon\Hack_v04.EDB at 10/27/2026 1:25:33 PM
-ETABS Nonlinear 23.1.1 File saved as C:\Users\mkkretschmar\OneDrive - Simpson Gumpertz & Heger Inc\CoPilot Inputs\Hackathon\Hack_v04.EDB at 10/27/2026 1:26:04 PM
+ETABS Nonlinear 23.1.1 File saved as C:\Models\Hackathon\Hack_v01.EDB at 10/27/2026 11:49:17 AM
+ETABS Nonlinear 23.1.1 File saved as C:\Models\Hackathon\Hack_v01.EDB at 10/27/2026 11:54:40 AM
+ETABS Nonlinear 23.1.1 File saved as C:\Models\Hackathon\Hack_v01.EDB at 10/27/2026 11:56:04 AM
+ETABS Nonlinear 23.1.1 File saved as C:\Models\Hackathon\Hack_v01a.EDB at 10/27/2026 12:53:55 PM
+ETABS Nonlinear 23.1.1 File saved as C:\Models\Hackathon\Hack_v02.EDB at 10/27/2026 1:09:38 PM
+ETABS Nonlinear 23.1.1 File saved as C:\Models\Hackathon\Hack_v03.EDB at 10/27/2026 1:21:03 PM
+ETABS Nonlinear 23.1.1 File saved as C:\Models\Hackathon\Hack_v04.EDB at 10/27/2026 1:25:33 PM
+ETABS Nonlinear 23.1.1 File saved as C:\Models\Hackathon\Hack_v04.EDB at 10/27/2026 1:26:04 PM
   ENDCOMMENTS  
 
   END

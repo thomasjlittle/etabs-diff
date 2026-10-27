@@ -65,6 +65,12 @@ class GraphTest(unittest.TestCase):
                                "|/", "* a", "   a body"])
 
 
+    def test_merge_into_a_lane_already_waiting_for_the_parent(self) -> None:
+        revs = [rev("a"), rev("b", "a"), rev("c", "a"), rev("e", "c", "b"), rev("f", "b")]
+        got = [f"{g} {t}".rstrip() for g, t in graph(revs, lambda r: [r["file"]])]
+        self.assertEqual(got, ["* f", "| * e", "|/|", "| * c", "* | b", "|/", "* a"])
+
+
 class DiffTextTest(unittest.TestCase):
     def test_v01a_to_v02(self) -> None:
         text = render_diff(diff_files(MODELS_DIR / "Hack_v01a.e2k", MODELS_DIR / "Hack_v02.e2k"))
@@ -210,6 +216,8 @@ class GitTest(unittest.TestCase):
     def test_push_commits_only_history_then_pull_lists_it(self) -> None:
         (self.root / "notes.txt").write_text("edited, not for egit\n", encoding="utf-8")
         (self.root / "scratch.txt").write_text("untracked\n", encoding="utf-8")
+        stray = self.root / MODELS / "client_model.e2k"  # in models/ but not a version: never committed
+        stray.write_text("$ PROGRAM INFORMATION\n", encoding="utf-8")
         add_version(self.root, user_copy(self.tmp), "Change member properties", "", None, "Me")
         self.assertIn("new  Hack_v02  Change member properties", self.run_egit("status", root=self.root))
 
@@ -222,7 +230,8 @@ class GitTest(unittest.TestCase):
         changed = git(self.remote, "show", "--name-only", "--format=", "main").split()
         self.assertTrue(changed and all(f.startswith(("frontend/demo_viewer/models/", "frontend/demo_viewer/diffs/")) for f in changed))
         self.assertIn("frontend/demo_viewer/models/Hack_v02.e2k", changed)
-        self.assertEqual(git(self.root, "status", "--short").split(), ["M", "notes.txt", "??", "scratch.txt"])
+        self.assertEqual(git(self.root, "status", "--short").split(),
+                         ["M", "notes.txt", "??", "frontend/demo_viewer/models/client_model.e2k", "??", "scratch.txt"])
         with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()) as err:
             self.assertEqual(main(["push", "-y"], self.root), 1)
         self.assertIn("nothing new to push", err.getvalue())
@@ -236,6 +245,15 @@ class GitTest(unittest.TestCase):
             self.assertEqual(cmd_pull(other), 0)
         self.assertIn("new  Hack_v02  Change member properties", out.getvalue())
         self.assertIn("no new versions", self.run_egit("pull", root=other))
+
+    def test_push_refuses_with_other_commits_unpushed(self) -> None:
+        git(self.root, "commit", "-q", "--allow-empty", "-m", "local code change")
+        add_version(self.root, user_copy(self.tmp), "ok", "", None, "Me")
+        with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()) as err:
+            self.assertEqual(main(["push", "-y"], self.root), 1)
+        self.assertIn("1 commit(s) here are not pushed yet", err.getvalue())
+        self.assertEqual(git(self.root, "diff", "--cached", "--name-only"), "")
+        self.assertEqual(git(self.remote, "log", "-1", "--format=%s", "main").strip(), "start")
 
 
 if __name__ == "__main__":

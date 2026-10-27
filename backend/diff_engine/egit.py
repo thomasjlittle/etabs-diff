@@ -31,7 +31,6 @@ ROOT = Path(__file__).resolve().parents[2]
 MODELS = Path("frontend/demo_viewer/models")  # relative to the repo root
 DIFFS = Path("frontend/demo_viewer/diffs")
 MANIFEST = MODELS / "revisions.json"
-HISTORY_PATHS = [MODELS.as_posix(), MANIFEST.as_posix(), DIFFS.as_posix()]  # all push ever stages
 
 # --- the Add version rules, ported from frontend/src/newRevision.ts (keep the two in step) ---
 
@@ -52,6 +51,11 @@ class Revision(TypedDict):
     body: str
     author: str
     date: str
+
+
+def _js_len(s: str) -> int:
+    """String length the way JS counts it (UTF-16 units), so egit and the form refuse the same summaries."""
+    return len(s.encode("utf-16-le")) // 2
 
 
 class EgitError(Exception):
@@ -119,15 +123,15 @@ def revision_errors(r: Revision, existing: List[Revision], taken: Iterable[str] 
         errors.append("A parent is picked twice.")
     if not r["summary"].strip():
         errors.append("Write a summary line.")
-    elif len(r["summary"]) > SUMMARY_MAX:
-        errors.append(f"Summary is {len(r['summary'])} characters; keep it to {SUMMARY_MAX}.")
+    elif _js_len(r["summary"]) > SUMMARY_MAX:
+        errors.append(f"Summary is {_js_len(r['summary'])} characters; keep it to {SUMMARY_MAX}.")
     if re.search(r"[\r\n]", r["summary"]):
         errors.append("Summary is one line; put the rest in the body.")
     if not r["author"].strip():
         errors.append("Add an author.")
-    elif len(r["author"]) > 100 or re.search(r"[\r\n]", r["author"]):
+    elif _js_len(r["author"]) > 100 or re.search(r"[\r\n]", r["author"]):
         errors.append("Author is one line, at most 100 characters.")
-    if len(r["body"]) > 10_000:
+    if _js_len(r["body"]) > 10_000:
         errors.append("Body is longer than 10,000 characters.")
     if r["date"] and not _DATE.fullmatch(r["date"]):
         errors.append("Date must look like 2026-10-27T13:12:24.")
@@ -299,9 +303,10 @@ def graph(revs: List[Revision], text: Callable[[Revision], List[str]]) -> List[T
                 c = free(below)
                 below[c:c + 1] = [p]
                 opened.append(c)
-        if opened:  # a merge opens a lane per extra parent
+        merged = [below.index(p) for p in rev["parents"][1:]]
+        if merged:  # a merge edge per extra parent, into a new lane or one already waiting for it
             out.append((_grid({**bars(below, opened),
-                               **{(2 * c - 1 if c > lane else 2 * c + 1): ("\\" if c > lane else "/") for c in opened}}), ""))
+                               **{(2 * c - 1 if c > lane else 2 * c + 1): ("\\" if c > lane else "/") for c in merged}}), ""))
         while below and below[-1] is None:
             below.pop()
         out += [(_grid(bars(below)), t) for t in rest]
@@ -385,8 +390,8 @@ def add_version(root: Path, src: Path, summary: str, body: str, parents: Optiona
         raise EgitError("The model file is empty or larger than 200 MB.")
     # latin1 maps every byte to one char and back, so only the scrubbed paths change
     text, scrubbed = scrub_paths(raw.decode("latin1"))
-    manifest_text = manifest.read_text(encoding="utf-8")
-    revisions: List[Revision] = json.loads(manifest_text)["revisions"]
+    manifest_bytes = manifest.read_bytes()
+    revisions: List[Revision] = json.loads(manifest_bytes)["revisions"]
     suggested = None
     if parents is not None:  # Hack_v06 -> Hack_v06.e2k; an unknown name stays as given for revision_errors
         parents = [next((r["file"] for r in revisions if p in (r["file"], _stem(r["file"]))), p) for p in parents]
@@ -405,16 +410,23 @@ def add_version(root: Path, src: Path, summary: str, body: str, parents: Optiona
     model = models / rev["file"]
     saved = {p.name: p.read_bytes() for p in diffs.glob("*")} if diffs.is_dir() else {}
     try:
-        with open(model, "xb") as fh:  # x: never overwrite a model
-            fh.write(text.encode("latin1"))
+        fh = open(model, "xb")  # x: never overwrite a model
     except OSError as exc:
         raise EgitError(f"Could not write {rev['file']}: {exc.strerror}") from exc
+    try:
+        with fh:
+            fh.write(text.encode("latin1"))
+    except BaseException as exc:  # disk full or Ctrl+C mid-write: drop the partial file
+        model.unlink(missing_ok=True)
+        if isinstance(exc, OSError):
+            raise EgitError(f"Could not write {rev['file']}: {exc.strerror}") from exc
+        raise
     try:
         regenerate(models, diffs)
         manifest.write_bytes(format_manifest([*revisions, rev]).encode("utf-8"))
     except BaseException as exc:  # Ctrl+C mid-regenerate rolls back too
         model.unlink(missing_ok=True)
-        manifest.write_bytes(manifest_text.encode("utf-8"))
+        manifest.write_bytes(manifest_bytes)
         for p in diffs.glob("*"):
             if p.name not in saved:
                 p.unlink()
@@ -471,20 +483,31 @@ def _confirm(prompt: str) -> bool:
 
 
 def cmd_push(root: Path, yes: bool) -> int:
+    """Commit the new versions (their model files, revisions.json, the diffs folder and nothing else) and push the
+    current branch to its upstream. Refuses when nothing is new, with no upstream, or with other commits unpushed."""
     new = uncommitted(root)
     if not new:
         raise EgitError("nothing new to push: every version in revisions.json is committed")
+    ahead = _git(root, "rev-list", "--count", "@{u}..HEAD")
+    if ahead.returncode:
+        raise EgitError("this branch has no upstream to push to; set one with: git push -u <remote> <branch>")
+    if ahead.stdout.strip() != "0":
+        raise EgitError(f"{ahead.stdout.strip()} commit(s) here are not pushed yet; push or drop them first, "
+                        "so egit push sends only the new versions")
+    paths = [(MODELS / r["file"]).as_posix() for r in new] + [MANIFEST.as_posix(), DIFFS.as_posix()]
     message = "\n".join(f"{_stem(r['file'])}: {r['summary']}" for r in new)
-    files = _git(root, "status", "--short", "--untracked-files=all", "--", *HISTORY_PATHS).stdout
+    files = _git(root, "status", "--short", "--untracked-files=all", "--", *paths).stdout
     print(f"commit message:\n{textwrap.indent(message, '    ')}\nfiles:\n{textwrap.indent(files.rstrip(), '    ')}")
     if not yes and not _confirm("commit these and git push? [y/N] "):
         print("nothing committed")
         return 1
-    for step in (["add", "-A", "--", *HISTORY_PATHS], ["commit", "-q", "-m", message, "--", *HISTORY_PATHS]):
+    for step in (["add", "-A", "--", *paths], ["commit", "-q", "-m", message, "--", *paths]):
         done = _git(root, *step)
         if done.returncode:
-            raise EgitError(f"git {step[0]} failed: {(done.stderr or done.stdout).strip()}")
-    pushed = _git(root, "push", capture=False)
+            _git(root, "reset", "-q", "--", *paths)  # leave nothing staged for the next plain git commit
+            raise EgitError(f"git {step[0]} failed, nothing committed: {(done.stderr or done.stdout).strip()}")
+    # push.default=upstream: only this branch, to its upstream, whatever the user's push.default says
+    pushed = _git(root, "-c", "push.default=upstream", "push", capture=False)
     if pushed.returncode:
         print("committed locally, but git push failed; fix that and run git push", file=sys.stderr)
     return pushed.returncode

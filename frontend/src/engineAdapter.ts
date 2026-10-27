@@ -174,8 +174,8 @@ export function adaptEngine(d: EngineDiff, opts: { mock: boolean }): Result {
 
   // ---- assemble ----
   const changes: Change[] = draft.map((c, n) => ({ id: `C${String(n + 1).padStart(2, '0')}`, ...c }));
-  const groups: Group[] = GROUPS.map(([id, title, tier]) => ({
-    id, title, tier, change_ids: changes.filter((c) => c.group === id).map((c) => c.id),
+  const groups: Group[] = GROUPS.map(([id, title]) => ({
+    id, title, change_ids: changes.filter((c) => c.group === id).map((c) => c.id),
   }));
   const coverage: Coverage[] = [
     { group: 'G1', record: 'Frame members', status: 'compared' },

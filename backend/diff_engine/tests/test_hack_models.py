@@ -79,7 +79,7 @@ class ExtendedBeamTest(unittest.TestCase):
 class BundledDiffsTest(unittest.TestCase):
     def test_committed_diffs_match_a_fresh_run(self) -> None:
         committed = {p.name: p.read_text(encoding="utf-8") for p in DIFFS_DIR.glob("*.json")}
-        self.assertEqual(committed, build(), "stale viewer diffs, run: just demo-diffs")
+        self.assertEqual(committed, build(), "stale viewer diffs, run from backend/: python3 -m diff_engine.demo_diffs")
 
 
 if __name__ == "__main__":

@@ -309,7 +309,7 @@ function show(data) {
   select();
 }
 
-// Bundled comparisons (diffs/, built by just demo-diffs): Before/After pick a pair, kept in the URL as ?before=&after=.
+// Bundled comparisons (diffs/, built by python3 -m diff_engine.demo_diffs): Before/After pick a pair, kept in the URL as ?before=&after=.
 const before = document.getElementById('before'), after = document.getElementById('after');
 function clearPair() {
   before.value = after.value = '';

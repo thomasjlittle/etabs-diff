@@ -14,8 +14,8 @@ It's one static HTML file. There's no install and no build step. It loads three.
 | `contract.ts` | The exact shape of the diff JSON. This is the source of truth. |
 | `CONTRACT.md` | The same contract explained field by field. Start here. |
 | `example-diff.json` | A made-up 3-story, 2x2-bay steel building with elements in every status, so you can work on the viewer without the engine. |
-| `models/` | Six versions of a small hackathon model (`Hack_v01`, `Hack_v01a`, `Hack_v02`, `Hack_v02a` in lb and ft, `Hack_v03`, `Hack_v04`). |
-| `diffs/` | The engine's diff of every ordered pair of `models/`, plus `manifest.json` listing the models. Rebuild with `just demo-diffs`. |
+| `models/` | Eight versions of a small hackathon model (`Hack_v01`, `Hack_v01a`, `Hack_v02`, `Hack_v02a` in lb and ft, `Hack_v03` to `Hack_v06`), plus `revisions.json`, their history for the React app's Revision log and egit. |
+| `diffs/` | The engine's diff of every ordered pair of `models/`, plus `manifest.json` listing the models. Rebuild with `python3 -m diff_engine.demo_diffs` from `backend/` (`egit add` also rebuilds them). |
 
 ## Opening It
 

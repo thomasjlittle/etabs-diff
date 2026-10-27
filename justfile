@@ -1,3 +1,6 @@
+# the engine lives in backend/diff_engine; file paths stay relative to the repo root
+export PYTHONPATH := "backend"
+
 # list recipes
 default:
     @just --list
@@ -10,18 +13,22 @@ view before after:
 csv before after out:
     python3 -m diff_engine "{{before}}" "{{after}}" --csv "{{out}}" --summary
 
-# diff the bundled demo pair (fixtures/demo/) and open the viewer on it
+# diff the hackathon example pair (fixtures/hack/) and open the viewer on it
 demo:
+    python3 -m diff_engine fixtures/hack/Hack_v01a.e2k fixtures/hack/Hack_v02.e2k --view
+
+# diff the seeded synthetic demo pair (fixtures/demo/) and open the viewer on it
+demo-seeded:
     python3 -m diff_engine fixtures/demo/before.e2k fixtures/demo/after.e2k --view
 
 # open the viewer on the bundled example diff
 example:
-    python3 -m diff_engine.serve viewer/example-diff.json
+    python3 -m diff_engine.serve frontend/demo_viewer/example-diff.json
 
-# type-check diff_engine with pyright in strict mode (pyrightconfig.json)
+# type-check backend/diff_engine with pyright in strict mode (pyrightconfig.json)
 typecheck:
     pyright
 
 # type-check, then run the diff engine tests
 test: typecheck
-    python3 -m unittest discover -s diff_engine/tests -t .
+    python3 -m unittest discover -s backend/diff_engine/tests -t backend

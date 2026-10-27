@@ -1,4 +1,4 @@
-"""Serve viewer/ plus one diff JSON on 127.0.0.1 so the viewer opens straight to that diff."""
+"""Serve frontend/demo_viewer/ plus one diff JSON on 127.0.0.1 so the viewer opens straight to that diff."""
 
 import functools
 import sys
@@ -9,7 +9,7 @@ from typing import Any, Tuple
 
 from .parser import StrPath
 
-VIEWER_DIR = Path(__file__).resolve().parent.parent / "viewer"
+VIEWER_DIR = Path(__file__).resolve().parents[2] / "frontend" / "demo_viewer"
 DIFF_ROUTE = "/diff.json"
 
 
@@ -19,7 +19,7 @@ class _Handler(SimpleHTTPRequestHandler):
         super().__init__(*args, directory=str(VIEWER_DIR), **kwargs)
 
     def translate_path(self, path: str) -> str:
-        # the diff lives outside viewer/ (temp file or the user's -o path), so real model output never lands in the repo
+        # the diff lives outside demo_viewer/ (temp file or the user's -o path), so real model output never lands in the repo
         if path.split("?", 1)[0] == DIFF_ROUTE:
             return str(self.diff_path)
         return super().translate_path(path)

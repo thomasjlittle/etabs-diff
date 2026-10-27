@@ -19,8 +19,13 @@ With [just](https://github.com/casey/just), from the repo root:
 | `just demo-diffs` | rediffs every pair of the hackathon models into `frontend/demo_viewer/diffs/` | nothing to open (run after adding or changing a model; a test fails if they're stale) |
 | `just typecheck` | runs pyright in strict mode on `backend/diff_engine/` | type errors, if any |
 | `just test` | type-checks, then runs the diff engine tests | the unittest results |
+| `just ui-install` | installs the React app's dependencies in `frontend/` from the lockfile (`npm ci`) | npm output |
+| `just ui-build` | type-checks and builds the React app into `frontend/dist/` (installs first if needed) | the Vite build summary |
+| `just ui-dev` | runs the React app's dev server | the app at http://127.0.0.1:5173 |
+| `just ui-test` | runs the React app's tests (vitest) | the test results |
+| `just ui-preview` | serves the built app from `frontend/dist/` (run `just ui-build` first) | the built app at http://127.0.0.1:4173 |
 
-The viewer recipes print a URL and try to open your browser (under WSL they may not, so open the printed URL). Ctrl+C stops the server. `just typecheck` and `just test` need pyright on your PATH (`npm install -g pyright` or `pip install pyright`); it's a dev tool only.
+The viewer recipes print a URL and try to open your browser (under WSL they may not, so open the printed URL). Ctrl+C stops the server. `just typecheck` and `just test` need pyright on your PATH (`npm install -g pyright` or `pip install pyright`); it's a dev tool only. The `ui-*` recipes need node and npm.
 
 Without `just`, run from `backend/` (or set `PYTHONPATH=backend` from the root):
 

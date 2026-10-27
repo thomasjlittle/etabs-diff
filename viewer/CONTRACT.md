@@ -75,7 +75,7 @@ Definitions that aren't elements in space: `stories`, `materials`, `frameSection
 - `removed`: names only in A.
 - `modified`: an object from name to its list of `changes` (same shape as above).
 
-These are the upstream causes behind `affected` elements. The simplified viewer doesn't show them yet.
+These are the upstream causes behind `affected` elements. The viewer lists them in its side panel.
 
 ## `summary`
 

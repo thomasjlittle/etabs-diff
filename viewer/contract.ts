@@ -19,6 +19,8 @@ export type ElementDiff = {
   geometry: Vec3[];                     // point: [xyz]; frame: [i, j]; area: corners in drawing order
   changes: Change[];                    // empty when unchanged; for affected, the upstream definition changes
   via?: string[];                       // affected only, e.g. ["frameSection:W14X22", "material:A992Fy50"]
+  movedTo?: string;                     // removed only: key of the added element this one moved to
+  movedFrom?: string;                   // added only: key of the removed element this one moved from
 };
 
 export type TableDiff = { added: string[]; removed: string[]; modified: Record<string, Change[]> };

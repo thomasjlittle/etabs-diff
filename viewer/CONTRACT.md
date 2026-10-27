@@ -44,6 +44,8 @@ One entry per element in the union of A and B. Unchanged elements are included s
 | `geometry` | Where to draw it, as `[x, y, z]` points in inches, global coordinates, Z up. A point has one, a frame has two (start and end), an area has its corners in order around the edge. B's position, or A's if removed. **For drawing only**: matching uses `key`, not these numbers. |
 | `changes` | What changed, as a list of `{ field, before, after, affects }`. Empty when unchanged. |
 | `via` | Only on `affected` elements: which definitions it inherited the change from. |
+| `movedTo` | Optional, only on `removed` elements: the `key` of the `added` element it moved to. |
+| `movedFrom` | Optional, only on `added` elements: the `key` of the `removed` element it moved from. |
 
 ### `status` values
 
@@ -54,6 +56,10 @@ One entry per element in the union of A and B. Unchanged elements are included s
 | `removed` | Only in A. Its geometry is A's position. |
 | `modified` | In both, and something on the element itself changed (its section, a release, a load on it, a support). `changes` lists what. |
 | `affected` | The element itself is the same, but something it uses changed upstream, like its section's properties or its material's strength. `changes` lists the upstream changes and `via` says the path, e.g. `["frameSection:W14X22", "material:A992Fy50"]`. |
+
+### Moved members
+
+When the engine decides a removed element and an added element are the same member in a new spot, it links them: the old one gets `movedTo` and the new one gets `movedFrom`, each pointing at the other's `key`. Both keep their `removed` / `added` status (and `summary` still counts them that way). The viewer shows a linked pair as one "moved" member: old position dashed, a thin arrow to the new position, and old and new end coordinates in the details. Removals and additions without a link are drawn as plain removals and additions.
 
 ### `changes`
 

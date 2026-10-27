@@ -42,7 +42,7 @@
   <input type="file" id="file" accept=".json,application/json">
   <button id="example">Load example</button>
   <span id="filters">
-    <b>Red</b><label><input type="checkbox" name="status" value="added">added</label><label><input type="checkbox" name="status" value="removed">removed</label><label><input type="checkbox" name="status" value="modified">modified</label><label><input type="checkbox" name="status" value="affected">affected</label>
+    <b>Red</b><label><input type="checkbox" name="status" value="added">added</label><label><input type="checkbox" name="status" value="removed">removed</label><label><input type="checkbox" name="status" value="moved">moved</label><label><input type="checkbox" name="status" value="modified">modified</label><label><input type="checkbox" name="status" value="affected">affected</label>
     <b>Affects</b><label><input type="checkbox" name="affects" value="geometry">geometry</label><label><input type="checkbox" name="affects" value="stiffness">stiffness</label><label><input type="checkbox" name="affects" value="mass">mass</label><label><input type="checkbox" name="affects" value="load">load</label>
     <b>Story</b><select id="story"><option value="">all</option></select>
   </span>
@@ -92,12 +92,16 @@ function arrays(els) {
 
 // Filters: a filtered-out change draws gray like unchanged, so the model stays whole.
 // State lives in the URL (?status=...&affects=...&story=...) so a filtered view is a shareable link.
-const STATUSES = ['added', 'removed', 'modified', 'affected'], AFFECTS = ['geometry', 'stiffness', 'mass', 'load'];
+const STATUSES = ['added', 'removed', 'moved', 'modified', 'affected'], AFFECTS = ['geometry', 'stiffness', 'mass', 'load'];
 const params = new URLSearchParams(location.search);
 const listParam = (k, all) => params.has(k) ? new Set(params.get(k).split(',').filter(v => all.includes(v))) : new Set(all);
 const filt = { status: listParam('status', STATUSES), affects: listParam('affects', AFFECTS), story: params.get('story') || '' };
 // ponytail: elements with no tagged changes (added/removed) pass the affects filter; only their status gates them
-const isRed = el => filt.status.has(el.status) &&
+// A linked move (removed with movedTo, added with movedFrom, partner present) counts as one 'moved' pair.
+let byKey = new Map();
+const partner = el => byKey.get(el.movedTo ?? el.movedFrom);
+const statusOf = el => partner(el) ? 'moved' : el.status;
+const isRed = el => filt.status.has(statusOf(el)) &&
   (!el.changes?.some(c => c.affects?.length) || el.changes.some(c => c.affects?.some(a => filt.affects.has(a))));
 const onStory = el => !filt.story || el.story === filt.story;
 
@@ -109,13 +113,16 @@ function syncUrl() {
   history.replaceState(null, '', params.size ? `?${params}` : location.pathname);
 }
 
+const mid = el => new THREE.Vector3(...el.geometry[0]).add(new THREE.Vector3(...el.geometry.at(-1))).multiplyScalar(0.5);
 const geo = arr => new THREE.BufferGeometry().setAttribute('position', new THREE.Float32BufferAttribute(arr, 3));
 
 // One mesh per (kind, red, on chosen story) bucket keeps draw calls low on large models.
 function build(diff) {
   const group = new THREE.Group();
   for (const red of [false, true]) for (const near of [true, false]) {
-    const b = arrays(diff.elements.filter(el => isRed(el) === red && onStory(el) === near));
+    const els = diff.elements.filter(el => isRed(el) === red && onStory(el) === near);
+    const old = red ? els.filter(el => el.movedTo && partner(el)) : [];
+    const b = arrays(els.filter(el => !old.includes(el)));
     const fade = near ? 1 : 0.25;  // off the chosen story, everything fades further
     const look = { color: red ? RED : GRAY, transparent: !red || !near, opacity: (red ? 1 : 0.3) * fade, depthWrite: red && near };
     const add = (obj, els) => { obj.userData.els = els; if (red) obj.renderOrder = 1; group.add(obj); };  // red over the gray ghost
@@ -124,6 +131,16 @@ function build(diff) {
     if (b.lines.length) add(new THREE.LineSegments(geo(b.lines), new THREE.LineBasicMaterial(look)), b.lineEls);
     if (b.pts.length) add(new THREE.Points(geo(b.pts),
       new THREE.PointsMaterial({ ...look, size: red ? 9 : 6, sizeAttenuation: false })), b.ptEls);
+    // Moved members: old position dashed, thin arrow from old midpoint to new midpoint.
+    const o = arrays(old);
+    if (o.lines.length) {
+      const dashed = new THREE.LineSegments(geo(o.lines), new THREE.LineDashedMaterial({ ...look, dashSize: 6, gapSize: 6 }));
+      add(dashed.computeLineDistances(), o.lineEls);
+      for (const el of o.lineEls) {
+        const from = mid(el), to = mid(partner(el)), dir = to.clone().sub(from), len = dir.length();
+        if (len) group.add(new THREE.ArrowHelper(dir.normalize(), from, len, RED, Math.min(len * 0.3, 12), Math.min(len * 0.15, 6)));
+      }
+    }
   }
   return group;
 }
@@ -133,9 +150,10 @@ function highlight(els) {
   if (overlay) scene.remove(overlay);
   overlay = null;
   if (!els.length) return;
-  const b = arrays(els);
+  const old = els.filter(el => el.movedTo && partner(el)), b = arrays(els.filter(el => !old.includes(el)));
   const look = { color: PICK, depthTest: false, transparent: true };
   overlay = new THREE.Group();
+  if (old.length) overlay.add(new THREE.LineSegments(geo(arrays(old).lines), new THREE.LineDashedMaterial({ ...look, dashSize: 6, gapSize: 6 })).computeLineDistances());
   if (b.tris.length) overlay.add(new THREE.Mesh(geo(b.tris), new THREE.MeshBasicMaterial({ ...look, opacity: 0.5, side: THREE.DoubleSide })));
   if (b.lines.length) overlay.add(new THREE.LineSegments(geo(b.lines), new THREE.LineBasicMaterial(look)));
   if (b.pts.length) overlay.add(new THREE.Points(geo(b.pts), new THREE.PointsMaterial({ ...look, size: 11, sizeAttenuation: false })));
@@ -154,7 +172,27 @@ function changeRows(changes) {
     `<tr><td>${esc(c.field)}</td><td>${val(c.before)}</td><td>${val(c.after)}</td><td>${esc((c.affects || []).join(', '))}</td></tr>`).join('') + '</table>';
 }
 
+const xyz = p => p.map(v => +v.toFixed(2)).join(', ');
+
+// old = the removed end (movedTo), now = the added end (movedFrom). Distance is relative to the story,
+// so a story elevation change is reported separately, like the rest of the diff.
+function movedHtml(old, now) {
+  const row = (k, v) => `<tr><th>${k}</th><td>${esc(v ?? '')}</td></tr>`;
+  const st = diff.stories?.find(s => s.name === now.story);
+  const lift = st?.elevA != null && st?.elevB != null ? st.elevB - st.elevA : 0;
+  const d = mid(now).sub(mid(old)).sub(new THREE.Vector3(0, 0, lift)).length();
+  return '<button id="clear">Clear</button><h3>Element</h3><table>' + row('Label', old.label === now.label ? now.label : `${old.label} -> ${now.label}`) +
+    row('Story', now.story) + row('Kind', `${now.kind} / ${now.subtype}`) + row('Status', 'moved') +
+    row('Distance moved', `${+d.toFixed(2)} in`) + (lift ? row('Story shift', `${+lift.toFixed(2)} in (story ${now.story} elevation change)`) : '') +
+    '</table><h3>End coordinates (in)</h3><table><tr><th></th><th>Old</th><th>New</th></tr>' +
+    old.geometry.map((p, i) => `<tr><th>${i ? 'j' : 'i'}</th><td>${xyz(p)}</td><td>${xyz(now.geometry[i] ?? [])}</td></tr>`).join('') +
+    '</table><p class="hint">Old position dashed, new position solid.</p>' +
+    ([...old.changes, ...now.changes].length ? '<h3>Changes</h3>' + changeRows([...old.changes, ...now.changes]) : '');
+}
+
 function detailsHtml(el) {
+  const p = partner(el);
+  if (p) return el.movedTo ? movedHtml(el, p) : movedHtml(p, el);
   const row = (k, v) => `<tr><th>${k}</th><td>${esc(v ?? '')}</td></tr>`;
   return '<button id="clear">Clear</button><h3>Element</h3><table>' + row('Label', el.label) + row('Story', el.story) +
     row('Kind', `${el.kind} / ${el.subtype}`) + row('Status', el.status) + '</table>' +
@@ -198,7 +236,7 @@ function render(sel = {}) {
 }
 
 function select(sel = {}) {
-  highlight(sel.el ? [sel.el] : sel.ref ? diff.elements.filter(el => el.via?.includes(sel.ref)) : []);
+  highlight(sel.el ? [sel.el, partner(sel.el)].filter(Boolean) : sel.ref ? diff.elements.filter(el => el.via?.includes(sel.ref)) : []);
   render(sel);
 }
 
@@ -228,11 +266,11 @@ function redraw() {
   model = build(diff);
   scene.add(model);
   const shown = diff.elements.filter(onStory);
-  const n = s => shown.filter(el => el.status === s && isRed(el)).length;
+  const n = s => shown.filter(el => statusOf(el) === s && isRed(el) && !(s === 'moved' && el.movedTo)).length;  // a pair counts once
   const tabled = Object.values(diff.tables || {}).reduce((sum, t) => sum + tableEntries(t), 0);
   document.getElementById('legend').innerHTML =
     `<span class="gray">gray ${shown.filter(el => !isRed(el)).length}</span> | <span class="red">red: added ${n('added')}, ` +
-    `removed ${n('removed')}, modified ${n('modified')}, affected ${n('affected')}</span> | table changes ${tabled}`;
+    `removed ${n('removed')}, moved ${n('moved')}, modified ${n('modified')}, affected ${n('affected')}</span> | table changes ${tabled}`;
   syncUrl();
 }
 
@@ -247,6 +285,7 @@ document.getElementById('filters').addEventListener('change', e => {
 function show(data) {
   if (!Array.isArray(data?.elements)) throw new Error('not an etabs-diff output: no elements array');
   diff = data;
+  byKey = new Map(diff.elements.map(el => [el.key, el]));
   const names = [...new Set([...(diff.stories || []).map(s => s.name), ...diff.elements.map(el => el.story)])].filter(Boolean);
   story.replaceChildren(new Option('all', ''), ...names.map(name => new Option(name, name)));
   if (!names.includes(filt.story)) filt.story = '';

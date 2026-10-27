@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
-import { loadFixtures } from './shared/load'
+import { loadFixtures, type RawResult } from './shared/load'
 import { toViewModel } from './shared/toViewModel'
 import type { ViewModel } from './shared/viewModel'
 import { UiProvider } from './shared/uiState'
 import { SummarySection } from './levels/summary/SummarySection'
 import { CategorySection } from './levels/category/CategorySection'
 import { ElementSection } from './levels/element/ElementSection'
+import { UploadControls } from './upload/UploadControls'
 
 /** The three review levels side by side, sharing one selection/filter state. */
 export function Shell({ vm }: { vm: ViewModel }) {
@@ -24,12 +25,25 @@ type Load = { status: 'loading' } | { status: 'ready'; vm: ViewModel } | { statu
 
 function App() {
   const [load, setLoad] = useState<Load>({ status: 'loading' })
+  const [usingSample, setUsingSample] = useState(true)
 
-  useEffect(() => {
+  function showSample() {
+    setUsingSample(true)
     loadFixtures()
       .then((raw) => setLoad({ status: 'ready', vm: toViewModel(raw) }))
       .catch((err) => setLoad({ status: 'error', message: err instanceof Error ? err.message : 'Failed to load fixtures' }))
-  }, [])
+  }
+
+  function showResult(raw: RawResult) {
+    setUsingSample(false)
+    try {
+      setLoad({ status: 'ready', vm: toViewModel(raw) })
+    } catch (err) {
+      setLoad({ status: 'error', message: err instanceof Error ? err.message : 'Failed to read the comparison' })
+    }
+  }
+
+  useEffect(showSample, [])
 
   return (
     <div className="flex h-screen flex-col bg-white text-slate-900">
@@ -40,6 +54,7 @@ function App() {
             {load.vm.meta.baseline.file} → {load.vm.meta.revised.file} ·{load.vm.meta.units.length}, {load.vm.meta.units.force}
           </span>
         )}
+        <UploadControls onLoaded={showResult} onUseSample={showSample} usingSample={usingSample} />
       </header>
       {load.status === 'loading' && <p className="p-4 text-sm text-slate-500">Loading fixtures…</p>}
       {load.status === 'error' && <p role="alert" className="p-4 text-sm">Could not load the comparison: {load.message}</p>}

@@ -1,6 +1,6 @@
 import { strFromU8, strToU8, unzipSync, zipSync } from 'fflate';
 import { describeChange } from './data';
-import type { Change, Member, Result, Vec3 } from './vantageTypes';
+import type { Change, Member, Result, Vec3 } from './keeptabsTypes';
 
 const SHEET = 'xl/worksheets/sheet1.xml';
 const SHARED_STRINGS = 'xl/sharedStrings.xml';
@@ -9,7 +9,7 @@ const FIRST_LOG_ROW = 27;
 const HEADER_STYLE_ROW = 43;
 const COMMENT_STYLE_ROW = 44;
 const COMMENT_ROWS = 9;
-const HISTORY_KEY = 'vantage.analysis-register.history';
+const HISTORY_KEY = 'keeptabs.analysis-register.history';
 
 const BUCKETS: { title: string; groups: string[] }[] = [
   { title: 'Geometry and member changes', groups: ['G1'] },
@@ -197,7 +197,7 @@ export function updateWorkbook(
   const sheet = parseXml(archive[SHEET]);
   const strings = archive[SHARED_STRINGS] ? parseXml(archive[SHARED_STRINGS]) : undefined;
   const wrapStyles = archive['xl/styles.xml'] ? addWrapStyles(parseXml(archive['xl/styles.xml']), sheet) : null;
-  const sheetData = requiredNode(sheet, '/x:worksheet/x:sheetData');
+  const sheetData = sheetDataOf(sheet);
   const version = versionName(result.meta.source.revised);
   const summary = comparisonSummary(result);
   const notes = groupedChangeNotes(result, grids);
@@ -250,17 +250,16 @@ function parseXml(bytes: Uint8Array): XMLDocument {
   return document;
 }
 
-function requiredNode(document: XMLDocument, path: string): Element {
-  const node = document.evaluate(path, document, (prefix) => prefix === 'x' ? MAIN_NS : null, XPathResult.FIRST_ORDERED_NODE_TYPE).singleNodeValue;
-  if (!(node instanceof Element)) throw new Error('The workbook is missing its worksheet data.');
+// Namespaced DOM lookups rather than XPath: jsdom's document.evaluate cannot resolve the x: prefix.
+function sheetDataOf(document: XMLDocument): Element {
+  const node = document.getElementsByTagNameNS(MAIN_NS, 'sheetData')[0];
+  if (!node) throw new Error('The workbook is missing its worksheet data.');
   return node;
 }
 
 function rowAt(document: XMLDocument, rowNumber: number): Element | null {
-  return document.evaluate(
-    `/x:worksheet/x:sheetData/x:row[@r="${rowNumber}"]`, document,
-    (prefix) => prefix === 'x' ? MAIN_NS : null, XPathResult.FIRST_ORDERED_NODE_TYPE,
-  ).singleNodeValue as Element | null;
+  return [...sheetDataOf(document).getElementsByTagNameNS(MAIN_NS, 'row')]
+    .find((row) => row.getAttribute('r') === String(rowNumber)) ?? null;
 }
 
 function cellAt(document: XMLDocument, row: Element, column: string, rowNumber: number): Element {

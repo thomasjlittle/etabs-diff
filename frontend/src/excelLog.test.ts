@@ -1,6 +1,7 @@
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { strFromU8, strToU8, unzipSync, zipSync } from 'fflate';
-import type { Result } from './vantageTypes';
+import type { Result } from './keeptabsTypes';
 import {
   comparisonKey, groupedChangeNotes, memberGridLocation, parseGridLines, updateWorkbook, versionName,
 } from './excelLog';
@@ -99,8 +100,8 @@ describe('Analysis Register export', () => {
     expect(cell(sheet, 'D26')).toBe('Existing information');
     expect(cell(sheet, 'A27')).toBe('v01a');
     expect(cell(sheet, 'A37')).toBe('v02');
-    expect(cell(sheet, 'D28')).toContain('grids A–B, line 2');
-    expect(cell(sheet, 'D37')).toContain('W12X58');
+    expect(cell(sheet, 'D29')).toContain('grids A–B, line 2'); // 1A is the second bucket, two rows below the header
+    expect(cell(sheet, 'D39')).toContain('W12X58');
     expect(versionName('Hack_v01a.e2k')).toBe('v01a');
     expect(comparisonKey(first)).toContain('hack_v01.e2k');
   });
@@ -111,5 +112,18 @@ describe('Analysis Register export', () => {
     expect(() => updateWorkbook(
       template(), result('Hack_v01a.e2k', 'Hack_v02.e2k'), grids, firstUpdate.history, 'append',
     )).toThrow('Choose the latest register');
+  });
+
+  it('appends to the shipped template and keeps its sheet and styles valid', () => {
+    const shipped = new Uint8Array(readFileSync('public/analysis-register-template.xlsx')) // vitest runs from frontend/);
+    const update = updateWorkbook(shipped, result('Hack_v01.e2k', 'Hack_v01a.e2k'), grids, {}, 'append');
+    const files = unzipSync(update.bytes);
+    const sheet = strFromU8(files['xl/worksheets/sheet1.xml']);
+    expect(cell(sheet, `A${update.block.startRow}`)).toBe('v01a');
+    expect(cell(sheet, `D${update.block.startRow + 2}`)).toContain('W12X58');
+    for (const name of ['xl/worksheets/sheet1.xml', 'xl/styles.xml']) {
+      const parsed = new DOMParser().parseFromString(strFromU8(files[name]), 'application/xml');
+      expect(parsed.getElementsByTagName('parsererror')).toHaveLength(0);
+    }
   });
 });

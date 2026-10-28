@@ -249,25 +249,59 @@ export function glyphSegments(gl: Glyph, max: Record<LoadClass, number>, length:
 
 const n4 = (x: unknown) => (typeof x === 'number' ? String(Number(x.toPrecision(4))) : '?');
 
-/** One load in words, with units (kip and in, as the engine writes them). */
+// The engine writes kip and in. For reading, line loads show in kip/ft, area loads in psf and moments in
+// kip-ft; positions stay in inches, or a fraction of the length (L) when the record has only that.
+const scaled = (x: unknown, k: number) => (typeof x === 'number' ? n4(x * k) : '?');
+const perFt = (x: unknown) => `${scaled(x, 12)} kip/ft`;
+const psf = (x: unknown) => `${scaled(x, 144000)} psf`;
+const kipFt = (x: unknown) => `${scaled(x, 1 / 12)} kip-ft`;
+const DIRS: Record<string, string> = {
+  GRAV: 'gravity', X: 'global X', Y: 'global Y', Z: 'global Z', '1': 'local 1', '2': 'local 2', '3': 'local 3',
+};
+const dirText = (d: unknown) => (d === undefined ? '' : ` ${DIRS[String(d).toUpperCase()] ?? String(d)}`);
+const at = (l: AppliedLoad) => (num(l.DIST) !== undefined ? ` at ${n4(l.DIST)} in` : num(l.RDIST) !== undefined ? ` at ${n4(l.RDIST)} L` : '');
+const span = (l: AppliedLoad) => (num(l.DEND) !== undefined ? `, ${n4(l.DSTART ?? 0)} to ${n4(l.DEND)} in`
+  : num(l.RDEND) !== undefined ? `, ${n4(l.RDSTART ?? 0)} to ${n4(l.RDEND)} L` : '');
+
+/** One load in words, e.g. {TYPE: 'UNIFF', DIR: 'GRAV', FVAL: 0.0833} on a beam -> "Uniform 1 kip/ft gravity". */
 export function describeLoad(l: AppliedLoad, kind: LoadedElement['kind']): string {
-  const dir = l.DIR ? ` ${l.DIR}` : '';
-  const span = () => `, ${n4(l.DSTART ?? 0)} to ${n4(l.DEND)} in`;
+  const dir = dirText(l.DIR);
   switch (l.TYPE) {
-    case 'POINTF': return `Point ${n4(l.FVAL)} kip${dir} at ${n4(l.DIST)} in`;
-    case 'POINTM': return `Point moment ${n4(l.FVAL)} kip-in${dir} at ${n4(l.DIST)} in`;
-    case 'UNIFF': return kind === 'area' ? `Uniform ${n4(l.FVAL)} kip/in²${dir}` : `Uniform ${n4(l.FVAL)} kip/in${dir}${span()}`;
-    case 'UNIFM': return `Uniform moment ${n4(l.FVAL)} kip-in/in${dir}${span()}`;
-    case 'TRAPF': return `Trapezoid ${n4(l.FSTART)} to ${n4(l.FEND)} kip/in${dir}${span()}`;
-    case 'TRAPM': return `Trapezoid moment ${n4(l.FSTART)} to ${n4(l.FEND)} kip-in/in${dir}${span()}`;
-    case 'UNIFLOADSET': return `Load set ${l.SET ?? '?'}: ${l.FVAL === undefined ? 'not defined in the file' : `${n4(l.FVAL)} kip/in²${dir}`}`;
+    case 'POINTF': return `Point ${n4(l.FVAL)} kip${dir}${at(l)}`;
+    case 'POINTM': return `Point moment ${kipFt(l.FVAL)}${dir}${at(l)}`;
+    case 'UNIFF': return kind === 'area' ? `Uniform ${psf(l.FVAL)}${dir}` : `Uniform ${perFt(l.FVAL)}${dir}${span(l)}`;
+    case 'UNIFM': return `Uniform moment ${n4(l.FVAL)} kip-ft/ft${dir}${span(l)}`; // kip-in/in is the same number
+    case 'TRAPF': return `Trapezoid ${scaled(l.FSTART, 12)} to ${perFt(l.FEND)}${dir}${span(l)}`;
+    case 'TRAPM': return `Trapezoid moment ${n4(l.FSTART)} to ${n4(l.FEND)} kip-ft/ft${dir}${span(l)}`;
+    case 'UNIFLOADSET': return `Load set ${l.SET ?? '?'}: ${l.FVAL === undefined ? 'not defined in the file' : `${psf(l.FVAL)}${dir}`}`;
     case 'FORCE': {
       const parts = ['FX', 'FY', 'FZ', 'MX', 'MY', 'MZ'].filter((k) => num(l[k]))
-        .map((k) => `${k} ${n4(l[k])} ${k[0] === 'F' ? 'kip' : 'kip-in'}`);
+        .map((k) => `${k} ${k[0] === 'F' ? `${n4(l[k])} kip` : kipFt(l[k])}`);
       return `Joint load ${parts.join(', ') || '0'}`;
     }
     default: return `${l.TYPE}${dir} ${JSON.stringify(Object.fromEntries(Object.entries(l).filter(([k]) => k !== 'TYPE' && k !== 'DIR')))}`;
   }
+}
+
+/** Change-table label for a load field: "loads:Dead" -> "Dead loads", "load:LIVE.FZ" -> "LIVE joint load FZ", else null. */
+export function loadField(field: string): string | null {
+  const list = /^loads:(.+)$/i.exec(field);
+  if (list) return `${list[1]} loads`;
+  const one = /^load:([^.]+)\.(\w+)$/i.exec(field);
+  return one ? `${one[1]} joint load ${one[2].toUpperCase()}` : null;
+}
+
+const WORDED = new Set(['POINTF', 'POINTM', 'UNIFF', 'UNIFM', 'TRAPF', 'TRAPM', 'UNIFLOADSET', 'FORCE']);
+
+/** Change-table value for a load field, in the same words as the load panel. undefined when it isn't one, or
+ *  holds a record type describeLoad has no words for: the caller's raw display (with valueUnits) is clearer. */
+export function loadValue(field: string, kind: LoadedElement['kind'], v: unknown): string | undefined {
+  if (/^loads:/i.test(field) && Array.isArray(v) && v.every((l) => WORDED.has((l as AppliedLoad | null)?.TYPE ?? ''))) {
+    return v.length ? (v as AppliedLoad[]).map((l) => describeLoad(l, kind)).join(' + ') : 'none';
+  }
+  const one = /^load:[^.]+\.(\w+)$/i.exec(field);
+  if (one && typeof v === 'number') return one[1].toUpperCase().startsWith('M') ? kipFt(v) : `${n4(v)} kip`;
+  return undefined;
 }
 
 /** Every pattern, case and combo name in either model, for the picker. */

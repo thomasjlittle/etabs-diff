@@ -213,7 +213,7 @@ function Scene({ result, selectedId, onSelect, viewMode, cameraMode, colorBy, st
       {/* Story labels on the left edge, axis labels at the origin. */}
       {result.stories.filter((s) => isVisible(s.side, viewMode)).map((s) => (
         <Html key={s.name} position={[min.x - size * 0.06, min.y, s.elevation]} center style={{ pointerEvents: 'none' }}>
-          <span className="whitespace-nowrap text-[10px] text-slate-500">{s.name} {s.elevation.toFixed(0)} {result.meta.units.length}</span>
+          <span className="whitespace-nowrap text-[0.625rem] text-slate-500">{s.name} {s.elevation.toFixed(0)} {result.meta.units.length}</span>
         </Html>
       ))}
       <axesHelper args={[size * 0.1]} position={[min.x - size * 0.03, min.y - size * 0.03, 0]} />
@@ -222,7 +222,7 @@ function Scene({ result, selectedId, onSelect, viewMode, cameraMode, colorBy, st
         p[i] += size * 0.12;
         return (
           <Html key={axis} position={p} center style={{ pointerEvents: 'none' }}>
-            <span className="text-[10px] font-semibold text-slate-600">{axis}</span>
+            <span className="text-[0.625rem] font-semibold text-slate-600">{axis}</span>
           </Html>
         );
       })}
@@ -310,7 +310,7 @@ function Legend({ units, colorBy, loads }: { units: string; colorBy: ColorBy; lo
     ] as [string, string, boolean][] : []),
   ];
   return (
-    <div className="pointer-events-none absolute bottom-2 left-2 whitespace-nowrap rounded border border-slate-200 bg-white/90 px-2 py-1 text-[10px] leading-4 text-slate-700">
+    <div className="pointer-events-none absolute bottom-2 left-2 whitespace-nowrap rounded border border-slate-200 bg-white/90 px-2 py-1 text-[0.625rem] leading-4 text-slate-700">
       {rows.map(([color, label, dashed]) => (
         <div key={label} className="flex items-center gap-2">
           <span className="inline-block w-6 border-t-2" style={{ borderColor: color, borderStyle: dashed ? 'dashed' : 'solid' }} />

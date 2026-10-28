@@ -8,7 +8,7 @@
 import type { Change, Coverage, Group, Member, Node, Result, Side, Value, Vec3 } from './keeptabsTypes';
 import { GROUPS } from './adapter';
 import { fieldCategory, tableCategory } from './categories';
-import type { ElementLoads, LoadDefinitions } from './loads';
+import { type ElementLoads, type LoadDefinitions, loadField, loadValue } from './loads';
 
 // ---- engine contract (subset this adapter reads) ----
 interface EChange {
@@ -155,14 +155,16 @@ export function adaptEngine(d: EngineDiff, opts: { mock: boolean }): Result {
     }
     for (const [k, cs] of byGroup) {
       const [group, category] = k.split('|');
-      const field = (c: EChange) => (group === '1A' ? 'section' : c.field);
+      const field = (c: EChange) => (group === '1A' ? 'section' : loadField(c.field) ?? c.field);
+      // Load fields read as words with their own units (kip/ft, psf), so they carry no separate unit.
+      const value = (c: EChange, side: 'before' | 'after') => loadValue(c.field, e.kind, c[side]) ?? changeValue(c, side);
       draft.push({
         type: group === 'rename' ? 'label_only' : 'modified', group: group === 'rename' ? 'G1' : group, category,
         member_ids: drawn ? [e.key] : [],
         extent: { members: drawn ? 1 : 0, distance: 0 },
-        before: Object.fromEntries(cs.map((c) => [field(c), changeValue(c, 'before')])),
-        after: Object.fromEntries(cs.map((c) => [field(c), changeValue(c, 'after')])),
-        ...changeUnits(cs, field),
+        before: Object.fromEntries(cs.map((c) => [field(c), value(c, 'before')])),
+        after: Object.fromEntries(cs.map((c) => [field(c), value(c, 'after')])),
+        ...changeUnits(cs.filter((c) => !loadField(c.field)), field),
         evidence: [],
         ...(drawn ? {} : { subject: subjectOf(e) }),
       });

@@ -144,3 +144,44 @@ describe('shared selection', () => {
     expect(screen.queryByTestId('category-objects')).toBeNull();
   });
 });
+
+describe('resizable panes', () => {
+  afterEach(cleanup);
+  // jsdom has no PointerEvent; a MouseEvent carries the same clientX, which is all the splitter reads.
+  if (!('PointerEvent' in window)) Object.assign(window, { PointerEvent: MouseEvent });
+
+  it('each side pane hides and comes back from its splitter button', () => {
+    render(<Workspace result={result} selectedId={null} onSelect={() => {}} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Hide summary panel' }));
+    expect(screen.queryByTestId('pane-summary')).toBeNull();
+    fireEvent.click(screen.getByRole('button', { name: 'Show summary panel' }));
+    expect(screen.getByTestId('pane-summary')).toBeTruthy();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Hide detail panel' }));
+    expect(screen.queryByTestId('pane-detail')).toBeNull();
+    fireEvent.click(screen.getByRole('button', { name: 'Hide change table' }));
+    expect(screen.queryByTestId('pane-table')).toBeNull();
+  });
+
+  it('picking a category brings a hidden change table back', () => {
+    render(<Workspace result={result} selectedId={null} onSelect={() => {}} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Hide change table' }));
+    fireEvent.click(screen.getByTestId('category-objects'));
+    expect(screen.getByTestId('pane-table')).toBeTruthy();
+  });
+
+  it('dragging the summary splitter widens the pane, within limits', () => {
+    render(<Workspace result={result} selectedId={null} onSelect={() => {}} />);
+    const pane = screen.getByTestId('pane-summary');
+    const bar = screen.getByRole('separator', { name: 'Resize summary panel' });
+    expect(pane.style.width).toBe('320px');
+    fireEvent.pointerDown(bar, { clientX: 320 });
+    fireEvent.pointerMove(window, { clientX: 400 });
+    fireEvent.pointerUp(window);
+    expect(pane.style.width).toBe('400px');
+    fireEvent.pointerDown(bar, { clientX: 400 });
+    fireEvent.pointerMove(window, { clientX: 2000 });
+    fireEvent.pointerUp(window);
+    expect(pane.style.width).toBe('640px'); // max
+  });
+});

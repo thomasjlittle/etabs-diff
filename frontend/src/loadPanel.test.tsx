@@ -66,7 +66,7 @@ describe('load details', () => {
     const text = screen.getByTestId('load-detail').textContent!;
     expect(text).toContain('Loads on Beam B7 at Story2');
     expect(text).toContain('differs between models');
-    expect(text).toContain('Model 1Point 5 kip GRAV at 120 in');
-    expect(text).toContain('Model 2Point 10 kip GRAV at 120 in');
+    expect(text).toContain('Model 1Point 5 kip gravity at 120 in');
+    expect(text).toContain('Model 2Point 10 kip gravity at 120 in');
   });
 });

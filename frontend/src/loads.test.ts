@@ -1,10 +1,12 @@
 // Applied loads: factoring, change detection, and load -> arrow geometry.
 import { describe, expect, it } from 'vitest';
 import hack from '../demo_viewer/diffs/Hack_v04__Hack_v05.json';
+import example from '../demo_viewer/example-diff.json';
+import { describeChange } from './data';
 import { adaptEngine, type EngineDiff } from './engineAdapter';
 import {
   type AppliedLoad, type LoadDefinitions, type LoadedElement, areaAxes, describeLoad, direction, factoredLoads, frameAxes,
-  glyphSegments, loadChanged, loadGlyphs, loadsFor, maxByClass, pickFactors, pickOptions,
+  glyphSegments, loadChanged, loadField, loadGlyphs, loadValue, loadsFor, maxByClass, pickFactors, pickOptions,
 } from './loads';
 
 const defs: LoadDefinitions = {
@@ -144,7 +146,7 @@ describe('Hack_v04 -> Hack_v05', () => {
     expect(loadsFor(s2, 'b', live, m.definitions)[0].FVAL).toBe(10);
     expect(loadChanged(s2, live, m.definitions)).toBe(true);
     expect(loadChanged(b7.find((e) => e.story === 'Story1')!, live, m.definitions)).toBe(false);
-    expect(describeLoad(loadsFor(s2, 'b', live, m.definitions)[0], 'frame')).toBe('Point 10 kip GRAV at 120 in');
+    expect(describeLoad(loadsFor(s2, 'b', live, m.definitions)[0], 'frame')).toBe('Point 10 kip gravity at 120 in');
   });
 
   it('1.2D+1.6L on B7 at Story2: factored Live point load and Dead trapezoid', () => {
@@ -152,5 +154,47 @@ describe('Hack_v04 -> Hack_v05', () => {
     const out = loadsFor(s2, 'b', { kind: 'combo', name: '1.2D+1.6L' }, m.definitions);
     expect(out.find((l) => l.TYPE === 'POINTF')!.FVAL).toBeCloseTo(16);
     expect(out.find((l) => l.TYPE === 'TRAPF')!.FSTART).toBeCloseTo(0.1);
+  });
+});
+
+// Load text, shared by the load panel and the change table. Expected values worked by hand:
+// 0.083333336 kip/in x 12 in/ft = 1 kip/ft; 0.0003472222 kip/in² x 144,000 = 50 psf; 60 kip-in / 12 = 5 kip-ft.
+describe('load text', () => {
+  it('frame loads in kip/ft, positions in inches or as a fraction of L', () => {
+    expect(describeLoad({ TYPE: 'UNIFF', DIR: 'GRAV', FVAL: 0.083333336, DSTART: 0, DEND: 240 }, 'frame'))
+      .toBe('Uniform 1 kip/ft gravity, 0 to 240 in');
+    expect(describeLoad({ TYPE: 'UNIFF', DIR: 'GRAV', FVAL: 0.083333336 }, 'frame')).toBe('Uniform 1 kip/ft gravity');
+    expect(describeLoad({ TYPE: 'POINTF', DIR: 'GRAV', FVAL: 10, RDIST: 0.4 }, 'frame')).toBe('Point 10 kip gravity at 0.4 L');
+    expect(describeLoad({ TYPE: 'TRAPF', DIR: '2', FSTART: 0.1, FEND: 0.2, RDSTART: 0, RDEND: 1 }, 'frame'))
+      .toBe('Trapezoid 1.2 to 2.4 kip/ft local 2, 0 to 1 L');
+  });
+
+  it('area loads in psf, joint moments in kip-ft', () => {
+    expect(describeLoad({ TYPE: 'UNIFF', DIR: 'GRAV', FVAL: 0.0003472222222 }, 'area')).toBe('Uniform 50 psf gravity');
+    expect(describeLoad({ TYPE: 'FORCE', FX: 0, FZ: -12, MX: 60 }, 'point')).toBe('Joint load FZ -12 kip, MX 5 kip-ft');
+  });
+
+  it('change-table fields and values: records join with +, an empty list is none', () => {
+    expect(loadField('loads:Dead')).toBe('Dead loads');
+    expect(loadField('load:LIVE.FZ')).toBe('LIVE joint load FZ');
+    expect(loadField('SECTION')).toBeNull();
+    expect(loadValue('loads:Dead', 'frame', [
+      { TYPE: 'UNIFF', DIR: 'GRAV', FVAL: 0.083333336 }, { TYPE: 'POINTF', DIR: 'X', FVAL: 2, RDIST: 0.5 },
+    ])).toBe('Uniform 1 kip/ft gravity + Point 2 kip global X at 0.5 L');
+    expect(loadValue('loads:Dead', 'frame', [])).toBe('none');
+    expect(loadValue('load:LIVE.FZ', 'point', -5)).toBe('-5 kip');
+    expect(loadValue('load:LIVE.MX', 'point', 60)).toBe('5 kip-ft');
+    expect(loadValue('SECTION', 'frame', 'W14X22')).toBeUndefined();
+    expect(loadValue('loads:Dead', 'frame', [{ TYPE: 'NEWTYPE', FVAL: 1 }])).toBeUndefined(); // left to the raw display
+  });
+
+  it('the change table reads loads in words, with no unit added on top', () => {
+    const r = adaptEngine(example as unknown as EngineDiff, { mock: false });
+    const c = r.changes.find((x) => x.subject === 'Joint B2 at Story3')!;
+    expect(describeChange(c, r)).toMatch(/^Joint B2 at Story3: LIVE joint load FZ changed from -?[\d.]+ kip to -?[\d.]+ kip\.$/);
+    const h = adaptEngine(hack as unknown as EngineDiff, { mock: false });
+    const text = h.changes.flatMap((x) => Object.entries({ ...x.before, ...x.after }).filter(([k]) => / loads$/.test(k)).map(([, v]) => String(v)));
+    expect(text.length).toBeGreaterThan(0);
+    for (const t of text) expect(t).not.toMatch(/[{}]|kip\/in/);
   });
 });

@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import type { Change, Result } from './keeptabsTypes';
 import {
-  byExtent, describeChange, fmt, headlineCounts, memberMap, memberName, storyChangeCounts, unitFor,
+  byExtent, describeChange, elementChanges, fmt, headlineCounts, memberMap, memberName, storyChangeCounts, unitFor,
 } from './data';
 import { CATEGORY_TITLE, SECTIONS, categoryOf } from './categories';
 
@@ -55,7 +55,6 @@ export function SummaryList({ result, category, onCategory }: {
   const perCategory = new Map<string, number>();
   for (const c of result.changes) perCategory.set(categoryOf(c), (perCategory.get(categoryOf(c)) ?? 0) + 1);
   const max = Math.max(0, ...perCategory.values());
-  const notCompared = result.warnings.coverage.filter((c) => c.status === 'seen_not_compared').length;
   // Sections with changes start open, empty ones closed; a click flips that.
   const [flipped, setFlipped] = useState<Set<string>>(new Set());
   const flip = (title: string) => setFlipped((f) => {
@@ -110,11 +109,6 @@ export function SummaryList({ result, category, onCategory }: {
                   </button>
                 );
               })}
-              {open && sec.title === 'Other' && notCompared > 0 && (
-                <p className="py-1 pl-8 pr-3 text-[0.6875rem] italic text-slate-400">
-                  {notCompared} record type{notCompared === 1 ? '' : 's'} seen in the file, not compared
-                </p>
-              )}
             </section>
           );
         })}
@@ -125,11 +119,12 @@ export function SummaryList({ result, category, onCategory }: {
 
 // ---------------- detail panel ----------------
 
-export function DetailPanel({ result, selectedId }: PanelProps) {
+export function DetailPanel({ result, selectedId, onSelect }: PanelProps) {
   const change = result.changes.find((c) => c.id === selectedId);
   if (!change) return <p className="p-4 text-sm text-slate-500">Select a change to see its details.</p>;
   const members = memberMap(result);
   const fields = [...new Set([...Object.keys(change.before ?? {}), ...Object.keys(change.after ?? {})])];
+  const related = elementChanges(result, change);
 
   return (
     <div className="space-y-4 p-4 text-sm" data-testid="detail">
@@ -164,11 +159,27 @@ export function DetailPanel({ result, selectedId }: PanelProps) {
           {change.member_ids.map((id) => (
             <li key={id}>
               <span className="text-slate-800">{memberName(members.get(id))}</span>
+              {members.get(id)?.grid && <span className="text-slate-500"> · grid {members.get(id)!.grid}</span>}
             </li>
           ))}
         </ul>
       </div>
 
+      {related.length > 1 && (
+        <div>
+          <h3 className="text-xs font-semibold text-slate-700">Every change to this element ({related.length})</h3>
+          <ul aria-label="Changes to this element" className="mt-1 text-xs">
+            {related.map((c) => (
+              <li key={c.id}>
+                <button aria-current={c.id === change.id || undefined} onClick={() => onSelect(c.id)}
+                  className={`w-full rounded px-1 text-left ${c.id === change.id ? 'bg-blue-100' : 'hover:bg-slate-50'}`}>
+                  <span className="font-mono">{c.id}</span> {TYPE_LABEL[c.type]} · {CATEGORY_TITLE[categoryOf(c)]}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }

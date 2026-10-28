@@ -1,4 +1,6 @@
-// etabs-diff output contract, schemaVersion 0.2 (near-final, not frozen). 0.2 adds loads and loadDefinitions.
+// etabs-diff output contract, schemaVersion 0.2 (near-final, not frozen). 0.2 adds loads, loadDefinitions, grid,
+// and unit/valueUnits on changes; every addition is optional to a reader, so 0.1 files still read.
+// backend/diff_engine/contract.py is the same contract as Python types.
 // One JSON file per comparison of model A (before) and model B (after).
 // The engine writes it; the viewer reads only this file.
 // Every element appears, unchanged ones included, with drawable geometry,
@@ -8,9 +10,11 @@
 export type Vec3 = [number, number, number];   // global X, Y, Z in inches, for drawing only (B's coordinates; A's for removed)
 export type Affect = 'geometry' | 'stiffness' | 'mass' | 'load';
 export type Change = {
-  field: string; before: unknown; after: unknown; affects: Affect[]; kind?: 'renamed';
-  unit?: string | null; // present on current engine output; optional for older saved diffs
-  valueUnits?: Record<'before' | 'after', Record<string, string | null>>;
+  field: string; before: unknown; after: unknown; affects: Affect[];
+  kind?: 'renamed';                     // a label or definition name change
+  row?: number | null;                  // change list row (1 to 17), null when outside the list
+  unit?: string | null;                 // present on current engine output; optional for older saved diffs
+  valueUnits?: Record<'before' | 'after', Record<string, string | null>>;  // structured values: leaf path -> unit
 };
 
 // One applied load as written in the e2k, minus its pattern, in kip and inches. Raw e2k keys.
@@ -71,13 +75,16 @@ export type DiffOutput = {
     a: { file: string; etabsVersion: string; units: string };
     b: { file: string; etabsVersion: string; units: string };
     lengthUnit: 'in';                   // all geometry normalized to inches
+    forceUnit?: 'kip';                  // all forces normalized to kip
     tolerance: number;                  // inches; default from PREFERENCE MERGETOL
+    moveTolerance?: number;             // inches; how far a removed/added frame pair can travel and still link as a move
   };
   stories: { name: string; elevA: number | null; elevB: number | null }[];  // bottom up, inches; null when absent on that side
   elements: ElementDiff[];              // EVERY element in the union of A and B
   tables: {
     stories: TableDiff; materials: TableDiff; frameSections: TableDiff;
     shellSections: TableDiff; pointSprings: TableDiff; loadPatterns: TableDiff;
+    lineSprings?: TableDiff; areaSprings?: TableDiff; loadSets?: TableDiff;  // line/area spring props, shell uniform load sets
     loadCases?: TableDiff; combos?: TableDiff; massSource?: TableDiff;  // one change per load term, e.g. "LOADPAT:Live"
     diaphragms?: TableDiff; functions?: TableDiff; analysisOptions?: TableDiff;  // diaphragm defs, spectrum / time history functions, PDELTA
   };

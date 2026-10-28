@@ -54,42 +54,31 @@ export const SECTIONS: Section[] = [
 export const CATEGORY_TITLE: Record<string, string> =
   Object.fromEntries(SECTIONS.flatMap((s) => s.items.map((c) => [c.id, c.title])));
 
-/** Category for a definition table (engine and team-fixture table keys). */
+/** Category for an engine definition table. */
 export function tableCategory(table: string): string {
   return ({
     stories: 'stories', materials: 'materials', frameSections: 'frameSections', shellSections: 'shellSections',
     pointSprings: 'linkProps', lineSprings: 'linkProps', areaSprings: 'linkProps', functions: 'functions',
-    loadPatterns: 'loadPatterns', loadSets: 'appliedLoads', loads: 'appliedLoads', massSource: 'massSource',
+    loadPatterns: 'loadPatterns', loadSets: 'appliedLoads', massSource: 'massSource',
     loadCases: 'loadCases', combos: 'combos', analysisOptions: 'analysisOptions', diaphragms: 'diaphragms',
-    nodes: 'restraints', areas: 'objects',
   } as Record<string, string>)[table] ?? 'other';
 }
 
-/** Category for a changed object field (e2k keyword or team-schema field, any case). */
+/** Category for a changed element field (e2k keyword, any case, e.g. "SECTION" or "loads:Dead"). */
 export function fieldCategory(field: string): string {
-  const f = field.replace(/^props\./, '').split(':')[0].toUpperCase();
+  const f = field.split(':')[0].toUpperCase();
   if (f === 'LABEL') return 'labelOnly';
-  if (f === 'NODES' || f === 'I' || f === 'J') return 'objects';
   if (f === 'SECTION') return 'sectionAssign';
   if (/MASS/.test(f)) return 'appliedLoads'; // added mass assigns
-  if (/^(ANG|ANGLE)$|RELEASE|OFFSET|RIGIDZONE|LENGTHOFF|CARDINAL|INSERTION|AXIS/.test(f)) return 'releases';
+  if (/^ANG$|RELEASE|OFFSET|RIGIDZONE|LENGTHOFF|CARDINAL|INSERTION|AXIS/.test(f)) return 'releases';
   if (/^DIAPH/.test(f)) return 'diaphragms';
   if (/^(RESTRAINT|SPRING)/.test(f)) return 'restraints';
   if (/^LOAD/.test(f)) return 'appliedLoads';
-  if (/^PROPMOD|MODIFIER/.test(f)) return 'modifiers';
+  if (/^PROPMOD/.test(f)) return 'modifiers';
   return 'other';
 }
 
-// Data without a category (the hand-built mock) falls back on its planning-board group.
-const BY_GROUP: Record<string, string> = {
-  '1A': 'sectionAssign', '1B': 'frameSections', '1C': 'materials', '1D': 'modifiers', '1E': 'releases',
-  '2A': 'restraints', '2B': 'appliedLoads', LO: 'labelOnly',
-};
-
-/** The category a change is listed under. Any rename or reorder is label-only, whatever it renamed. */
+/** The category a change is listed under. Any rename is label-only, whatever it renamed. */
 export function categoryOf(c: Change): string {
-  if (c.type === 'label_only') return 'labelOnly';
-  if (c.category) return c.category;
-  if (c.group === 'G1') return c.subject?.startsWith('Story') || (c.after && 'story' in c.after) ? 'stories' : 'objects';
-  return BY_GROUP[c.group] ?? 'other';
+  return c.type === 'label_only' ? 'labelOnly' : c.category;
 }

@@ -1,5 +1,4 @@
-// keepTABS result schema (UI-only, "keeptabs-0.1"). Separate from types.ts, which mirrors backend schema.py.
-// an adapter from engine output to this shape comes later. All mock data is synthetic.
+// keepTABS result schema (UI-only). engineAdapter.ts builds it from the engine's output (demo_viewer/contract.ts).
 import type { ModelLoads } from './loads';
 
 export type Vec3 = [number, number, number];
@@ -8,12 +7,8 @@ export type Vec3 = [number, number, number];
 export type Side = 'baseline' | 'revised' | 'both';
 
 export interface Meta {
-  schema_version: string;
   source: { baseline: string; revised: string };
   units: { length: string; force: string };
-  coordinate_system: { axes: string; aligned: boolean; offset: Vec3 };
-  match_tolerance: number; // in length units
-  mock: boolean;
 }
 
 export interface Story { name: string; elevation: number; side: Side }
@@ -33,40 +28,24 @@ export interface Member {
 export type ChangeType = 'added' | 'removed' | 'modified' | 'label_only';
 export type Value = number | string | number[] | null;
 
-export interface Evidence {
-  file: 'baseline' | 'revised';
-  lines: [number, number];       // first and last line, 1-based
-  raw: string[];
-}
-
 export interface Change {
   id: string;
   type: ChangeType;
-  group: string;                 // Group.id
-  category?: string;             // left-panel category id (categories.ts); derived from group when absent
+  category: string;              // left-panel category id (categories.ts)
   member_ids: string[];          // for a move: [baseline member, revised member]
   subject?: string;              // for non-member records, e.g. "Material STEEL-COL"
   extent: { members: number; distance: number };
   before: Record<string, Value> | null;
   after: Record<string, Value> | null;
   units?: Record<string, string>; // per field; "length" means meta.units.length
-  evidence: Evidence[];
 }
 
-export interface Group { id: string; title: string; change_ids: string[] }
-
-export interface Coverage { group: string; record: string; status: 'compared' | 'seen_not_compared' }
-
-export interface Ambiguous { id: string; description: string; candidates: string[] }
-
 export interface Result {
-  mock: boolean;
+  mock: boolean;                 // synthetic data (the seeded demo), not a real model
   meta: Meta;
   stories: Story[];
   nodes: Node[];
   members: Member[];
   changes: Change[];
-  groups: Group[];
-  warnings: { coverage: Coverage[]; ambiguous: Ambiguous[]; error: string | null };
-  loads?: ModelLoads;            // engine results only: applied loads per element, and pattern / case / combo definitions
+  loads?: ModelLoads;            // applied loads per element, and pattern / case / combo definitions
 }

@@ -1,7 +1,7 @@
 {
  "mock": true,
  "meta": {
-  "schema_version": "vantage-0.1",
+  "schema_version": "keeptabs-0.1",
   "source": {
    "baseline": "synthetic-frame-rev-A.e2k",
    "revised": "synthetic-frame-rev-B.e2k"

@@ -1,21 +1,25 @@
-// Adapter: diff_engine output (frontend/demo_viewer/contract.ts, schemaVersion 0.1) -> Vantage Result.
-// This is what `just demo` feeds Thomas's viewer, so real .e2k pairs can be reviewed in Vantage.
+// Adapter: diff_engine output (frontend/demo_viewer/contract.ts, schemaVersion 0.2) -> keepTABS Result.
+// This is what `just demo` feeds Thomas's viewer, so real .e2k pairs can be reviewed in keepTABS.
 //
 // Element-level changes go to the planning-board group for their field. "affected" elements carry
 // their upstream definition's changes; those are reported once, as the table (definition) change,
 // with every member whose `via` names it. Not available from engine output: source line
 // evidence, ambiguous matches. Areas (floors, walls) are listed as changes but not drawn.
-import type { Change, Coverage, Group, Member, Node, Result, Side, Value, Vec3 } from './vantageTypes';
+import type { Change, Coverage, Group, Member, Node, Result, Side, Value, Vec3 } from './keeptabsTypes';
 import { GROUPS } from './adapter';
 import { fieldCategory, tableCategory } from './categories';
-import { loadField, loadValue } from './loads';
+import { type ElementLoads, type LoadDefinitions, loadField, loadValue } from './loads';
 
 // ---- engine contract (subset this adapter reads) ----
-interface EChange { field: string; before: unknown; after: unknown; affects: string[]; kind?: 'renamed' }
+interface EChange {
+  field: string; before: unknown; after: unknown; affects: string[]; kind?: 'renamed'; unit?: string | null;
+  valueUnits?: Record<'before' | 'after', Record<string, string | null>>;
+}
 interface EElement {
   key: string; kind: 'point' | 'frame' | 'area'; subtype: string; label: string; story: string;
   status: 'unchanged' | 'added' | 'removed' | 'modified' | 'affected';
-  geometry: Vec3[]; changes: EChange[]; via?: string[]; movedTo?: string; movedFrom?: string;
+  geometry: Vec3[]; changes: EChange[]; via?: string[]; movedTo?: string; movedFrom?: string; grid?: string | null;
+  loads?: ElementLoads;
 }
 interface ETable { added: string[]; removed: string[]; modified: Record<string, EChange[]> }
 export interface EngineDiff {
@@ -24,6 +28,7 @@ export interface EngineDiff {
   stories: { name: string; elevA: number | null; elevB: number | null }[];
   elements: EElement[];
   tables: Record<string, ETable>;
+  loadDefinitions?: { a: LoadDefinitions; b: LoadDefinitions };
 }
 
 /** Group for an element field (e2k keyword, any case). */
@@ -68,6 +73,16 @@ function toValue(v: unknown): Value {
   return JSON.stringify(v);
 }
 
+function withValueUnits(value: unknown, units: Record<string, string | null>, path = ''): unknown {
+  if (Array.isArray(value)) return value.map((v, i) => withValueUnits(v, units, path ? `${path}.${i}` : String(i)));
+  if (value !== null && typeof value === 'object') return Object.fromEntries(Object.entries(value)
+    .map(([key, v]) => [key, withValueUnits(v, units, path ? `${path}.${key}` : key)]));
+  return typeof value === 'number' && units[path] ? `${value} ${units[path]}` : value;
+}
+const changeValue = (c: EChange, side: 'before' | 'after') => toValue(withValueUnits(c[side], c.valueUnits?.[side] ?? {}));
+const changeUnits = (cs: EChange[], field: (c: EChange) => string) => cs.some((c) => c.unit)
+  ? { units: Object.fromEntries(cs.filter((c) => c.unit).map((c) => [field(c), c.unit!])) } : {};
+
 const dist = (p: Vec3, q: Vec3) => Math.hypot(p[0] - q[0], p[1] - q[1], p[2] - q[2]);
 const key = (p: Vec3) => `N(${p.join(',')})`;
 const sideOf = (s: EElement['status']): Side => (s === 'added' ? 'revised' : s === 'removed' ? 'baseline' : 'both');
@@ -82,6 +97,7 @@ export function adaptEngine(d: EngineDiff, opts: { mock: boolean }): Result {
     end_nodes: [key(e.geometry[0]), key(e.geometry[1])],
     label: e.label,
     story: e.story,
+    grid: e.grid ?? undefined,
     side: sideOf(e.status),
   }));
   const draft: Omit<Change, 'id'>[] = [];
@@ -118,7 +134,6 @@ export function adaptEngine(d: EngineDiff, opts: { mock: boolean }): Result {
   }
 
   // ---- element changes ----
-  const loadUnits = { length: d.meta.lengthUnit, force: d.meta.forceUnit ?? 'kip' };
   for (const e of d.elements) {
     if (inMove.has(e.key) || e.status === 'unchanged' || e.status === 'affected') continue;
     const drawn = e.kind === 'frame';
@@ -141,13 +156,15 @@ export function adaptEngine(d: EngineDiff, opts: { mock: boolean }): Result {
     for (const [k, cs] of byGroup) {
       const [group, category] = k.split('|');
       const field = (c: EChange) => (group === '1A' ? 'section' : loadField(c.field) ?? c.field);
-      const value = (c: EChange, v: unknown) => loadValue(c.field, e.kind, v, loadUnits) ?? toValue(v);
+      // Load fields read as words with their own units (kip/ft, psf), so they carry no separate unit.
+      const value = (c: EChange, side: 'before' | 'after') => loadValue(c.field, e.kind, c[side]) ?? changeValue(c, side);
       draft.push({
         type: group === 'rename' ? 'label_only' : 'modified', group: group === 'rename' ? 'G1' : group, category,
         member_ids: drawn ? [e.key] : [],
         extent: { members: drawn ? 1 : 0, distance: 0 },
-        before: Object.fromEntries(cs.map((c) => [field(c), value(c, c.before)])),
-        after: Object.fromEntries(cs.map((c) => [field(c), value(c, c.after)])),
+        before: Object.fromEntries(cs.map((c) => [field(c), value(c, 'before')])),
+        after: Object.fromEntries(cs.map((c) => [field(c), value(c, 'after')])),
+        ...changeUnits(cs.filter((c) => !loadField(c.field)), field),
         evidence: [],
         ...(drawn ? {} : { subject: subjectOf(e) }),
       });
@@ -166,11 +183,13 @@ export function adaptEngine(d: EngineDiff, opts: { mock: boolean }): Result {
       const ids = table === 'stories' ? [] : users(table, name); // story moves are not member changes
       draft.push({
         ...defChange(cs.every((c) => c.kind === 'renamed') ? 'label_only' : 'modified', group, ids,
-          Object.fromEntries(cs.map((c) => [defField(c.field), toValue(c.before)])),
-          Object.fromEntries(cs.map((c) => [defField(c.field), toValue(c.after)]))),
+          Object.fromEntries(cs.map((c) => [defField(c.field), changeValue(c, 'before')])),
+          Object.fromEntries(cs.map((c) => [defField(c.field), changeValue(c, 'after')]))),
+        ...changeUnits(cs, (c) => defField(c.field)),
         category,
         subject: `${prefix} ${name}`,
-        ...(table === 'stories' ? { units: Object.fromEntries(cs.map((c) => [c.field, 'length'])) } : {}),
+        ...(table === 'stories' && !cs.some((c) => c.unit)
+          ? { units: Object.fromEntries(cs.filter((c) => ['height', 'elevation'].includes(c.field)).map((c) => [c.field, 'length'])) } : {}),
       });
     }
   }
@@ -199,7 +218,7 @@ export function adaptEngine(d: EngineDiff, opts: { mock: boolean }): Result {
   return {
     mock: opts.mock,
     meta: {
-      schema_version: `vantage-0.1 (adapted from engine ${d.schemaVersion})`,
+      schema_version: `keeptabs-0.1 (adapted from engine ${d.schemaVersion})`,
       source: { baseline: d.meta.a.file, revised: d.meta.b.file },
       units: { length: d.meta.lengthUnit, force: d.meta.forceUnit ?? 'kip' },
       coordinate_system: { axes: 'X, Y plan; Z up', aligned: true, offset: [0, 0, 0] },
@@ -215,6 +234,13 @@ export function adaptEngine(d: EngineDiff, opts: { mock: boolean }): Result {
     changes,
     groups,
     warnings: { coverage, ambiguous: [], error: null },
+    // Applied loads as the engine writes them (0.2), for drawing a pattern, case or combo.
+    loads: {
+      elements: d.elements.filter((e) => e.loads).map((e) => ({
+        key: e.key, kind: e.kind, subtype: e.subtype, label: e.label, story: e.story, geometry: e.geometry, loads: e.loads!,
+      })),
+      definitions: d.loadDefinitions ?? null,
+    },
   };
 }
 

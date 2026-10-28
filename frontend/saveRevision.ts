@@ -108,4 +108,4 @@ async function save(upload: File, rev: Revision, dirs: SaveDirs): Promise<Respon
   return json(201, JSON.stringify({ revision: rev, scrubbedPaths: replaced }));
 }
 
-export const saveRevisionPlugin = () => localRoute('vantage-save-revision', SAVE_ROUTE, handleSaveRevision);
+export const saveRevisionPlugin = () => localRoute('keeptabs-save-revision', SAVE_ROUTE, handleSaveRevision);

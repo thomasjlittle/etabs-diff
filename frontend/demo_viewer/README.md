@@ -58,4 +58,4 @@ Not built yet, in rough priority order:
 1. Separate colors per status (e.g. green added, red removed, orange modified, yellow affected).
 2. Thicker lines for red frames (WebGL lines are always 1px; three.js `Line2` fixes this).
 3. Proper triangulation for non-convex areas (L-shaped slabs or walls) with `THREE.ShapeUtils`.
-4. Warn when `schemaVersion` isn't `"0.1"`.
+4. Warn when `schemaVersion` isn't `"0.2"`.

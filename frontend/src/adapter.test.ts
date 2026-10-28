@@ -13,7 +13,7 @@ const bySubject = (s: string) => r.changes.find((c) => c.subject === s)!;
 const byMember = (id: string) => r.changes.filter((c) => c.member_ids.includes(id));
 const groupOf = (id: string) => r.changes.filter((c) => c.group === id);
 
-describe('adapter: team fixture -> Vantage', () => {
+describe('adapter: team fixture -> keepTABS', () => {
   it('headline counts: 3 added, 1 removed, 14 modified, 1 label-only', () => {
     // added: frame D3@L3, load 5@L3|Live|Force|Gravity, combo 0.9D+E
     // modified: 6 frame changes less the rename (5) + 9 table changes

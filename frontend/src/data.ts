@@ -1,5 +1,5 @@
 // Pure data helpers: no React, no three.js, so the rules can be unit tested.
-import type { Change, Member, Result, Value, Vec3 } from './vantageTypes';
+import type { Change, Member, Result, Value, Vec3 } from './keeptabsTypes';
 
 /** Renames and reversed end order are bookkeeping, not physical changes. */
 export const isPhysical = (c: Change) => c.type !== 'label_only';
@@ -111,7 +111,9 @@ export function describeChange(c: Change, r: Result, members = memberMap(r)): st
   if (c.type === 'added') return `${c.subject ?? memberName(m)} was added.`;
   if (c.type === 'removed') return `${c.subject ?? memberName(m)} was removed.`;
   if (c.type === 'label_only' && 'label' in a)
-    return `${m ? KIND[m.kind] : 'Member'} at ${m?.story ?? '?'} was renamed from ${b.label} to ${a.label}. Label only, not a physical change.`;
+    return `${c.subject ?? `${m ? KIND[m.kind] : 'Member'} at ${m?.story ?? '?'}`} was renamed from ${b.label} to ${a.label}. Label only, not a physical change.`;
+  if (c.type === 'label_only' && 'name' in a)
+    return `${c.subject ?? 'Definition'} was renamed from ${b.name} to ${a.name}. Label only, not a physical change.`;
   if (c.type === 'label_only')
     return `${memberName(m)} lists its end nodes in reverse order in the revised file. Same member, not a physical change.`;
 

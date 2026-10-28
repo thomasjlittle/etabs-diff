@@ -1,7 +1,7 @@
 // Left-panel taxonomy: how an ETABS user thinks about a model, section by section.
 // Each change gets one category. Categories the engine does not compare are listed as "Not compared",
 // never as "0 changes", so a reviewer does not read a gap as a clean check.
-import type { Change } from './vantageTypes';
+import type { Change } from './keeptabsTypes';
 
 export interface Category { id: string; title: string; compared: boolean; note?: string }
 export interface Section { title: string; items: Category[] }

@@ -1,3 +1,9 @@
+# For NCSEA 2026 Hackathon, so its a bit chaotic
+
+![keepTABS diffing two ETABS models](docs/keeptabs-demo.gif)
+
+*keepTABS loading two ETABS exports and showing what changed.*
+
 # keepTABS (get it, like ETABS...)
 
 Visual diff for ETABS models. Point it at two exports of the same model (`.e2k`, or the `.$et` ETABS writes on save) and it shows what changed: members added, removed, moved, or modified in a 3D view, plus tables for materials, sections, load patterns, cases, combos, and the rest.
@@ -6,9 +12,9 @@ Visual diff for ETABS models. Point it at two exports of the same model (`.e2k`,
 
 Run `just ui` from the repo root (needs node and npm, plus Python 3.9+ for the engine). It installs the app's dependencies if they're missing or older than the lockfile, starts the dev server at http://127.0.0.1:5173, and tries to open a browser (under WSL it may not, so open the printed URL). Ctrl+C stops it.
 
-That's Vantage, the team's React app in `frontend/src/`. It has two pages, picked with **Page** in the top bar:
+That's keepTABS, the team's React app in `frontend/src/`. It has two pages, picked with **Page** in the top bar:
 
-- **Review**: the 3D view, change table, story strip and details panel for one comparison. The **Data** dropdown picks the source: two of the hackathon models (opens on `Hack_v01` to `Hack_v01a`), **Upload two models** (an Original and a Second `.e2k` / `.$et`, diffed by the engine on this machine through the dev server), a diff JSON from the engine, the seeded synthetic demo, the team fixture, or a mock.
+- **Review**: the 3D view, change table, story strip and details panel for one comparison. The **Source** dropdown picks the data: **Your models** (the default, opens on a start screen where you drop a Model 1 and a Model 2 `.e2k` / `.$et`, diffed by the engine on this machine through the dev server), a diff JSON from the engine, two of the hackathon models (picked with Model 1 and Model 2, starting on `Hack_v01` to `Hack_v01a`; the start screen's **or try a sample comparison** link goes here), the seeded synthetic demo, the team fixture, or a mock.
 - **Revision log**: every hackathon model version, newest first, with a branch graph like `git log --graph` and change counts per version. Click a row to review it against its parent, or tick two to compare them. **Add version** takes a new `.e2k`, suggests a parent from its save log, scrubs Windows user folders out of the file's path lines, writes it into `frontend/demo_viewer/models/`, appends it to `revisions.json` and regenerates the diffs. It doesn't commit anything (see egit below).
 
 ![Revision log page](frontend/revision-log.png)
@@ -22,7 +28,7 @@ With [just](https://github.com/casey/just), from the repo root:
 | Recipe | What it does | What you see |
 | --- | --- | --- |
 | `just` | lists the recipes | the list |
-| `just ui` | installs if needed and starts the React app | Vantage at http://127.0.0.1:5173 |
+| `just ui` | installs if needed and starts the React app | keepTABS at http://127.0.0.1:5173 |
 | `just demo` | serves the HTML demo viewer on the eight hackathon models in `frontend/demo_viewer/models/` | Before/After dropdowns (opens on `Hack_v01` to `Hack_v01a`), pick any pair |
 | `just view before.e2k after.e2k` | diffs two files of your own | the HTML viewer on the result |
 | `just csv before.e2k after.e2k changes.csv` | diffs two files, writes one CSV row per change | the status counts in the terminal |
@@ -107,7 +113,7 @@ Every change carries its row and an `affects` tag (geometry, stiffness, mass, lo
 | Folder | What's in it |
 | --- | --- |
 | `backend/diff_engine/` | the working engine: parser, matching, diff, CSV report, HTML viewer server, egit (stdlib Python, strict pyright) |
-| `frontend/src/` | Vantage, the React app `just ui` runs (Review and Revision log pages) |
+| `frontend/src/` | keepTABS, the React app `just ui` runs (Review and Revision log pages) |
 | `frontend/compareE2k.ts`, `frontend/saveRevision.ts` | the dev-server routes behind upload and Add version (they call the engine) |
 | `frontend/demo_viewer/` | the HTML demo viewer (one static file with three.js), the hackathon models, `revisions.json`, and their precomputed diffs |
 | `fixtures/demo/` | the seeded synthetic before/after pair, its diff, CSV, and generator |

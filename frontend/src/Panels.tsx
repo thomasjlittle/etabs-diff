@@ -1,7 +1,7 @@
 // Summary list, detail panel and change table. All three read the same selectedId and call the
 // same onSelect, so a click in any of them selects the same change everywhere.
 import { useEffect, useRef, useState } from 'react';
-import type { Change, Result } from './vantageTypes';
+import type { Change, Result } from './keeptabsTypes';
 import {
   byExtent, describeChange, fmt, headlineCounts, memberMap, memberName, storyChangeCounts, unitFor,
 } from './data';
@@ -290,7 +290,7 @@ function Row({ change: c, result, members, selected, onSelect }: {
       <td className="px-2 py-1">{TYPE_LABEL[c.type]}</td>
       <td className="px-2 py-1">{CATEGORY_TITLE[categoryOf(c)]}</td>
       <td className="px-2 py-1">
-        {c.subject ?? (first ? `${first.label} @ ${first.story}` : '—')}
+        {c.subject ?? (first ? `${first.label} @ ${first.story}${first.grid ? ` · ${first.grid}` : ''}` : '—')}
         {c.member_ids.length > 1 ? ` +${c.member_ids.length - 1}` : ''}
       </td>
       <td className="px-2 py-1">{values(c.before)}</td>

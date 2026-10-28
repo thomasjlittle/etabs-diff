@@ -1,5 +1,6 @@
-// Vantage result schema (UI-only, "vantage-0.1"). Separate from types.ts, which mirrors backend schema.py.
+// keepTABS result schema (UI-only, "keeptabs-0.1"). Separate from types.ts, which mirrors backend schema.py.
 // an adapter from engine output to this shape comes later. All mock data is synthetic.
+import type { ModelLoads } from './loads';
 
 export type Vec3 = [number, number, number];
 
@@ -25,6 +26,7 @@ export interface Member {
   end_nodes: [string, string];   // canonical order, so a reversed listing gives the same id
   label?: string;                // display only (revised label when present)
   story: string;
+  grid?: string;
   side: Side;
 }
 
@@ -66,4 +68,5 @@ export interface Result {
   changes: Change[];
   groups: Group[];
   warnings: { coverage: Coverage[]; ambiguous: Ambiguous[]; error: string | null };
+  loads?: ModelLoads;            // engine results only: applied loads per element, and pattern / case / combo definitions
 }

@@ -15,7 +15,7 @@ const unscrubbed = real('Hack_v04.e2k').toString('latin1').replaceAll('C:\\Model
 let dirs: SaveDirs;
 let calls: string[];
 beforeEach(() => {
-  const root = mkdtempSync(join(tmpdir(), 'vantage-save-'));
+  const root = mkdtempSync(join(tmpdir(), 'keeptabs-save-'));
   const models = join(root, 'models');
   cpSync(MODELS, models, { recursive: true });
   mkdirSync(join(root, 'diffs'));

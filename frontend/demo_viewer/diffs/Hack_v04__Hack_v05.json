@@ -1,5 +1,5 @@
 {
- "schemaVersion": "0.1",
+ "schemaVersion": "0.2",
  "meta": {
   "a": {
    "file": "Hack_v04.e2k",
@@ -58,7 +58,8 @@
      144.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "A/1"
   },
   {
    "key": "column|Base|0|1440|0~Story1|0|1440|0",
@@ -79,7 +80,8 @@
      144.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "A/2"
   },
   {
    "key": "column|Base|2400|0|0~Story1|2400|0|0",
@@ -100,7 +102,8 @@
      144.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "B/1"
   },
   {
    "key": "column|Base|2400|1440|0~Story1|2400|1440|0",
@@ -121,7 +124,8 @@
      144.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "B/2"
   },
   {
    "key": "beam|Story1|0|0|0~Story1|3000|0|0",
@@ -142,7 +146,56 @@
      144.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": null,
+   "loads": {
+    "a": {
+     "Live": [
+      {
+       "TYPE": "POINTF",
+       "DIR": "GRAV",
+       "FVAL": 5.0,
+       "RDIST": 0.4,
+       "DIST": 120.0
+      }
+     ],
+     "Dead": [
+      {
+       "TYPE": "TRAPF",
+       "DIR": "GRAV",
+       "FSTART": 0.083333336,
+       "FEND": 0.083333336,
+       "RDSTART": 0.0,
+       "RDEND": 0.8,
+       "DSTART": 0.0,
+       "DEND": 240.0
+      }
+     ]
+    },
+    "b": {
+     "Live": [
+      {
+       "TYPE": "POINTF",
+       "DIR": "GRAV",
+       "FVAL": 5.0,
+       "RDIST": 0.4,
+       "DIST": 120.0
+      }
+     ],
+     "Dead": [
+      {
+       "TYPE": "TRAPF",
+       "DIR": "GRAV",
+       "FSTART": 0.083333336,
+       "FEND": 0.083333336,
+       "RDSTART": 0.0,
+       "RDEND": 0.8,
+       "DSTART": 0.0,
+       "DEND": 240.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|Story1|0|1440|0~Story1|2400|1440|0",
@@ -163,7 +216,54 @@
      144.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "A-B/2",
+   "loads": {
+    "a": {
+     "Live": [
+      {
+       "TYPE": "POINTF",
+       "DIR": "GRAV",
+       "FVAL": 5.0,
+       "RDIST": 0.5,
+       "DIST": 120.0
+      }
+     ],
+     "Dead": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.083333336,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 240.0
+      }
+     ]
+    },
+    "b": {
+     "Live": [
+      {
+       "TYPE": "POINTF",
+       "DIR": "GRAV",
+       "FVAL": 5.0,
+       "RDIST": 0.5,
+       "DIST": 120.0
+      }
+     ],
+     "Dead": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.083333336,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 240.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|Story1|0|0|0~Story1|0|1440|0",
@@ -184,7 +284,8 @@
      144.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "A/1-2"
   },
   {
    "key": "beam|Story1|2400|0|0~Story1|2400|1440|0",
@@ -205,7 +306,8 @@
      144.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "B/1-2"
   },
   {
    "key": "beam|Story1|1200|0|0~Story1|1200|1440|0",
@@ -226,7 +328,8 @@
      144.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": null
   },
   {
    "key": "beam|Story1|2400|1440|0~Story1|2880|1440|0",
@@ -247,7 +350,8 @@
      144.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": null
   },
   {
    "key": "column|Story1|0|0|0~Story2|0|0|0",
@@ -268,7 +372,8 @@
      288.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "A/1"
   },
   {
    "key": "column|Story1|0|1440|0~Story2|0|1440|0",
@@ -297,9 +402,11 @@
      "affects": [
       "stiffness"
      ],
-     "row": 6
+     "row": 6,
+     "unit": null
     }
-   ]
+   ],
+   "grid": "A/2"
   },
   {
    "key": "column|Story1|2400|0|0~Story2|2400|0|0",
@@ -320,7 +427,8 @@
      288.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "B/1"
   },
   {
    "key": "column|Story1|2400|1440|0~Story2|2400|1440|0",
@@ -341,7 +449,8 @@
      288.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "B/2"
   },
   {
    "key": "beam|Story2|0|0|0~Story2|3000|0|0",
@@ -384,9 +493,73 @@
      "affects": [
       "load"
      ],
-     "row": 9
+     "row": 9,
+     "unit": null,
+     "valueUnits": {
+      "before": {
+       "0.TYPE": null,
+       "0.DIR": null,
+       "0.FVAL": "kip",
+       "0.RDIST": null
+      },
+      "after": {
+       "0.TYPE": null,
+       "0.DIR": null,
+       "0.FVAL": "kip",
+       "0.RDIST": null
+      }
+     }
     }
-   ]
+   ],
+   "grid": null,
+   "loads": {
+    "a": {
+     "Live": [
+      {
+       "TYPE": "POINTF",
+       "DIR": "GRAV",
+       "FVAL": 5.0,
+       "RDIST": 0.4,
+       "DIST": 120.0
+      }
+     ],
+     "Dead": [
+      {
+       "TYPE": "TRAPF",
+       "DIR": "GRAV",
+       "FSTART": 0.083333336,
+       "FEND": 0.083333336,
+       "RDSTART": 0.0,
+       "RDEND": 0.8,
+       "DSTART": 0.0,
+       "DEND": 240.0
+      }
+     ]
+    },
+    "b": {
+     "Live": [
+      {
+       "TYPE": "POINTF",
+       "DIR": "GRAV",
+       "FVAL": 10.0,
+       "RDIST": 0.4,
+       "DIST": 120.0
+      }
+     ],
+     "Dead": [
+      {
+       "TYPE": "TRAPF",
+       "DIR": "GRAV",
+       "FSTART": 0.083333336,
+       "FEND": 0.083333336,
+       "RDSTART": 0.0,
+       "RDEND": 0.8,
+       "DSTART": 0.0,
+       "DEND": 240.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|Story2|0|1440|0~Story2|2400|1440|0",
@@ -407,7 +580,54 @@
      288.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "A-B/2",
+   "loads": {
+    "a": {
+     "Live": [
+      {
+       "TYPE": "POINTF",
+       "DIR": "GRAV",
+       "FVAL": 5.0,
+       "RDIST": 0.5,
+       "DIST": 120.0
+      }
+     ],
+     "Dead": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.083333336,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 240.0
+      }
+     ]
+    },
+    "b": {
+     "Live": [
+      {
+       "TYPE": "POINTF",
+       "DIR": "GRAV",
+       "FVAL": 5.0,
+       "RDIST": 0.5,
+       "DIST": 120.0
+      }
+     ],
+     "Dead": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.083333336,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 240.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|Story2|0|0|0~Story2|0|1440|0",
@@ -428,7 +648,8 @@
      288.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "A/1-2"
   },
   {
    "key": "beam|Story2|2400|0|0~Story2|2400|1440|0",
@@ -449,7 +670,8 @@
      288.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "B/1-2"
   },
   {
    "key": "beam|Story2|2400|1440|0~Story2|2880|1440|0",
@@ -470,7 +692,8 @@
      288.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": null
   },
   {
    "key": "floor|Story1|0|0|0~Story1|0|1440|0~Story1|2400|0|0~Story1|2400|1440|0",
@@ -501,7 +724,8 @@
      144.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "A-B/1-2"
   },
   {
    "key": "floor|Story2|0|0|0~Story2|0|1440|0~Story2|2400|0|0~Story2|2400|1440|0",
@@ -532,7 +756,8 @@
      288.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "A-B/1-2"
   },
   {
    "key": "Base|0|0|0",
@@ -556,9 +781,11 @@
      "affects": [
       "stiffness"
      ],
-     "row": 8
+     "row": 8,
+     "unit": null
     }
-   ]
+   ],
+   "grid": "A/1"
   },
   {
    "key": "Base|0|1440|0",
@@ -574,7 +801,8 @@
      0.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "A/2"
   },
   {
    "key": "Base|2400|0|0",
@@ -590,7 +818,8 @@
      0.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "B/1"
   },
   {
    "key": "Base|2400|1440|0",
@@ -606,7 +835,8 @@
      0.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "B/2"
   },
   {
    "key": "beam|Story2|1200|0|0~Story2|1200|1440|0",
@@ -627,7 +857,8 @@
      288.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": null
   }
  ],
  "tables": {
@@ -713,5 +944,185 @@
   "removed": 1,
   "modified": 3,
   "affected": 0
+ },
+ "loadDefinitions": {
+  "a": {
+   "patterns": {
+    "Dead": {
+     "type": "Dead",
+     "selfWeight": 0.0
+    },
+    "Live": {
+     "type": "Live",
+     "selfWeight": 0.0
+    },
+    "SW": {
+     "type": "Dead",
+     "selfWeight": 1.0
+    }
+   },
+   "cases": {
+    "Modal": {
+     "type": "Modal - Eigen",
+     "patterns": {},
+     "effective": {
+      "expandable": false,
+      "patterns": {},
+      "reason": "case Modal is Modal - Eigen, not a static case"
+     }
+    },
+    "DL": {
+     "type": "Linear Static",
+     "patterns": {
+      "Dead": 1.0,
+      "SW": 1.0
+     },
+     "effective": {
+      "expandable": true,
+      "patterns": {
+       "Dead": 1.0,
+       "SW": 1.0
+      },
+      "reason": null
+     }
+    },
+    "LL": {
+     "type": "Linear Static",
+     "patterns": {
+      "Live": 1.0
+     },
+     "effective": {
+      "expandable": true,
+      "patterns": {
+       "Live": 1.0
+      },
+      "reason": null
+     }
+    }
+   },
+   "combos": {
+    "1.4D": {
+     "type": "Linear Add",
+     "cases": {
+      "DL": 1.4
+     },
+     "combos": {},
+     "effective": {
+      "expandable": true,
+      "patterns": {
+       "Dead": 1.4,
+       "SW": 1.4
+      },
+      "reason": null
+     }
+    },
+    "1.2D+1.6L": {
+     "type": "Linear Add",
+     "cases": {
+      "DL": 1.2,
+      "LL": 1.6
+     },
+     "combos": {},
+     "effective": {
+      "expandable": true,
+      "patterns": {
+       "Dead": 1.2,
+       "SW": 1.2,
+       "Live": 1.6
+      },
+      "reason": null
+     }
+    }
+   }
+  },
+  "b": {
+   "patterns": {
+    "Dead": {
+     "type": "Dead",
+     "selfWeight": 0.0
+    },
+    "Live": {
+     "type": "Live",
+     "selfWeight": 0.0
+    },
+    "SW": {
+     "type": "Dead",
+     "selfWeight": 1.0
+    }
+   },
+   "cases": {
+    "Modal": {
+     "type": "Modal - Eigen",
+     "patterns": {},
+     "effective": {
+      "expandable": false,
+      "patterns": {},
+      "reason": "case Modal is Modal - Eigen, not a static case"
+     }
+    },
+    "DL": {
+     "type": "Linear Static",
+     "patterns": {
+      "Dead": 1.0,
+      "SW": 1.0
+     },
+     "effective": {
+      "expandable": true,
+      "patterns": {
+       "Dead": 1.0,
+       "SW": 1.0
+      },
+      "reason": null
+     }
+    },
+    "LL": {
+     "type": "Linear Static",
+     "patterns": {
+      "Live": 1.0
+     },
+     "effective": {
+      "expandable": true,
+      "patterns": {
+       "Live": 1.0
+      },
+      "reason": null
+     }
+    }
+   },
+   "combos": {
+    "1.4D": {
+     "type": "Linear Add",
+     "cases": {
+      "DL": 1.4
+     },
+     "combos": {},
+     "effective": {
+      "expandable": true,
+      "patterns": {
+       "Dead": 1.4,
+       "SW": 1.4
+      },
+      "reason": null
+     }
+    },
+    "1.2D+1.6L": {
+     "type": "Linear Add",
+     "cases": {
+      "DL": 1.2,
+      "LL": 1.6
+     },
+     "combos": {},
+     "effective": {
+      "expandable": true,
+      "patterns": {
+       "Dead": 1.2,
+       "SW": 1.2,
+       "Live": 1.6
+      },
+      "reason": null
+     }
+    }
+   }
+  }
  }
 }

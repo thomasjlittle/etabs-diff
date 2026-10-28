@@ -1,6 +1,6 @@
-// Vantage: review two revisions of a structural model. Frontend only; reads committed diffs and fixtures.
+// keepTABS: review two revisions of a structural model. Frontend only; reads committed diffs and fixtures.
 import { lazy, Suspense, useCallback, useEffect, useReducer, useRef, useState, type ReactNode } from 'react';
-import type { Result } from './vantageTypes';
+import type { Result } from './keeptabsTypes';
 import { type ColorBy, reducer } from './data';
 import { ChangeTable, DetailPanel, StoryStrip, SummaryList } from './Panels';
 import type { CameraMode, CameraSync, ViewerProps } from './Viewer';
@@ -12,6 +12,8 @@ import { RevisionLog } from './RevisionLog';
 import { categoryOf } from './categories';
 import { UploadStart } from './UploadStart';
 import { Splitter, clamp } from './Splitter';
+import { LoadDetails, LoadsControl } from './LoadPanel';
+import { type LoadView, defaultLoadView } from './loads';
 
 // Loaded separately so tests (no WebGL) never import three.js.
 const Viewer = lazy(() => import('./Viewer'));
@@ -26,7 +28,7 @@ const SOURCES: [string, string][] = [
   ['hack-models', 'Sample: Hack models, real ETABS (pick two)'],
   ['seeded-demo', 'Sample: Seeded demo, 8 stories (engine output)'],
   ['team-fixture', 'Dev: team fixture (fixtures/*.json)'],
-  ['mock-result', 'Dev: Vantage mock'],
+  ['mock-result', 'Dev: keepTABS mock'],
 ];
 
 // Real ETABS models from frontend/demo_viewer/models/, diffed by the engine for every ordered pair
@@ -92,7 +94,7 @@ export async function compareModels(original: File, second: File): Promise<Resul
   body.append('b', second);
   let res: Response;
   try {
-    res = await fetch(COMPARE_ROUTE, { method: 'POST', body, headers: { 'x-vantage-compare': '1' } });
+    res = await fetch(COMPARE_ROUTE, { method: 'POST', body, headers: { 'x-keeptabs-local': '1' } });
   } catch {
     throw new Error('The local dev server did not answer. Start it from frontend/ with: npm run dev');
   }
@@ -109,9 +111,10 @@ export async function compareModels(original: File, second: File): Promise<Resul
 }
 
 /** The review panels, sharing one selected change. The viewer is passed in so tests can leave it out. */
-export function Workspace({ result, selectedId, onSelect, viewer, story, onStory }: {
+export function Workspace({ result, selectedId, onSelect, viewer, story, onStory, loadView, loadFocus }: {
   result: Result; selectedId: string | null; onSelect: (id: string | null) => void;
   viewer?: ReactNode; story?: string | null; onStory?: (s: string | null) => void;
+  loadView?: LoadView | null; loadFocus?: string | null;
 }) {
   const props = { result, selectedId, onSelect };
   // Category picked in the summary list; the table below lists only that category's changes.
@@ -158,6 +161,7 @@ export function Workspace({ result, selectedId, onSelect, viewer, story, onStory
         {right.open && (
           <aside data-testid="pane-detail" style={{ width: right.size }} className="min-h-0 shrink-0 overflow-y-auto">
             <DetailPanel {...props} />
+            {loadView && result.loads && <LoadDetails result={result} view={loadView} focus={loadFocus ?? null} selectedId={selectedId} />}
           </aside>
         )}
       </div>
@@ -254,18 +258,28 @@ export default function App() {
   const [retryTick, setRetryTick] = useState(0);
   const waitingForFile = (source === 'diff-file' && !diffFile) || (source === 'e2k-upload' && !compared);
   const [page, setPage] = useState<'review' | 'log'>('review');
+  // Applied loads: on by default, back to the default pick for each new pair; the element last hovered or
+  // clicked shows its loads in the details panel.
+  const [loadView, setLoadView] = useState<LoadView | null>(null);
+  const [loadFocus, setLoadFocus] = useState<string | null>(null);
 
   // Each load starts from a clean slate: previous result, selection and story filter are dropped.
   useEffect(() => {
     let current = true;
     dispatch({ type: 'load_start' });
     setStory(null);
+    setLoadView(null); // another pair may not have the same patterns
+    setLoadFocus(null);
     if (waitingForFile) return;
     const loading = source === 'diff-file' && diffFile ? openDiffFile(diffFile)
       : source === 'e2k-upload' && compared ? compareModels(...compared)
         : loadScenario(source, { original, second });
     loading
-      .then((result) => current && dispatch({ type: 'load_ok', result }))
+      .then((result) => {
+        if (!current) return;
+        dispatch({ type: 'load_ok', result });
+        setLoadView(result.loads ? defaultLoadView(result.loads) : null);
+      })
       .catch((e: Error) => current && dispatch({ type: 'load_fail', message: e.message }));
     return () => { current = false; }; // ignore a slow load that was superseded
   }, [source, original, second, diffFile, compared, retryTick, waitingForFile]);
@@ -292,7 +306,7 @@ export default function App() {
   const { load } = state;
   const viewerProps = load.status === 'ready' ? {
     result: load.result, selectedId: state.selectedChangeId, onSelect: select,
-    cameraMode, colorBy, storyFilter: story, zoomTick, resetTick,
+    cameraMode, colorBy, storyFilter: story, zoomTick, resetTick, loadView, onLoadFocus: setLoadFocus,
   } : null;
   return (
     <div className="flex h-screen flex-col bg-white text-slate-900">
@@ -346,6 +360,7 @@ export default function App() {
           disabled={!state.selectedChangeId} onClick={() => setZoomTick((t) => t + 1)}>Zoom to selected</button>
         <button className="rounded bg-slate-100 px-2 py-0.5 text-xs hover:bg-slate-200"
           onClick={() => setResetTick((t) => t + 1)}>Reset view</button>
+        {load.status === 'ready' && load.result.loads && <LoadsControl loads={load.result.loads} view={loadView} onChange={setLoadView} />}
         {load.status === 'ready' && (
           <span className="ml-auto text-xs text-slate-500">
             {load.result.meta.source.baseline} → {load.result.meta.source.revised} · {load.result.meta.units.length}, {load.result.meta.units.force}
@@ -382,6 +397,8 @@ export default function App() {
           onSelect={select}
           story={story}
           onStory={setStory}
+          loadView={loadView}
+          loadFocus={loadFocus}
           viewer={
             <Suspense fallback={<div className="p-4 text-sm text-slate-400">Loading viewer…</div>}>
               <SplitView {...viewerProps} sync={linked ? sync : null} />

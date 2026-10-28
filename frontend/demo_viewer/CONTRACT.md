@@ -2,11 +2,15 @@
 
 The diff engine compares two ETABS exports of the same model, A (before) and B (after), and writes one JSON file. That file is the only thing the viewer reads. The exact types live in [`contract.ts`](contract.ts); this page explains them in plain words. A small working example is in [`example-diff.json`](example-diff.json).
 
-Version 0.2 is close to final but not frozen. Field names and shapes should hold; a few fields may still be added. 0.2 only adds fields to 0.1 (`elements[].loads` and `loadDefinitions`, for drawing applied loads), so a 0.1 reader still works.
+Version 0.2 is close to final but not frozen. Field names and shapes should hold; a few fields may still be added. 0.2 only adds fields to 0.1 (`elements[].loads` and `loadDefinitions` for drawing applied loads, `elements[].grid`, and `unit`/`valueUnits` on changes), so a 0.1 reader still works.
 
 ## Units
 
 All lengths and coordinates are in **inches** and forces in **kip**, whatever units the ETABS files used. The engine converts on parse. `meta.lengthUnit` is always `"in"` so you can check.
+
+Each current-engine `changes` entry has `unit`: a normalized display string such as `in`, `kip`, `ksi`, `kip-in`, `kip/in`, `deg`, or null. Names, modifiers and scale factors are unitless. Unrecognized dimensions also return null rather than an inferred unit; this does not certify that an unrecognized numeric keyword is dimensionless. Older saved diffs may omit the field.
+
+Structured changes (such as a load record containing force and distance together) have `unit: null` and, when known dimensions exist, `valueUnits: { before: { "0.FVAL": "kip", "0.DIST": "in", "0.TYPE": null }, after: ... }`. Keys are dot-separated paths into that side's JSON value, including array indices. Render units next to their individual values. A response-spectrum case's acceleration factor is `in/s^2`; spring stiffness follows its translational/rotational definition. The CSV includes both `unit` and `valueUnits` columns.
 
 ## Top Level
 
@@ -41,6 +45,7 @@ One entry per element in the union of A and B. Unchanged elements are included s
 | `subtype` | Finer type: `beam`, `column`, `brace` (frames), `floor`, `wall` (areas), `joint` (points), or `other`. |
 | `label` | The element's ETABS label (like `B12` or `C3`) so people can find it in ETABS. **Display only.** Labels are not used for matching and can change between A and B. B's label is shown, or A's if the element was removed. |
 | `story` | The story the element belongs to. B's story, or A's if removed. |
+| `grid` | Plan location on the model's global Cartesian grid, e.g. `C/4`, `C-D/4`, or `C/3-4`. Areas can span ranges on both axes. B's grid is used, or A's for a removal. Every vertex must lie on a unique X/Y intersection within `meta.tolerance`; otherwise null. Multiple grid systems are qualified (`G2:C/4`); ambiguous, rotated, offset, and cylindrical systems return null. This is location metadata; edits to grid definitions are not yet compared. |
 | `status` | What happened to it. See the table below. |
 | `geometry` | Where to draw it, as `[x, y, z]` points in inches, global coordinates, Z up. A point has one, a frame has two (start and end), an area has its corners in order around the edge. B's position, or A's if removed. **For drawing only**: matching uses `key`, not these numbers. |
 | `changes` | What changed, as a list of `{ field, before, after, affects }`. Empty when unchanged. |

@@ -107,3 +107,18 @@ it('describes definition renames as names, not reversed member ends', () => {
   const renamed = result.changes.find((c) => c.subject === 'Material Renamed')!;
   expect(describeChange(renamed, result)).toBe('Material Renamed was renamed from A992Fy50 to Renamed. Label only, not a physical change.');
 });
+
+it('carries scalar units and renders mixed load units beside the correct values', () => {
+  const d = structuredClone(example) as unknown as EngineDiff;
+  const element = d.elements.find((e) => e.label === 'B1' && e.story === 'Story2')!;
+  element.changes = [
+    { field: 'ANG', before: 0, after: 90, affects: ['stiffness'], unit: 'deg' },
+    { field: 'loads:SDL', before: [{ FVAL: 10, DIST: 20 }], after: [{ FVAL: 12, DIST: 30 }], affects: ['load'], unit: null,
+      valueUnits: { before: { '0.FVAL': 'kip', '0.DIST': 'in' }, after: { '0.FVAL': 'kip', '0.DIST': 'in' } } },
+  ];
+  const result = adaptEngine(d, { mock: true });
+  expect(describeChange(result.changes.find((c) => c.group === '1E')!, result)).toContain('90.0 deg');
+  const load = describeChange(result.changes.find((c) => c.group === '2B' && c.member_ids.length)!, result);
+  expect(load).toContain('12 kip');
+  expect(load).toContain('30 in');
+});

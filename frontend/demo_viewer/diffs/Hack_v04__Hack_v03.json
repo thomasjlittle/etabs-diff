@@ -58,7 +58,8 @@
      144.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "A/1"
   },
   {
    "key": "column|Base|0|1440|0~Story1|0|1440|0",
@@ -79,7 +80,8 @@
      144.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "A/2"
   },
   {
    "key": "column|Base|2400|0|0~Story1|2400|0|0",
@@ -100,7 +102,8 @@
      144.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "B/1"
   },
   {
    "key": "column|Base|2400|1440|0~Story1|2400|1440|0",
@@ -121,7 +124,8 @@
      144.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "B/2"
   },
   {
    "key": "beam|Story1|0|0|0~Story1|3000|0|0",
@@ -143,6 +147,7 @@
     ]
    ],
    "changes": [],
+   "grid": null,
    "loads": {
     "a": {
      "Live": [
@@ -212,6 +217,7 @@
     ]
    ],
    "changes": [],
+   "grid": "A-B/2",
    "loads": {
     "a": {
      "Live": [
@@ -278,7 +284,8 @@
      144.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "A/1-2"
   },
   {
    "key": "beam|Story1|2400|0|0~Story1|2400|1440|0",
@@ -299,7 +306,8 @@
      144.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "B/1-2"
   },
   {
    "key": "beam|Story1|1200|0|0~Story1|1200|1440|0",
@@ -320,7 +328,8 @@
      144.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": null
   },
   {
    "key": "beam|Story1|2400|1440|0~Story1|2880|1440|0",
@@ -341,7 +350,8 @@
      144.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": null
   },
   {
    "key": "floor|Story1|0|0|0~Story1|0|1440|0~Story1|2400|0|0~Story1|2400|1440|0",
@@ -372,7 +382,8 @@
      144.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "A-B/1-2"
   },
   {
    "key": "Base|0|0|0",
@@ -388,7 +399,8 @@
      0.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "A/1"
   },
   {
    "key": "Base|0|1440|0",
@@ -404,7 +416,8 @@
      0.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "A/2"
   },
   {
    "key": "Base|2400|0|0",
@@ -420,7 +433,8 @@
      0.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "B/1"
   },
   {
    "key": "Base|2400|1440|0",
@@ -436,7 +450,8 @@
      0.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "B/2"
   },
   {
    "key": "column|Story1|0|0|0~Story2|0|0|0",
@@ -457,7 +472,8 @@
      288.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "A/1"
   },
   {
    "key": "column|Story1|0|1440|0~Story2|0|1440|0",
@@ -478,7 +494,8 @@
      288.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "A/2"
   },
   {
    "key": "column|Story1|2400|0|0~Story2|2400|0|0",
@@ -499,7 +516,8 @@
      288.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "B/1"
   },
   {
    "key": "column|Story1|2400|1440|0~Story2|2400|1440|0",
@@ -520,7 +538,8 @@
      288.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "B/2"
   },
   {
    "key": "beam|Story2|0|0|0~Story2|3000|0|0",
@@ -542,6 +561,7 @@
     ]
    ],
    "changes": [],
+   "grid": null,
    "loads": {
     "a": {
      "Live": [
@@ -589,6 +609,7 @@
     ]
    ],
    "changes": [],
+   "grid": "A-B/2",
    "loads": {
     "a": {
      "Live": [
@@ -634,7 +655,8 @@
      288.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "A/1-2"
   },
   {
    "key": "beam|Story2|2400|0|0~Story2|2400|1440|0",
@@ -655,7 +677,8 @@
      288.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "B/1-2"
   },
   {
    "key": "beam|Story2|1200|0|0~Story2|1200|1440|0",
@@ -676,7 +699,8 @@
      288.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": null
   },
   {
    "key": "beam|Story2|2400|1440|0~Story2|2880|1440|0",
@@ -697,7 +721,8 @@
      288.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": null
   },
   {
    "key": "floor|Story2|0|0|0~Story2|0|1440|0~Story2|2400|0|0~Story2|2400|1440|0",
@@ -728,7 +753,8 @@
      288.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "A-B/1-2"
   }
  ],
  "tables": {

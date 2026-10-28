@@ -66,7 +66,8 @@
      "affects": [
       "stiffness"
      ],
-     "row": 6
+     "row": 6,
+     "unit": "deg"
     },
     {
      "field": "SECTION",
@@ -76,9 +77,11 @@
       "stiffness",
       "mass"
      ],
-     "row": 2
+     "row": 2,
+     "unit": null
     }
-   ]
+   ],
+   "grid": "A/1"
   },
   {
    "key": "column|Base|0|1440|0~Story1|0|1440|0",
@@ -108,9 +111,11 @@
       "stiffness",
       "mass"
      ],
-     "row": 2
+     "row": 2,
+     "unit": null
     }
-   ]
+   ],
+   "grid": "A/2"
   },
   {
    "key": "column|Base|2400|0|0~Story1|2400|0|0",
@@ -140,9 +145,11 @@
       "stiffness",
       "mass"
      ],
-     "row": 2
+     "row": 2,
+     "unit": null
     }
-   ]
+   ],
+   "grid": "B/1"
   },
   {
    "key": "column|Base|2400|1440|0~Story1|2400|1440|0",
@@ -163,7 +170,8 @@
      144.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "B/2"
   },
   {
    "key": "beam|Story1|0|1440|0~Story1|2400|1440|0",
@@ -193,7 +201,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 2
+     "row": 2,
+     "unit": null
     },
     {
      "field": "loads:Dead",
@@ -208,7 +217,16 @@
      "affects": [
       "load"
      ],
-     "row": 9
+     "row": 9,
+     "unit": null,
+     "valueUnits": {
+      "before": {
+       "0.TYPE": null,
+       "0.DIR": null,
+       "0.FVAL": "kip/in"
+      },
+      "after": {}
+     }
     },
     {
      "field": "loads:Live",
@@ -224,7 +242,17 @@
      "affects": [
       "load"
      ],
-     "row": 9
+     "row": 9,
+     "unit": null,
+     "valueUnits": {
+      "before": {
+       "0.TYPE": null,
+       "0.DIR": null,
+       "0.FVAL": "kip",
+       "0.RDIST": null
+      },
+      "after": {}
+     }
     },
     {
      "field": "loadPattern:Dead.SELFWEIGHT",
@@ -233,9 +261,11 @@
      "affects": [
       "load"
      ],
-     "row": 12
+     "row": 12,
+     "unit": null
     }
    ],
+   "grid": "A-B/2",
    "via": [
     "loadPattern:Dead"
    ],
@@ -293,7 +323,8 @@
       "stiffness",
       "mass"
      ],
-     "row": 5
+     "row": 5,
+     "unit": null
     },
     {
      "field": "PROPMODI33",
@@ -303,9 +334,11 @@
       "stiffness",
       "mass"
      ],
-     "row": 5
+     "row": 5,
+     "unit": null
     }
-   ]
+   ],
+   "grid": "A/1-2"
   },
   {
    "key": "beam|Story1|2400|0|0~Story1|2400|1440|0",
@@ -334,9 +367,11 @@
      "affects": [
       "stiffness"
      ],
-     "row": 6
+     "row": 6,
+     "unit": null
     }
-   ]
+   ],
+   "grid": "B/1-2"
   },
   {
    "key": "floor|Story1|0|0|0~Story1|0|1440|0~Story1|2400|0|0~Story1|2400|1440|0",
@@ -373,10 +408,12 @@
      "before": "4Ksi",
      "after": "4000Psi",
      "affects": [],
+     "unit": null,
      "row": null,
      "kind": "renamed"
     }
    ],
+   "grid": "A-B/1-2",
    "via": [
     "shellSection:Slab1",
     "material:4000Psi"
@@ -396,7 +433,8 @@
      0.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "A/1"
   },
   {
    "key": "Base|0|1440|0",
@@ -420,9 +458,11 @@
      "affects": [
       "stiffness"
      ],
-     "row": 8
+     "row": 8,
+     "unit": null
     }
-   ]
+   ],
+   "grid": "A/2"
   },
   {
    "key": "Base|2400|0|0",
@@ -438,7 +478,8 @@
      0.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "B/1"
   },
   {
    "key": "Base|2400|1440|0",
@@ -454,7 +495,8 @@
      0.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "B/2"
   },
   {
    "key": "beam|Story1|0|0|0~Story1|3000|0|0",
@@ -476,6 +518,7 @@
     ]
    ],
    "changes": [],
+   "grid": null,
    "loads": {
     "a": {
      "Live": [
@@ -522,7 +565,8 @@
      144.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": null
   },
   {
    "key": "beam|Story1|2400|1440|0~Story1|2880|1440|0",
@@ -543,7 +587,8 @@
      144.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": null
   },
   {
    "key": "column|Story1|0|0|0~Story2|0|0|0",
@@ -564,7 +609,8 @@
      288.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "A/1"
   },
   {
    "key": "column|Story1|0|1440|0~Story2|0|1440|0",
@@ -585,7 +631,8 @@
      288.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "A/2"
   },
   {
    "key": "column|Story1|2400|0|0~Story2|2400|0|0",
@@ -606,7 +653,8 @@
      288.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "B/1"
   },
   {
    "key": "column|Story1|2400|1440|0~Story2|2400|1440|0",
@@ -627,7 +675,8 @@
      288.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "B/2"
   },
   {
    "key": "beam|Story2|0|0|0~Story2|3000|0|0",
@@ -649,6 +698,7 @@
     ]
    ],
    "changes": [],
+   "grid": null,
    "loads": {
     "a": {
      "Live": [
@@ -696,6 +746,7 @@
     ]
    ],
    "changes": [],
+   "grid": "A-B/2",
    "loads": {
     "a": {
      "Live": [
@@ -741,7 +792,8 @@
      288.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "A/1-2"
   },
   {
    "key": "beam|Story2|2400|0|0~Story2|2400|1440|0",
@@ -762,7 +814,8 @@
      288.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "B/1-2"
   },
   {
    "key": "beam|Story2|2400|1440|0~Story2|2880|1440|0",
@@ -783,7 +836,8 @@
      288.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": null
   },
   {
    "key": "floor|Story2|0|0|0~Story2|0|1440|0~Story2|2400|0|0~Story2|2400|1440|0",
@@ -814,7 +868,8 @@
      288.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "A-B/1-2"
   },
   {
    "key": "beam|Story1|0|0|0~Story1|2400|0|0",
@@ -835,7 +890,8 @@
      144.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "A-B/1"
   }
  ],
  "tables": {
@@ -856,6 +912,7 @@
       "before": "4Ksi",
       "after": "4000Psi",
       "affects": [],
+      "unit": null,
       "row": null,
       "kind": "renamed"
      }
@@ -894,7 +951,8 @@
       "affects": [
        "load"
       ],
-      "row": 12
+      "row": 12,
+      "unit": null
      }
     ]
    }
@@ -928,6 +986,7 @@
       "before": "LL",
       "after": "Live",
       "affects": [],
+      "unit": null,
       "row": null,
       "kind": "renamed"
      }
@@ -956,7 +1015,8 @@
       "affects": [
        "mass"
       ],
-      "row": 11
+      "row": 11,
+      "unit": null
      },
      {
       "field": "INCLUDELOADS",
@@ -965,7 +1025,8 @@
       "affects": [
        "mass"
       ],
-      "row": 11
+      "row": 11,
+      "unit": null
      },
      {
       "field": "LOADPAT:Dead",
@@ -974,7 +1035,8 @@
       "affects": [
        "mass"
       ],
-      "row": 11
+      "row": 11,
+      "unit": null
      },
      {
       "field": "LOADPAT:SW",
@@ -983,7 +1045,8 @@
       "affects": [
        "mass"
       ],
-      "row": 11
+      "row": 11,
+      "unit": null
      }
     ]
    }

@@ -26,6 +26,7 @@ export interface Member {
   end_nodes: [string, string];   // canonical order, so a reversed listing gives the same id
   label?: string;                // display only (revised label when present)
   story: string;
+  grid?: string;
   side: Side;
 }
 

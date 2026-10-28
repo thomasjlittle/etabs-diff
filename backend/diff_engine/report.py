@@ -15,7 +15,7 @@ from .parser import StrPath
 from .rows import affects
 
 COLUMNS = ["table", "key", "kind", "subtype", "label", "story", "status",
-           "field", "before", "after", "affects", "row", "via"]
+           "field", "before", "after", "affects", "row", "via", "unit", "valueUnits"]
 
 
 class CsvRow(TypedDict, total=False):
@@ -33,6 +33,8 @@ class CsvRow(TypedDict, total=False):
     affects: str
     row: object
     via: str
+    unit: str
+    valueUnits: object
 
 
 def _value(v: Any) -> object:
@@ -61,16 +63,17 @@ def _element_rows(elements: List[ElementDiff]) -> Iterator[CsvRow]:
             base = {**base, "key": to["key"], "label": f"{e['label']} -> {to['label']}", "story": to["story"],
                     "status": "moved"}
             yield {**base, "before": _position(e["geometry"]), "after": _position(to["geometry"]),
-                   "affects": " ".join(affects(1)), "row": 1}
+                   "affects": " ".join(affects(1)), "row": 1, "unit": "in"}
         elif e["status"] in ("added", "removed"):
             row = 15 if e["kind"] == "area" else 1  # walls and slabs have their own row
-            out: CsvRow = {**base, "affects": " ".join(affects(row)), "row": row}
+            out: CsvRow = {**base, "affects": " ".join(affects(row)), "row": row, "unit": "in"}
             out["after" if e["status"] == "added" else "before"] = _position(e["geometry"])
             yield out
         for c in e["changes"]:
             yield {**base, "status": "renamed" if c["field"] == "label" and c.get("kind") == "renamed" else base["status"],
                    "field": c["field"], "before": _value(c["before"]), "after": _value(c["after"]),
-                   "affects": " ".join(c["affects"]), "row": _value(c.get("row"))}
+                   "affects": " ".join(c["affects"]), "row": _value(c.get("row")),
+                   "unit": c.get("unit") or "", "valueUnits": _value(c.get("valueUnits"))}
 
 
 def _table_rows(tables: Tables) -> Iterator[CsvRow]:
@@ -84,7 +87,8 @@ def _table_rows(tables: Tables) -> Iterator[CsvRow]:
             for c in table["modified"][entry]:
                 yield {"table": name, "key": entry, "label": entry, "status": c.get("kind", "modified"), "field": c["field"],
                        "before": _value(c["before"]), "after": _value(c["after"]),
-                       "affects": " ".join(c["affects"]), "row": _value(c.get("row"))}
+                       "affects": " ".join(c["affects"]), "row": _value(c.get("row")),
+                       "unit": c.get("unit") or "", "valueUnits": _value(c.get("valueUnits"))}
 
 
 def change_rows(result: DiffOutput) -> Iterator[CsvRow]:

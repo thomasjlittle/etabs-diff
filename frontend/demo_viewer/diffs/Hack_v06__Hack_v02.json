@@ -67,9 +67,11 @@
       "stiffness",
       "mass"
      ],
-     "row": 4
+     "row": 4,
+     "unit": "ksi"
     }
    ],
+   "grid": "A/1",
    "via": [
     "frameSection:W12X58",
     "material:A992Fy50"
@@ -103,9 +105,11 @@
       "stiffness",
       "mass"
      ],
-     "row": 4
+     "row": 4,
+     "unit": "ksi"
     }
    ],
+   "grid": "A/2",
    "via": [
     "frameSection:W12X58",
     "material:A992Fy50"
@@ -139,9 +143,11 @@
       "stiffness",
       "mass"
      ],
-     "row": 4
+     "row": 4,
+     "unit": "ksi"
     }
    ],
+   "grid": "B/1",
    "via": [
     "frameSection:W16X36",
     "material:A992Fy50"
@@ -175,9 +181,11 @@
       "stiffness",
       "mass"
      ],
-     "row": 4
+     "row": 4,
+     "unit": "ksi"
     }
    ],
+   "grid": "B/2",
    "via": [
     "frameSection:W10X60",
     "material:A992Fy50"
@@ -210,9 +218,11 @@
      "affects": [
       "mass"
      ],
-     "row": 4
+     "row": 4,
+     "unit": "kip/in^3"
     }
    ],
+   "grid": "A-B/2",
    "via": [
     "frameSection:Conc16x10",
     "material:6Ksi"
@@ -292,9 +302,11 @@
       "stiffness",
       "mass"
      ],
-     "row": 4
+     "row": 4,
+     "unit": "ksi"
     }
    ],
+   "grid": "A/1-2",
    "via": [
     "frameSection:W18X60",
     "material:A992Fy50"
@@ -328,9 +340,11 @@
       "stiffness",
       "mass"
      ],
-     "row": 4
+     "row": 4,
+     "unit": "ksi"
     }
    ],
+   "grid": "B/1-2",
    "via": [
     "frameSection:W18X60",
     "material:A992Fy50"
@@ -365,7 +379,8 @@
      144.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "A-B/1-2"
   },
   {
    "key": "Base|0|0|0",
@@ -389,9 +404,11 @@
      "affects": [
       "stiffness"
      ],
-     "row": 8
+     "row": 8,
+     "unit": null
     }
-   ]
+   ],
+   "grid": "A/1"
   },
   {
    "key": "Base|0|1440|0",
@@ -407,7 +424,8 @@
      0.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "A/2"
   },
   {
    "key": "Base|2400|0|0",
@@ -423,7 +441,8 @@
      0.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "B/1"
   },
   {
    "key": "Base|2400|1440|0",
@@ -439,7 +458,8 @@
      0.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "B/2"
   },
   {
    "key": "beam|Story1|0|0|0~Story1|3000|0|0",
@@ -461,6 +481,7 @@
     ]
    ],
    "changes": [],
+   "grid": null,
    "loads": {
     "a": {
      "Live": [
@@ -507,7 +528,8 @@
      144.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": null
   },
   {
    "key": "beam|Story1|2400|1440|0~Story1|2880|1440|0",
@@ -528,7 +550,8 @@
      144.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": null
   },
   {
    "key": "column|Story1|0|0|0~Story2|0|0|0",
@@ -549,7 +572,8 @@
      288.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "A/1"
   },
   {
    "key": "column|Story1|0|1440|0~Story2|0|1440|0",
@@ -570,7 +594,8 @@
      288.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "A/2"
   },
   {
    "key": "column|Story1|2400|0|0~Story2|2400|0|0",
@@ -591,7 +616,8 @@
      288.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "B/1"
   },
   {
    "key": "column|Story1|2400|1440|0~Story2|2400|1440|0",
@@ -612,7 +638,8 @@
      288.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "B/2"
   },
   {
    "key": "beam|Story2|0|0|0~Story2|3000|0|0",
@@ -634,6 +661,7 @@
     ]
    ],
    "changes": [],
+   "grid": null,
    "loads": {
     "a": {
      "Live": [
@@ -681,6 +709,7 @@
     ]
    ],
    "changes": [],
+   "grid": "A-B/2",
    "loads": {
     "a": {
      "Live": [
@@ -726,7 +755,8 @@
      288.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "A/1-2"
   },
   {
    "key": "beam|Story2|2400|0|0~Story2|2400|1440|0",
@@ -747,7 +777,8 @@
      288.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "B/1-2"
   },
   {
    "key": "beam|Story2|2400|1440|0~Story2|2880|1440|0",
@@ -768,7 +799,8 @@
      288.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": null
   },
   {
    "key": "floor|Story2|0|0|0~Story2|0|1440|0~Story2|2400|0|0~Story2|2400|1440|0",
@@ -799,7 +831,8 @@
      288.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "A-B/1-2"
   },
   {
    "key": "beam|Story1|0|0|0~Story1|2400|0|0",
@@ -821,6 +854,7 @@
     ]
    ],
    "changes": [],
+   "grid": "A-B/1",
    "loads": {
     "a": {},
     "b": {
@@ -868,7 +902,8 @@
       "affects": [
        "mass"
       ],
-      "row": 4
+      "row": 4,
+      "unit": "kip/in^3"
      }
     ],
     "A992Fy50": [
@@ -880,7 +915,8 @@
        "stiffness",
        "mass"
       ],
-      "row": 4
+      "row": 4,
+      "unit": "ksi"
      }
     ]
    }

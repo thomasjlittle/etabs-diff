@@ -45,6 +45,8 @@ class Model(TypedDict):
     program: Props
     merge_tol: Optional[float]
     stories: List[Props]  # top down, as the file lists them
+    grid_systems: Dict[str, Props]
+    grids: Dict[str, List[Props]]
     points: Dict[str, XYZ]  # (x, y, dz below the level)
     lines: Dict[str, Line]
     areas: Dict[str, Area]
@@ -150,7 +152,7 @@ def parse_text(text: str) -> Model:
     """Parse e2k text. Unknown records are skipped; nothing here raises on odd input except bad UNITS."""
     # Loads and skipped are defaultdicts while parsing, plain dicts once done.
     model = Model(
-        units=None, program={}, merge_tol=None, stories=[], points={}, lines={}, areas={},
+        units=None, program={}, merge_tol=None, stories=[], grid_systems={}, grids={}, points={}, lines={}, areas={},
         point_assigns={}, line_assigns={}, area_assigns={},
         point_loads=defaultdict(list), line_loads=defaultdict(list), area_loads=defaultdict(list),
         materials={}, frame_sections={}, shell_props={}, point_springs={}, line_springs={}, area_springs={},
@@ -206,6 +208,10 @@ def _record(model: Model, kw: str, rest: List[Token], fac: Factors) -> None:
         model["analysis"]["PDELTA"] = key_values(rest, kw, fac)
     elif kw == "STORY":
         model["stories"].append({"name": rest[0][0], **key_values(rest[1:], kw, fac)})
+    elif kw == "GRIDSYSTEM":
+        model["grid_systems"].setdefault(_name(rest[0]), {}).update(key_values(rest[1:], kw, fac))
+    elif kw == "GRID":
+        model["grids"].setdefault(_name(rest[0]), []).append(key_values(rest[1:], kw, fac))
     elif kw == "POINT":
         x, y =float(rest[1][0]) * fac[1], float(rest[2][0]) * fac[1]
         dz = float(rest[3][0]) * fac[1] if len(rest) > 3 and not rest[3][1] else 0.0

@@ -7,7 +7,11 @@
 
 export type Vec3 = [number, number, number];   // global X, Y, Z in inches, for drawing only (B's coordinates; A's for removed)
 export type Affect = 'geometry' | 'stiffness' | 'mass' | 'load';
-export type Change = { field: string; before: unknown; after: unknown; affects: Affect[]; kind?: 'renamed' };
+export type Change = {
+  field: string; before: unknown; after: unknown; affects: Affect[]; kind?: 'renamed';
+  unit?: string | null; // present on current engine output; optional for older saved diffs
+  valueUnits?: Record<'before' | 'after', Record<string, string | null>>;
+};
 
 // One applied load as written in the e2k, minus its pattern, in kip and inches. Raw e2k keys.
 export type AppliedLoad = {
@@ -49,6 +53,7 @@ export type ElementDiff = {
   subtype: 'beam' | 'column' | 'brace' | 'floor' | 'wall' | 'other' | 'joint';
   label: string;                        // display only, so people can find it in ETABS (B's label, A's when removed)
   story: string;                        // story the element is tied to (B's, A's when removed)
+  grid?: string | null;                 // Cartesian plan reference; null when off-grid, ambiguous or unsupported
   status: 'unchanged' | 'added' | 'removed' | 'modified' | 'affected';
   geometry: Vec3[];                     // point: [xyz]; frame: [i, j]; area: corners in drawing order
   changes: Change[];                    // empty when unchanged; for affected, the upstream definition changes

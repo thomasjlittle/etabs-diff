@@ -8,11 +8,13 @@ from typing import (
 )
 
 from . import geometry
+from .change_units import unit_for, value_units
 from .contract import (
     Change, DiffOutput, ElementDiff, ElementLoads, Kind, Meta, ModelMeta, SideLoadDefinitions, Status, Story, Subtype,
     TableDiff, Tables,
 )
 from .geometry import Element, End, Level
+from .grids import grid_reference
 from .loads import definitions, element_loads
 from .match import match_elements, match_levels, overlaps_on_line
 from .parser import DefTable, Model, Props, StrPath, parse_file
@@ -47,6 +49,13 @@ DEF_KIND: Dict[DefTable, str] = {
     "load_patterns": "load_pattern", "load_sets": "load_set",
     "load_cases": "load_case", "combos": "combo", "mass_source": "mass_source",
     "diaphragms": "diaphragm", "functions": "function", "analysis": "analysis",
+}
+DEFINITION_RECORD = {
+    "materials": "MATERIAL", "frameSections": "FRAMESECTION", "shellSections": "SHELLPROP",
+    "pointSprings": "POINTSPRING", "lineSprings": "LINESPRING", "areaSprings": "AREASPRING",
+    "loadPatterns": "LOADPATTERN", "loadSets": "SHELLUNIFORMLOADSET", "loadCases": "LOADCASE",
+    "combos": "COMBO", "massSource": "MASSSOURCE", "diaphragms": "DIAPHRAGM",
+    "functions": "FUNCTION", "analysisOptions": "PDELTA",
 }
 SECTION_MATERIAL_KEYS = ("MATERIAL", "FILLMATERIAL", "CONCMATERIAL", "DECKMATERIAL")
 SPRING_SOURCE: Dict[Kind, DefTable] = {"point": "point_springs", "frame": "line_springs", "area": "area_springs"}
@@ -97,7 +106,7 @@ def diff_models(
     aliases: Aliases = {}
     for name, src, _ in TABLES:
         before = {key: _renamed_refs(props, aliases) for key, props in model_a[src].items()}
-        tables[name] = _table_diff(before, model_b[src], DEF_KIND[src])
+        tables[name] = _table_diff(before, model_b[src], DEF_KIND[src], DEFINITION_RECORD[name])
         aliases[name] = {c["before"]: c["after"] for cs in tables[name]["modified"].values()
                          for c in cs if c.get("kind") == "renamed"}
     pairs, removed, added = match_elements(
@@ -183,8 +192,15 @@ def same(a: Any, b: Any) -> bool:
     return a == b
 
 
-def _change(field: str, before: Any, after: Any, row: Optional[int], key: str = "") -> Change:
-    return Change(field=field, before=before, after=after, affects=affects(row, key), row=row)
+def _change(field: str, before: Any, after: Any, row: Optional[int], key: str = "", record: str = "") -> Change:
+    structured = isinstance(before, (list, dict)) or isinstance(after, (list, dict))
+    change = Change(field=field, before=before, after=after, affects=affects(row, key), row=row,
+                    unit=None if structured else unit_for(record, key or field))
+    if structured:
+        units = {"before": value_units(record, key or field, before), "after": value_units(record, key or field, after)}
+        if any(unit is not None for side in units.values() for unit in side.values()):
+            change["valueUnits"] = units
+    return change
 
 
 # Stories and definition tables ---------------------------------------------------------------------
@@ -202,7 +218,8 @@ def _stories(
         if a is None:
             table["added"].append(b["name"])
             continue
-        changes = [_change(k, a[k], b[k], 1) for k in LEVEL_FIELDS if not same(a[k], b[k])]
+        changes = [_change(k, a[k], b[k], 1, "ELEV" if k == "elevation" else "HEIGHT" if k == "height" else k,
+                           "STORY") for k in LEVEL_FIELDS if not same(a[k], b[k])]
         if changes:
             table["modified"][b["name"]] = changes
     for a in levels_a:
@@ -213,7 +230,7 @@ def _stories(
     return rows, table
 
 
-def _table_diff(defs_a: Dict[str, Props], defs_b: Dict[str, Props], kind: str) -> TableDiff:
+def _table_diff(defs_a: Dict[str, Props], defs_b: Dict[str, Props], kind: str, record: str) -> TableDiff:
     table = TableDiff(added=sorted(set(defs_b) - set(defs_a)), removed=sorted(set(defs_a) - set(defs_b)), modified={})
     # Pair only unambiguous identical definitions. Multiple identical candidates stay added/removed.
     def meaningful(props: Props) -> Props:
@@ -226,11 +243,11 @@ def _table_diff(defs_a: Dict[str, Props], defs_b: Dict[str, Props], kind: str) -
         new = matches[0]
         table["removed"].remove(old)
         table["added"].remove(new)
-        table["modified"][new] = [Change(field="name", before=old, after=new, affects=[], row=None, kind="renamed")]
+        table["modified"][new] = [Change(field="name", before=old, after=new, affects=[], unit=None, row=None, kind="renamed")]
     for name in sorted(set(defs_a) & set(defs_b)):
         a, b = defs_a[name], defs_b[name]
         changes = [
-            _change(key, a.get(key), b.get(key), definition_row(kind, key), key)
+            _change(key, a.get(key), b.get(key), definition_row(kind, key), key, record)
             for key in sorted((set(a) | set(b)) - IGNORED_KEYS)
             if not same(a.get(key), b.get(key))
         ]
@@ -263,7 +280,7 @@ def _element(ctx: _Ctx, a: Optional[Element], b: Optional[Element]) -> ElementDi
     some = cast(Element, b or a)
     own = _own_changes(a, b, ctx.aliases) if a and b else []
     if a and b and a["label"] != b["label"]:
-        own.append(Change(field="label", before=a["label"], after=b["label"], affects=[], row=None, kind="renamed"))
+        own.append(Change(field="label", before=a["label"], after=b["label"], affects=[], unit=None, row=None, kind="renamed"))
     via, upstream = _upstream(ctx, a, b)
     status: Status
     if a is None or b is None:
@@ -279,6 +296,7 @@ def _element(ctx: _Ctx, a: Optional[Element], b: Optional[Element]) -> ElementDi
         status=status,
         geometry=[list(end["xyz"]) for end in some["ends"]],
         changes=own + upstream if status in ("modified", "affected") else [],
+        grid=grid_reference(ctx.a if b is None else ctx.b, some, ctx.tol),
     )
     if via and status in ("modified", "affected"):
         entry["via"] = via
@@ -294,21 +312,23 @@ def _own_changes(a: Element, b: Element, aliases: Optional[Aliases] = None) -> L
     lb = _loads_by_pattern(b["loads"])
     for pattern in sorted(set(la) | set(lb)):
         if not same(la.get(pattern, []), lb.get(pattern, [])):
-            out.append(_change(f"loads:{pattern}", la.get(pattern, []), lb.get(pattern, []), 9))
+            record = {"frame": "LINELOAD", "point": "POINTLOAD", "area": "AREALOAD"}[b["kind"]]
+            out.append(_change(f"loads:{pattern}", la.get(pattern, []), lb.get(pattern, []), 9, record=record))
     return out
 
 
 def _assign_changes(a: Element, b: Element, aliases: Optional[Aliases] = None) -> List[Change]:
     out: List[Change] = []
     before = _renamed_refs(a["props"], aliases or {}, "frameSections" if a["kind"] == "frame" else "shellSections")
+    record = {"frame": "LINEASSIGN", "point": "POINTASSIGN", "area": "AREAASSIGN"}[b["kind"]]
     for key in sorted((set(a["props"]) | set(b["props"])) - IGNORED_KEYS):
         va, vb = before.get(key), b["props"].get(key)
         if key in ANGLE_KEYS:
             va, vb = _angle(va), _angle(vb)
             if not _same_angle(va, vb):
-                out.append(_change(key, va, vb, assign_row(key), key))
+                out.append(_change(key, va, vb, assign_row(key), key, record))
         elif not same(va, vb):
-            out.append(_change(key, va, vb, assign_row(key), key))
+            out.append(_change(key, va, vb, assign_row(key), key, record))
     return out
 
 

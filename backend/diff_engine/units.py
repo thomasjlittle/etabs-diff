@@ -36,6 +36,7 @@ _SECTION_DIMS: Dict[str, Dims] = dict.fromkeys(["D", "B", "T", "T2", "T3", "TF",
 DIMENSIONS: Dict[str, Mapping[str, Dims]] = {
     "PREFERENCE": {"MERGETOL": L},
     "STORY": {"HEIGHT": L, "ELEV": L},
+    "GRID": {"COORD": L},
     # STRESS (user stress-strain points) is left raw: real LB-FT and LB-IN saves of one model write the same numbers.
     "MATERIAL": {"WEIGHTPERVOLUME": F_L3, **_STRESS},
     "FRAMESECTION": {

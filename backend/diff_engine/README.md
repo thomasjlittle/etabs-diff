@@ -143,7 +143,7 @@ Each `Change` carries `row`, the line of the change list (1 to 17) it belongs to
 - **Library sections** (`SHAPE "W14X90"` with no dimensions) only carry the shape name, so a change to the library's values can't be seen. A change of shape name or material can.
 - **Ignored:** `USERJOINT` flags and `FILE` keys (section libraries, function files). Joints with nothing on them aren't listed.
 - **Load cases.** A response spectrum `ACCEL ... SF` is g in the file's length units, so it is scaled like a length (9.80665 m becomes 386.09 in). A pushover `JOINT "label" "story"` is stored as `label@story`.
-- **Not compared:** rebar (`CONCRETESECTION`), groups, links, design preferences, grids. The parser skips them.
+- **Not compared:** rebar (`CONCRETESECTION`), groups, links, design preferences. Grid coordinates are parsed for element locations; grid definition edits are not compared. Rotated, offset and cylindrical grids have no location reference yet.
 - **One-to-one.** Duplicate frames on the same two nodes pair in file order. A frame split in two comes out as removed plus two added, linked as a move only if one piece's far end is within `move_tolerance` of the old one (the colinear link skips splits and merges).
 - **Loads on a reversed colinear move** compare by position, but a load in a local direction (`DIR 1`, `2`, `3`) is not flipped to match the reversed member axes.
 - **Comments.** Lines between `STARTCOMMENTS` and `ENDCOMMENTS` are user text and are skipped. Malformed record lines are skipped with a warning.

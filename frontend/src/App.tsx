@@ -1,5 +1,7 @@
 // keepTABS: review two revisions of a structural model. Frontend only; reads committed diffs and fixtures.
-import { lazy, Suspense, useCallback, useEffect, useReducer, useRef, useState, type ReactNode } from 'react';
+import {
+  lazy, Suspense, useCallback, useEffect, useReducer, useRef, useState, type ChangeEvent, type ReactNode,
+} from 'react';
 import type { Result } from './keeptabsTypes';
 import { type ColorBy, reducer } from './data';
 import { ChangeTable, DetailPanel, StoryStrip, SummaryList } from './Panels';
@@ -12,6 +14,10 @@ import { RevisionLog } from './RevisionLog';
 import { categoryOf } from './categories';
 import { UploadStart } from './UploadStart';
 import { Splitter, clamp } from './Splitter';
+import {
+  comparisonKey, parseGridLines, readRegisterHistory, updateWorkbook, writeRegisterHistory,
+  type DuplicateAction, type GridLine, type RegisterHistory,
+} from './excelLog';
 import { LoadDetails, LoadsControl } from './LoadPanel';
 import { type LoadView, defaultLoadView } from './loads';
 
@@ -20,6 +26,7 @@ const Viewer = lazy(() => import('./Viewer'));
 
 // Mock files are bundled from src/mock and loaded lazily, so a missing file fails like a real load.
 const MOCKS = import.meta.glob('./mock/*.json');
+const MODEL_TEXTS = import.meta.glob('../demo_viewer/models/*.e2k', { query: '?raw', import: 'default' });
 
 // Data sources in the top-bar dropdown. "team-fixture" is the team's reference case in schema.py format.
 const SOURCES: [string, string][] = [
@@ -34,6 +41,22 @@ const SOURCES: [string, string][] = [
 // Real ETABS models from frontend/demo_viewer/models/, diffed by the engine for every ordered pair
 // (diff_engine.demo_diffs). The manifest lists the models; each pair is diffs/<original>__<second>.json.
 export const MODELS: string[] = manifest.models;
+
+async function bundledGrids(file: string): Promise<GridLine[]> {
+  const basename = file.replace(/^.*[\\/]/, '');
+  const load = MODEL_TEXTS[`../demo_viewer/models/${basename}`];
+  return load ? parseGridLines((await load()) as string) : [];
+}
+
+async function comparisonGrids(result: Result, source: string, originalFile: File | null, revisedFile: File | null): Promise<GridLine[]> {
+  if (source === 'e2k-upload' && originalFile && revisedFile) {
+    const [original, revised] = await Promise.all([originalFile.text(), revisedFile.text()]);
+    const revisedGrids = parseGridLines(revised);
+    return revisedGrids.length ? revisedGrids : parseGridLines(original);
+  }
+  const revisedGrids = await bundledGrids(result.meta.source.revised);
+  return revisedGrids.length ? revisedGrids : bundledGrids(result.meta.source.baseline);
+}
 const PAIRS = import.meta.glob('../demo_viewer/diffs/*__*.json');
 export interface Pair { original: string; second: string }
 
@@ -258,6 +281,11 @@ export default function App() {
   const [retryTick, setRetryTick] = useState(0);
   const waitingForFile = (source === 'diff-file' && !diffFile) || (source === 'e2k-upload' && !compared);
   const [page, setPage] = useState<'review' | 'log'>('review');
+  const [duplicate, setDuplicate] = useState<{ result: Result; grids: GridLine[] } | null>(null);
+  const [pendingWorkbook, setPendingWorkbook] = useState<{
+    result: Result; grids: GridLine[]; action: 'append' | DuplicateAction; history: RegisterHistory;
+  } | null>(null);
+  const [registerMessage, setRegisterMessage] = useState('');
   // Applied loads: on by default, back to the default pick for each new pair; the element last hovered or
   // clicked shows its loads in the details panel.
   const [loadView, setLoadView] = useState<LoadView | null>(null);
@@ -308,6 +336,89 @@ export default function App() {
     result: load.result, selectedId: state.selectedChangeId, onSelect: select,
     cameraMode, colorBy, storyFilter: story, zoomTick, resetTick, loadView, onLoadFocus: setLoadFocus,
   } : null;
+
+  const downloadRegister = (bytes: Uint8Array, version: string) => {
+    const workbook = new ArrayBuffer(bytes.byteLength);
+    new Uint8Array(workbook).set(bytes);
+    const blob = new Blob([workbook], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `Analysis Register - ${version.replace(/[\\/:*?"<>|]/g, '-')}.xlsx`;
+    link.click();
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+  };
+
+  const appendToWorkbook = (
+    input: Uint8Array, result: Result, grids: GridLine[], action: 'append' | DuplicateAction, history: RegisterHistory,
+  ) => {
+    const update = updateWorkbook(input, result, grids, history, action);
+    writeRegisterHistory(update.history);
+    downloadRegister(update.bytes, update.block.version);
+    setRegisterMessage(`${action === 'replace' ? 'Replaced' : action === 'new' ? 'Logged another entry for' : 'Added'} `
+      + `${result.meta.source.baseline} → ${result.meta.source.revised}; downloaded Analysis Register - ${update.block.version}.xlsx.`);
+  };
+
+  const beginAppend = (
+    result: Result, grids: GridLine[], action: 'append' | DuplicateAction, history: RegisterHistory,
+  ) => {
+    if (Object.keys(history).length > 0) {
+      setPendingWorkbook({ result, grids, action, history });
+      setRegisterMessage('Choose the latest Analysis Register workbook so edits made after downloading it are preserved.');
+      return;
+    }
+
+    void fetch(`${import.meta.env.BASE_URL}analysis-register-template.xlsx`)
+      .then((response) => {
+        if (!response.ok) throw new Error('The Analysis Register template could not be loaded.');
+        return response.arrayBuffer();
+      })
+      .then((buffer) => appendToWorkbook(new Uint8Array(buffer), result, grids, action, history))
+      .catch((error: unknown) => setRegisterMessage(error instanceof Error ? error.message : 'Could not create the Analysis Register.'));
+  };
+
+  const startAppend = async () => {
+    if (load.status !== 'ready' || load.result.mock || !['hack-models', 'e2k-upload'].includes(source)) return;
+    setRegisterMessage('');
+    try {
+      const history = readRegisterHistory();
+      const grids = await comparisonGrids(load.result, source, originalFile, revisedFile);
+      if (history[comparisonKey(load.result)]?.length) {
+        setDuplicate({ result: load.result, grids });
+        return;
+      }
+      beginAppend(load.result, grids, 'append', history);
+    } catch (error) {
+      setRegisterMessage(error instanceof Error ? error.message : 'Could not prepare the Analysis Register.');
+    }
+  };
+
+  const handleRegisterFile = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    const pending = pendingWorkbook;
+    setPendingWorkbook(null);
+    if (!pending) return;
+    if (!file) {
+      setRegisterMessage('No workbook selected; no changes were made.');
+      return;
+    }
+    void file.arrayBuffer()
+      .then((buffer) => appendToWorkbook(
+        new Uint8Array(buffer), pending.result, pending.grids, pending.action, pending.history,
+      ))
+      .catch((error: unknown) => setRegisterMessage(error instanceof Error ? error.message : 'Could not append to the selected workbook.'));
+  };
+
+  const resolveDuplicate = (action: DuplicateAction | 'reject') => {
+    const selected = duplicate;
+    setDuplicate(null);
+    if (!selected || action === 'reject') return;
+    try {
+      beginAppend(selected.result, selected.grids, action, readRegisterHistory());
+    } catch (error) {
+      setRegisterMessage(error instanceof Error ? error.message : 'Could not read the saved Analysis Register history.');
+    }
+  };
   return (
     <div className="flex h-screen flex-col bg-white text-slate-900">
       <header className="flex flex-wrap items-center gap-x-4 gap-y-1 border-b border-slate-200 px-4 py-2">
@@ -360,6 +471,13 @@ export default function App() {
           disabled={!state.selectedChangeId} onClick={() => setZoomTick((t) => t + 1)}>Zoom to selected</button>
         <button className="rounded bg-slate-100 px-2 py-0.5 text-xs hover:bg-slate-200"
           onClick={() => setResetTick((t) => t + 1)}>Reset view</button>
+        <button
+          className="rounded bg-blue-700 px-3 py-1 text-xs font-medium text-white hover:bg-blue-800 disabled:cursor-not-allowed disabled:opacity-40"
+          disabled={page !== 'review' || load.status !== 'ready' || load.result.mock || !['hack-models', 'e2k-upload'].includes(source)}
+          onClick={startAppend}
+        >
+          Append Excel Log
+        </button>
         {load.status === 'ready' && load.result.loads && <LoadsControl loads={load.result.loads} view={loadView} onChange={setLoadView} />}
         {load.status === 'ready' && (
           <span className="ml-auto text-xs text-slate-500">
@@ -367,6 +485,40 @@ export default function App() {
           </span>
         )}
       </header>
+      {registerMessage && <p role="status" className="border-b border-slate-200 bg-slate-50 px-4 py-2 text-xs text-slate-700">{registerMessage}</p>}
+      {pendingWorkbook && (
+        <div className="fixed inset-0 z-20 flex items-center justify-center bg-slate-900/40 p-4" role="presentation">
+          <section role="dialog" aria-modal="true" aria-labelledby="register-file-title"
+            className="w-full max-w-md space-y-3 rounded-lg bg-white p-5 shadow-xl">
+            <h2 id="register-file-title" className="text-base font-semibold">Choose the latest Analysis Register</h2>
+            <p className="text-sm text-slate-600">Selecting the latest downloaded workbook preserves prior log entries and your edits.</p>
+            <label className="block text-sm text-slate-700">Excel workbook
+              <input type="file" accept=".xlsx" className="mt-1 block w-full text-sm" onChange={handleRegisterFile} />
+            </label>
+            <div className="flex justify-end">
+              <button className="rounded border px-3 py-1.5 text-sm hover:bg-slate-50"
+                onClick={() => { setPendingWorkbook(null); setRegisterMessage('No changes were made.'); }}>Cancel</button>
+            </div>
+          </section>
+        </div>
+      )}
+      {duplicate && (
+        <div className="fixed inset-0 z-20 flex items-center justify-center bg-slate-900/40 p-4" role="presentation">
+          <section role="dialog" aria-modal="true" aria-labelledby="duplicate-title"
+            className="w-full max-w-md space-y-3 rounded-lg bg-white p-5 shadow-xl">
+            <h2 id="duplicate-title" className="text-base font-semibold">This comparison is already in the register</h2>
+            <p className="text-sm text-slate-600">
+              {duplicate.result.meta.source.baseline} → {duplicate.result.meta.source.revised}
+            </p>
+            <p className="text-sm text-slate-600">Reject this append, replace the previous generated entry, or log it as a new entry.</p>
+            <div className="flex flex-wrap justify-end gap-2">
+              <button className="rounded border px-3 py-1.5 text-sm hover:bg-slate-50" onClick={() => resolveDuplicate('reject')}>Reject</button>
+              <button className="rounded border px-3 py-1.5 text-sm hover:bg-slate-50" onClick={() => resolveDuplicate('replace')}>Replace</button>
+              <button className="rounded bg-blue-700 px-3 py-1.5 text-sm text-white hover:bg-blue-800" onClick={() => resolveDuplicate('new')}>Log new entry</button>
+            </div>
+          </section>
+        </div>
+      )}
       {page === 'log' && <RevisionLog onOpen={openPair} />}
       {page === 'review' && source === 'e2k-upload' && load.status !== 'ready' && (
         <UploadStart original={originalFile} revised={revisedFile} onOriginal={setOriginalFile} onRevised={setRevisedFile}

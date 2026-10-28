@@ -39,6 +39,8 @@ With [just](https://github.com/casey/just), from the repo root:
 
 The HTML viewer recipes print a URL and try to open your browser. Ctrl+C stops the server. `just typecheck` and `just test` need pyright on your PATH (`npm install -g pyright` or `pip install pyright`); it's a dev tool only.
 
+In the React UI (`just ui`), load a real model comparison and choose **Append Excel Log** to download an `Analysis Register - v??.xlsx`. The first use starts from the included blank register template; later appends ask you to select the latest downloaded workbook so hand-edited cells are retained. The UI remembers logged model pairs in this browser and offers reject, replace, or add-as-new when a pair is repeated.
+
 Without `just`, run the engine from `backend/` (or set `PYTHONPATH=backend` from the root):
 
 ```

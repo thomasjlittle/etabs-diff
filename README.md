@@ -1,5 +1,8 @@
 # For NCSEA 2026 Hackathon, so its a bit chaotic
-![keepTABS diffing two ETABS models](docs/keeptabs-demo.gif)  *keepTABS loading two ETABS exports and showing what changed.*
+
+![keepTABS diffing two ETABS models](docs/keeptabs-demo.gif)
+
+*keepTABS loading two ETABS exports and showing what changed.*
 
 # keepTABS (get it, like ETABS...)
 

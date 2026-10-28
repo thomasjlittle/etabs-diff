@@ -1,63 +1,22 @@
 // Adapter: diff_engine output (frontend/demo_viewer/contract.ts, schemaVersion 0.2) -> keepTABS Result.
-// This is what `just demo` feeds Thomas's viewer, so real .e2k pairs can be reviewed in keepTABS.
+// Every source in the app goes through it: uploads, the Hack model pairs, the seeded demo and diff files.
 //
-// Element-level changes go to the planning-board group for their field. "affected" elements carry
-// their upstream definition's changes; those are reported once, as the table (definition) change,
-// with every member whose `via` names it. Not available from engine output: source line
-// evidence, ambiguous matches. Areas (floors, walls) are listed as changes but not drawn.
-import type { Change, Coverage, Group, Member, Node, Result, Side, Value, Vec3 } from './keeptabsTypes';
-import { GROUPS } from './adapter';
+// Element-level changes are split by category (categories.ts). "affected" elements carry their
+// upstream definition's changes; those are reported once, as the table (definition) change, with
+// every member whose `via` names it. Areas (floors, walls) are listed as changes but not drawn.
+import type { Change as EChange, DiffOutput, ElementDiff as EElement, TableDiff } from '../demo_viewer/contract';
+import type { Change, Member, Node, Result, Side, Value, Vec3 } from './keeptabsTypes';
 import { fieldCategory, tableCategory } from './categories';
-import { type ElementLoads, type LoadDefinitions, loadField, loadValue } from './loads';
+import { loadField, loadValue } from './loads';
 
-// ---- engine contract (subset this adapter reads) ----
-interface EChange {
-  field: string; before: unknown; after: unknown; affects: string[]; kind?: 'renamed'; unit?: string | null;
-  valueUnits?: Record<'before' | 'after', Record<string, string | null>>;
-}
-interface EElement {
-  key: string; kind: 'point' | 'frame' | 'area'; subtype: string; label: string; story: string;
-  status: 'unchanged' | 'added' | 'removed' | 'modified' | 'affected';
-  geometry: Vec3[]; changes: EChange[]; via?: string[]; movedTo?: string; movedFrom?: string; grid?: string | null;
-  loads?: ElementLoads;
-}
-interface ETable { added: string[]; removed: string[]; modified: Record<string, EChange[]> }
-export interface EngineDiff {
-  schemaVersion: string;
-  meta: { a: { file: string }; b: { file: string }; lengthUnit: string; forceUnit?: string; tolerance: number };
-  stories: { name: string; elevA: number | null; elevB: number | null }[];
-  elements: EElement[];
-  tables: Record<string, ETable>;
-  loadDefinitions?: { a: LoadDefinitions; b: LoadDefinitions };
-}
+export type EngineDiff = DiffOutput;
 
-/** Group for an element field (e2k keyword, any case). */
-export function engineFieldGroup(field: string): string {
-  const f = field.toUpperCase();
-  if (f === 'SECTION') return '1A';
-  if (/^(ANG|CARDINALPT|RELEASE|OFFSET|LENGTHOFFI|LENGTHOFFJ|INSERTION|LOCALAXIS)/.test(f)) return '1E';
-  if (/^DIAPH/.test(f)) return 'ST'; // diaphragm assigns are Stretch on the planning board
-  if (/^(RESTRAINT|SPRING)/.test(f)) return '2A';
-  if (/^LOAD/.test(f)) return '2B';
-  if (/MASS/.test(f)) return 'T3';
-  return '1D'; // property modifiers and other frame assigns
-}
-
-// engine table -> [group, record name, subject prefix]
-const TABLES: Record<string, [string, string, string]> = {
-  stories: ['G1', 'Stories', 'Story'],
-  materials: ['1C', 'Materials', 'Material'],
-  frameSections: ['1B', 'Frame section definitions', 'Section'],
-  shellSections: ['ST', 'Shell section definitions', 'Shell section'],
-  pointSprings: ['2A', 'Point springs', 'Point spring'],
-  lineSprings: ['2A', 'Line springs', 'Line spring'],
-  areaSprings: ['2A', 'Area springs', 'Area spring'],
-  loadPatterns: ['T3', 'Load patterns', 'Load pattern'],
-  loadSets: ['2B', 'Load sets', 'Load set'],
-  loadCases: ['T3', 'Load cases', 'Load case'],
-  combos: ['T3', 'Load combinations', 'Combo'],
-  massSource: ['T3', 'Mass source', 'Mass source'],
-  functions: ['ST', 'Functions (spectrum, time history)', 'Function'],
+// engine table -> subject prefix
+const TABLES: Record<string, string> = {
+  stories: 'Story', materials: 'Material', frameSections: 'Section', shellSections: 'Shell section',
+  pointSprings: 'Point spring', lineSprings: 'Line spring', areaSprings: 'Area spring',
+  loadPatterns: 'Load pattern', loadSets: 'Load set', loadCases: 'Load case', combos: 'Combo',
+  massSource: 'Mass source', functions: 'Function',
 };
 
 /** The `via` reference the engine writes for a table entry: materials + NAME -> "material:NAME". */
@@ -124,12 +83,11 @@ export function adaptEngine(d: EngineDiff, opts: { mock: boolean }): Result {
     if (ends.length === 0) continue; // only the story moved
     const shift = Math.max(...old.geometry.map((p) => lift.get(p[2]) ?? 0));
     draft.push({
-      type: 'modified', group: 'G1', category: 'objects', member_ids: [old.key, now.key],
+      type: 'modified', category: 'objects', member_ids: [old.key, now.key],
       extent: { members: 1, distance: Math.max(...ends.map(([, p, q]) => dist(p, q))) },
       before: Object.fromEntries(ends.map(([k, , , r]) => [k, r])),
       after: { ...Object.fromEntries(ends.map(([k, , q]) => [k, q])), ...(shift ? { story_shift: shift } : {}) },
       units: { ...Object.fromEntries(ends.map(([k]) => [k, 'length'])), story_shift: 'length' },
-      evidence: [],
     });
   }
 
@@ -139,33 +97,31 @@ export function adaptEngine(d: EngineDiff, opts: { mock: boolean }): Result {
     const drawn = e.kind === 'frame';
     if (e.status === 'added' || e.status === 'removed') {
       draft.push({
-        type: e.status, group: e.kind === 'area' ? 'ST' : 'G1', category: 'objects', member_ids: drawn ? [e.key] : [],
-        extent: { members: drawn ? 1 : 0, distance: 0 }, before: null, after: null, evidence: [],
+        type: e.status, category: 'objects', member_ids: drawn ? [e.key] : [],
+        extent: { members: drawn ? 1 : 0, distance: 0 }, before: null, after: null,
         ...(drawn ? {} : { subject: subjectOf(e) }),
       });
       continue;
     }
-    // modified: one change per group and category of fields
-    const byGroup = new Map<string, EChange[]>();
+    // modified: one change per category of fields, a rename on its own
+    const byCategory = new Map<string, EChange[]>();
     // "material:4Ksi.name" etc. belong to a definition: reported once as its table change, with this member.
     for (const c of e.changes.filter((x) => !isDefinitionField(x.field))) {
-      const g = c.kind === 'renamed' && c.field === 'label' ? 'rename' : e.kind === 'area' ? 'ST' : engineFieldGroup(c.field.split(':')[0]);
-      const k = `${g}|${fieldCategory(c.field)}`;
-      byGroup.set(k, [...(byGroup.get(k) ?? []), c]);
+      const k = c.kind === 'renamed' && c.field === 'label' ? 'rename' : fieldCategory(c.field);
+      byCategory.set(k, [...(byCategory.get(k) ?? []), c]);
     }
-    for (const [k, cs] of byGroup) {
-      const [group, category] = k.split('|');
-      const field = (c: EChange) => (group === '1A' ? 'section' : loadField(c.field) ?? c.field);
+    for (const [category, cs] of byCategory) {
+      // A frame's SECTION reads as a reassignment ("section"); an area's stays a plain field change.
+      const field = (c: EChange) => (drawn && category === 'sectionAssign' ? 'section' : loadField(c.field) ?? c.field);
       // Load fields read as words with their own units (kip/ft, psf), so they carry no separate unit.
       const value = (c: EChange, side: 'before' | 'after') => loadValue(c.field, e.kind, c[side]) ?? changeValue(c, side);
       draft.push({
-        type: group === 'rename' ? 'label_only' : 'modified', group: group === 'rename' ? 'G1' : group, category,
+        type: category === 'rename' ? 'label_only' : 'modified', category: category === 'rename' ? 'labelOnly' : category,
         member_ids: drawn ? [e.key] : [],
         extent: { members: drawn ? 1 : 0, distance: 0 },
         before: Object.fromEntries(cs.map((c) => [field(c), value(c, 'before')])),
         after: Object.fromEntries(cs.map((c) => [field(c), value(c, 'after')])),
         ...changeUnits(cs.filter((c) => !loadField(c.field)), field),
-        evidence: [],
         ...(drawn ? {} : { subject: subjectOf(e) }),
       });
     }
@@ -174,15 +130,15 @@ export function adaptEngine(d: EngineDiff, opts: { mock: boolean }): Result {
   // ---- definition (table) changes, with every member that uses the definition ----
   const users = (table: string, name: string) =>
     frames.filter((e) => e.via?.includes(viaRef(table, name))).map((e) => e.key);
-  for (const [table, t] of Object.entries(d.tables)) {
-    const [group, , prefix] = TABLES[table] ?? ['T3', table, table];
+  for (const [table, t] of Object.entries(d.tables) as [string, TableDiff][]) {
+    const prefix = TABLES[table] ?? table;
     const category = tableCategory(table);
-    for (const name of t.added) draft.push({ ...defChange('added', group, [], null, null), category, subject: `${prefix} ${name}` });
-    for (const name of t.removed) draft.push({ ...defChange('removed', group, [], null, null), category, subject: `${prefix} ${name}` });
+    for (const name of t.added) draft.push({ ...defChange('added', [], null, null), category, subject: `${prefix} ${name}` });
+    for (const name of t.removed) draft.push({ ...defChange('removed', [], null, null), category, subject: `${prefix} ${name}` });
     for (const [name, cs] of Object.entries(t.modified)) {
       const ids = table === 'stories' ? [] : users(table, name); // story moves are not member changes
       draft.push({
-        ...defChange(cs.every((c) => c.kind === 'renamed') ? 'label_only' : 'modified', group, ids,
+        ...defChange(cs.every((c) => c.kind === 'renamed') ? 'label_only' : 'modified', ids,
           Object.fromEntries(cs.map((c) => [defField(c.field), changeValue(c, 'before')])),
           Object.fromEntries(cs.map((c) => [defField(c.field), changeValue(c, 'after')]))),
         ...changeUnits(cs, (c) => defField(c.field)),
@@ -196,15 +152,6 @@ export function adaptEngine(d: EngineDiff, opts: { mock: boolean }): Result {
 
   // ---- assemble ----
   const changes: Change[] = draft.map((c, n) => ({ id: `C${String(n + 1).padStart(2, '0')}`, ...c }));
-  const groups: Group[] = GROUPS.map(([id, title]) => ({
-    id, title, change_ids: changes.filter((c) => c.group === id).map((c) => c.id),
-  }));
-  const coverage: Coverage[] = [
-    { group: 'G1', record: 'Frame members', status: 'compared' },
-    { group: '2A', record: 'Joints (restraints, springs, loads)', status: 'compared' },
-    { group: 'ST', record: 'Area objects: listed, not drawn', status: 'compared' },
-    ...Object.keys(d.tables).map((t) => ({ group: (TABLES[t] ?? ['T3'])[0], record: (TABLES[t] ?? ['', t])[1], status: 'compared' as const })),
-  ];
 
   // Nodes: every frame end, plus joints the engine lists (restraints, springs, loads).
   const nodes = new Map<string, Node>();
@@ -218,12 +165,8 @@ export function adaptEngine(d: EngineDiff, opts: { mock: boolean }): Result {
   return {
     mock: opts.mock,
     meta: {
-      schema_version: `keeptabs-0.1 (adapted from engine ${d.schemaVersion})`,
       source: { baseline: d.meta.a.file, revised: d.meta.b.file },
       units: { length: d.meta.lengthUnit, force: d.meta.forceUnit ?? 'kip' },
-      coordinate_system: { axes: 'X, Y plan; Z up', aligned: true, offset: [0, 0, 0] },
-      match_tolerance: d.meta.tolerance,
-      mock: opts.mock,
     },
     stories: d.stories.map((s) => ({
       name: s.name, elevation: (s.elevB ?? s.elevA)!,
@@ -232,8 +175,6 @@ export function adaptEngine(d: EngineDiff, opts: { mock: boolean }): Result {
     nodes: [...nodes.values()],
     members,
     changes,
-    groups,
-    warnings: { coverage, ambiguous: [], error: null },
     // Applied loads as the engine writes them (0.2), for drawing a pattern, case or combo.
     loads: {
       elements: d.elements.filter((e) => e.loads).map((e) => ({
@@ -251,6 +192,6 @@ const isDefinitionField = (f: string) => f.includes(':') && DEFINITION_REFS.has(
 /** "material:A992Fy50.Fy" -> "Fy"; the subject already names the definition. */
 const defField = (f: string) => f.replace(/^[A-Za-z]+:[^.]*\./, '');
 
-function defChange(type: Change['type'], group: string, ids: string[], before: Change['before'], after: Change['after']): Omit<Change, 'id'> {
-  return { type, group, member_ids: ids, extent: { members: ids.length, distance: 0 }, before, after, evidence: [] };
+function defChange(type: Change['type'], ids: string[], before: Change['before'], after: Change['after']): Omit<Change, 'id' | 'category'> {
+  return { type, member_ids: ids, extent: { members: ids.length, distance: 0 }, before, after };
 }

@@ -31,9 +31,10 @@ egit *args:
 typecheck:
     pyright
 
-# type-check, then run the diff engine tests
+# type-check, then run the diff engine tests and the React app's tests (installs the app first if needed)
 test: typecheck
     python3 -m unittest discover -s backend/diff_engine/tests -t backend
+    cd frontend && if [ ! -d node_modules ] || [ package-lock.json -nt node_modules ]; then npm ci; fi && npm test
 
 # --- UI (the React app in frontend/, needs node and npm) ---
 

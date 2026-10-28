@@ -1,7 +1,7 @@
 // Pure data helpers: no React, no three.js, so the rules can be unit tested.
 import type { Change, Member, Result, Value, Vec3 } from './keeptabsTypes';
 
-/** Renames and reversed end order are bookkeeping, not physical changes. */
+/** Renames are bookkeeping, not physical changes. */
 export const isPhysical = (c: Change) => c.type !== 'label_only';
 
 /** Rank by extent only: members affected, then distance moved. Never by structural significance. */
@@ -14,14 +14,12 @@ export function headlineCounts(r: Result) {
   return { added: n('added'), removed: n('removed'), modified: n('modified'), label_only: n('label_only') };
 }
 
-/** A group is "seen, not compared" when every record type in it was seen but not compared. */
-export function groupCoverage(r: Result, groupId: string): 'compared' | 'seen_not_compared' | 'none' {
-  const rows = r.warnings.coverage.filter((c) => c.group === groupId);
-  if (rows.length === 0) return 'none';
-  return rows.every((c) => c.status === 'seen_not_compared') ? 'seen_not_compared' : 'compared';
-}
-
 export const memberMap = (r: Result) => new Map(r.members.map((m) => [m.id, m]));
+
+/** Every change to the element `c` is about: the same subject (undrawn elements, definitions), else a shared member. */
+export const elementChanges = (r: Result, c: Change) => r.changes.filter((x) => (c.subject
+  ? x.subject === c.subject
+  : !x.subject && x.member_ids.some((id) => c.member_ids.includes(id))));
 
 // ---------- viewer rules ----------
 
@@ -106,16 +104,12 @@ export function describeChange(c: Change, r: Result, members = memberMap(r)): st
   const a = c.after ?? {};
   const lu = r.meta.units.length;
 
-  if (c.type === 'added' && 'story' in a)
-    return `A new level, ${a.story}, was added at elevation ${fmt(a.elevation, lu)} with ${c.extent.members} members.`;
   if (c.type === 'added') return `${c.subject ?? memberName(m)} was added.`;
   if (c.type === 'removed') return `${c.subject ?? memberName(m)} was removed.`;
   if (c.type === 'label_only' && 'label' in a)
     return `${c.subject ?? `${m ? KIND[m.kind] : 'Member'} at ${m?.story ?? '?'}`} was renamed from ${b.label} to ${a.label}. Label only, not a physical change.`;
   if (c.type === 'label_only' && 'name' in a)
     return `${c.subject ?? 'Definition'} was renamed from ${b.name} to ${a.name}. Label only, not a physical change.`;
-  if (c.type === 'label_only')
-    return `${memberName(m)} lists its end nodes in reverse order in the revised file. Same member, not a physical change.`;
 
   const ends = ['end_i', 'end_j'].filter((k) => k in a);
   if (ends.length) {

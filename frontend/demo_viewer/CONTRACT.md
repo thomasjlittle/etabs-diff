@@ -2,7 +2,7 @@
 
 The diff engine compares two ETABS exports of the same model, A (before) and B (after), and writes one JSON file. That file is the only thing the viewer reads. The exact types live in [`contract.ts`](contract.ts); this page explains them in plain words. A small working example is in [`example-diff.json`](example-diff.json).
 
-Version 0.2 is close to final but not frozen. Field names and shapes should hold; a few fields may still be added. 0.2 only adds fields to 0.1 (`elements[].loads` and `loadDefinitions` for drawing applied loads, `elements[].grid`, and `unit`/`valueUnits` on changes), so a 0.1 reader still works.
+Version 0.2 is close to final but not frozen. Field names and shapes should hold; a few fields may still be added. 0.2 only adds fields to 0.1 (`elements[].loads` and `loadDefinitions` for drawing applied loads, `elements[].grid`, and `unit`/`valueUnits` on changes), so a 0.1 reader still works. The engine builds the same contract as Python types in `backend/diff_engine/contract.py`.
 
 ## Units
 
@@ -28,7 +28,9 @@ Structured changes (such as a load record containing force and distance together
 
 - `a`, `b`: the two input files. `file` is the file name, `etabsVersion` is the ETABS version that wrote it, `units` is the unit string from the file (for display only, since geometry is already in inches).
 - `lengthUnit`: always `"in"`.
+- `forceUnit`: always `"kip"`.
 - `tolerance`: how close (in inches) two elements' positions have to be to count as the same element. Defaults to the model's own merge tolerance.
+- `moveTolerance`: how far (in inches) a removed and an added frame can be apart and still be linked as one move. Defaults to 36; 0 turns move linking off.
 
 ## `stories`
 
@@ -48,7 +50,7 @@ One entry per element in the union of A and B. Unchanged elements are included s
 | `grid` | Plan location on the model's global Cartesian grid, e.g. `C/4`, `C-D/4`, or `C/3-4`. Areas can span ranges on both axes. B's grid is used, or A's for a removal. Every vertex must lie on a unique X/Y intersection within `meta.tolerance`; otherwise null. Multiple grid systems are qualified (`G2:C/4`); ambiguous, rotated, offset, and cylindrical systems return null. This is location metadata; edits to grid definitions are not yet compared. |
 | `status` | What happened to it. See the table below. |
 | `geometry` | Where to draw it, as `[x, y, z]` points in inches, global coordinates, Z up. A point has one, a frame has two (start and end), an area has its corners in order around the edge. B's position, or A's if removed. **For drawing only**: matching uses `key`, not these numbers. |
-| `changes` | What changed, as a list of `{ field, before, after, affects }`. Empty when unchanged. |
+| `changes` | What changed, as a list of `{ field, before, after, affects, unit }`. Empty when unchanged. See [`changes`](#changes). |
 | `via` | Only on `affected` elements: which definitions it inherited the change from. |
 | `movedTo` | Optional, only on `removed` elements: the `key` of the `added` element it moved to. |
 | `movedFrom` | Optional, only on `added` elements: the `key` of the `removed` element it moved from. |
@@ -70,11 +72,13 @@ When the engine decides a removed element and an added element are the same memb
 
 ### `changes`
 
-Each change is `{ field, before, after, affects }`:
+Each change is `{ field, before, after, affects, unit }`, plus the optional `kind`, `row` and `valueUnits`:
 
 - `field`: what changed, e.g. `"section"`, `"restraint"`, `"load:LIVE.FZ"`, `"material:A992Fy50.Fy"`.
 - `before`, `after`: the old and new values. Any JSON type (number, string, object). `before` is `null` for things that didn't exist in A, and `after` is `null` for things gone in B.
 - `affects`: which kinds of behavior the change matters for: any of `geometry`, `stiffness`, `mass`, `load`. Useful later for filtering or coloring.
+- `unit`, `valueUnits`: the display unit of the values. See [Units](#units).
+- `row`: which row (1 to 17) of the team's change list this is, or `null` when it's outside the list.
 - `kind`: optional `"renamed"` on a `label` or definition `name` change. The old/new names are in `before` / `after`, with an empty `affects` list. Elements retain `status: "modified"` and are counted there for compatibility; viewers can show label-only changes as renamed. A rename can coexist with physical changes on the same element.
 
 ### Renamed definitions
@@ -87,7 +91,7 @@ Not every joint. Only points that carry something of their own (a support, a spr
 
 ## `tables`
 
-Definitions that aren't elements in space: `stories`, `materials`, `frameSections`, `shellSections`, `pointSprings`, `loadPatterns`, plus `loadCases`, `combos`, `massSource`, `diaphragms`, `functions` (response spectrum and time history) and `analysisOptions` (the global P-delta setting) when the engine compares them. Each one is:
+Definitions that aren't elements in space: `stories`, `materials`, `frameSections`, `shellSections`, `pointSprings`, `loadPatterns`, plus `lineSprings`, `areaSprings`, `loadSets` (shell uniform load sets), `loadCases`, `combos`, `massSource`, `diaphragms`, `functions` (response spectrum and time history) and `analysisOptions` (the global P-delta setting) when the engine compares them. Each one is:
 
 - `added`: names only in B.
 - `removed`: names only in A.

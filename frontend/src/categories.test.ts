@@ -1,7 +1,5 @@
-// Left-panel categories: field and table rules, the mock fallback, and every real Hack pair.
+// Left-panel categories: field and table rules, and every real Hack pair.
 import { describe, expect, it } from 'vitest';
-import mock from './mock/mock-result.json';
-import type { Result } from './keeptabsTypes';
 import { CATEGORY_TITLE, SECTIONS, categoryOf, fieldCategory, tableCategory } from './categories';
 import { loadScenario, MODELS } from './App';
 
@@ -16,7 +14,6 @@ describe('categories', () => {
     expect(fieldCategory('DIAPH')).toBe('diaphragms');
     expect(fieldCategory('RESTRAINT')).toBe('restraints');
     expect(fieldCategory('loads:Dead')).toBe('appliedLoads');
-    expect(fieldCategory('props.release')).toBe('releases');
     expect(fieldCategory('SOMETHINGNEW')).toBe('other');
   });
 
@@ -31,13 +28,6 @@ describe('categories', () => {
   it('category ids are unique', () => {
     const ids = SECTIONS.flatMap((s) => s.items.map((c) => c.id));
     expect(new Set(ids).size).toBe(ids.length);
-  });
-
-  it('mock changes fall back on their group', () => {
-    const r = mock as unknown as Result;
-    const of = (id: string) => categoryOf(r.changes.find((c) => c.id === id)!);
-    expect([of('C01'), of('C02'), of('C03'), of('C04'), of('C06'), of('C07')])
-      .toEqual(['stories', 'objects', 'objects', 'labelOnly', 'sectionAssign', 'materials']);
   });
 
   it('every change in every Hack pair has a listed category, and none is uncategorized', async () => {

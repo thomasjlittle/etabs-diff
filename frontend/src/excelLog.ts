@@ -1,6 +1,7 @@
 import { strFromU8, strToU8, unzipSync, zipSync } from 'fflate';
-import { describeChange } from './data';
-import type { Change, Member, Result, Vec3 } from './keeptabsTypes';
+import { categoryOf } from './categories';
+import { describeChange, memberMap } from './data';
+import type { Change, Member, Result } from './keeptabsTypes';
 
 const SHEET = 'xl/worksheets/sheet1.xml';
 const SHARED_STRINGS = 'xl/sharedStrings.xml';
@@ -11,23 +12,18 @@ const COMMENT_STYLE_ROW = 44;
 const COMMENT_ROWS = 9;
 const HISTORY_KEY = 'keeptabs.analysis-register.history';
 
-const BUCKETS: { title: string; groups: string[] }[] = [
-  { title: 'Geometry and member changes', groups: ['G1'] },
-  { title: 'Section assignments', groups: ['1A'] },
-  { title: 'Section definitions', groups: ['1B'] },
-  { title: 'Materials', groups: ['1C'] },
-  { title: 'Member properties and releases', groups: ['1D', '1E'] },
-  { title: 'Supports and springs', groups: ['2A'] },
-  { title: 'Applied loads', groups: ['2B'] },
-  { title: 'Load definitions and mass source', groups: ['T3'] },
-  { title: 'Other model changes', groups: ['ST', 'LO'] },
+// One comment row per bucket, by category (categories.ts). The last bucket takes every category not listed.
+const BUCKETS: { title: string; categories: string[] }[] = [
+  { title: 'Geometry and member changes', categories: ['objects', 'stories'] },
+  { title: 'Section assignments', categories: ['sectionAssign'] },
+  { title: 'Section definitions', categories: ['frameSections', 'shellSections'] },
+  { title: 'Materials', categories: ['materials'] },
+  { title: 'Member properties and releases', categories: ['modifiers', 'releases'] },
+  { title: 'Supports and springs', categories: ['restraints', 'linkProps'] },
+  { title: 'Applied loads', categories: ['appliedLoads'] },
+  { title: 'Load definitions and mass source', categories: ['loadPatterns', 'loadCases', 'combos', 'massSource'] },
+  { title: 'Other model changes', categories: [] },
 ];
-
-export interface GridLine {
-  label: string;
-  direction: 'X' | 'Y';
-  coordinate: number;
-}
 
 export interface LogBlock {
   startRow: number;
@@ -50,95 +46,25 @@ export function comparisonKey(result: Result): string {
   return `${result.meta.source.baseline}→${result.meta.source.revised}`.toLowerCase();
 }
 
-export function parseGridLines(text: string): GridLine[] {
-  const lines: GridLine[] = [];
-  const pattern = /^\s*GRID\s+"[^"]+"\s+LABEL\s+"([^"]+)"\s+DIR\s+"([XY])"\s+COORD\s+([-+.\deE]+)/i;
-  const lengthUnit = text.match(/^\s*UNITS\s+"[^"]+"\s+"([^"]+)"/im)?.[1]?.toUpperCase() ?? 'IN';
-  const lengthToIn: Record<string, number> = { IN: 1, FT: 12, M: 1 / 0.0254, CM: 1 / 2.54, MM: 1 / 25.4 };
-  const scale = lengthToIn[lengthUnit];
-  if (scale === undefined) throw new Error(`Unsupported grid length unit: ${lengthUnit}`);
-  for (const line of text.split(/\r?\n/)) {
-    const match = line.match(pattern);
-    if (match) lines.push({
-      label: match[1], direction: match[2].toUpperCase() as 'X' | 'Y', coordinate: Number(match[3]) * scale,
-    });
-  }
-  return lines;
-}
-
-export function memberGridLocation(memberId: string, result: Result, grids: GridLine[]): string | null {
-  const member = result.members.find((item) => item.id === memberId);
-  if (!member) return null;
-  const nodes = new Map(result.nodes.map((node) => [node.id, node.xyz]));
-  return locationForMember(member, nodes, grids);
-}
-
-function locationForMember(member: Member, nodes: Map<string, Vec3>, grids: GridLine[]): string | null {
-  const [i, j] = member.end_nodes.map((id) => nodes.get(id));
-  if (!i || !j) return null;
-
-  const xs = grids.filter((line) => line.direction === 'X').sort((a, b) => a.coordinate - b.coordinate);
-  const ys = grids.filter((line) => line.direction === 'Y').sort((a, b) => a.coordinate - b.coordinate);
-  const near = (value: number, candidates: GridLine[]) => {
-    const line = candidates.reduce<GridLine | undefined>((best, item) =>
-      !best || Math.abs(item.coordinate - value) < Math.abs(best.coordinate - value) ? item : best, undefined);
-    return line && Math.abs(line.coordinate - value) <= 0.5 ? line : undefined;
-  };
-  const range = (a: GridLine | undefined, b: GridLine | undefined) =>
-    a && b ? (a.label === b.label ? a.label : `${a.label}–${b.label}`) : undefined;
-  const xI = near(i[0], xs);
-  const xJ = near(j[0], xs);
-  const yI = near(i[1], ys);
-  const yJ = near(j[1], ys);
-
-  if (member.kind === 'column') {
-    const x = xI ?? xJ;
-    const y = yI ?? yJ;
-    return x && y ? `grid ${x.label}/${y.label}` : null;
-  }
-  if (Math.abs(i[1] - j[1]) <= 0.5) {
-    const line = yI ?? yJ;
-    const span = range(xI, xJ);
-    return line && span ? `grids ${span}, line ${line.label}` : null;
-  }
-  if (Math.abs(i[0] - j[0]) <= 0.5) {
-    const line = xI ?? xJ;
-    const span = range(yI, yJ);
-    return line && span ? `grid ${line.label}, lines ${span}` : null;
-  }
-  return xI && yI && xJ && yJ ? `grids ${xI.label}/${yI.label}–${xJ.label}/${yJ.label}` : null;
-}
-
-function changeText(
-  change: Change, result: Result, grids: GridLine[], members: Map<string, Member>, nodes: Map<string, Vec3>,
-): string {
+function changeText(change: Change, result: Result, members: Map<string, Member>): string {
   const description = describeChange(change, result, members);
-  const locations = [...new Set(change.member_ids.map((id) => {
-    const member = members.get(id);
-    if (!member) return null;
-    const location = locationForMember(member, nodes, grids);
-    return `${member.label ?? member.id}${location ? ` (${location})` : ''}`;
-  }).filter((name): name is string => !!name))];
+  const locations = [...new Set(change.member_ids
+    .map((id) => members.get(id))
+    .filter((member): member is Member => !!member)
+    .map((member) => `${member.label ?? member.id}${member.grid ? ` (grid ${member.grid})` : ''}`))];
   return locations.length ? `${description} Location: ${locations.join('; ')}.` : description;
 }
 
-export function groupedChangeNotes(result: Result, grids: GridLine[]): string[] {
-  const members = new Map(result.members.map((member) => [member.id, member]));
-  const nodes = new Map(result.nodes.map((node) => [node.id, node.xyz]));
-  const buckets = BUCKETS.map((bucket) => {
-    const notes = result.changes
-      .filter((change) => bucket.groups.includes(change.group))
-      .map((change) => changeText(change, result, grids, members, nodes));
+export function groupedChangeNotes(result: Result): string[] {
+  const members = memberMap(result);
+  const bucketOf = (change: Change) => {
+    const i = BUCKETS.findIndex((bucket) => bucket.categories.includes(categoryOf(change)));
+    return i < 0 ? BUCKETS.length - 1 : i;
+  };
+  return BUCKETS.map((bucket, i) => {
+    const notes = result.changes.filter((change) => bucketOf(change) === i).map((change) => changeText(change, result, members));
     return notes.length ? `${bucket.title}: ${notes.join(' ')}` : '';
   });
-  const unassigned = result.changes
-    .filter((change) => !BUCKETS.some((bucket) => bucket.groups.includes(change.group)))
-    .map((change) => changeText(change, result, grids, members, nodes));
-  if (unassigned.length) {
-    const additional = `${BUCKETS[buckets.length - 1].title}: ${unassigned.join(' ')}`;
-    buckets[buckets.length - 1] = [buckets[buckets.length - 1], additional].filter(Boolean).join(' ');
-  }
-  return buckets;
 }
 
 export function comparisonSummary(result: Result): string {
@@ -183,7 +109,6 @@ function isLogBlock(value: unknown): value is LogBlock {
 export function updateWorkbook(
   input: Uint8Array,
   result: Result,
-  grids: GridLine[],
   history: RegisterHistory,
   action: 'append' | DuplicateAction,
 ): { bytes: Uint8Array; history: RegisterHistory; block: LogBlock } {
@@ -200,7 +125,7 @@ export function updateWorkbook(
   const sheetData = sheetDataOf(sheet);
   const version = versionName(result.meta.source.revised);
   const summary = comparisonSummary(result);
-  const notes = groupedChangeNotes(result, grids);
+  const notes = groupedChangeNotes(result);
   const date = new Date().toISOString().slice(0, 10);
   verifyHistory(sheet, strings, history);
 

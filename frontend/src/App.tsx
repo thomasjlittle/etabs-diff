@@ -6,8 +6,6 @@ import type { Result } from './keeptabsTypes';
 import { type ColorBy, reducer } from './data';
 import { ChangeTable, DetailPanel, StoryStrip, SummaryList } from './Panels';
 import type { CameraMode, CameraSync, ViewerProps } from './Viewer';
-import type { Diff, Model } from './types';
-import { adapt } from './adapter';
 import { adaptEngine, type EngineDiff } from './engineAdapter';
 import manifest from '../demo_viewer/diffs/manifest.json';
 import { RevisionLog } from './RevisionLog';
@@ -15,8 +13,7 @@ import { categoryOf } from './categories';
 import { UploadStart } from './UploadStart';
 import { Splitter, clamp } from './Splitter';
 import {
-  comparisonKey, parseGridLines, readRegisterHistory, updateWorkbook, writeRegisterHistory,
-  type DuplicateAction, type GridLine, type RegisterHistory,
+  comparisonKey, readRegisterHistory, updateWorkbook, writeRegisterHistory, type DuplicateAction, type RegisterHistory,
 } from './excelLog';
 import { LoadDetails, LoadsControl } from './LoadPanel';
 import { type LoadView, defaultLoadView } from './loads';
@@ -24,39 +21,17 @@ import { type LoadView, defaultLoadView } from './loads';
 // Loaded separately so tests (no WebGL) never import three.js.
 const Viewer = lazy(() => import('./Viewer'));
 
-// Mock files are bundled from src/mock and loaded lazily, so a missing file fails like a real load.
-const MOCKS = import.meta.glob('./mock/*.json');
-const MODEL_TEXTS = import.meta.glob('../demo_viewer/models/*.e2k', { query: '?raw', import: 'default' });
-
-// Data sources in the top-bar dropdown. "team-fixture" is the team's reference case in schema.py format.
+// Data sources in the top-bar dropdown.
 const SOURCES: [string, string][] = [
   ['e2k-upload', 'Your models (.e2k / .$et)'],
   ['diff-file', 'Dev: open a diff file (.json from diff_engine)'],
   ['hack-models', 'Sample: Hack models, real ETABS (pick two)'],
   ['seeded-demo', 'Sample: Seeded demo, 8 stories (engine output)'],
-  ['team-fixture', 'Dev: team fixture (fixtures/*.json)'],
-  ['mock-result', 'Dev: keepTABS mock'],
 ];
 
 // Real ETABS models from frontend/demo_viewer/models/, diffed by the engine for every ordered pair
 // (diff_engine.demo_diffs). The manifest lists the models; each pair is diffs/<original>__<second>.json.
 export const MODELS: string[] = manifest.models;
-
-async function bundledGrids(file: string): Promise<GridLine[]> {
-  const basename = file.replace(/^.*[\\/]/, '');
-  const load = MODEL_TEXTS[`../demo_viewer/models/${basename}`];
-  return load ? parseGridLines((await load()) as string) : [];
-}
-
-async function comparisonGrids(result: Result, source: string, originalFile: File | null, revisedFile: File | null): Promise<GridLine[]> {
-  if (source === 'e2k-upload' && originalFile && revisedFile) {
-    const [original, revised] = await Promise.all([originalFile.text(), revisedFile.text()]);
-    const revisedGrids = parseGridLines(revised);
-    return revisedGrids.length ? revisedGrids : parseGridLines(original);
-  }
-  const revisedGrids = await bundledGrids(result.meta.source.revised);
-  return revisedGrids.length ? revisedGrids : bundledGrids(result.meta.source.baseline);
-}
 const PAIRS = import.meta.glob('../demo_viewer/diffs/*__*.json');
 export interface Pair { original: string; second: string }
 
@@ -71,18 +46,7 @@ export async function loadScenario(name: string, pair: Pair = { original: MODELS
     const d = await import('../../fixtures/demo/diff.json');
     return adaptEngine(d.default as unknown as EngineDiff, { mock: true });
   }
-  if (name === 'team-fixture') {
-    const [a, b, d] = await Promise.all([
-      import('../../fixtures/model-a.json'), import('../../fixtures/model-b.json'), import('../../fixtures/diff.json'),
-    ]);
-    return adapt({ modelA: a.default as unknown as Model, modelB: b.default as unknown as Model, diff: d.default as unknown as Diff });
-  }
-  const load = MOCKS[`./mock/${name}.json`];
-  if (!load) throw new Error(`Mock file ${name}.json was not found.`);
-  const data = ((await load()) as { default: Result }).default;
-  if (data.warnings?.error) throw new Error(data.warnings.error);
-  if (data.mock !== true) throw new Error('This file is not marked "mock": true, so it was not loaded.');
-  return data;
+  throw new Error(`Unknown data source: ${name}.`);
 }
 
 export const MAKE_DIFF = 'python3 -m diff_engine before.e2k after.e2k -o diff.json';
@@ -281,9 +245,9 @@ export default function App() {
   const [retryTick, setRetryTick] = useState(0);
   const waitingForFile = (source === 'diff-file' && !diffFile) || (source === 'e2k-upload' && !compared);
   const [page, setPage] = useState<'review' | 'log'>('review');
-  const [duplicate, setDuplicate] = useState<{ result: Result; grids: GridLine[] } | null>(null);
+  const [duplicate, setDuplicate] = useState<Result | null>(null);
   const [pendingWorkbook, setPendingWorkbook] = useState<{
-    result: Result; grids: GridLine[]; action: 'append' | DuplicateAction; history: RegisterHistory;
+    result: Result; action: 'append' | DuplicateAction; history: RegisterHistory;
   } | null>(null);
   const [registerMessage, setRegisterMessage] = useState('');
   // Applied loads: on by default, back to the default pick for each new pair; the element last hovered or
@@ -350,20 +314,18 @@ export default function App() {
   };
 
   const appendToWorkbook = (
-    input: Uint8Array, result: Result, grids: GridLine[], action: 'append' | DuplicateAction, history: RegisterHistory,
+    input: Uint8Array, result: Result, action: 'append' | DuplicateAction, history: RegisterHistory,
   ) => {
-    const update = updateWorkbook(input, result, grids, history, action);
+    const update = updateWorkbook(input, result, history, action);
     writeRegisterHistory(update.history);
     downloadRegister(update.bytes, update.block.version);
     setRegisterMessage(`${action === 'replace' ? 'Replaced' : action === 'new' ? 'Logged another entry for' : 'Added'} `
       + `${result.meta.source.baseline} → ${result.meta.source.revised}; downloaded Analysis Register - ${update.block.version}.xlsx.`);
   };
 
-  const beginAppend = (
-    result: Result, grids: GridLine[], action: 'append' | DuplicateAction, history: RegisterHistory,
-  ) => {
+  const beginAppend = (result: Result, action: 'append' | DuplicateAction, history: RegisterHistory) => {
     if (Object.keys(history).length > 0) {
-      setPendingWorkbook({ result, grids, action, history });
+      setPendingWorkbook({ result, action, history });
       setRegisterMessage('Choose the latest Analysis Register workbook so edits made after downloading it are preserved.');
       return;
     }
@@ -373,21 +335,20 @@ export default function App() {
         if (!response.ok) throw new Error('The Analysis Register template could not be loaded.');
         return response.arrayBuffer();
       })
-      .then((buffer) => appendToWorkbook(new Uint8Array(buffer), result, grids, action, history))
+      .then((buffer) => appendToWorkbook(new Uint8Array(buffer), result, action, history))
       .catch((error: unknown) => setRegisterMessage(error instanceof Error ? error.message : 'Could not create the Analysis Register.'));
   };
 
-  const startAppend = async () => {
+  const startAppend = () => {
     if (load.status !== 'ready' || load.result.mock || !['hack-models', 'e2k-upload'].includes(source)) return;
     setRegisterMessage('');
     try {
       const history = readRegisterHistory();
-      const grids = await comparisonGrids(load.result, source, originalFile, revisedFile);
       if (history[comparisonKey(load.result)]?.length) {
-        setDuplicate({ result: load.result, grids });
+        setDuplicate(load.result);
         return;
       }
-      beginAppend(load.result, grids, 'append', history);
+      beginAppend(load.result, 'append', history);
     } catch (error) {
       setRegisterMessage(error instanceof Error ? error.message : 'Could not prepare the Analysis Register.');
     }
@@ -403,9 +364,7 @@ export default function App() {
       return;
     }
     void file.arrayBuffer()
-      .then((buffer) => appendToWorkbook(
-        new Uint8Array(buffer), pending.result, pending.grids, pending.action, pending.history,
-      ))
+      .then((buffer) => appendToWorkbook(new Uint8Array(buffer), pending.result, pending.action, pending.history))
       .catch((error: unknown) => setRegisterMessage(error instanceof Error ? error.message : 'Could not append to the selected workbook.'));
   };
 
@@ -414,7 +373,7 @@ export default function App() {
     setDuplicate(null);
     if (!selected || action === 'reject') return;
     try {
-      beginAppend(selected.result, selected.grids, action, readRegisterHistory());
+      beginAppend(selected, action, readRegisterHistory());
     } catch (error) {
       setRegisterMessage(error instanceof Error ? error.message : 'Could not read the saved Analysis Register history.');
     }
@@ -508,7 +467,7 @@ export default function App() {
             className="w-full max-w-md space-y-3 rounded-lg bg-white p-5 shadow-xl">
             <h2 id="duplicate-title" className="text-base font-semibold">This comparison is already in the register</h2>
             <p className="text-sm text-slate-600">
-              {duplicate.result.meta.source.baseline} → {duplicate.result.meta.source.revised}
+              {duplicate.meta.source.baseline} → {duplicate.meta.source.revised}
             </p>
             <p className="text-sm text-slate-600">Reject this append, replace the previous generated entry, or log it as a new entry.</p>
             <div className="flex flex-wrap justify-end gap-2">

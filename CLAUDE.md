@@ -1,77 +1,50 @@
-# ETABS Model Register
+# keepTABS
 
-Visual diff for ETABS models. Load two exports of the same model (`.e2k` or `.$et`, same text format) and show what changed: members added, removed or modified in a 3D view, plus tables for materials, sections, load patterns, load cases, combos and mass source.
+Visual diff for ETABS models. Load two exports of the same model (`.e2k` or `.$et`, same text format) and show what changed: members added, removed, moved or modified in a 3D view, plus tables for materials, sections, load patterns, load cases, combos and mass source.
 
-Runs locally. The Python server listens on localhost only, so model files never leave the user's machine.
+Runs locally. The dev server and the engine's viewer server listen on 127.0.0.1 only, so model files never leave the user's machine.
 
 ## Layout
 
 ```
-backend/    Python 3.12, FastAPI, pydantic v2, pytest, ruff
-  src/etabs_register/schema.py   shared schema (source of truth)
-  src/etabs_register/parse/      .e2k parser
-  src/etabs_register/diff.py     diff engine
-  src/etabs_register/api.py      POST /api/diff
-frontend/   Vite, React, TypeScript, three.js
-  src/types.ts                   mirror of schema.py
-fixtures/   model-a.json, model-b.json, diff.json (reference case)
+backend/diff_engine/   Python 3.9+, stdlib only, strict pyright: parser, matching, diff, CSV, viewer server, egit
+  contract.py            the output contract as TypedDicts (mirrors contract.ts)
+  tests/                 unittest
+frontend/              Vite, React, TypeScript, three.js: keepTABS, the React app
+  src/engineAdapter.ts   engine output -> the app's Result (src/keeptabsTypes.ts)
+  compareE2k.ts          dev-server route behind upload: runs the engine on the two files
+  saveRevision.ts        dev-server route behind Add version
+  demo_viewer/           HTML demo viewer, contract.ts + CONTRACT.md, hackathon models, precomputed diffs
+fixtures/demo/         seeded synthetic before/after pair, its diff, CSV, seeded-changes.json and generator
+egit                   git-style CLI over the model history (frontend/demo_viewer/models/revisions.json)
 ```
 
 ## Contract
 
-- `backend/src/etabs_register/schema.py` is the shared schema. The parser produces `Model`, the diff engine produces `Diff`, the front end reads only those two.
-- `frontend/src/types.ts` mirrors `schema.py`. Change both in the same PR, and only with the diff engine owner.
-- `POST /api/diff` takes two files (`a`, `b`) and returns `{ modelA, modelB, diff }`.
-- `diff(model_a, model_b)` on the fixtures must equal `fixtures/diff.json`.
-- Field names stay camelCase in Python too, so JSON matches the front end with no aliasing.
+- `frontend/demo_viewer/contract.ts` is the engine's output contract (schemaVersion 0.2), explained in `CONTRACT.md`. `backend/diff_engine/contract.py` mirrors it field for field. Change all three together.
+- The engine writes one JSON per comparison. The React app reads it only through `engineAdapter.ts`; the HTML demo viewer reads it directly.
+- Field names are camelCase in Python too, so the JSON matches the front end with no aliasing.
 
 ## Rules
 
 - Normalize to kip and inch on parse. Two files saved in different units must diff clean.
-- `Props` is a flat dict of raw keyword values. Compare generically, no per-field code.
-- Anything the parser doesn't handle goes in `unparsed` and shows as "not compared". Never drop data silently.
-- Frames match by `label@story`, then leftovers match by geometry (endpoints within 0.5 in). Record which in `matchedBy`.
+- `props` is a flat dict of raw keyword values. Compare generically, no per-field code.
+- Never drop data silently. A change outside the 17-row change list still comes through, with `row: null`.
+- Elements match by geometry relative to their level (same level, plan X/Y and offset within the tolerance), never by label. A label change on a matched element is a rename.
 - A story elevation change is reported once under `stories`. Nodes and members compare relative to their story, so anything that moved only because its story moved is not flagged.
-- Every `Change` carries `affects` (geometry, stiffness, mass, load). The UI filters on it.
-- Editing a section or material highlights every member using it in 3D.
+- Every change carries `affects` (geometry, stiffness, mass, load).
+- Editing a section or material marks every member using it as `affected`, with `via`; the viewers highlight them in 3D.
 - Ignore as noise: file header and version stamps, GUIDs, display settings, line order.
-
-## Workstreams
-
-| # | Workstream | Owns |
-| --- | --- | --- |
-| 1 | Parser: geometry | stories, nodes, frames, areas, unit normalization |
-| 2 | Parser: properties | materials, sections, load patterns, cases, combos, mass source, `unparsed` |
-| 3 | Diff engine + API | matching, field compare, `affects` tags, `schema.py`, `api.py` |
-| 4 | 3D viewer | three.js scene, status colors, story isolate, filters, selection |
-| 5 | App shell + tables | file drop, summary, table tabs, before/after panel |
-| 6 | Test models, QA, demo | ETABS test files, golden diffs, demo script |
-
-Work on a branch per workstream. Merge small and often. Pull main every couple of hours.
-
-## Tiers
-
-- MVP: frames added / removed / moved, section reassigned, section edited, material edited.
-- 2nd pass: property modifiers, releases / offsets / local axis, supports and springs, applied loads.
-- 3rd pass: added mass, mass source, load patterns, load cases, combos.
-- Stretch: walls and slabs in 3D, diaphragms, spectrum and time history functions.
 
 ## Commands
 
-**Frontend** (work in `frontend/`):
+From the repo root, with [just](https://github.com/casey/just):
+
 ```
-npm install
-npm run dev    # Dev server at localhost:5173
-npm run build  # Production build
+just test    # strict pyright, the engine tests, and the React app's tests
+just ui      # keepTABS at http://127.0.0.1:5173 (installs frontend deps if needed)
+just demo    # HTML demo viewer on the hackathon models
+./egit log   # model history; ./egit --help for the rest
 ```
 
-**Backend** (work in `backend/`):
-```
-uv run pytest                    # Run tests
-uv run uvicorn etabs_register.api:app --reload   # Start server on localhost:8000
-```
-
-**Both together** (from repo root, for demos):
-```
-npm run dev    # Runs both backend and frontend with live reload
-```
+The React app's own commands run from `frontend/`: `npm ci`, `npm run dev`, `npm test`, `npm run build`. Rerun `python3 -m diff_engine.demo_diffs` (from `backend/`) after changing a model by hand.

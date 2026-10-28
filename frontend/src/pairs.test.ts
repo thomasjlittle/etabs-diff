@@ -38,10 +38,10 @@ describe('model pairs', () => {
 
   it('v01a -> v02: the three changes verified against the .e2k text', async () => {
     const r = await pair('Hack_v01a', 'Hack_v02');
-    expect(r.changes.map((c) => [c.group, describeChange(c, r)])).toEqual([
-      ['1E', 'Column C1 at Story1: ANG changed from 0.0 deg to 90.0 deg.'],
-      ['1A', 'Column C3 at Story1 was reassigned from section W10X60 to W16X36.'],
-      ['1B', 'Section Conc16x10: MATERIAL changed from 4Ksi to 6Ksi. 1 member uses it.'],
+    expect(r.changes.map((c) => [c.category, describeChange(c, r)])).toEqual([
+      ['releases', 'Column C1 at Story1: ANG changed from 0.0 deg to 90.0 deg.'],
+      ['sectionAssign', 'Column C3 at Story1 was reassigned from section W10X60 to W16X36.'],
+      ['frameSections', 'Section Conc16x10: MATERIAL changed from 4Ksi to 6Ksi. 1 member uses it.'],
     ]);
   });
 
@@ -49,7 +49,7 @@ describe('model pairs', () => {
     const r = await pair('Hack_v01a', 'Hack_v04');
     // 12 frames + floor F2 added. B1 -> B7 is a linked move, alongside C1, C3, Conc16x10 edits.
     expect(headlineCounts(r)).toEqual({ added: 13, removed: 0, modified: 4, label_only: 0 });
-    expect(r.changes.filter((c) => c.group === 'G1' && c.member_ids.length === 2)).toHaveLength(1);
+    expect(r.changes.filter((c) => c.category === 'objects' && c.member_ids.length === 2)).toHaveLength(1);
   });
 
   it('original -> second direction matters: v04 -> v01a removes what v01a -> v04 adds', async () => {

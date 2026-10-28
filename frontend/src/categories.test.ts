@@ -1,7 +1,7 @@
 // Left-panel categories: field and table rules, the mock fallback, and every real Hack pair.
 import { describe, expect, it } from 'vitest';
 import mock from './mock/mock-result.json';
-import type { Result } from './vantageTypes';
+import type { Result } from './keeptabsTypes';
 import { CATEGORY_TITLE, SECTIONS, categoryOf, fieldCategory, tableCategory } from './categories';
 import { loadScenario, MODELS } from './App';
 

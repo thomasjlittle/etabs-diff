@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { afterEach, describe, expect, it } from 'vitest';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import mock from './mock/mock-result.json';
-import type { Result } from './vantageTypes';
+import type { Result } from './keeptabsTypes';
 import {
   byExtent, describeChange, headlineCounts, isPhysical, isVisible, memberStyles, memberToChange, moves, reducer,
   storyChangeCounts,

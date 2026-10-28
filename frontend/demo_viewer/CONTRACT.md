@@ -1,23 +1,24 @@
-# Diff Output Contract (schemaVersion 0.1)
+# Diff Output Contract (schemaVersion 0.2)
 
 The diff engine compares two ETABS exports of the same model, A (before) and B (after), and writes one JSON file. That file is the only thing the viewer reads. The exact types live in [`contract.ts`](contract.ts); this page explains them in plain words. A small working example is in [`example-diff.json`](example-diff.json).
 
-Version 0.1 is close to final but not frozen. Field names and shapes should hold; a few fields may still be added.
+Version 0.2 is close to final but not frozen. Field names and shapes should hold; a few fields may still be added. 0.2 only adds fields to 0.1 (`elements[].loads` and `loadDefinitions`, for drawing applied loads), so a 0.1 reader still works.
 
 ## Units
 
-All lengths and coordinates are in **inches**, whatever units the ETABS files used. The engine converts on parse. `meta.lengthUnit` is always `"in"` so you can check.
+All lengths and coordinates are in **inches** and forces in **kip**, whatever units the ETABS files used. The engine converts on parse. `meta.lengthUnit` is always `"in"` so you can check.
 
 ## Top Level
 
 | Field | What it is |
 |---|---|
-| `schemaVersion` | Always `"0.1"` for now. Check it and warn if it differs. |
+| `schemaVersion` | Always `"0.2"` for now. Check it and warn if it differs. |
 | `meta` | Which files were compared and how. See below. |
 | `stories` | Every story in either model, bottom up. |
 | `elements` | **Every** element in either model, changed or not. This is what you draw. |
 | `tables` | Changes to definitions that aren't drawn (materials, sections, load patterns, and so on). |
 | `summary` | Count of elements per status. Handy for a legend. |
+| `loadDefinitions` | Every load pattern, case and combination in each model, changed or not. See [Applied loads](#applied-loads). |
 
 ## `meta`
 
@@ -46,6 +47,7 @@ One entry per element in the union of A and B. Unchanged elements are included s
 | `via` | Only on `affected` elements: which definitions it inherited the change from. |
 | `movedTo` | Optional, only on `removed` elements: the `key` of the `added` element it moved to. |
 | `movedFrom` | Optional, only on `added` elements: the `key` of the `removed` element it moved from. |
+| `loads` | Optional, only on elements that carry an applied load in A or B (any status): that element's loads on each side. See [Applied loads](#applied-loads). |
 
 ### `status` values
 
@@ -89,6 +91,39 @@ Definitions that aren't elements in space: `stories`, `materials`, `frameSection
 These are the upstream causes behind `affected` elements. The viewer lists them in its side panel.
 
 Load cases, combos and the mass source are lists of load terms, so each term is its own change: `field` is `LOADPAT:Live` (a pattern in a case or the mass source), `LOADCASE:Dead` or `LOADCOMBO:1.4D` (a term in a combo), and `before` / `after` is its scale factor, `null` when the term is missing on that side. They don't make any element `affected`. Load patterns list their auto seismic and wind inputs one field each, like `SEISMIC:R` or `WIND:VB`. A diaphragm edit does make its floors and joints `affected`, with `via` set to `["diaphragm:D1"]`.
+
+## Applied Loads
+
+Everything above reports what changed. These two fields describe each model as it is, so a viewer can draw the applied loads for a pattern, a case or a combination across the whole model, changed or not.
+
+### `elements[].loads`
+
+`{ a, b }`, each an object from load pattern name to the list of loads on this element in that model. A side is `{}` when the element doesn't exist there or carries no load there. Elements with no loads on either side have no `loads` field.
+
+Each load is the e2k record as written, minus its pattern, with values in kip and inches:
+
+| Key | What it is |
+|---|---|
+| `TYPE` | Frames: `POINTF`, `POINTM` (concentrated force or moment), `UNIFF`, `UNIFM`, `TRAPF`, `TRAPM` (distributed). Joints: `FORCE`. Areas: `UNIFF`, or `UNIFLOADSET` for a load set. |
+| `DIR` | Direction as written: `GRAV` (down), `X`, `Y`, `Z` (global), `1`, `2`, `3` (local), and so on. |
+| `FVAL` | The value of a point, uniform or area load (kip, kip/in, kip-in, kip/in²). |
+| `FSTART`, `FEND` | Start and end values of a trapezoid. |
+| `FX` .. `MZ` | Joint load components. |
+| `DIST`, `RDIST` | Frame point load position: inches from the I end, and the same as a fraction of the length. |
+| `DSTART`, `DEND`, `RDSTART`, `RDEND` | Frame distributed load extent, both ways. A uniform load the file wrote without an extent spans 0 to 1 (the whole member). |
+| `SET` | For `UNIFLOADSET`: the shell uniform load set. It is listed once per pattern in the set, with that pattern's `FVAL`. A set the file doesn't define stays under the pattern name `set:<name>` with no value. |
+
+The I end is `geometry[0]` and the J end `geometry[1]`, so a point load sits at `geometry[0] + DIST * unit(geometry[1] - geometry[0])`. Any other key on the record is passed through as written.
+
+### `loadDefinitions`
+
+`{ a, b }`, one per model, each `{ patterns, cases, combos }`:
+
+- `patterns[name]`: `{ type, selfWeight }`. `type` as written (`Dead`, `Live`, ...). `selfWeight` is the self-weight multiplier (self-weight is not listed as element loads).
+- `cases[name]`: `{ type, patterns, effective }`. `patterns` is the case's load pattern scale factors.
+- `combos[name]`: `{ type, cases, combos, effective }`. `cases` and `combos` are its `LOADCASE` and `LOADCOMBO` scale factors as written (ETABS can name a combo in a `LOADCASE` term).
+
+`effective` is `{ expandable, patterns, reason }`: the case or combo expanded to load pattern factors, so you don't have to walk combos yourself. The applied load of a case or combo on an element is, for each `pattern` in `effective.patterns`, that element's `loads[side][pattern]` times the factor, added up. Static cases (`Linear Static`, `Nonlinear Static`) that start from zero (`INITCOND PRESET`) expand to their pattern terms. `Linear Add` combos expand by adding their terms' expansions times their factors, combos of combos included. Anything else (`Envelope`, `SRSS`, `Absolute Add`, `Range Add`, response spectrum or modal cases, a case that continues from another case, a missing or circular reference, or a combo that uses one of those) comes out `expandable: false`, with `patterns: {}` and a `reason` to show instead.
 
 ## `summary`
 

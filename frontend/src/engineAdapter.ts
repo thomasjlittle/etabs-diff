@@ -1,13 +1,14 @@
-// Adapter: diff_engine output (frontend/demo_viewer/contract.ts, schemaVersion 0.1) -> Vantage Result.
-// This is what `just demo` feeds Thomas's viewer, so real .e2k pairs can be reviewed in Vantage.
+// Adapter: diff_engine output (frontend/demo_viewer/contract.ts, schemaVersion 0.2) -> keepTABS Result.
+// This is what `just demo` feeds Thomas's viewer, so real .e2k pairs can be reviewed in keepTABS.
 //
 // Element-level changes go to the planning-board group for their field. "affected" elements carry
 // their upstream definition's changes; those are reported once, as the table (definition) change,
 // with every member whose `via` names it. Not available from engine output: source line
 // evidence, ambiguous matches. Areas (floors, walls) are listed as changes but not drawn.
-import type { Change, Coverage, Group, Member, Node, Result, Side, Value, Vec3 } from './vantageTypes';
+import type { Change, Coverage, Group, Member, Node, Result, Side, Value, Vec3 } from './keeptabsTypes';
 import { GROUPS } from './adapter';
 import { fieldCategory, tableCategory } from './categories';
+import type { ElementLoads, LoadDefinitions } from './loads';
 
 // ---- engine contract (subset this adapter reads) ----
 interface EChange { field: string; before: unknown; after: unknown; affects: string[]; kind?: 'renamed' }
@@ -15,6 +16,7 @@ interface EElement {
   key: string; kind: 'point' | 'frame' | 'area'; subtype: string; label: string; story: string;
   status: 'unchanged' | 'added' | 'removed' | 'modified' | 'affected';
   geometry: Vec3[]; changes: EChange[]; via?: string[]; movedTo?: string; movedFrom?: string;
+  loads?: ElementLoads;
 }
 interface ETable { added: string[]; removed: string[]; modified: Record<string, EChange[]> }
 export interface EngineDiff {
@@ -23,6 +25,7 @@ export interface EngineDiff {
   stories: { name: string; elevA: number | null; elevB: number | null }[];
   elements: EElement[];
   tables: Record<string, ETable>;
+  loadDefinitions?: { a: LoadDefinitions; b: LoadDefinitions };
 }
 
 /** Group for an element field (e2k keyword, any case). */
@@ -196,7 +199,7 @@ export function adaptEngine(d: EngineDiff, opts: { mock: boolean }): Result {
   return {
     mock: opts.mock,
     meta: {
-      schema_version: `vantage-0.1 (adapted from engine ${d.schemaVersion})`,
+      schema_version: `keeptabs-0.1 (adapted from engine ${d.schemaVersion})`,
       source: { baseline: d.meta.a.file, revised: d.meta.b.file },
       units: { length: d.meta.lengthUnit, force: d.meta.forceUnit ?? 'kip' },
       coordinate_system: { axes: 'X, Y plan; Z up', aligned: true, offset: [0, 0, 0] },
@@ -212,6 +215,13 @@ export function adaptEngine(d: EngineDiff, opts: { mock: boolean }): Result {
     changes,
     groups,
     warnings: { coverage, ambiguous: [], error: null },
+    // Applied loads as the engine writes them (0.2), for drawing a pattern, case or combo.
+    loads: {
+      elements: d.elements.filter((e) => e.loads).map((e) => ({
+        key: e.key, kind: e.kind, subtype: e.subtype, label: e.label, story: e.story, geometry: e.geometry, loads: e.loads!,
+      })),
+      definitions: d.loadDefinitions ?? null,
+    },
   };
 }
 

@@ -10,7 +10,7 @@ Run `just ui` from the repo root (needs node and npm, plus Python 3.9+ for the e
 
 That's keepTABS, the team's React app in `frontend/src/`. It has two pages, picked with **Page** in the top bar:
 
-- **Review**: the 3D view, change table, story strip and details panel for one comparison. The **Data** dropdown picks the source: two of the hackathon models (opens on `Hack_v01` to `Hack_v01a`), **Upload two models** (an Original and a Second `.e2k` / `.$et`, diffed by the engine on this machine through the dev server), a diff JSON from the engine, the seeded synthetic demo, the team fixture, or a mock.
+- **Review**: the 3D view, change table, story strip and details panel for one comparison. The **Source** dropdown picks the data: **Your models** (the default, opens on a start screen where you drop a Model 1 and a Model 2 `.e2k` / `.$et`, diffed by the engine on this machine through the dev server), a diff JSON from the engine, two of the hackathon models (picked with Model 1 and Model 2, starting on `Hack_v01` to `Hack_v01a`; the start screen's **or try a sample comparison** link goes here), the seeded synthetic demo, the team fixture, or a mock.
 - **Revision log**: every hackathon model version, newest first, with a branch graph like `git log --graph` and change counts per version. Click a row to review it against its parent, or tick two to compare them. **Add version** takes a new `.e2k`, suggests a parent from its save log, scrubs Windows user folders out of the file's path lines, writes it into `frontend/demo_viewer/models/`, appends it to `revisions.json` and regenerates the diffs. It doesn't commit anything (see egit below).
 
 ![Revision log page](frontend/revision-log.png)

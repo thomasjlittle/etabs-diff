@@ -19,7 +19,7 @@ That's keepTABS, the team's React app in `frontend/src/`. It has two pages, pick
 
 ![Review page](docs/review.png)
 
-![Revision log page](frontend/revision-log.png)
+![Revision log page](docs/revision-log.png)
 
 The engine is stdlib Python only. The 3D views load three.js, and the HTML demo viewer pulls it from a CDN, so that one needs internet. Everything serves on 127.0.0.1 only, so model files stay on your machine.
 

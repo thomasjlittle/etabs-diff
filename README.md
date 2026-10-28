@@ -17,6 +17,8 @@ That's keepTABS, the team's React app in `frontend/src/`. It has two pages, pick
 - **Review**: the 3D view, change table, story strip and details panel for one comparison. The **Source** dropdown picks the data: **Your models** (the default, opens on a start screen where you drop a Model 1 and a Model 2 `.e2k` / `.$et`, diffed by the engine on this machine through the dev server), a diff JSON from the engine, two of the hackathon models (picked with Model 1 and Model 2, starting on `Hack_v01` to `Hack_v01a`; the start screen's **or try a sample comparison** link goes here), or the seeded synthetic demo.
 - **Revision log**: every hackathon model version, newest first, with a branch graph like `git log --graph` and change counts per version. Click a row to review it against its parent, or tick two to compare them. **Add version** takes a new `.e2k`, suggests a parent from its save log, scrubs Windows user folders out of the file's path lines, writes it into `frontend/demo_viewer/models/`, appends it to `revisions.json` and regenerates the diffs. It doesn't commit anything (see egit below).
 
+![Review page](docs/review.png)
+
 ![Revision log page](frontend/revision-log.png)
 
 The engine is stdlib Python only. The 3D views load three.js, and the HTML demo viewer pulls it from a CDN, so that one needs internet. Everything serves on 127.0.0.1 only, so model files stay on your machine.
@@ -120,7 +122,7 @@ Every change carries its row and an `affects` tag (geometry, stiffness, mass, lo
 | `frontend/demo_viewer/` | the HTML demo viewer (one static file with three.js), the hackathon models, `revisions.json`, and their precomputed diffs |
 | `fixtures/demo/` | the seeded synthetic before/after pair, its diff, CSV, and generator |
 | `egit` | the egit launcher |
-| `docs/` | the demo GIF, and the original hackathon plan in `docs/history/` |
+| `docs/` | the demo GIF, and the review screenshot, and the original hackathon plan in `docs/history/` |
 
 # Output
 

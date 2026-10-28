@@ -1,0 +1,4 @@
+#!/bin/sh
+# egit: git-style commands over the model history (log, show, diff, add, status, pull, push). ./egit --help
+root=$(dirname "$(readlink -f "$0")")
+PYTHONPATH="$root/backend${PYTHONPATH:+:$PYTHONPATH}" exec python3 -m diff_engine.egit "$@"

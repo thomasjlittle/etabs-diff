@@ -1,5 +1,5 @@
 {
- "schemaVersion": "0.1",
+ "schemaVersion": "0.2",
  "meta": {
   "a": {
    "file": "Hack_v04.e2k",
@@ -268,7 +268,32 @@
    "grid": "A-B/2",
    "via": [
     "loadPattern:Dead"
-   ]
+   ],
+   "loads": {
+    "a": {
+     "Live": [
+      {
+       "TYPE": "POINTF",
+       "DIR": "GRAV",
+       "FVAL": 5.0,
+       "RDIST": 0.5,
+       "DIST": 120.0
+      }
+     ],
+     "Dead": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.083333336,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 240.0
+      }
+     ]
+    },
+    "b": {}
+   }
   },
   {
    "key": "beam|Story1|0|0|0~Story1|0|1440|0",
@@ -504,7 +529,33 @@
     ]
    ],
    "changes": [],
-   "grid": null
+   "grid": null,
+   "loads": {
+    "a": {
+     "Live": [
+      {
+       "TYPE": "POINTF",
+       "DIR": "GRAV",
+       "FVAL": 5.0,
+       "RDIST": 0.4,
+       "DIST": 120.0
+      }
+     ],
+     "Dead": [
+      {
+       "TYPE": "TRAPF",
+       "DIR": "GRAV",
+       "FSTART": 0.083333336,
+       "FEND": 0.083333336,
+       "RDSTART": 0.0,
+       "RDEND": 0.8,
+       "DSTART": 0.0,
+       "DEND": 240.0
+      }
+     ]
+    },
+    "b": {}
+   }
   },
   {
    "key": "beam|Story1|1200|0|0~Story1|1200|1440|0",
@@ -658,7 +709,33 @@
     ]
    ],
    "changes": [],
-   "grid": null
+   "grid": null,
+   "loads": {
+    "a": {
+     "Live": [
+      {
+       "TYPE": "POINTF",
+       "DIR": "GRAV",
+       "FVAL": 5.0,
+       "RDIST": 0.4,
+       "DIST": 120.0
+      }
+     ],
+     "Dead": [
+      {
+       "TYPE": "TRAPF",
+       "DIR": "GRAV",
+       "FSTART": 0.083333336,
+       "FEND": 0.083333336,
+       "RDSTART": 0.0,
+       "RDEND": 0.8,
+       "DSTART": 0.0,
+       "DEND": 240.0
+      }
+     ]
+    },
+    "b": {}
+   }
   },
   {
    "key": "beam|Story2|0|1440|0~Story2|2400|1440|0",
@@ -680,7 +757,32 @@
     ]
    ],
    "changes": [],
-   "grid": "A-B/2"
+   "grid": "A-B/2",
+   "loads": {
+    "a": {
+     "Live": [
+      {
+       "TYPE": "POINTF",
+       "DIR": "GRAV",
+       "FVAL": 5.0,
+       "RDIST": 0.5,
+       "DIST": 120.0
+      }
+     ],
+     "Dead": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.083333336,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 240.0
+      }
+     ]
+    },
+    "b": {}
+   }
   },
   {
    "key": "beam|Story2|0|0|0~Story2|0|1440|0",
@@ -1004,5 +1106,146 @@
   "removed": 14,
   "modified": 8,
   "affected": 1
+ },
+ "loadDefinitions": {
+  "a": {
+   "patterns": {
+    "Dead": {
+     "type": "Dead",
+     "selfWeight": 0.0
+    },
+    "Live": {
+     "type": "Live",
+     "selfWeight": 0.0
+    },
+    "SW": {
+     "type": "Dead",
+     "selfWeight": 1.0
+    }
+   },
+   "cases": {
+    "Modal": {
+     "type": "Modal - Eigen",
+     "patterns": {},
+     "effective": {
+      "expandable": false,
+      "patterns": {},
+      "reason": "case Modal is Modal - Eigen, not a static case"
+     }
+    },
+    "DL": {
+     "type": "Linear Static",
+     "patterns": {
+      "Dead": 1.0,
+      "SW": 1.0
+     },
+     "effective": {
+      "expandable": true,
+      "patterns": {
+       "Dead": 1.0,
+       "SW": 1.0
+      },
+      "reason": null
+     }
+    },
+    "LL": {
+     "type": "Linear Static",
+     "patterns": {
+      "Live": 1.0
+     },
+     "effective": {
+      "expandable": true,
+      "patterns": {
+       "Live": 1.0
+      },
+      "reason": null
+     }
+    }
+   },
+   "combos": {
+    "1.4D": {
+     "type": "Linear Add",
+     "cases": {
+      "DL": 1.4
+     },
+     "combos": {},
+     "effective": {
+      "expandable": true,
+      "patterns": {
+       "Dead": 1.4,
+       "SW": 1.4
+      },
+      "reason": null
+     }
+    },
+    "1.2D+1.6L": {
+     "type": "Linear Add",
+     "cases": {
+      "DL": 1.2,
+      "LL": 1.6
+     },
+     "combos": {},
+     "effective": {
+      "expandable": true,
+      "patterns": {
+       "Dead": 1.2,
+       "SW": 1.2,
+       "Live": 1.6
+      },
+      "reason": null
+     }
+    }
+   }
+  },
+  "b": {
+   "patterns": {
+    "Dead": {
+     "type": "Dead",
+     "selfWeight": 1.0
+    },
+    "Live": {
+     "type": "Live",
+     "selfWeight": 0.0
+    }
+   },
+   "cases": {
+    "Modal": {
+     "type": "Modal - Eigen",
+     "patterns": {},
+     "effective": {
+      "expandable": false,
+      "patterns": {},
+      "reason": "case Modal is Modal - Eigen, not a static case"
+     }
+    },
+    "Dead": {
+     "type": "Linear Static",
+     "patterns": {
+      "Dead": 1.0
+     },
+     "effective": {
+      "expandable": true,
+      "patterns": {
+       "Dead": 1.0
+      },
+      "reason": null
+     }
+    },
+    "Live": {
+     "type": "Linear Static",
+     "patterns": {
+      "Live": 1.0
+     },
+     "effective": {
+      "expandable": true,
+      "patterns": {
+       "Live": 1.0
+      },
+      "reason": null
+     }
+    }
+   },
+   "combos": {}
+  }
  }
 }

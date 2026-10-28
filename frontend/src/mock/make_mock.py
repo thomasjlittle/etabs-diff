@@ -1,4 +1,4 @@
-"""Write the synthetic Vantage mock file(s). Run from frontend/: python3 -I src/mock/make_mock.py
+"""Write the synthetic keepTABS mock file(s). Run from frontend/: python3 -I src/mock/make_mock.py
 
 Geometry (grid, stories, members) is generated. Every change record is written out by hand below so
 its numbers can be checked against a sketch of the frame. All data is synthetic. Units: inch, kip.
@@ -144,19 +144,19 @@ def changes(ids):
     ]
 
 
-# Groups from the team planning board, in board order. Tier drives the badge.
+# Groups from the team planning board, in board order.
 GROUPS = [
-    ("G1", "Geometry / level changes", "MVP"),
-    ("1A", "Section reassigned", "MVP"),
-    ("1B", "Section definition edited", "MVP"),
-    ("1C", "Material edited", "MVP"),
-    ("1D", "Property modifiers", "2nd pass"),
-    ("1E", "End releases / end offsets / insertion point / local axis", "2nd pass"),
-    ("2A", "Supports and springs", "2nd pass"),
-    ("2B", "Applied loads", "2nd pass"),
-    ("T3", "Tables only: mass, load patterns, load cases, combos", "3rd pass"),
-    ("ST", "Stretch: walls/slabs, diaphragm assigns, spectrum/time history", "Stretch"),
-    ("LO", "Label-only / not physical", "Info"),
+    ("G1", "Geometry / level changes"),
+    ("1A", "Section reassigned"),
+    ("1B", "Section definition edited"),
+    ("1C", "Material edited"),
+    ("1D", "Property modifiers"),
+    ("1E", "End releases / end offsets / insertion point / local axis"),
+    ("2A", "Supports and springs"),
+    ("2B", "Applied loads"),
+    ("T3", "Tables only: mass, load patterns, load cases, combos"),
+    ("ST", "Walls/slabs, diaphragm assigns, spectrum/time history"),
+    ("LO", "Label-only / not physical"),
 ]
 
 # Record types the (pretend) engine saw. status: compared | seen_not_compared
@@ -181,7 +181,7 @@ def result():
     return {
         "mock": True,
         "meta": {
-            "schema_version": "vantage-0.1",
+            "schema_version": "keeptabs-0.1",
             "source": {"baseline": "synthetic-frame-rev-A.e2k", "revised": "synthetic-frame-rev-B.e2k"},
             "units": {"length": "in", "force": "kip"},
             "coordinate_system": {"axes": "X east, Y north, Z up", "aligned": True, "offset": [0, 0, 0]},
@@ -192,8 +192,8 @@ def result():
         "nodes": nodes,
         "members": members,
         "changes": chg,
-        "groups": [{"id": g, "title": t, "tier": tier, "change_ids": [c["id"] for c in chg if c["group"] == g]}
-                   for g, t, tier in GROUPS],
+        "groups": [{"id": g, "title": t, "change_ids": [c["id"] for c in chg if c["group"] == g]}
+                   for g, t in GROUPS],
         "warnings": {
             "coverage": [{"group": g, "record": r, "status": s} for g, r, s in COVERAGE],
             "ambiguous": [],

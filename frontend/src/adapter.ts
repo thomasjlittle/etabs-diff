@@ -1,4 +1,4 @@
-// Adapter: team contract ({modelA, modelB, diff} per backend schema.py / types.ts) -> Vantage Result.
+// Adapter: team contract ({modelA, modelB, diff} per backend schema.py / types.ts) -> keepTABS Result.
 // Same shape as POST /api/diff returns, so this works for the fixtures now and the API later.
 //
 // Field -> group mapping follows the team planning board. Judgment calls (see README / PR):
@@ -6,23 +6,24 @@
 //   story elevation change -> G1, one change with no members (members are compared relative to story)
 // Not available from schema.py: source line evidence, ambiguous matches. Those stay empty.
 import type { Diff, Frame, Model, SetDiff } from './types';
-import type { Change, Coverage, Group, Member, Node, Result, Side, Value, Vec3 } from './vantageTypes';
+import type { Change, Coverage, Group, Member, Node, Result, Side, Value, Vec3 } from './keeptabsTypes';
+import { fieldCategory, tableCategory } from './categories';
 
 export interface TeamResult { modelA: Model; modelB: Model; diff: Diff }
 
 // Planning-board groups, in board order (same list as src/mock/make_mock.py).
-export const GROUPS: [string, string, string][] = [
-  ['G1', 'Geometry / level changes', 'MVP'],
-  ['1A', 'Section reassigned', 'MVP'],
-  ['1B', 'Section definition edited', 'MVP'],
-  ['1C', 'Material edited', 'MVP'],
-  ['1D', 'Property modifiers', '2nd pass'],
-  ['1E', 'End releases / end offsets / insertion point / local axis', '2nd pass'],
-  ['2A', 'Supports and springs', '2nd pass'],
-  ['2B', 'Applied loads', '2nd pass'],
-  ['T3', 'Tables only: mass, load patterns, load cases, combos', '3rd pass'],
-  ['ST', 'Stretch: walls/slabs, diaphragm assigns, spectrum/time history', 'Stretch'],
-  ['LO', 'Label-only / not physical', 'Info'],
+export const GROUPS: [string, string][] = [
+  ['G1', 'Geometry / level changes'],
+  ['1A', 'Section reassigned'],
+  ['1B', 'Section definition edited'],
+  ['1C', 'Material edited'],
+  ['1D', 'Property modifiers'],
+  ['1E', 'End releases / end offsets / insertion point / local axis'],
+  ['2A', 'Supports and springs'],
+  ['2B', 'Applied loads'],
+  ['T3', 'Tables only: mass, load patterns, load cases, combos'],
+  ['ST', 'Walls/slabs, diaphragm assigns, spectrum/time history'],
+  ['LO', 'Label-only / not physical'],
 ];
 
 // diff.tables key -> [group, record name shown in coverage, subject prefix]
@@ -50,7 +51,7 @@ export function frameFieldGroup(field: string): string {
   return '1D'; // modifiers and any other frame property
 }
 
-/** schema.py values are loosely typed; Vantage shows numbers, strings and number lists. */
+/** schema.py values are loosely typed; keepTABS shows numbers, strings and number lists. */
 function toValue(v: unknown): Value {
   if (v === null || v === undefined) return null;
   if (typeof v === 'number' || typeof v === 'string') return v;
@@ -81,7 +82,7 @@ export function adapt({ modelA, modelB, diff }: TeamResult): Result {
     const fa = framesA.get(id);
     if (fb && fa && changes.some((c) => c.field === 'nodes') && !(same(fa.i, fb.i) && same(fa.j, fb.j))) moved.set(id, fa);
   }
-  // Vantage member id for a B frame: a moved frame is drawn as two members, use the revised one.
+  // keepTABS member id for a B frame: a moved frame is drawn as two members, use the revised one.
   const mid = (id: string) => (moved.has(id) ? `${id}~B` : id);
   for (const f of modelB.frames) {
     if (added.has(f.id)) addMember(f, 'revised');
@@ -97,16 +98,20 @@ export function adapt({ modelA, modelB, diff }: TeamResult): Result {
 
   // ---- frame changes ----
   for (const id of diff.frames.added)
-    draft.push(change('added', 'G1', [id], 1, 0, null, null));
+    draft.push({ ...change('added', 'G1', [id], 1, 0, null, null), category: 'objects' });
   for (const id of diff.frames.removed)
-    draft.push(change('removed', 'G1', [`${id}~A`], 1, 0, framesA.get(id) ? { section: framesA.get(id)!.section } : null, null));
+    draft.push({ ...change('removed', 'G1', [`${id}~A`], 1, 0, framesA.get(id) ? { section: framesA.get(id)!.section } : null, null), category: 'objects' });
 
   for (const id of Object.keys(diff.frames.modified).sort()) {
     const fb = framesB.get(id)!;
     const byGroup = new Map<string, typeof diff.frames.modified[string]>();
-    for (const c of diff.frames.modified[id]) byGroup.set(frameFieldGroup(c.field), [...(byGroup.get(frameFieldGroup(c.field)) ?? []), c]);
+    for (const c of diff.frames.modified[id]) {
+      const k = `${frameFieldGroup(c.field)}|${fieldCategory(c.field)}`;
+      byGroup.set(k, [...(byGroup.get(k) ?? []), c]);
+    }
 
-    for (const [group, cs] of byGroup) {
+    for (const [k, cs] of byGroup) {
+      const [group, category] = k.split('|');
       if (group === 'G1') {
         const fa = moved.get(id);
         if (fa) {
@@ -115,7 +120,7 @@ export function adapt({ modelA, modelB, diff }: TeamResult): Result {
           const before = Object.fromEntries(ends.map((e) => [`end_${e}`, fa[e]]));
           const after = Object.fromEntries(ends.map((e) => [`end_${e}`, fb[e]]));
           const d = Math.max(...ends.map((e) => dist(fa[e], fb[e])));
-          draft.push({ ...change('modified', 'G1', [`${id}~A`, `${id}~B`], 1, d, before, after),
+          draft.push({ ...change('modified', 'G1', [`${id}~A`, `${id}~B`], 1, d, before, after), category: 'objects',
             units: Object.fromEntries(ends.map((e) => [`end_${e}`, 'length'])) });
         } else {
           // Node list changed but positions did not: reversed end order, not physical.
@@ -126,7 +131,7 @@ export function adapt({ modelA, modelB, diff }: TeamResult): Result {
       }
       const before = Object.fromEntries(cs.map((c) => [fieldName(c.field), toValue(c.before)]));
       const after = Object.fromEntries(cs.map((c) => [fieldName(c.field), toValue(c.after)]));
-      draft.push(change(group === 'LO' ? 'label_only' : 'modified', group, [mid(id)], group === 'LO' ? 0 : 1, 0, before, after));
+      draft.push({ ...change(group === 'LO' ? 'label_only' : 'modified', group, [mid(id)], group === 'LO' ? 0 : 1, 0, before, after), category });
     }
   }
 
@@ -137,22 +142,24 @@ export function adapt({ modelA, modelB, diff }: TeamResult): Result {
 
   for (const [table, set] of Object.entries(diff.tables) as [string, SetDiff][]) {
     const [group, , prefix] = TABLES[table] ?? ['T3', table, table];
+    const category = tableCategory(table);
     const users = (name: string) => table === 'frameSections' ? sectionUsers(name) : table === 'materials' ? materialUsers(name) : [];
     for (const name of set.added) {
       if (table === 'stories') {
         const ids = modelB.frames.filter((f) => f.story === name && added.has(f.id)).map((f) => f.id);
         const elev = modelB.stories.find((s) => s.name === name)?.elev ?? null;
-        draft.push({ ...change('added', 'G1', ids, ids.length, 0, null, { story: name, elevation: elev }), units: { elevation: 'length' } });
-      } else draft.push({ ...change('added', group, users(name), users(name).length, 0, null, null), subject: `${prefix} ${name}` });
+        draft.push({ ...change('added', 'G1', ids, ids.length, 0, null, { story: name, elevation: elev }), category, units: { elevation: 'length' } });
+      } else draft.push({ ...change('added', group, users(name), users(name).length, 0, null, null), category, subject: `${prefix} ${name}` });
     }
     for (const name of set.removed)
-      draft.push({ ...change('removed', group, [], 0, 0, null, null), subject: `${prefix} ${name}` });
+      draft.push({ ...change('removed', group, [], 0, 0, null, null), category, subject: `${prefix} ${name}` });
     for (const [name, cs] of Object.entries(set.modified)) {
       const before = Object.fromEntries(cs.map((c) => [fieldName(c.field), toValue(c.before)]));
       const after = Object.fromEntries(cs.map((c) => [fieldName(c.field), toValue(c.after)]));
       const u = users(name);
       draft.push({
         ...change('modified', group, u, u.length, 0, before, after),
+        category,
         subject: `${prefix} ${name}`,
         ...(table === 'stories' ? { units: { elev: 'length' } } : {}),
       });
@@ -161,8 +168,8 @@ export function adapt({ modelA, modelB, diff }: TeamResult): Result {
 
   // ---- assemble ----
   const changes: Change[] = draft.map((c, n) => ({ id: `C${String(n + 1).padStart(2, '0')}`, ...c }));
-  const groups: Group[] = GROUPS.map(([id, title, tier]) => ({
-    id, title, tier, change_ids: changes.filter((c) => c.group === id).map((c) => c.id),
+  const groups: Group[] = GROUPS.map(([id, title]) => ({
+    id, title, change_ids: changes.filter((c) => c.group === id).map((c) => c.id),
   }));
   const coverage: Coverage[] = [
     { group: 'G1', record: 'Frame members', status: 'compared' },
@@ -180,7 +187,7 @@ export function adapt({ modelA, modelB, diff }: TeamResult): Result {
   return {
     mock: true, // fixtures are synthetic; the MOCK DATA badge stays on
     meta: {
-      schema_version: 'vantage-0.1 (adapted from schema.py)',
+      schema_version: 'keeptabs-0.1 (adapted from schema.py)',
       source: { baseline: modelA.meta.file, revised: modelB.meta.file },
       units: { length: 'in', force: 'kip' }, // parsers normalize to kip and inch (CLAUDE.md)
       coordinate_system: { axes: 'X, Y plan; Z up', aligned: true, offset: [0, 0, 0] },

@@ -1,9 +1,9 @@
 // Acceptance checks for step 1. Expected numbers come from the hand-check list in src/mock/make_mock.py.
 import { useState } from 'react';
-import { describe, expect, it } from 'vitest';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { afterEach, describe, expect, it } from 'vitest';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import mock from './mock/mock-result.json';
-import type { Result } from './vantageTypes';
+import type { Result } from './keeptabsTypes';
 import {
   byExtent, describeChange, headlineCounts, isPhysical, isVisible, memberStyles, memberToChange, moves, reducer,
   storyChangeCounts,
@@ -107,21 +107,40 @@ describe('load state', () => {
 });
 
 describe('shared selection', () => {
+  afterEach(cleanup);
   function Harness() {
     const [sel, setSel] = useState<string | null>(null);
     return <Workspace result={result} selectedId={sel} onSelect={setSel} />;
   }
 
-  it('summary click and table click select the same change everywhere', () => {
+  it('clicking a category lists only its changes in the table; a table click selects everywhere', () => {
     render(<Harness />);
+    expect((screen.getByTestId('category-frameSections') as HTMLButtonElement).disabled).toBe(true); // no changes to list
 
-    fireEvent.click(screen.getByTestId('summary-C02'));
+    fireEvent.click(screen.getByTestId('category-objects'));
+    expect(screen.getByTestId('category-objects').getAttribute('aria-pressed')).toBe('true');
+    expect(screen.getByTestId('row-C02')).toBeTruthy();
+    expect(screen.queryByTestId('row-C06')).toBeNull(); // C06 is a section assignment
+
+    fireEvent.click(screen.getByTestId('row-C02'));
     expect(screen.getByTestId('row-C02').getAttribute('aria-selected')).toBe('true');
     expect(screen.getByTestId('detail').textContent).toContain('C02');
 
+    fireEvent.click(screen.getByTestId('category-objects')); // click again: show every category
+    expect(screen.getByTestId('category-objects').getAttribute('aria-pressed')).toBe('false');
     fireEvent.click(screen.getByTestId('row-C06'));
-    expect(screen.getByTestId('summary-C06').getAttribute('aria-current')).toBe('true');
-    expect(screen.getByTestId('summary-C02').getAttribute('aria-current')).toBe('false');
+    expect(screen.getByTestId('row-C02').getAttribute('aria-selected')).toBe('false');
     expect(screen.getByTestId('detail').textContent).toContain('W14X120');
+  });
+
+  it('sections with changes start open, empty ones closed; clicking a header flips it', () => {
+    render(<Harness />);
+    expect(screen.getByTestId('section-Objects').getAttribute('aria-expanded')).toBe('true');
+    expect(screen.getByTestId('section-Design').getAttribute('aria-expanded')).toBe('false');
+    expect(screen.queryByTestId('category-designPrefs')).toBeNull();
+    fireEvent.click(screen.getByTestId('section-Design'));
+    expect(screen.getByTestId('category-designPrefs').textContent).toContain('Not compared');
+    fireEvent.click(screen.getByTestId('section-Objects'));
+    expect(screen.queryByTestId('category-objects')).toBeNull();
   });
 });

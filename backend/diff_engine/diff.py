@@ -1,4 +1,4 @@
-"""Compare two parsed models and build the output contract (schemaVersion 0.1) as a plain dict."""
+"""Compare two parsed models and build the output contract (schemaVersion 0.2) as a plain dict."""
 
 import math
 from collections import Counter, defaultdict
@@ -9,9 +9,13 @@ from typing import (
 
 from . import geometry
 from .change_units import unit_for, value_units
-from .contract import Change, DiffOutput, ElementDiff, Kind, Meta, ModelMeta, Status, Story, Subtype, TableDiff, Tables
+from .contract import (
+    Change, DiffOutput, ElementDiff, ElementLoads, Kind, Meta, ModelMeta, SideLoadDefinitions, Status, Story, Subtype,
+    TableDiff, Tables,
+)
 from .geometry import Element, End, Level
 from .grids import grid_reference
+from .loads import definitions, element_loads
 from .match import match_elements, match_levels, overlaps_on_line
 from .parser import DefTable, Model, Props, StrPath, parse_file
 from .rows import IGNORED_KEYS, affects, assign_row, definition_row
@@ -131,13 +135,14 @@ def diff_models(
 
     stories, story_table = _stories(levels_a, levels_b, b_to_a)
     return DiffOutput(
-        schemaVersion="0.1",
+        schemaVersion="0.2",
         meta=Meta(a=_meta(model_a), b=_meta(model_b), lengthUnit="in", forceUnit="kip", tolerance=tol,
                   moveTolerance=move_tolerance),
         stories=stories,
         elements=entries,
         tables=Tables(stories=story_table, **tables),
         summary={s: sum(e["status"] == s for e in entries) for s in STATUSES},
+        loadDefinitions=SideLoadDefinitions(a=definitions(model_a), b=definitions(model_b)),
     )
 
 
@@ -295,6 +300,9 @@ def _element(ctx: _Ctx, a: Optional[Element], b: Optional[Element]) -> ElementDi
     )
     if via and status in ("modified", "affected"):
         entry["via"] = via
+    loads = ElementLoads(a=element_loads(ctx.a, a), b=element_loads(ctx.b, b))
+    if loads["a"] or loads["b"]:
+        entry["loads"] = loads
     return entry
 
 

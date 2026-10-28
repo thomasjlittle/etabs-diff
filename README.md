@@ -1,50 +1,80 @@
+# For NCSEA 2026 Hackathon, so its a bit chaotic
+
 # keepTABS (get it, like ETABS...)
 
 Visual diff for ETABS models. Point it at two exports of the same model (`.e2k`, or the `.$et` ETABS writes on save) and it shows what changed: members added, removed, moved, or modified in a 3D view, plus tables for materials, sections, load patterns, cases, combos, and the rest.
 
 # Quick Start
 
-Needs Python 3.9+ (stdlib only). The viewer loads three.js from a CDN, so it needs internet. Everything serves on 127.0.0.1 only.
+Run `just ui` from the repo root (needs node and npm, plus Python 3.9+ for the engine). It installs the app's dependencies if they're missing or older than the lockfile, starts the dev server at http://127.0.0.1:5173, and tries to open a browser (under WSL it may not, so open the printed URL). Ctrl+C stops it.
+
+That's keepTABS, the team's React app in `frontend/src/`. It has two pages, picked with **Page** in the top bar:
+
+- **Review**: the 3D view, change table, story strip and details panel for one comparison. The **Source** dropdown picks the data: **Your models** (the default, opens on a start screen where you drop a Model 1 and a Model 2 `.e2k` / `.$et`, diffed by the engine on this machine through the dev server), a diff JSON from the engine, two of the hackathon models (picked with Model 1 and Model 2, starting on `Hack_v01` to `Hack_v01a`; the start screen's **or try a sample comparison** link goes here), the seeded synthetic demo, the team fixture, or a mock.
+- **Revision log**: every hackathon model version, newest first, with a branch graph like `git log --graph` and change counts per version. Click a row to review it against its parent, or tick two to compare them. **Add version** takes a new `.e2k`, suggests a parent from its save log, scrubs Windows user folders out of the file's path lines, writes it into `frontend/demo_viewer/models/`, appends it to `revisions.json` and regenerates the diffs. It doesn't commit anything (see egit below).
+
+![Revision log page](frontend/revision-log.png)
+
+The engine is stdlib Python only. The 3D views load three.js, and the HTML demo viewer pulls it from a CDN, so that one needs internet. Everything serves on 127.0.0.1 only, so model files stay on your machine.
+
+# Recipes
 
 With [just](https://github.com/casey/just), from the repo root:
 
 | Recipe | What it does | What you see |
 | --- | --- | --- |
 | `just` | lists the recipes | the list |
-| `just demo` | serves the viewer on the six hackathon models in `frontend/demo_viewer/models/` | Before/After dropdowns (opens on `Hack_v01` to `Hack_v01a`), pick any pair |
-| `just demo-seeded` | diffs the seeded synthetic pair in `fixtures/demo/` (the one the tests use) | the viewer on that diff |
-| `just view before.e2k after.e2k` | diffs two files of your own | the viewer on the result |
+| `just ui` | installs if needed and starts the React app | keepTABS at http://127.0.0.1:5173 |
+| `just demo` | serves the HTML demo viewer on the eight hackathon models in `frontend/demo_viewer/models/` | Before/After dropdowns (opens on `Hack_v01` to `Hack_v01a`), pick any pair |
+| `just view before.e2k after.e2k` | diffs two files of your own | the HTML viewer on the result |
 | `just csv before.e2k after.e2k changes.csv` | diffs two files, writes one CSV row per change | the status counts in the terminal |
-| `just example` | serves the viewer on the bundled made-up example diff | a small 3-story steel model in every status |
-| `just demo-diffs` | rediffs every pair of the hackathon models into `frontend/demo_viewer/diffs/` | nothing to open (run after adding or changing a model; a test fails if they're stale) |
+| `just example` | serves the HTML viewer on the bundled made-up example diff | a small 3-story steel model in every status |
+| `just egit ...` | runs egit (see below) | git-style output |
 | `just typecheck` | runs pyright in strict mode on `backend/diff_engine/` | type errors, if any |
 | `just test` | type-checks, then runs the diff engine tests | the unittest results |
-| `just ui-install` | installs the React app's dependencies in `frontend/` from the lockfile (`npm ci`) | npm output |
-| `just ui-build` | type-checks and builds the React app into `frontend/dist/` (installs first if needed) | the Vite build summary |
-| `just ui-dev` | runs the React app's dev server | the app at http://127.0.0.1:5173 |
-| `just ui-test` | runs the React app's tests (vitest) | the test results |
-| `just ui-preview` | serves the built app from `frontend/dist/` (run `just ui-build` first) | the built app at http://127.0.0.1:4173 |
 
-The viewer recipes print a URL and try to open your browser (under WSL they may not, so open the printed URL). Ctrl+C stops the server. `just typecheck` and `just test` need pyright on your PATH (`npm install -g pyright` or `pip install pyright`); it's a dev tool only. The `ui-*` recipes need node and npm.
+The HTML viewer recipes print a URL and try to open your browser. Ctrl+C stops the server. `just typecheck` and `just test` need pyright on your PATH (`npm install -g pyright` or `pip install pyright`); it's a dev tool only.
 
-Without `just`, run from `backend/` (or set `PYTHONPATH=backend` from the root):
+Without `just`, run the engine from `backend/` (or set `PYTHONPATH=backend` from the root):
 
 ```
 python3 -m diff_engine before.e2k after.e2k -o diff.json     # JSON diff
-python3 -m diff_engine before.e2k after.e2k --view           # open the viewer on it
+python3 -m diff_engine before.e2k after.e2k --view           # open the HTML viewer on it
 python3 -m diff_engine before.e2k after.e2k --csv changes.csv --summary
 python3 -m diff_engine.serve                                 # same as just demo
+python3 -m diff_engine.demo_diffs                            # rediff every pair of the hackathon models
+python3 -m diff_engine ../fixtures/demo/before.e2k ../fixtures/demo/after.e2k --view   # the seeded synthetic pair
 ```
 
+Rerun `demo_diffs` after changing a model by hand (a test fails if `frontend/demo_viewer/diffs/` is stale; Add version and `egit add` do it for you). The React app's own commands run from `frontend/`: `npm ci`, `npm run dev`, `npm test` (vitest), `npm run build` (into `frontend/dist/`).
+
 `--tolerance` (node match, in inches, defaults to the before file's `MERGETOL`, or 0.1 in) and `--move-tolerance` (default 36 in, `0` turns moves off) tune matching.
+
+# egit
+
+There's also a little easter egg: `egit`, git for model versions. It works on the same history as the Revision log (`frontend/demo_viewer/models/revisions.json`). Run it as `./egit` from the repo, or `just egit` from anywhere in it.
+
+```
+./egit log                         # the history with branch lanes and change counts
+./egit show Hack_v03               # a version's message and its diff against its parent
+./egit diff Hack_v01 Hack_v06 --stat
+./egit add new.e2k -m "Add a brace on Story2"   # same rules as the Add version form
+./egit status                      # versions added but not committed yet
+./egit push                        # commit just the history files and git push
+```
+
+`./egit --help` and `./egit <command> --help` have the rest.
+
+To run it bare as `egit` from any folder, symlink it onto your PATH once from the repo root: `ln -s "$PWD/egit" ~/.local/bin/egit`. It finds the history from its own location, so the symlink works anywhere.
 
 # How It Compares Models
 
 - Both files are normalized to kip and inch, so the same model saved in different units diffs clean (`Hack_v02a` is `Hack_v02` in lb and ft).
-- Elements match by geometry relative to their level: same level, plan X/Y and offset within the tolerance. Labels are never used for matching (ETABS relabels on redraw), only for display.
+- Elements match by geometry relative to their level: same level, plan X/Y and offset within the tolerance. Labels are never used for matching (ETABS relabels on redraw).
 - A story elevation change is reported once in the stories table. Members on that story aren't flagged just because the story moved.
-- A removed and an added frame of the same type are linked as one move when neither end travelled more than 36 in, or when they're colinear, overlap, and have identical properties (a beam extended, shortened, or slid along its line).
-- Editing a section or material marks every member using it as "affected", with a `via` list saying which definition did it. The viewer highlights them in 3D.
+- A removed and an added frame of the same type are linked as one move when neither end travelled more than 36 in. Separately, whatever the travel, they're linked when they're colinear, overlap, and have identical assigns (a beam extended, shortened, or slid along its line). That colinear link is one-to-one, so a beam split in two or two merged into one isn't linked.
+- Renames are caught both ways. A matched element whose label changed gets a `label` change marked `renamed`. A definition (material, section, load pattern, case, combo, and the other tables) that was removed and re-added under a new name with identical properties is reported once as renamed instead of removed plus added, as long as the pairing is unambiguous. References to it compare by identity, so a rename alone doesn't show up as a section reassignment on every member.
+- Editing a section or material marks every member using it as "affected", with a `via` list saying which definition did it. The viewers highlight them in 3D.
 
 Full details are in [`backend/diff_engine/README.md`](backend/diff_engine/README.md).
 
@@ -72,23 +102,25 @@ Against the team's 17-row change list:
 | 16 | Diaphragms | caught |
 | 17 | Response spectrum and time history functions | caught |
 
-Every change carries its row and an `affects` tag (geometry, stiffness, mass, load), and the viewer filters on both. Anything outside the list comes through with `row: null` rather than being dropped.
+Every change carries its row and an `affects` tag (geometry, stiffness, mass, load), and the HTML viewer filters on both. Anything outside the list comes through with `row: null` rather than being dropped.
 
 # Repo Layout
 
 | Folder | What's in it |
 | --- | --- |
-| `backend/diff_engine/` | the working engine: parser, matching, diff, CSV report, viewer server (stdlib Python, strict pyright) |
-| `frontend/demo_viewer/` | the working viewer: one static HTML file with three.js, plus the hackathon models and their precomputed diffs |
+| `backend/diff_engine/` | the working engine: parser, matching, diff, CSV report, HTML viewer server, egit (stdlib Python, strict pyright) |
+| `frontend/src/` | keepTABS, the React app `just ui` runs (Review and Revision log pages) |
+| `frontend/compareE2k.ts`, `frontend/saveRevision.ts` | the dev-server routes behind upload and Add version (they call the engine) |
+| `frontend/demo_viewer/` | the HTML demo viewer (one static file with three.js), the hackathon models, `revisions.json`, and their precomputed diffs |
 | `fixtures/demo/` | the seeded synthetic before/after pair, its diff, CSV, and generator |
-| `fixtures/` (top level files) | JSON fixtures for the React/FastAPI scaffold |
+| `fixtures/` (top level files) | JSON fixtures for the FastAPI scaffold |
 | `backend/src/`, `backend/tests/` | a teammate's FastAPI scaffold, separate from the working engine |
-| `frontend/src/` | a teammate's React app scaffold, separate from the working viewer |
+| `egit` | the egit launcher |
 
 # Output
 
 - JSON contract: [`frontend/demo_viewer/contract.ts`](frontend/demo_viewer/contract.ts) is the source of truth, explained field by field in [`frontend/demo_viewer/CONTRACT.md`](frontend/demo_viewer/CONTRACT.md). The engine builds it through matching `TypedDict`s in `backend/diff_engine/contract.py`.
-- CSV: one row per change with columns `table, key, kind, subtype, label, story, status, field, before, after, affects, row, via` (`COLUMNS` in `backend/diff_engine/report.py`).
+- CSV: one row per change with columns `table, key, kind, subtype, label, story, status, field, before, after, affects, row, via` (`COLUMNS` in `backend/diff_engine/report.py`). A rename row has `status` `renamed`.
 
 # Model Files
 

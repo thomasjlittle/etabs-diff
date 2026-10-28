@@ -1,5 +1,6 @@
-// Vantage result schema (UI-only, "vantage-0.1"). Separate from types.ts, which mirrors backend schema.py.
+// keepTABS result schema (UI-only, "keeptabs-0.1"). Separate from types.ts, which mirrors backend schema.py.
 // an adapter from engine output to this shape comes later. All mock data is synthetic.
+import type { ModelLoads } from './loads';
 
 export type Vec3 = [number, number, number];
 
@@ -42,6 +43,7 @@ export interface Change {
   id: string;
   type: ChangeType;
   group: string;                 // Group.id
+  category?: string;             // left-panel category id (categories.ts); derived from group when absent
   member_ids: string[];          // for a move: [baseline member, revised member]
   subject?: string;              // for non-member records, e.g. "Material STEEL-COL"
   extent: { members: number; distance: number };
@@ -51,7 +53,7 @@ export interface Change {
   evidence: Evidence[];
 }
 
-export interface Group { id: string; title: string; tier: string; change_ids: string[] }
+export interface Group { id: string; title: string; change_ids: string[] }
 
 export interface Coverage { group: string; record: string; status: 'compared' | 'seen_not_compared' }
 
@@ -66,4 +68,5 @@ export interface Result {
   changes: Change[];
   groups: Group[];
   warnings: { coverage: Coverage[]; ambiguous: Ambiguous[]; error: string | null };
+  loads?: ModelLoads;            // engine results only: applied loads per element, and pattern / case / combo definitions
 }

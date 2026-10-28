@@ -28,6 +28,14 @@ describe('model pairs', () => {
     expect(r.changes).toHaveLength(0);
   });
 
+  it('v01 -> v01a: definition renames read as renames, not reversed member ends', async () => {
+    const r = await pair('Hack_v01', 'Hack_v01a');
+    expect(r.changes.filter((c) => c.type === 'label_only').map((c) => describeChange(c, r))).toEqual([
+      'Material 4Ksi was renamed from 4000Psi to 4Ksi. Label only, not a physical change.',
+      'Load case LL was renamed from Live to LL. Label only, not a physical change.',
+    ]);
+  });
+
   it('v01a -> v02: the three changes verified against the .e2k text', async () => {
     const r = await pair('Hack_v01a', 'Hack_v02');
     expect(r.changes.map((c) => [c.group, describeChange(c, r)])).toEqual([

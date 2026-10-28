@@ -1,14 +1,18 @@
-// Vantage: review two revisions of a structural model. Frontend only; reads committed diffs and fixtures.
-import { lazy, Suspense, useCallback, useEffect, useReducer, useState, type ReactNode } from 'react';
-import type { Result } from './vantageTypes';
-import { type ColorBy, type ViewMode, reducer } from './data';
+// keepTABS: review two revisions of a structural model. Frontend only; reads committed diffs and fixtures.
+import { lazy, Suspense, useCallback, useEffect, useReducer, useRef, useState, type ReactNode } from 'react';
+import type { Result } from './keeptabsTypes';
+import { type ColorBy, reducer } from './data';
 import { ChangeTable, DetailPanel, StoryStrip, SummaryList } from './Panels';
-import type { CameraMode } from './Viewer';
+import type { CameraMode, CameraSync, ViewerProps } from './Viewer';
 import type { Diff, Model } from './types';
 import { adapt } from './adapter';
 import { adaptEngine, type EngineDiff } from './engineAdapter';
 import manifest from '../demo_viewer/diffs/manifest.json';
 import { RevisionLog } from './RevisionLog';
+import { categoryOf } from './categories';
+import { UploadStart } from './UploadStart';
+import { LoadDetails, LoadsControl } from './LoadPanel';
+import { type LoadView, defaultLoadView } from './loads';
 
 // Loaded separately so tests (no WebGL) never import three.js.
 const Viewer = lazy(() => import('./Viewer'));
@@ -18,12 +22,12 @@ const MOCKS = import.meta.glob('./mock/*.json');
 
 // Data sources in the top-bar dropdown. "team-fixture" is the team's reference case in schema.py format.
 const SOURCES: [string, string][] = [
-  ['e2k-upload', 'Upload two models (.e2k / .$et)'],
-  ['diff-file', 'Open a diff file (.json from diff_engine)'],
-  ['hack-models', 'Hack models, real ETABS (pick two)'],
-  ['seeded-demo', 'Seeded demo, 8 stories (engine output)'],
-  ['team-fixture', 'Team fixture (fixtures/*.json)'],
-  ['mock-result', 'Vantage mock'],
+  ['e2k-upload', 'Your models (.e2k / .$et)'],
+  ['diff-file', 'Dev: open a diff file (.json from diff_engine)'],
+  ['hack-models', 'Sample: Hack models, real ETABS (pick two)'],
+  ['seeded-demo', 'Sample: Seeded demo, 8 stories (engine output)'],
+  ['team-fixture', 'Dev: team fixture (fixtures/*.json)'],
+  ['mock-result', 'Dev: keepTABS mock'],
 ];
 
 // Real ETABS models from frontend/demo_viewer/models/, diffed by the engine for every ordered pair
@@ -39,7 +43,7 @@ export async function loadScenario(name: string, pair: Pair = { original: MODELS
     return adaptEngine(((await load()) as { default: EngineDiff }).default, { mock: false });
   }
   if (name === 'seeded-demo') {
-    // Synthetic pair (same as `just demo-seeded`), committed by the engine owner.
+    // Synthetic pair (fixtures/demo/, the pair the engine tests use), committed by the engine owner.
     const d = await import('../../fixtures/demo/diff.json');
     return adaptEngine(d.default as unknown as EngineDiff, { mock: true });
   }
@@ -89,7 +93,7 @@ export async function compareModels(original: File, second: File): Promise<Resul
   body.append('b', second);
   let res: Response;
   try {
-    res = await fetch(COMPARE_ROUTE, { method: 'POST', body, headers: { 'x-vantage-compare': '1' } });
+    res = await fetch(COMPARE_ROUTE, { method: 'POST', body, headers: { 'x-keeptabs-local': '1' } });
   } catch {
     throw new Error('The local dev server did not answer. Start it from frontend/ with: npm run dev');
   }
@@ -106,22 +110,52 @@ export async function compareModels(original: File, second: File): Promise<Resul
 }
 
 /** The review panels, sharing one selected change. The viewer is passed in so tests can leave it out. */
-export function Workspace({ result, selectedId, onSelect, viewer, story, onStory }: {
+export function Workspace({ result, selectedId, onSelect, viewer, story, onStory, loadView, loadFocus }: {
   result: Result; selectedId: string | null; onSelect: (id: string | null) => void;
   viewer?: ReactNode; story?: string | null; onStory?: (s: string | null) => void;
+  loadView?: LoadView | null; loadFocus?: string | null;
 }) {
   const props = { result, selectedId, onSelect };
+  // Category picked in the summary list; the table below lists only that category's changes.
+  const [category, setCategory] = useState<string | null>(null);
+  // A selection made elsewhere (3D, table) outside the picked category switches the table to its category.
+  const selected = result.changes.find((c) => c.id === selectedId);
+  const selectedCategory = selected && categoryOf(selected);
+  useEffect(() => {
+    if (category && selectedCategory && selectedCategory !== category) setCategory(selectedCategory);
+  }, [selectedCategory]); // eslint-disable-line react-hooks/exhaustive-deps
   return (
-    <div className="grid min-h-0 flex-1 grid-cols-[20rem_1fr_22rem] grid-rows-[1fr_15rem]">
-      <aside className="min-h-0 overflow-hidden border-r border-slate-200"><SummaryList {...props} /></aside>
-      <main className="flex min-h-0 flex-col">
+    // minmax(0, 1fr): the 3D canvas keeps its last pixel height, so a plain 1fr row would not shrink and
+    // the viewer would spill over the table when the table grows.
+    <div className={`grid min-h-0 flex-1 grid-cols-[20rem_minmax(0,1fr)_22rem] ${category ? 'grid-rows-[minmax(0,1fr)_22rem]' : 'grid-rows-[minmax(0,1fr)_15rem]'}`}>
+      <aside className="min-h-0 overflow-hidden border-r border-slate-200"><SummaryList result={result} category={category} onCategory={setCategory} /></aside>
+      <main className="flex min-h-0 flex-col overflow-hidden">
         <StoryStrip result={result} story={story ?? null} onStory={onStory ?? (() => {})} />
-        <div className="min-h-0 flex-1">
+        <div className="relative min-h-0 flex-1 overflow-hidden">
           {viewer ?? <div className="flex h-full items-center justify-center text-sm text-slate-400">Viewer</div>}
         </div>
       </main>
-      <aside className="min-h-0 overflow-y-auto border-l border-slate-200"><DetailPanel {...props} /></aside>
-      <section className="col-span-3 min-h-0 border-t border-slate-200"><ChangeTable {...props} /></section>
+      <aside className="min-h-0 overflow-y-auto border-l border-slate-200">
+        <DetailPanel {...props} />
+        {loadView && result.loads && <LoadDetails result={result} view={loadView} focus={loadFocus ?? null} selectedId={selectedId} />}
+      </aside>
+      <section className="col-span-3 min-h-0 border-t border-slate-200"><ChangeTable {...props} category={category} onCategory={setCategory} /></section>
+    </div>
+  );
+}
+
+/** Model 1 and Model 2 side by side. With sync, orbiting one pane moves the other the same way. */
+function SplitView({ sync, ...props }: Omit<ViewerProps, 'viewMode'>) {
+  return (
+    <div className="absolute inset-0 grid grid-cols-2 grid-rows-[minmax(0,1fr)] divide-x divide-slate-300">
+      {(['baseline', 'revised'] as const).map((side) => (
+        <div key={side} className="relative min-h-0 min-w-0 overflow-hidden">
+          <Viewer {...props} viewMode={side} sync={sync} legend={side === 'revised'} />
+          <span className="pointer-events-none absolute left-2 top-2 rounded bg-white/90 px-2 py-0.5 text-xs font-semibold text-slate-700 ring-1 ring-slate-200">
+            {side === 'baseline' ? 'Model 1' : 'Model 2'}
+          </span>
+        </div>
+      ))}
     </div>
   );
 }
@@ -136,6 +170,7 @@ function Toggle<T extends string>({ label, value, options, onChange }: {
       {options.map(([v, text]) => (
         <button
           key={v}
+          aria-pressed={value === v}
           onClick={() => onChange(v)}
           className={`rounded px-2 py-0.5 ${value === v ? 'bg-slate-800 text-white' : 'bg-slate-100 hover:bg-slate-200'}`}
         >
@@ -149,35 +184,50 @@ function Toggle<T extends string>({ label, value, options, onChange }: {
 export default function App() {
   const [state, dispatch] = useReducer(reducer, { load: { status: 'loading' }, selectedChangeId: null });
   const select = useCallback((id: string | null) => dispatch({ type: 'select', id }), []);
-  const [viewMode, setViewMode] = useState<ViewMode>('overlay');
+  // Model 1 and Model 2 side by side, cameras linked unless the user unlinks them.
+  const [linked, setLinked] = useState(true);
+  const sync = useRef<CameraSync>({ driver: null, version: 0, position: [0, 0, 0], target: [0, 0, 0], zoom: 1 }).current;
   const [cameraMode, setCameraMode] = useState<CameraMode>('3d');
   const [colorBy, setColorBy] = useState<ColorBy>('change');
   const [story, setStory] = useState<string | null>(null);
   const [zoomTick, setZoomTick] = useState(0);
   const [resetTick, setResetTick] = useState(0);
-  const [source, setSource] = useState('hack-models');
+  const [source, setSource] = useState('e2k-upload');
   const [original, setOriginal] = useState(MODELS[0]);
   const [second, setSecond] = useState(MODELS[1]);
   const [diffFile, setDiffFile] = useState<File | null>(null);
   const [originalFile, setOriginalFile] = useState<File | null>(null);
-  const [secondFile, setSecondFile] = useState<File | null>(null);
-  const waitingForFile = (source === 'diff-file' && !diffFile) || (source === 'e2k-upload' && !(originalFile && secondFile));
+  const [revisedFile, setRevisedFile] = useState<File | null>(null);
+  // The pair last sent to Compare. Picking files alone doesn't run anything.
+  const [compared, setCompared] = useState<[File, File] | null>(null);
+  const [retryTick, setRetryTick] = useState(0);
+  const waitingForFile = (source === 'diff-file' && !diffFile) || (source === 'e2k-upload' && !compared);
   const [page, setPage] = useState<'review' | 'log'>('review');
+  // Applied loads: on by default, back to the default pick for each new pair; the element last hovered or
+  // clicked shows its loads in the details panel.
+  const [loadView, setLoadView] = useState<LoadView | null>(null);
+  const [loadFocus, setLoadFocus] = useState<string | null>(null);
 
   // Each load starts from a clean slate: previous result, selection and story filter are dropped.
   useEffect(() => {
     let current = true;
     dispatch({ type: 'load_start' });
     setStory(null);
+    setLoadView(null); // another pair may not have the same patterns
+    setLoadFocus(null);
     if (waitingForFile) return;
     const loading = source === 'diff-file' && diffFile ? openDiffFile(diffFile)
-      : source === 'e2k-upload' && originalFile && secondFile ? compareModels(originalFile, secondFile)
+      : source === 'e2k-upload' && compared ? compareModels(...compared)
         : loadScenario(source, { original, second });
     loading
-      .then((result) => current && dispatch({ type: 'load_ok', result }))
+      .then((result) => {
+        if (!current) return;
+        dispatch({ type: 'load_ok', result });
+        setLoadView(result.loads ? defaultLoadView(result.loads) : null);
+      })
       .catch((e: Error) => current && dispatch({ type: 'load_fail', message: e.message }));
     return () => { current = false; }; // ignore a slow load that was superseded
-  }, [source, original, second, diffFile, originalFile, secondFile, waitingForFile]);
+  }, [source, original, second, diffFile, compared, retryTick, waitingForFile]);
 
   const modelSelect = (label: string, value: string, onChange: (v: string) => void) => (
     <label className="text-xs text-slate-500">{label}{' '}
@@ -192,46 +242,49 @@ export default function App() {
     setSource(v);
     setDiffFile(null);
     setOriginalFile(null);
-    setSecondFile(null);
+    setRevisedFile(null);
+    setCompared(null);
   };
   // From the revision log: review that pair of Hack models.
   const openPair = (a: string, b: string) => { changeSource('hack-models'); setOriginal(a); setSecond(b); setPage('review'); };
 
-  const modelFile = (label: string, onChange: (f: File | null) => void) => (
-    <label className="text-xs text-slate-500">{label}{' '}
-      <input type="file" accept=".e2k,.$et" aria-label={`${label} model file`} className="text-xs text-slate-900"
-        onChange={(e) => onChange(e.target.files?.[0] ?? null)} />
-    </label>
-  );
-
   const { load } = state;
+  const viewerProps = load.status === 'ready' ? {
+    result: load.result, selectedId: state.selectedChangeId, onSelect: select,
+    cameraMode, colorBy, storyFilter: story, zoomTick, resetTick, loadView, onLoadFocus: setLoadFocus,
+  } : null;
   return (
     <div className="flex h-screen flex-col bg-white text-slate-900">
       <header className="flex flex-wrap items-center gap-x-4 gap-y-1 border-b border-slate-200 px-4 py-2">
-        <h1 className="font-semibold">Vantage</h1>
+        <h1 className="flex items-center gap-2 text-lg font-bold tracking-tight">
+          <img src="/keeptabs-icon.png" alt="" className="h-8 w-auto" />
+          <span><span className="text-slate-800">keep</span><span className="text-blue-700">TABS</span></span>
+        </h1>
         <Toggle label="Page" value={page} onChange={setPage} options={[['review', 'Review'], ['log', 'Revision log']]} />
         {/* Always visible: says whether what's on screen is synthetic or a real model. */}
-        <span className="rounded bg-slate-900 px-2 py-0.5 text-xs font-bold tracking-wide text-white">
-          {load.status === 'ready' && !load.result.mock ? 'REAL ETABS MODELS' : 'MOCK DATA'}
-        </span>
-        <label className="text-xs text-slate-500">Data{' '}
-          <select value={source} onChange={(e) => changeSource(e.target.value)} className="rounded border px-1 text-slate-900">
+        {/* Only once something is loaded: while waiting or comparing, there is no data to label. */}
+        {load.status === 'ready' && (
+          <span className="rounded bg-slate-900 px-2 py-0.5 text-xs font-bold tracking-wide text-white">
+            {load.result.mock ? 'MOCK DATA' : 'REAL ETABS MODELS'}
+          </span>
+        )}
+        <label className="text-xs text-slate-500">Source{' '}
+          <select aria-label="Source" value={source} onChange={(e) => changeSource(e.target.value)} className="rounded border px-1 text-slate-900">
             {SOURCES.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
           </select>
         </label>
         {source === 'hack-models' && (
           <div className="flex items-center gap-2">
-            {modelSelect('Original', original, setOriginal)}
+            {modelSelect('Model 1', original, setOriginal)}
             <span className="text-slate-400">→</span>
-            {modelSelect('Second', second, setSecond)}
+            {modelSelect('Model 2', second, setSecond)}
           </div>
         )}
-        {source === 'e2k-upload' && (
-          <div className="flex items-center gap-2">
-            {modelFile('Original', setOriginalFile)}
-            <span className="text-slate-400">→</span>
-            {modelFile('Second', setSecondFile)}
-          </div>
+        {source === 'e2k-upload' && compared && (
+          <span className="flex items-center gap-2 rounded bg-slate-100 px-2 py-0.5 text-xs">
+            <span className="font-mono">{compared[0].name} → {compared[1].name}</span>
+            <button className="text-blue-700 underline" onClick={() => setCompared(null)}>Change files</button>
+          </span>
         )}
         {source === 'diff-file' && (
           <label className="text-xs text-slate-500">Diff file{' '}
@@ -239,8 +292,10 @@ export default function App() {
               onChange={(e) => setDiffFile(e.target.files?.[0] ?? null)} />
           </label>
         )}
-        <Toggle label="Show" value={viewMode} onChange={setViewMode}
-          options={[['baseline', 'Baseline'], ['overlay', 'Overlay'], ['revised', 'Revised']]} />
+        <button aria-pressed={linked} onClick={() => setLinked((l) => !l)}
+          className={`rounded px-2 py-0.5 text-xs ${linked ? 'bg-slate-800 text-white' : 'bg-slate-100 hover:bg-slate-200'}`}>
+          {linked ? 'Views linked' : 'Views unlinked'}
+        </button>
         <Toggle label="View" value={cameraMode} onChange={setCameraMode}
           options={[['3d', '3D'], ['plan', 'Plan'], ['N', 'N'], ['S', 'S'], ['E', 'E'], ['W', 'W']]} />
         <Toggle label="Color by" value={colorBy} onChange={setColorBy}
@@ -249,6 +304,7 @@ export default function App() {
           disabled={!state.selectedChangeId} onClick={() => setZoomTick((t) => t + 1)}>Zoom to selected</button>
         <button className="rounded bg-slate-100 px-2 py-0.5 text-xs hover:bg-slate-200"
           onClick={() => setResetTick((t) => t + 1)}>Reset view</button>
+        {load.status === 'ready' && load.result.loads && <LoadsControl loads={load.result.loads} view={loadView} onChange={setLoadView} />}
         {load.status === 'ready' && (
           <span className="ml-auto text-xs text-slate-500">
             {load.result.meta.source.baseline} → {load.result.meta.source.revised} · {load.result.meta.units.length}, {load.result.meta.units.force}
@@ -256,11 +312,11 @@ export default function App() {
         )}
       </header>
       {page === 'log' && <RevisionLog onOpen={openPair} />}
-      {page === 'review' && waitingForFile && source === 'e2k-upload' && (
-        <p className="p-4 text-sm text-slate-500">
-          Choose an Original and a Second model (.e2k or .$et). They are compared by the diff engine on this machine
-          (127.0.0.1) and are not kept.
-        </p>
+      {page === 'review' && source === 'e2k-upload' && load.status !== 'ready' && (
+        <UploadStart original={originalFile} revised={revisedFile} onOriginal={setOriginalFile} onRevised={setRevisedFile}
+          onCompare={() => originalFile && revisedFile && setCompared([originalFile, revisedFile])}
+          onSample={() => changeSource('hack-models')}
+          busy={!!compared && load.status === 'loading'} error={compared && load.status === 'error' ? load.message : null} />
       )}
       {page === 'review' && waitingForFile && source === 'diff-file' && (
         <p className="p-4 text-sm text-slate-500">
@@ -268,20 +324,28 @@ export default function App() {
           browser only.
         </p>
       )}
-      {page === 'review' && load.status === 'loading' && !waitingForFile && <p className="p-4 text-sm text-slate-500">Loading…</p>}
-      {page === 'review' && load.status === 'error' && <p role="alert" className="p-4 text-sm">Could not load the comparison: {load.message}</p>}
-      {page === 'review' && load.status === 'ready' && (
+      {page === 'review' && source !== 'e2k-upload' && load.status === 'loading' && !waitingForFile && (
+        <p className="p-4 text-sm text-slate-500">Loading…</p>
+      )}
+      {page === 'review' && source !== 'e2k-upload' && load.status === 'error' && (
+        <div role="alert" className="m-4 flex items-center gap-3 rounded border border-red-200 bg-red-50 p-3 text-sm text-red-800">
+          <span>Could not load the comparison: {load.message}</span>
+          <button className="rounded bg-white px-2 py-0.5 text-xs ring-1 ring-red-300 hover:bg-red-100"
+            onClick={() => setRetryTick((t) => t + 1)}>Try again</button>
+        </div>
+      )}
+      {page === 'review' && viewerProps && (
         <Workspace
-          result={load.result}
+          result={viewerProps.result}
           selectedId={state.selectedChangeId}
           onSelect={select}
           story={story}
           onStory={setStory}
+          loadView={loadView}
+          loadFocus={loadFocus}
           viewer={
             <Suspense fallback={<div className="p-4 text-sm text-slate-400">Loading viewer…</div>}>
-              <Viewer result={load.result} selectedId={state.selectedChangeId} onSelect={select}
-                viewMode={viewMode} cameraMode={cameraMode} colorBy={colorBy} storyFilter={story}
-                zoomTick={zoomTick} resetTick={resetTick} />
+              <SplitView {...viewerProps} sync={linked ? sync : null} />
             </Suspense>
           }
         />

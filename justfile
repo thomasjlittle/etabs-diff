@@ -13,21 +13,19 @@ view before after:
 csv before after out:
     python3 -m diff_engine "{{before}}" "{{after}}" --csv "{{out}}" --summary
 
-# open the viewer on the hackathon models (frontend/demo_viewer/models/), Before/After dropdowns on Hack_v01a to Hack_v02
+# open the viewer on the hackathon models (frontend/demo_viewer/models/), Before/After dropdowns over all of them
 demo:
     python3 -m diff_engine.serve
-
-# rediff every pair of the hackathon models into frontend/demo_viewer/diffs/ (run after adding or changing a model)
-demo-diffs:
-    python3 -m diff_engine.demo_diffs
-
-# diff the seeded synthetic demo pair (fixtures/demo/) and open the viewer on it
-demo-seeded:
-    python3 -m diff_engine fixtures/demo/before.e2k fixtures/demo/after.e2k --view
 
 # open the viewer on the bundled example diff
 example:
     python3 -m diff_engine.serve frontend/demo_viewer/example-diff.json
+
+# egit: git-style log, show, diff, add, status, pull, push over the model history (just egit --help)
+[no-cd]
+[positional-arguments]
+egit *args:
+    @"{{justfile_directory()}}/egit" "$@"
 
 # type-check backend/diff_engine with pyright in strict mode (pyrightconfig.json)
 typecheck:
@@ -39,23 +37,14 @@ test: typecheck
 
 # --- UI (the React app in frontend/, needs node and npm) ---
 
-# install the UI's dependencies from package-lock.json
-ui-install:
-    cd frontend && npm ci
-
-# type-check and build the UI into frontend/dist/ (installs first if node_modules is missing)
-ui-build:
-    cd frontend && { [ -d node_modules ] || npm ci; } && npm run build
-    @echo "built into frontend/dist/"
-
-# run the UI dev server at http://127.0.0.1:5173 (Ctrl+C stops it)
-ui-dev:
-    cd frontend && npm run dev
-
-# run the UI tests
-ui-test:
-    cd frontend && npm test
-
-# serve the built UI from frontend/dist/ at http://127.0.0.1:4173 (run ui-build first)
-ui-preview:
-    cd frontend && npx vite preview --host 127.0.0.1
+# show the UI: install if needed, start the dev server at http://127.0.0.1:5173, try to open a browser (Ctrl+C stops it)
+ui:
+    #!/usr/bin/env sh
+    set -e
+    cd frontend
+    if [ ! -d node_modules ] || [ package-lock.json -nt node_modules ]; then npm ci; fi
+    echo ""
+    echo "  UI: http://127.0.0.1:5173  (Ctrl+C stops it)"
+    echo ""
+    (sleep 2; wslview http://127.0.0.1:5173 || xdg-open http://127.0.0.1:5173 || open http://127.0.0.1:5173) >/dev/null 2>&1 &
+    exec npm run dev

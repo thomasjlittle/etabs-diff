@@ -1,5 +1,5 @@
 {
- "schemaVersion": "0.1",
+ "schemaVersion": "0.2",
  "meta": {
   "a": {
    "file": "before.e2k",
@@ -2283,7 +2283,35 @@
     ]
    ],
    "changes": [],
-   "grid": "A-B/1"
+   "grid": "A-B/1",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L7|3600|0|0~L7|7200|0|0",
@@ -2305,7 +2333,35 @@
     ]
    ],
    "changes": [],
-   "grid": "B-C/1"
+   "grid": "B-C/1",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L7|10800|0|0~L7|7200|0|0",
@@ -2327,7 +2383,35 @@
     ]
    ],
    "changes": [],
-   "grid": "C-D/1"
+   "grid": "C-D/1",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L7|10800|0|0~L7|14400|0|0",
@@ -2349,7 +2433,35 @@
     ]
    ],
    "changes": [],
-   "grid": "D-E/1"
+   "grid": "D-E/1",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L7|0|3000|0~L7|3600|3000|0",
@@ -2547,7 +2659,35 @@
     ]
    ],
    "changes": [],
-   "grid": "A-B/4"
+   "grid": "A-B/4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L7|3600|9000|0~L7|7200|9000|0",
@@ -2569,7 +2709,35 @@
     ]
    ],
    "changes": [],
-   "grid": "B-C/4"
+   "grid": "B-C/4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L7|10800|9000|0~L7|7200|9000|0",
@@ -2591,7 +2759,35 @@
     ]
    ],
    "changes": [],
-   "grid": "C-D/4"
+   "grid": "C-D/4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L7|10800|9000|0~L7|14400|9000|0",
@@ -2613,7 +2809,35 @@
     ]
    ],
    "changes": [],
-   "grid": "D-E/4"
+   "grid": "D-E/4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L7|0|0|0~L7|0|3000|0",
@@ -2645,7 +2869,35 @@
      "kind": "renamed"
     }
    ],
-   "grid": "A/1-2"
+   "grid": "A/1-2",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L7|0|3000|0~L7|0|6000|0",
@@ -2677,7 +2929,35 @@
      "kind": "renamed"
     }
    ],
-   "grid": "A/2-3"
+   "grid": "A/2-3",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L7|0|6000|0~L7|0|9000|0",
@@ -2709,7 +2989,35 @@
      "kind": "renamed"
     }
    ],
-   "grid": "A/3-4"
+   "grid": "A/3-4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L7|3600|0|0~L7|3600|3000|0",
@@ -2929,7 +3237,35 @@
     ]
    ],
    "changes": [],
-   "grid": "E/1-2"
+   "grid": "E/1-2",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L7|14400|3000|0~L7|14400|6000|0",
@@ -2951,7 +3287,35 @@
     ]
    ],
    "changes": [],
-   "grid": "E/2-3"
+   "grid": "E/2-3",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L7|14400|6000|0~L7|14400|9000|0",
@@ -2973,7 +3337,35 @@
     ]
    ],
    "changes": [],
-   "grid": "E/3-4"
+   "grid": "E/3-4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L7|1800|0|0~L7|1800|3000|0",
@@ -3838,7 +4230,35 @@
     ]
    ],
    "changes": [],
-   "grid": "A-B/1"
+   "grid": "A-B/1",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L6|3600|0|0~L6|7200|0|0",
@@ -3860,7 +4280,35 @@
     ]
    ],
    "changes": [],
-   "grid": "B-C/1"
+   "grid": "B-C/1",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L6|10800|0|0~L6|7200|0|0",
@@ -3882,7 +4330,35 @@
     ]
    ],
    "changes": [],
-   "grid": "C-D/1"
+   "grid": "C-D/1",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L6|10800|0|0~L6|14400|0|0",
@@ -3904,7 +4380,35 @@
     ]
    ],
    "changes": [],
-   "grid": "D-E/1"
+   "grid": "D-E/1",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L6|0|3000|0~L6|3600|3000|0",
@@ -4102,7 +4606,35 @@
     ]
    ],
    "changes": [],
-   "grid": "A-B/4"
+   "grid": "A-B/4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L6|3600|9000|0~L6|7200|9000|0",
@@ -4124,7 +4656,35 @@
     ]
    ],
    "changes": [],
-   "grid": "B-C/4"
+   "grid": "B-C/4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L6|10800|9000|0~L6|7200|9000|0",
@@ -4146,7 +4706,35 @@
     ]
    ],
    "changes": [],
-   "grid": "C-D/4"
+   "grid": "C-D/4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L6|10800|9000|0~L6|14400|9000|0",
@@ -4168,7 +4756,35 @@
     ]
    ],
    "changes": [],
-   "grid": "D-E/4"
+   "grid": "D-E/4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L6|0|0|0~L6|0|3000|0",
@@ -4200,7 +4816,35 @@
      "kind": "renamed"
     }
    ],
-   "grid": "A/1-2"
+   "grid": "A/1-2",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L6|0|3000|0~L6|0|6000|0",
@@ -4232,7 +4876,35 @@
      "kind": "renamed"
     }
    ],
-   "grid": "A/2-3"
+   "grid": "A/2-3",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L6|0|6000|0~L6|0|9000|0",
@@ -4264,7 +4936,35 @@
      "kind": "renamed"
     }
    ],
-   "grid": "A/3-4"
+   "grid": "A/3-4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L6|3600|0|0~L6|3600|3000|0",
@@ -4495,7 +5195,35 @@
     ]
    ],
    "changes": [],
-   "grid": "E/1-2"
+   "grid": "E/1-2",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L6|14400|3000|0~L6|14400|6000|0",
@@ -4517,7 +5245,35 @@
     ]
    ],
    "changes": [],
-   "grid": "E/2-3"
+   "grid": "E/2-3",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L6|14400|6000|0~L6|14400|9000|0",
@@ -4539,7 +5295,35 @@
     ]
    ],
    "changes": [],
-   "grid": "E/3-4"
+   "grid": "E/3-4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L6|1800|0|0~L6|1800|3000|0",
@@ -5403,7 +6187,35 @@
     ]
    ],
    "changes": [],
-   "grid": "A-B/1"
+   "grid": "A-B/1",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L5|3600|0|0~L5|7200|0|0",
@@ -5460,7 +6272,35 @@
      }
     }
    ],
-   "grid": "B-C/1"
+   "grid": "B-C/1",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.05,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L5|10800|0|0~L5|7200|0|0",
@@ -5482,7 +6322,35 @@
     ]
    ],
    "changes": [],
-   "grid": "C-D/1"
+   "grid": "C-D/1",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L5|10800|0|0~L5|14400|0|0",
@@ -5504,7 +6372,35 @@
     ]
    ],
    "changes": [],
-   "grid": "D-E/1"
+   "grid": "D-E/1",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L5|0|3000|0~L5|3600|3000|0",
@@ -5702,7 +6598,35 @@
     ]
    ],
    "changes": [],
-   "grid": "A-B/4"
+   "grid": "A-B/4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L5|3600|9000|0~L5|7200|9000|0",
@@ -5724,7 +6648,35 @@
     ]
    ],
    "changes": [],
-   "grid": "B-C/4"
+   "grid": "B-C/4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L5|10800|9000|0~L5|7200|9000|0",
@@ -5746,7 +6698,35 @@
     ]
    ],
    "changes": [],
-   "grid": "C-D/4"
+   "grid": "C-D/4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L5|10800|9000|0~L5|14400|9000|0",
@@ -5768,7 +6748,35 @@
     ]
    ],
    "changes": [],
-   "grid": "D-E/4"
+   "grid": "D-E/4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L5|0|0|0~L5|0|3000|0",
@@ -5800,7 +6808,35 @@
      "kind": "renamed"
     }
    ],
-   "grid": "A/1-2"
+   "grid": "A/1-2",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L5|0|3000|0~L5|0|6000|0",
@@ -5832,7 +6868,35 @@
      "kind": "renamed"
     }
    ],
-   "grid": "A/2-3"
+   "grid": "A/2-3",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L5|0|6000|0~L5|0|9000|0",
@@ -5864,7 +6928,35 @@
      "kind": "renamed"
     }
    ],
-   "grid": "A/3-4"
+   "grid": "A/3-4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L5|3600|0|0~L5|3600|3000|0",
@@ -6062,7 +7154,35 @@
     ]
    ],
    "changes": [],
-   "grid": "E/1-2"
+   "grid": "E/1-2",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L5|14400|3000|0~L5|14400|6000|0",
@@ -6084,7 +7204,35 @@
     ]
    ],
    "changes": [],
-   "grid": "E/2-3"
+   "grid": "E/2-3",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L5|14400|6000|0~L5|14400|9000|0",
@@ -6106,7 +7254,35 @@
     ]
    ],
    "changes": [],
-   "grid": "E/3-4"
+   "grid": "E/3-4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L5|1800|0|0~L5|1800|3000|0",
@@ -6960,7 +8136,35 @@
     ]
    ],
    "changes": [],
-   "grid": "A-B/1"
+   "grid": "A-B/1",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L4|3600|0|0~L4|7200|0|0",
@@ -6982,7 +8186,35 @@
     ]
    ],
    "changes": [],
-   "grid": "B-C/1"
+   "grid": "B-C/1",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L4|10800|0|0~L4|7200|0|0",
@@ -7004,7 +8236,35 @@
     ]
    ],
    "changes": [],
-   "grid": "C-D/1"
+   "grid": "C-D/1",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L4|10800|0|0~L4|14400|0|0",
@@ -7026,7 +8286,35 @@
     ]
    ],
    "changes": [],
-   "grid": "D-E/1"
+   "grid": "D-E/1",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L4|0|3000|0~L4|3600|3000|0",
@@ -7224,7 +8512,35 @@
     ]
    ],
    "changes": [],
-   "grid": "A-B/4"
+   "grid": "A-B/4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L4|3600|9000|0~L4|7200|9000|0",
@@ -7246,7 +8562,35 @@
     ]
    ],
    "changes": [],
-   "grid": "B-C/4"
+   "grid": "B-C/4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L4|10800|9000|0~L4|7200|9000|0",
@@ -7268,7 +8612,35 @@
     ]
    ],
    "changes": [],
-   "grid": "C-D/4"
+   "grid": "C-D/4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L4|10800|9000|0~L4|14400|9000|0",
@@ -7290,7 +8662,35 @@
     ]
    ],
    "changes": [],
-   "grid": "D-E/4"
+   "grid": "D-E/4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L4|0|0|0~L4|0|3000|0",
@@ -7322,7 +8722,35 @@
      "kind": "renamed"
     }
    ],
-   "grid": "A/1-2"
+   "grid": "A/1-2",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L4|0|3000|0~L4|0|6000|0",
@@ -7354,7 +8782,35 @@
      "kind": "renamed"
     }
    ],
-   "grid": "A/2-3"
+   "grid": "A/2-3",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L4|0|6000|0~L4|0|9000|0",
@@ -7386,7 +8842,35 @@
      "kind": "renamed"
     }
    ],
-   "grid": "A/3-4"
+   "grid": "A/3-4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L4|3600|0|0~L4|3600|3000|0",
@@ -7606,7 +9090,35 @@
     ]
    ],
    "changes": [],
-   "grid": "E/1-2"
+   "grid": "E/1-2",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L4|14400|3000|0~L4|14400|6000|0",
@@ -7628,7 +9140,35 @@
     ]
    ],
    "changes": [],
-   "grid": "E/2-3"
+   "grid": "E/2-3",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L4|14400|6000|0~L4|14400|9000|0",
@@ -7650,7 +9190,35 @@
     ]
    ],
    "changes": [],
-   "grid": "E/3-4"
+   "grid": "E/3-4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L4|1800|0|0~L4|1800|3000|0",
@@ -8596,7 +10164,35 @@
     ]
    ],
    "changes": [],
-   "grid": "A-B/1"
+   "grid": "A-B/1",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L3|3600|0|0~L3|7200|0|0",
@@ -8618,7 +10214,35 @@
     ]
    ],
    "changes": [],
-   "grid": "B-C/1"
+   "grid": "B-C/1",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L3|10800|0|0~L3|7200|0|0",
@@ -8640,7 +10264,35 @@
     ]
    ],
    "changes": [],
-   "grid": "C-D/1"
+   "grid": "C-D/1",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L3|10800|0|0~L3|14400|0|0",
@@ -8662,7 +10314,35 @@
     ]
    ],
    "changes": [],
-   "grid": "D-E/1"
+   "grid": "D-E/1",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L3|0|3000|0~L3|3600|3000|0",
@@ -8871,7 +10551,35 @@
     ]
    ],
    "changes": [],
-   "grid": "A-B/4"
+   "grid": "A-B/4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L3|3600|9000|0~L3|7200|9000|0",
@@ -8893,7 +10601,35 @@
     ]
    ],
    "changes": [],
-   "grid": "B-C/4"
+   "grid": "B-C/4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L3|10800|9000|0~L3|7200|9000|0",
@@ -8915,7 +10651,35 @@
     ]
    ],
    "changes": [],
-   "grid": "C-D/4"
+   "grid": "C-D/4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L3|10800|9000|0~L3|14400|9000|0",
@@ -8937,7 +10701,35 @@
     ]
    ],
    "changes": [],
-   "grid": "D-E/4"
+   "grid": "D-E/4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L3|0|0|0~L3|0|3000|0",
@@ -8969,7 +10761,35 @@
      "kind": "renamed"
     }
    ],
-   "grid": "A/1-2"
+   "grid": "A/1-2",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L3|0|3000|0~L3|0|6000|0",
@@ -9001,7 +10821,35 @@
      "kind": "renamed"
     }
    ],
-   "grid": "A/2-3"
+   "grid": "A/2-3",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L3|0|6000|0~L3|0|9000|0",
@@ -9033,7 +10881,35 @@
      "kind": "renamed"
     }
    ],
-   "grid": "A/3-4"
+   "grid": "A/3-4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L3|3600|0|0~L3|3600|3000|0",
@@ -9253,7 +11129,35 @@
     ]
    ],
    "changes": [],
-   "grid": "E/1-2"
+   "grid": "E/1-2",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L3|14400|3000|0~L3|14400|6000|0",
@@ -9275,7 +11179,35 @@
     ]
    ],
    "changes": [],
-   "grid": "E/2-3"
+   "grid": "E/2-3",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L3|14400|6000|0~L3|14400|9000|0",
@@ -9297,7 +11229,35 @@
     ]
    ],
    "changes": [],
-   "grid": "E/3-4"
+   "grid": "E/3-4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L3|1800|0|0~L3|1800|3000|0",
@@ -10291,7 +12251,35 @@
    "grid": "A-B/1",
    "via": [
     "frameSection:GIRDER-USER"
-   ]
+   ],
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L2|3600|0|0~L2|7200|0|0",
@@ -10328,7 +12316,35 @@
    "grid": "B-C/1",
    "via": [
     "frameSection:GIRDER-USER"
-   ]
+   ],
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L2|10800|0|0~L2|7200|0|0",
@@ -10365,7 +12381,35 @@
    "grid": "C-D/1",
    "via": [
     "frameSection:GIRDER-USER"
-   ]
+   ],
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L2|10800|0|0~L2|14400|0|0",
@@ -10402,7 +12446,35 @@
    "grid": "D-E/1",
    "via": [
     "frameSection:GIRDER-USER"
-   ]
+   ],
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L2|0|3000|0~L2|3600|3000|0",
@@ -10600,7 +12672,35 @@
     ]
    ],
    "changes": [],
-   "grid": "A-B/4"
+   "grid": "A-B/4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L2|3600|9000|0~L2|7200|9000|0",
@@ -10622,7 +12722,35 @@
     ]
    ],
    "changes": [],
-   "grid": "B-C/4"
+   "grid": "B-C/4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L2|10800|9000|0~L2|7200|9000|0",
@@ -10644,7 +12772,35 @@
     ]
    ],
    "changes": [],
-   "grid": "C-D/4"
+   "grid": "C-D/4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L2|10800|9000|0~L2|14400|9000|0",
@@ -10666,7 +12822,35 @@
     ]
    ],
    "changes": [],
-   "grid": "D-E/4"
+   "grid": "D-E/4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 360.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L2|0|0|0~L2|0|3000|0",
@@ -10698,7 +12882,35 @@
      "kind": "renamed"
     }
    ],
-   "grid": "A/1-2"
+   "grid": "A/1-2",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L2|0|3000|0~L2|0|6000|0",
@@ -10730,7 +12942,35 @@
      "kind": "renamed"
     }
    ],
-   "grid": "A/2-3"
+   "grid": "A/2-3",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L2|0|6000|0~L2|0|9000|0",
@@ -10762,7 +13002,35 @@
      "kind": "renamed"
     }
    ],
-   "grid": "A/3-4"
+   "grid": "A/3-4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L2|3600|0|0~L2|3600|3000|0",
@@ -10982,7 +13250,35 @@
     ]
    ],
    "changes": [],
-   "grid": "E/1-2"
+   "grid": "E/1-2",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L2|14400|3000|0~L2|14400|6000|0",
@@ -11004,7 +13300,35 @@
     ]
    ],
    "changes": [],
-   "grid": "E/2-3"
+   "grid": "E/2-3",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L2|14400|6000|0~L2|14400|9000|0",
@@ -11026,7 +13350,35 @@
     ]
    ],
    "changes": [],
-   "grid": "E/3-4"
+   "grid": "E/3-4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.03333333333,
+       "RDSTART": 0.0,
+       "DSTART": 0.0,
+       "RDEND": 1.0,
+       "DEND": 300.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "beam|L2|1800|0|0~L2|1800|3000|0",
@@ -11445,7 +13797,41 @@
    "via": [
     "shellSection:RoofSlab",
     "material:LW3000"
-   ]
+   ],
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Lr": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001388888889
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Lr": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001388888889
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|Roof|3600|0|0~Roof|3600|3000|0~Roof|7200|0|0~Roof|7200|3000|0",
@@ -11503,7 +13889,41 @@
    "via": [
     "shellSection:RoofSlab",
     "material:LW3000"
-   ]
+   ],
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Lr": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001388888889
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Lr": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001388888889
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|Roof|10800|0|0~Roof|10800|3000|0~Roof|7200|0|0~Roof|7200|3000|0",
@@ -11561,7 +13981,41 @@
    "via": [
     "shellSection:RoofSlab",
     "material:LW3000"
-   ]
+   ],
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Lr": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001388888889
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Lr": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001388888889
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|Roof|10800|0|0~Roof|10800|3000|0~Roof|14400|0|0~Roof|14400|3000|0",
@@ -11619,7 +14073,41 @@
    "via": [
     "shellSection:RoofSlab",
     "material:LW3000"
-   ]
+   ],
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Lr": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001388888889
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Lr": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001388888889
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|Roof|0|3000|0~Roof|0|6000|0~Roof|3600|3000|0~Roof|3600|6000|0",
@@ -11686,7 +14174,41 @@
    "via": [
     "shellSection:RoofSlab",
     "material:LW3000"
-   ]
+   ],
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Lr": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001388888889
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Lr": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001388888889
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|Roof|3600|3000|0~Roof|3600|6000|0~Roof|7200|3000|0~Roof|7200|6000|0",
@@ -11744,7 +14266,41 @@
    "via": [
     "shellSection:RoofSlab",
     "material:LW3000"
-   ]
+   ],
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Lr": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001388888889
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Lr": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001388888889
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|Roof|10800|3000|0~Roof|10800|6000|0~Roof|7200|3000|0~Roof|7200|6000|0",
@@ -11802,7 +14358,41 @@
    "via": [
     "shellSection:RoofSlab",
     "material:LW3000"
-   ]
+   ],
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Lr": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001388888889
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Lr": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001388888889
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|Roof|10800|3000|0~Roof|10800|6000|0~Roof|14400|3000|0~Roof|14400|6000|0",
@@ -11860,7 +14450,41 @@
    "via": [
     "shellSection:RoofSlab",
     "material:LW3000"
-   ]
+   ],
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Lr": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001388888889
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Lr": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001388888889
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|Roof|0|6000|0~Roof|0|9000|0~Roof|3600|6000|0~Roof|3600|9000|0",
@@ -11927,7 +14551,41 @@
    "via": [
     "shellSection:RoofSlab",
     "material:LW3000"
-   ]
+   ],
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Lr": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001388888889
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Lr": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001388888889
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|Roof|3600|6000|0~Roof|3600|9000|0~Roof|7200|6000|0~Roof|7200|9000|0",
@@ -11985,7 +14643,41 @@
    "via": [
     "shellSection:RoofSlab",
     "material:LW3000"
-   ]
+   ],
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Lr": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001388888889
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Lr": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001388888889
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|Roof|10800|6000|0~Roof|10800|9000|0~Roof|7200|6000|0~Roof|7200|9000|0",
@@ -12043,7 +14735,41 @@
    "via": [
     "shellSection:RoofSlab",
     "material:LW3000"
-   ]
+   ],
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Lr": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001388888889
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Lr": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001388888889
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|Roof|10800|6000|0~Roof|10800|9000|0~Roof|14400|6000|0~Roof|14400|9000|0",
@@ -12101,7 +14827,41 @@
    "via": [
     "shellSection:RoofSlab",
     "material:LW3000"
-   ]
+   ],
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Lr": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001388888889
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Lr": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001388888889
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L7|0|0|0~L7|0|3000|0~L7|3600|0|0~L7|3600|3000|0",
@@ -12143,7 +14903,41 @@
      "kind": "renamed"
     }
    ],
-   "grid": "A-B/1-2"
+   "grid": "A-B/1-2",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L7|3600|0|0~L7|3600|3000|0~L7|7200|0|0~L7|7200|3000|0",
@@ -12175,7 +14969,41 @@
     ]
    ],
    "changes": [],
-   "grid": "B-C/1-2"
+   "grid": "B-C/1-2",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L7|10800|0|0~L7|10800|3000|0~L7|7200|0|0~L7|7200|3000|0",
@@ -12207,7 +15035,41 @@
     ]
    ],
    "changes": [],
-   "grid": "C-D/1-2"
+   "grid": "C-D/1-2",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L7|10800|0|0~L7|10800|3000|0~L7|14400|0|0~L7|14400|3000|0",
@@ -12239,7 +15101,41 @@
     ]
    ],
    "changes": [],
-   "grid": "D-E/1-2"
+   "grid": "D-E/1-2",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L7|0|3000|0~L7|0|6000|0~L7|3600|3000|0~L7|3600|6000|0",
@@ -12281,7 +15177,41 @@
      "kind": "renamed"
     }
    ],
-   "grid": "A-B/2-3"
+   "grid": "A-B/2-3",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L7|3600|3000|0~L7|3600|6000|0~L7|7200|3000|0~L7|7200|6000|0",
@@ -12313,7 +15243,41 @@
     ]
    ],
    "changes": [],
-   "grid": "B-C/2-3"
+   "grid": "B-C/2-3",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L7|10800|3000|0~L7|10800|6000|0~L7|7200|3000|0~L7|7200|6000|0",
@@ -12345,7 +15309,41 @@
     ]
    ],
    "changes": [],
-   "grid": "C-D/2-3"
+   "grid": "C-D/2-3",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L7|0|6000|0~L7|0|9000|0~L7|3600|6000|0~L7|3600|9000|0",
@@ -12387,7 +15385,41 @@
      "kind": "renamed"
     }
    ],
-   "grid": "A-B/3-4"
+   "grid": "A-B/3-4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L7|3600|6000|0~L7|3600|9000|0~L7|7200|6000|0~L7|7200|9000|0",
@@ -12419,7 +15451,41 @@
     ]
    ],
    "changes": [],
-   "grid": "B-C/3-4"
+   "grid": "B-C/3-4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L7|10800|6000|0~L7|10800|9000|0~L7|7200|6000|0~L7|7200|9000|0",
@@ -12451,7 +15517,41 @@
     ]
    ],
    "changes": [],
-   "grid": "C-D/3-4"
+   "grid": "C-D/3-4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L7|10800|6000|0~L7|10800|9000|0~L7|14400|6000|0~L7|14400|9000|0",
@@ -12483,7 +15583,41 @@
     ]
    ],
    "changes": [],
-   "grid": "D-E/3-4"
+   "grid": "D-E/3-4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L6|0|0|0~L6|0|3000|0~L6|3600|0|0~L6|3600|3000|0",
@@ -12525,7 +15659,41 @@
      "kind": "renamed"
     }
    ],
-   "grid": "A-B/1-2"
+   "grid": "A-B/1-2",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L6|3600|0|0~L6|3600|3000|0~L6|7200|0|0~L6|7200|3000|0",
@@ -12557,7 +15725,41 @@
     ]
    ],
    "changes": [],
-   "grid": "B-C/1-2"
+   "grid": "B-C/1-2",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L6|10800|0|0~L6|10800|3000|0~L6|7200|0|0~L6|7200|3000|0",
@@ -12589,7 +15791,41 @@
     ]
    ],
    "changes": [],
-   "grid": "C-D/1-2"
+   "grid": "C-D/1-2",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L6|10800|0|0~L6|10800|3000|0~L6|14400|0|0~L6|14400|3000|0",
@@ -12621,7 +15857,41 @@
     ]
    ],
    "changes": [],
-   "grid": "D-E/1-2"
+   "grid": "D-E/1-2",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L6|0|3000|0~L6|0|6000|0~L6|3600|3000|0~L6|3600|6000|0",
@@ -12663,7 +15933,41 @@
      "kind": "renamed"
     }
    ],
-   "grid": "A-B/2-3"
+   "grid": "A-B/2-3",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L6|3600|3000|0~L6|3600|6000|0~L6|7200|3000|0~L6|7200|6000|0",
@@ -12695,7 +15999,41 @@
     ]
    ],
    "changes": [],
-   "grid": "B-C/2-3"
+   "grid": "B-C/2-3",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L6|10800|3000|0~L6|10800|6000|0~L6|7200|3000|0~L6|7200|6000|0",
@@ -12727,7 +16065,41 @@
     ]
    ],
    "changes": [],
-   "grid": "C-D/2-3"
+   "grid": "C-D/2-3",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L6|10800|3000|0~L6|10800|6000|0~L6|14400|3000|0~L6|14400|6000|0",
@@ -12759,7 +16131,41 @@
     ]
    ],
    "changes": [],
-   "grid": "D-E/2-3"
+   "grid": "D-E/2-3",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L6|0|6000|0~L6|0|9000|0~L6|3600|6000|0~L6|3600|9000|0",
@@ -12801,7 +16207,41 @@
      "kind": "renamed"
     }
    ],
-   "grid": "A-B/3-4"
+   "grid": "A-B/3-4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L6|3600|6000|0~L6|3600|9000|0~L6|7200|6000|0~L6|7200|9000|0",
@@ -12833,7 +16273,41 @@
     ]
    ],
    "changes": [],
-   "grid": "B-C/3-4"
+   "grid": "B-C/3-4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L6|10800|6000|0~L6|10800|9000|0~L6|7200|6000|0~L6|7200|9000|0",
@@ -12865,7 +16339,41 @@
     ]
    ],
    "changes": [],
-   "grid": "C-D/3-4"
+   "grid": "C-D/3-4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L6|10800|6000|0~L6|10800|9000|0~L6|14400|6000|0~L6|14400|9000|0",
@@ -12897,7 +16405,41 @@
     ]
    ],
    "changes": [],
-   "grid": "D-E/3-4"
+   "grid": "D-E/3-4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L5|0|0|0~L5|0|3000|0~L5|3600|0|0~L5|3600|3000|0",
@@ -12939,7 +16481,41 @@
      "kind": "renamed"
     }
    ],
-   "grid": "A-B/1-2"
+   "grid": "A-B/1-2",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L5|3600|0|0~L5|3600|3000|0~L5|7200|0|0~L5|7200|3000|0",
@@ -12971,7 +16547,41 @@
     ]
    ],
    "changes": [],
-   "grid": "B-C/1-2"
+   "grid": "B-C/1-2",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L5|10800|0|0~L5|10800|3000|0~L5|7200|0|0~L5|7200|3000|0",
@@ -13003,7 +16613,41 @@
     ]
    ],
    "changes": [],
-   "grid": "C-D/1-2"
+   "grid": "C-D/1-2",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L5|10800|0|0~L5|10800|3000|0~L5|14400|0|0~L5|14400|3000|0",
@@ -13035,7 +16679,41 @@
     ]
    ],
    "changes": [],
-   "grid": "D-E/1-2"
+   "grid": "D-E/1-2",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L5|0|3000|0~L5|0|6000|0~L5|3600|3000|0~L5|3600|6000|0",
@@ -13077,7 +16755,41 @@
      "kind": "renamed"
     }
    ],
-   "grid": "A-B/2-3"
+   "grid": "A-B/2-3",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L5|3600|3000|0~L5|3600|6000|0~L5|7200|3000|0~L5|7200|6000|0",
@@ -13109,7 +16821,41 @@
     ]
    ],
    "changes": [],
-   "grid": "B-C/2-3"
+   "grid": "B-C/2-3",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L5|10800|3000|0~L5|10800|6000|0~L5|7200|3000|0~L5|7200|6000|0",
@@ -13141,7 +16887,41 @@
     ]
    ],
    "changes": [],
-   "grid": "C-D/2-3"
+   "grid": "C-D/2-3",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L5|10800|3000|0~L5|10800|6000|0~L5|14400|3000|0~L5|14400|6000|0",
@@ -13173,7 +16953,41 @@
     ]
    ],
    "changes": [],
-   "grid": "D-E/2-3"
+   "grid": "D-E/2-3",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L5|0|6000|0~L5|0|9000|0~L5|3600|6000|0~L5|3600|9000|0",
@@ -13215,7 +17029,41 @@
      "kind": "renamed"
     }
    ],
-   "grid": "A-B/3-4"
+   "grid": "A-B/3-4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L5|3600|6000|0~L5|3600|9000|0~L5|7200|6000|0~L5|7200|9000|0",
@@ -13247,7 +17095,41 @@
     ]
    ],
    "changes": [],
-   "grid": "B-C/3-4"
+   "grid": "B-C/3-4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L5|10800|6000|0~L5|10800|9000|0~L5|7200|6000|0~L5|7200|9000|0",
@@ -13279,7 +17161,41 @@
     ]
    ],
    "changes": [],
-   "grid": "C-D/3-4"
+   "grid": "C-D/3-4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L5|10800|6000|0~L5|10800|9000|0~L5|14400|6000|0~L5|14400|9000|0",
@@ -13311,7 +17227,41 @@
     ]
    ],
    "changes": [],
-   "grid": "D-E/3-4"
+   "grid": "D-E/3-4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L4|0|0|0~L4|0|3000|0~L4|3600|0|0~L4|3600|3000|0",
@@ -13353,7 +17303,41 @@
      "kind": "renamed"
     }
    ],
-   "grid": "A-B/1-2"
+   "grid": "A-B/1-2",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L4|3600|0|0~L4|3600|3000|0~L4|7200|0|0~L4|7200|3000|0",
@@ -13385,7 +17369,41 @@
     ]
    ],
    "changes": [],
-   "grid": "B-C/1-2"
+   "grid": "B-C/1-2",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L4|10800|0|0~L4|10800|3000|0~L4|7200|0|0~L4|7200|3000|0",
@@ -13417,7 +17435,41 @@
     ]
    ],
    "changes": [],
-   "grid": "C-D/1-2"
+   "grid": "C-D/1-2",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L4|10800|0|0~L4|10800|3000|0~L4|14400|0|0~L4|14400|3000|0",
@@ -13449,7 +17501,41 @@
     ]
    ],
    "changes": [],
-   "grid": "D-E/1-2"
+   "grid": "D-E/1-2",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L4|0|3000|0~L4|0|6000|0~L4|3600|3000|0~L4|3600|6000|0",
@@ -13491,7 +17577,41 @@
      "kind": "renamed"
     }
    ],
-   "grid": "A-B/2-3"
+   "grid": "A-B/2-3",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L4|3600|3000|0~L4|3600|6000|0~L4|7200|3000|0~L4|7200|6000|0",
@@ -13523,7 +17643,41 @@
     ]
    ],
    "changes": [],
-   "grid": "B-C/2-3"
+   "grid": "B-C/2-3",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L4|10800|3000|0~L4|10800|6000|0~L4|7200|3000|0~L4|7200|6000|0",
@@ -13555,7 +17709,41 @@
     ]
    ],
    "changes": [],
-   "grid": "C-D/2-3"
+   "grid": "C-D/2-3",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L4|10800|3000|0~L4|10800|6000|0~L4|14400|3000|0~L4|14400|6000|0",
@@ -13587,7 +17775,41 @@
     ]
    ],
    "changes": [],
-   "grid": "D-E/2-3"
+   "grid": "D-E/2-3",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L4|0|6000|0~L4|0|9000|0~L4|3600|6000|0~L4|3600|9000|0",
@@ -13629,7 +17851,41 @@
      "kind": "renamed"
     }
    ],
-   "grid": "A-B/3-4"
+   "grid": "A-B/3-4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L4|3600|6000|0~L4|3600|9000|0~L4|7200|6000|0~L4|7200|9000|0",
@@ -13661,7 +17917,41 @@
     ]
    ],
    "changes": [],
-   "grid": "B-C/3-4"
+   "grid": "B-C/3-4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L4|10800|6000|0~L4|10800|9000|0~L4|7200|6000|0~L4|7200|9000|0",
@@ -13693,7 +17983,41 @@
     ]
    ],
    "changes": [],
-   "grid": "C-D/3-4"
+   "grid": "C-D/3-4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L4|10800|6000|0~L4|10800|9000|0~L4|14400|6000|0~L4|14400|9000|0",
@@ -13725,7 +18049,41 @@
     ]
    ],
    "changes": [],
-   "grid": "D-E/3-4"
+   "grid": "D-E/3-4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L3|0|0|0~L3|0|3000|0~L3|3600|0|0~L3|3600|3000|0",
@@ -13767,7 +18125,41 @@
      "kind": "renamed"
     }
    ],
-   "grid": "A-B/1-2"
+   "grid": "A-B/1-2",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L3|3600|0|0~L3|3600|3000|0~L3|7200|0|0~L3|7200|3000|0",
@@ -13799,7 +18191,41 @@
     ]
    ],
    "changes": [],
-   "grid": "B-C/1-2"
+   "grid": "B-C/1-2",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L3|10800|0|0~L3|10800|3000|0~L3|7200|0|0~L3|7200|3000|0",
@@ -13831,7 +18257,41 @@
     ]
    ],
    "changes": [],
-   "grid": "C-D/1-2"
+   "grid": "C-D/1-2",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L3|10800|0|0~L3|10800|3000|0~L3|14400|0|0~L3|14400|3000|0",
@@ -13863,7 +18323,41 @@
     ]
    ],
    "changes": [],
-   "grid": "D-E/1-2"
+   "grid": "D-E/1-2",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L3|0|3000|0~L3|0|6000|0~L3|3600|3000|0~L3|3600|6000|0",
@@ -13905,7 +18399,41 @@
      "kind": "renamed"
     }
    ],
-   "grid": "A-B/2-3"
+   "grid": "A-B/2-3",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L3|3600|3000|0~L3|3600|6000|0~L3|7200|3000|0~L3|7200|6000|0",
@@ -13972,7 +18500,41 @@
      }
     }
    ],
-   "grid": "B-C/2-3"
+   "grid": "B-C/2-3",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0008680555556
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L3|10800|3000|0~L3|10800|6000|0~L3|7200|3000|0~L3|7200|6000|0",
@@ -14004,7 +18566,41 @@
     ]
    ],
    "changes": [],
-   "grid": "C-D/2-3"
+   "grid": "C-D/2-3",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L3|10800|3000|0~L3|10800|6000|0~L3|14400|3000|0~L3|14400|6000|0",
@@ -14036,7 +18632,41 @@
     ]
    ],
    "changes": [],
-   "grid": "D-E/2-3"
+   "grid": "D-E/2-3",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L3|0|6000|0~L3|0|9000|0~L3|3600|6000|0~L3|3600|9000|0",
@@ -14078,7 +18708,41 @@
      "kind": "renamed"
     }
    ],
-   "grid": "A-B/3-4"
+   "grid": "A-B/3-4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L3|3600|6000|0~L3|3600|9000|0~L3|7200|6000|0~L3|7200|9000|0",
@@ -14110,7 +18774,41 @@
     ]
    ],
    "changes": [],
-   "grid": "B-C/3-4"
+   "grid": "B-C/3-4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L3|10800|6000|0~L3|10800|9000|0~L3|7200|6000|0~L3|7200|9000|0",
@@ -14142,7 +18840,41 @@
     ]
    ],
    "changes": [],
-   "grid": "C-D/3-4"
+   "grid": "C-D/3-4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L3|10800|6000|0~L3|10800|9000|0~L3|14400|6000|0~L3|14400|9000|0",
@@ -14174,7 +18906,41 @@
     ]
    ],
    "changes": [],
-   "grid": "D-E/3-4"
+   "grid": "D-E/3-4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L2|0|0|0~L2|0|3000|0~L2|3600|0|0~L2|3600|3000|0",
@@ -14216,7 +18982,41 @@
      "kind": "renamed"
     }
    ],
-   "grid": "A-B/1-2"
+   "grid": "A-B/1-2",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L2|3600|0|0~L2|3600|3000|0~L2|7200|0|0~L2|7200|3000|0",
@@ -14248,7 +19048,41 @@
     ]
    ],
    "changes": [],
-   "grid": "B-C/1-2"
+   "grid": "B-C/1-2",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L2|10800|0|0~L2|10800|3000|0~L2|7200|0|0~L2|7200|3000|0",
@@ -14292,7 +19126,41 @@
      "unit": null
     }
    ],
-   "grid": "C-D/1-2"
+   "grid": "C-D/1-2",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L2|10800|0|0~L2|10800|3000|0~L2|14400|0|0~L2|14400|3000|0",
@@ -14324,7 +19192,41 @@
     ]
    ],
    "changes": [],
-   "grid": "D-E/1-2"
+   "grid": "D-E/1-2",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L2|0|3000|0~L2|0|6000|0~L2|3600|3000|0~L2|3600|6000|0",
@@ -14366,7 +19268,41 @@
      "kind": "renamed"
     }
    ],
-   "grid": "A-B/2-3"
+   "grid": "A-B/2-3",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L2|3600|3000|0~L2|3600|6000|0~L2|7200|3000|0~L2|7200|6000|0",
@@ -14398,7 +19334,41 @@
     ]
    ],
    "changes": [],
-   "grid": "B-C/2-3"
+   "grid": "B-C/2-3",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L2|10800|3000|0~L2|10800|6000|0~L2|7200|3000|0~L2|7200|6000|0",
@@ -14430,7 +19400,41 @@
     ]
    ],
    "changes": [],
-   "grid": "C-D/2-3"
+   "grid": "C-D/2-3",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L2|10800|3000|0~L2|10800|6000|0~L2|14400|3000|0~L2|14400|6000|0",
@@ -14462,7 +19466,41 @@
     ]
    ],
    "changes": [],
-   "grid": "D-E/2-3"
+   "grid": "D-E/2-3",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L2|0|6000|0~L2|0|9000|0~L2|3600|6000|0~L2|3600|9000|0",
@@ -14504,7 +19542,41 @@
      "kind": "renamed"
     }
    ],
-   "grid": "A-B/3-4"
+   "grid": "A-B/3-4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L2|3600|6000|0~L2|3600|9000|0~L2|7200|6000|0~L2|7200|9000|0",
@@ -14536,7 +19608,41 @@
     ]
    ],
    "changes": [],
-   "grid": "B-C/3-4"
+   "grid": "B-C/3-4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L2|10800|6000|0~L2|10800|9000|0~L2|7200|6000|0~L2|7200|9000|0",
@@ -14568,7 +19674,41 @@
     ]
    ],
    "changes": [],
-   "grid": "C-D/3-4"
+   "grid": "C-D/3-4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "floor|L2|10800|6000|0~L2|10800|9000|0~L2|14400|6000|0~L2|14400|9000|0",
@@ -14600,7 +19740,41 @@
     ]
    ],
    "changes": [],
-   "grid": "D-E/3-4"
+   "grid": "D-E/3-4",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    }
+   }
   },
   {
    "key": "Base|14400|3000|0",
@@ -15532,7 +20706,35 @@
     ]
    ],
    "changes": [],
-   "grid": "C/3"
+   "grid": "C/3",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "FORCE",
+       "FX": 0.0,
+       "FY": 0.0,
+       "FZ": -8.0,
+       "MX": 0.0,
+       "MY": 0.0,
+       "MZ": 0.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "FORCE",
+       "FX": 0.0,
+       "FY": 0.0,
+       "FZ": -8.0,
+       "MX": 0.0,
+       "MY": 0.0,
+       "MZ": 0.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "Base|10800|6000|0",
@@ -15885,7 +21087,35 @@
      }
     }
    ],
-   "grid": "C/2"
+   "grid": "C/2",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "FORCE",
+       "FX": 0.0,
+       "FY": 0.0,
+       "FZ": -12.0,
+       "MX": 0.0,
+       "MY": 0.0,
+       "MZ": 0.0
+      }
+     ]
+    },
+    "b": {
+     "SDL": [
+      {
+       "TYPE": "FORCE",
+       "FX": 0.0,
+       "FY": 0.0,
+       "FZ": -18.0,
+       "MX": 0.0,
+       "MY": 0.0,
+       "MZ": 0.0
+      }
+     ]
+    }
+   }
   },
   {
    "key": "Base|10800|3000|0",
@@ -16002,7 +21232,26 @@
     ]
    ],
    "changes": [],
-   "grid": "D-E/2-3"
+   "grid": "D-E/2-3",
+   "loads": {
+    "a": {
+     "SDL": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0001041666667
+      }
+     ],
+     "Live": [
+      {
+       "TYPE": "UNIFF",
+       "DIR": "GRAV",
+       "FVAL": 0.0003472222222
+      }
+     ]
+    },
+    "b": {}
+   }
   },
   {
    "key": "brace|Base|10800|0|0~L2|14400|0|0",
@@ -16440,5 +21689,284 @@
   "removed": 3,
   "modified": 115,
   "affected": 30
+ },
+ "loadDefinitions": {
+  "a": {
+   "patterns": {
+    "Dead": {
+     "type": "Dead",
+     "selfWeight": 1.0
+    },
+    "SDL": {
+     "type": "Super Dead",
+     "selfWeight": 0.0
+    },
+    "Live": {
+     "type": "Live",
+     "selfWeight": 0.0
+    },
+    "Lr": {
+     "type": "Roof Live",
+     "selfWeight": 0.0
+    },
+    "EQX": {
+     "type": "Seismic",
+     "selfWeight": 0.0
+    },
+    "WX": {
+     "type": "Wind",
+     "selfWeight": 0.0
+    }
+   },
+   "cases": {
+    "Modal": {
+     "type": "Modal - Eigen",
+     "patterns": {},
+     "effective": {
+      "expandable": false,
+      "patterns": {},
+      "reason": "case Modal is Modal - Eigen, not a static case"
+     }
+    },
+    "RSX": {
+     "type": "Response Spectrum",
+     "patterns": {},
+     "effective": {
+      "expandable": false,
+      "patterns": {},
+      "reason": "case RSX is Response Spectrum, not a static case"
+     }
+    },
+    "Dead": {
+     "type": "Linear Static",
+     "patterns": {
+      "Dead": 1.0,
+      "SDL": 1.0
+     },
+     "effective": {
+      "expandable": true,
+      "patterns": {
+       "Dead": 1.0,
+       "SDL": 1.0
+      },
+      "reason": null
+     }
+    },
+    "Live": {
+     "type": "Linear Static",
+     "patterns": {
+      "Live": 1.0,
+      "Lr": 1.0
+     },
+     "effective": {
+      "expandable": true,
+      "patterns": {
+       "Live": 1.0,
+       "Lr": 1.0
+      },
+      "reason": null
+     }
+    },
+    "Lr": {
+     "type": "Linear Static",
+     "patterns": {
+      "Lr": 1.0
+     },
+     "effective": {
+      "expandable": true,
+      "patterns": {
+       "Lr": 1.0
+      },
+      "reason": null
+     }
+    }
+   },
+   "combos": {
+    "1.4D": {
+     "type": "Linear Add",
+     "cases": {
+      "Dead": 1.4
+     },
+     "combos": {},
+     "effective": {
+      "expandable": true,
+      "patterns": {
+       "Dead": 1.4,
+       "SDL": 1.4
+      },
+      "reason": null
+     }
+    },
+    "1.2D+1.6L+0.5Lr": {
+     "type": "Linear Add",
+     "cases": {
+      "Dead": 1.2,
+      "Live": 1.6
+     },
+     "combos": {},
+     "effective": {
+      "expandable": true,
+      "patterns": {
+       "Dead": 1.2,
+       "SDL": 1.2,
+       "Live": 1.6,
+       "Lr": 1.6
+      },
+      "reason": null
+     }
+    },
+    "Gravity": {
+     "type": "Envelope",
+     "cases": {},
+     "combos": {
+      "1.4D": 1.0,
+      "1.2D+1.6L+0.5Lr": 1.0
+     },
+     "effective": {
+      "expandable": false,
+      "patterns": {},
+      "reason": "combo Gravity is Envelope, only Linear Add expands"
+     }
+    }
+   }
+  },
+  "b": {
+   "patterns": {
+    "Dead": {
+     "type": "Dead",
+     "selfWeight": 1.0
+    },
+    "SDL": {
+     "type": "Super Dead",
+     "selfWeight": 0.0
+    },
+    "Live": {
+     "type": "Live",
+     "selfWeight": 0.0
+    },
+    "Lr": {
+     "type": "Roof Live",
+     "selfWeight": 0.0
+    },
+    "EQX": {
+     "type": "Seismic",
+     "selfWeight": 0.0
+    },
+    "WX": {
+     "type": "Wind",
+     "selfWeight": 0.0
+    }
+   },
+   "cases": {
+    "Modal": {
+     "type": "Modal - Eigen",
+     "patterns": {},
+     "effective": {
+      "expandable": false,
+      "patterns": {},
+      "reason": "case Modal is Modal - Eigen, not a static case"
+     }
+    },
+    "RSX": {
+     "type": "Response Spectrum",
+     "patterns": {},
+     "effective": {
+      "expandable": false,
+      "patterns": {},
+      "reason": "case RSX is Response Spectrum, not a static case"
+     }
+    },
+    "Dead": {
+     "type": "Linear Static",
+     "patterns": {
+      "Dead": 1.0,
+      "SDL": 1.0
+     },
+     "effective": {
+      "expandable": true,
+      "patterns": {
+       "Dead": 1.0,
+       "SDL": 1.0
+      },
+      "reason": null
+     }
+    },
+    "Live": {
+     "type": "Linear Static",
+     "patterns": {
+      "Live": 1.0
+     },
+     "effective": {
+      "expandable": true,
+      "patterns": {
+       "Live": 1.0
+      },
+      "reason": null
+     }
+    },
+    "Lr": {
+     "type": "Linear Static",
+     "patterns": {
+      "Lr": 1.0
+     },
+     "effective": {
+      "expandable": true,
+      "patterns": {
+       "Lr": 1.0
+      },
+      "reason": null
+     }
+    }
+   },
+   "combos": {
+    "1.4D": {
+     "type": "Linear Add",
+     "cases": {
+      "Dead": 1.4
+     },
+     "combos": {},
+     "effective": {
+      "expandable": true,
+      "patterns": {
+       "Dead": 1.4,
+       "SDL": 1.4
+      },
+      "reason": null
+     }
+    },
+    "1.2D+1.6L+0.5Lr": {
+     "type": "Linear Add",
+     "cases": {
+      "Dead": 1.2,
+      "Live": 1.6,
+      "Lr": 0.5
+     },
+     "combos": {},
+     "effective": {
+      "expandable": true,
+      "patterns": {
+       "Dead": 1.2,
+       "SDL": 1.2,
+       "Live": 1.6,
+       "Lr": 0.5
+      },
+      "reason": null
+     }
+    },
+    "Gravity": {
+     "type": "Envelope",
+     "cases": {},
+     "combos": {
+      "1.4D": 1.0,
+      "1.2D+1.6L+0.5Lr": 1.0
+     },
+     "effective": {
+      "expandable": false,
+      "patterns": {},
+      "reason": "combo Gravity is Envelope, only Linear Add expands"
+     }
+    }
+   }
+  }
  }
 }

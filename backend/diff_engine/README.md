@@ -1,6 +1,6 @@
 # diff_engine
 
-Compares two ETABS text exports (`.e2k`, or the `.$et` ETABS writes on save) and writes one JSON diff in the viewer's output contract, schemaVersion `0.1`. Python 3.9+, stdlib only.
+Compares two ETABS text exports (`.e2k`, or the `.$et` ETABS writes on save) and writes one JSON diff in the viewer's output contract, schemaVersion `0.2`. Python 3.9+, stdlib only.
 
 ## Usage
 
@@ -28,7 +28,7 @@ Run the CLI and tests from `backend/` (or set `PYTHONPATH=backend` from the repo
 
 ## How Elements Are Matched
 
-Labels are never used for identity. ETABS relabels on redraw, so labels are carried for display only.
+Labels are never used for identity. ETABS relabels on redraw, so labels are carried for display, and a matched element whose label changed gets a `label` change with `kind: "renamed"`.
 
 1. **Levels** match by name. If the leftover unmatched levels on both sides are equal in number, they pair up by order from the base and count as renamed. Anything still unpaired is an added or removed story, and the elements on it come out as added or removed.
 2. **Nodes** match on the level they're tied to (exactly) and on plan X, Y and their offset below that level (the `dz` on a `POINT` line), within `tolerance` as a straight-line distance over those three. Absolute Z is never compared, so a story elevation or height change shows up once in `tables.stories` and the elements on it stay `unchanged` unless their own XY, level tie, or offset changed.
@@ -43,7 +43,7 @@ Follows the viewer's [`contract.ts`](../../frontend/demo_viewer/contract.ts). Th
 
 ```jsonc
 {
-  "schemaVersion": "0.1",
+  "schemaVersion": "0.2",
   "meta": {
     "a": {"file": "before.e2k", "etabsVersion": "17.0.1", "units": "KN M C"},
     "b": {"file": "after.e2k",  "etabsVersion": "17.0.1", "units": "KN M C"},
@@ -65,7 +65,11 @@ Follows the viewer's [`contract.ts`](../../frontend/demo_viewer/contract.ts). Th
         {"field": "material:STEEL.E", "before": 29000, "after": 30450,
          "affects": ["stiffness", "mass"], "row": 5}            // row: extension
       ],
-      "via": ["frameSection:COL", "material:STEEL"]
+      "via": ["frameSection:COL", "material:STEEL"],
+      "loads": {                            // 0.2, only on elements loaded in A or B
+        "a": {"Live": [{"TYPE": "POINTF", "DIR": "GRAV", "FVAL": 5, "RDIST": 0.4, "DIST": 67.2}]},
+        "b": {"Live": [{"TYPE": "POINTF", "DIR": "GRAV", "FVAL": 5, "RDIST": 0.4, "DIST": 69.6}]}
+      }
     }
   ],
   "tables": {
@@ -76,17 +80,29 @@ Follows the viewer's [`contract.ts`](../../frontend/demo_viewer/contract.ts). Th
     "loadCases": {...}, "combos": {...}, "massSource": {...},          // extensions, same shape
     "diaphragms": {...}, "functions": {...}, "analysisOptions": {...}  // extensions, same shape
   },
-  "summary": {"unchanged": 937, "added": 0, "removed": 26, "modified": 56, "affected": 344}
+  "summary": {"unchanged": 937, "added": 0, "removed": 26, "modified": 56, "affected": 344},
+  "loadDefinitions": {                       // 0.2: the whole of each model's load definitions
+    "a": {
+      "patterns": {"Dead": {"type": "Dead", "selfWeight": 1}, "Live": {"type": "Live", "selfWeight": 0}},
+      "cases": {"DL": {"type": "Linear Static", "patterns": {"Dead": 1},
+                       "effective": {"expandable": true, "patterns": {"Dead": 1}, "reason": null}}},
+      "combos": {"1.2D+1.6L": {"type": "Linear Add", "cases": {"DL": 1.2, "LL": 1.6}, "combos": {},
+                               "effective": {"expandable": true, "patterns": {"Dead": 1.2, "Live": 1.6}, "reason": null}}}
+    },
+    "b": {...}
+  }
 }
 ```
 
 - **Every element** in the union of A and B is listed, unchanged ones included, so the viewer can draw the whole model from this file.
-- **`modified`**: the element's own assigns or loads changed. `changes` holds them, with `field` set to the e2k keyword (`SECTION`, `RELEASE`, `RESTRAINT`, ...) or `loads:<pattern>` (`loads:set:<name>` for a uniform load set).
+- **`modified`**: the element's own assigns, loads or label changed. `changes` holds them, with `field` set to the e2k keyword (`SECTION`, `RELEASE`, `RESTRAINT`, ...) or `loads:<pattern>` (`loads:set:<name>` for a uniform load set).
 - **`affected`**: nothing on the element changed, but a definition it uses was edited. `via` is the path to that definition (`frameSection:X`, then `material:Y` when the material was reached through the section, honoring `MATERIALOVERWRITE`). `changes` repeats the definition's changes with `field` as `<via entry>.<KEY>`. A `modified` element that also uses an edited definition gets both its own and the upstream changes, plus `via`.
 - **`added` / `removed`**: `changes` is empty. Loads and assigns on a removed member go with it. Moved frames carry `movedTo` (on the removed entry) or `movedFrom` (on the added one), set to the other entry's `key` (extension). A moved pair's own changes (assigns, loads) go on its removed entry. When the pair stays on one line, frame loads compare by position along that line in inches from the old member's I end, so a load that didn't move isn't flagged just because its relative distance (`RDIST`, `RDSTART`, `RDEND`) changed with the length; a uniform load counts as a trapezoid over the whole member. A changed load shows that way too, as `DIST` or `DSTART` / `DEND` from the old I end.
 - Only definitions that exist in both files and were edited make members `affected`. Moving a member onto a new section is a `SECTION` change on the member.
-- **Tables** diff definitions by name: `added` and `removed` are name lists, `modified` maps a name to its changes. Auto lateral inputs are folded into their load pattern as one field each: `SEISMIC:<KEY>` and `WIND:<KEY>` (the code name is `SEISMIC:CODE` / `WIND:CODE`), `SEISMIC:ECCOVERWRITE:<story>:<diaphragm>` for a user eccentricity and `WINDEXPOSURE:<path>:<KEY>` for a wind exposure line. `functions` keeps `TIMEVAL` as one list of numbers across all of a function's lines. `analysisOptions` holds the global `PDELTA` record.
+- **Tables** diff definitions by name: `added` and `removed` are name lists, `modified` maps a name to its changes. A removed and an added definition with identical properties, when that pairing is unambiguous, are one rename instead: a `name` change with `kind: "renamed"` under the new name, and references to it compare by identity so the rename alone doesn't flag members. Auto lateral inputs are folded into their load pattern as one field each: `SEISMIC:<KEY>` and `WIND:<KEY>` (the code name is `SEISMIC:CODE` / `WIND:CODE`), `SEISMIC:ECCOVERWRITE:<story>:<diaphragm>` for a user eccentricity and `WINDEXPOSURE:<path>:<KEY>` for a wind exposure line. `functions` keeps `TIMEVAL` as one list of numbers across all of a function's lines. `analysisOptions` holds the global `PDELTA` record.
 - **`loadCases`, `combos`, `massSource`** are records spread over several lines, one per load term, so each term is its own field: `LOADPAT:<pattern>` for a case's or the mass source's patterns, `ACCEL:<dir>` for a response spectrum direction (`{FUNC, SF}`), and `LOADCASE:<case>` / `LOADCOMBO:<combo>` for a combo's terms. The value is the scale factor, so a dropped term is `before: 1, after: null`. Every other key (`TYPE`, `INITCOND`, `INCLUDELOADS`, ...) compares as usual.
+- **`loads`** (0.2) is on every element that carries an applied load in A or B, whatever its status, and absent otherwise. `a` and `b` map a load pattern to that side's loads on the element (`{}` when the element is missing or unloaded on that side). Each load is the e2k record minus `LC`, in kip and inches: `TYPE`, `DIR` as written (`GRAV`, `X`, `Y`, `Z`, `1`, `2`, `3`, ...), and the value keys for its type (`FVAL`; `FSTART` / `FEND` for a trapezoid; `FX` .. `MZ` for a joint). Frame loads carry each position both ways, relative and in inches from the I end along the drawn member: `RDIST` / `DIST` for `POINTF` / `POINTM`, `RDSTART` / `DSTART` and `RDEND` / `DEND` for `UNIFF` / `UNIFM` / `TRAPF` / `TRAPM` (a uniform load without its own extent spans 0 to 1). An area load set (`TYPE UNIFLOADSET`) becomes one load per pattern in the set, with `SET` and that pattern's `FVAL`; a set the file doesn't define stays under `set:<name>` with no value. Self-weight is not drawn as a load; it is the pattern's `selfWeight` multiplier.
+- **`loadDefinitions`** (0.2) lists every load pattern (`type`, `selfWeight`), case (`type`, `patterns`: its `LOADPAT` scale factors) and combo (`type`, `cases` and `combos`: its `LOADCASE` and `LOADCOMBO` scale factors) in each model, changed or not. Each case and combo has `effective`, from `loads.expand`: the pattern factors that give its applied load, so the load on an element for a case or combo is the sum over `effective.patterns` of that pattern's loads times the factor. A `Linear Static` or `Nonlinear Static` case that starts from zero (`INITCOND PRESET`) is its `LOADPAT` terms. A `Linear Add` combo sums its terms' expansions times their factors, combos of combos included (a `LOADCASE` term may name a combo). Everything else (envelope, SRSS, absolute or range add combos, response spectrum or modal cases, a case that continues from another, a missing or circular reference, or any combo that uses one of those) is `expandable: false` with a `reason` and empty `patterns`, never a guess.
 - A changed story height moves every story above it, so each of those gets an `elevation` change in `tables.stories` (and no `height` change). The elements on them stay `unchanged`.
 - **`key`** is `story|x|y|dz` per node, each rounded to the tolerance, and `subtype|` plus the sorted node keys joined with `~` for frames and areas. It uses B's story names (and B's coordinates; A's for removed elements). Matching itself is a nearest-node search, not a key lookup, so the key is just a stable id. Duplicates get `#2`, `#3`.
 

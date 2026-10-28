@@ -1,5 +1,5 @@
 {
- "schemaVersion": "0.1",
+ "schemaVersion": "0.2",
  "meta": {
   "a": {
    "file": "Hack_v01.e2k",
@@ -399,5 +399,107 @@
   "removed": 0,
   "modified": 0,
   "affected": 0
+ },
+ "loadDefinitions": {
+  "a": {
+   "patterns": {
+    "Dead": {
+     "type": "Dead",
+     "selfWeight": 1.0
+    },
+    "Live": {
+     "type": "Live",
+     "selfWeight": 0.0
+    }
+   },
+   "cases": {
+    "Modal": {
+     "type": "Modal - Eigen",
+     "patterns": {},
+     "effective": {
+      "expandable": false,
+      "patterns": {},
+      "reason": "case Modal is Modal - Eigen, not a static case"
+     }
+    },
+    "Dead": {
+     "type": "Linear Static",
+     "patterns": {
+      "Dead": 1.0
+     },
+     "effective": {
+      "expandable": true,
+      "patterns": {
+       "Dead": 1.0
+      },
+      "reason": null
+     }
+    },
+    "Live": {
+     "type": "Linear Static",
+     "patterns": {
+      "Live": 1.0
+     },
+     "effective": {
+      "expandable": true,
+      "patterns": {
+       "Live": 1.0
+      },
+      "reason": null
+     }
+    }
+   },
+   "combos": {}
+  },
+  "b": {
+   "patterns": {
+    "Dead": {
+     "type": "Dead",
+     "selfWeight": 1.0
+    },
+    "Live": {
+     "type": "Live",
+     "selfWeight": 0.0
+    }
+   },
+   "cases": {
+    "Modal": {
+     "type": "Modal - Eigen",
+     "patterns": {},
+     "effective": {
+      "expandable": false,
+      "patterns": {},
+      "reason": "case Modal is Modal - Eigen, not a static case"
+     }
+    },
+    "Dead": {
+     "type": "Linear Static",
+     "patterns": {
+      "Dead": 1.0
+     },
+     "effective": {
+      "expandable": true,
+      "patterns": {
+       "Dead": 1.0
+      },
+      "reason": null
+     }
+    },
+    "Live": {
+     "type": "Linear Static",
+     "patterns": {
+      "Live": 1.0
+     },
+     "effective": {
+      "expandable": true,
+      "patterns": {
+       "Live": 1.0
+      },
+      "reason": null
+     }
+    }
+   },
+   "combos": {}
+  }
  }
 }

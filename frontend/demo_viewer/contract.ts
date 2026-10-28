@@ -1,4 +1,4 @@
-// etabs-diff output contract, schemaVersion 0.1 (near-final, not frozen).
+// etabs-diff output contract, schemaVersion 0.2 (near-final, not frozen). 0.2 adds loads and loadDefinitions.
 // One JSON file per comparison of model A (before) and model B (after).
 // The engine writes it; the viewer reads only this file.
 // Every element appears, unchanged ones included, with drawable geometry,
@@ -11,6 +11,40 @@ export type Change = {
   field: string; before: unknown; after: unknown; affects: Affect[]; kind?: 'renamed';
   unit?: string | null; // present on current engine output; optional for older saved diffs
   valueUnits?: Record<'before' | 'after', Record<string, string | null>>;
+};
+
+// One applied load as written in the e2k, minus its pattern, in kip and inches. Raw e2k keys.
+export type AppliedLoad = {
+  TYPE: string;                         // frames: POINTF, POINTM, UNIFF, UNIFM, TRAPF, TRAPM; joints: FORCE; areas: UNIFF, UNIFLOADSET
+  DIR?: string;                         // as written: GRAV, X, Y, Z, 1, 2, 3, ...
+  FVAL?: number;                        // POINTF/UNIFF/area value; for UNIFLOADSET the set's value for this pattern
+  FSTART?: number; FEND?: number;       // TRAPF/TRAPM
+  FX?: number; FY?: number; FZ?: number; MX?: number; MY?: number; MZ?: number;  // joint loads
+  RDIST?: number; DIST?: number;        // POINTF/POINTM on a frame: relative, and inches from the I end
+  RDSTART?: number; DSTART?: number;    // UNIFF/UNIFM/TRAPF/TRAPM on a frame: relative, and inches from the I end
+  RDEND?: number; DEND?: number;
+  SET?: string;                         // UNIFLOADSET: the shell uniform load set it came from
+  [key: string]: unknown;               // any other e2k key on the record, passed through
+};
+export type ElementLoads = {
+  a: Record<string, AppliedLoad[]>;     // load pattern -> loads in model A; {} when absent or unloaded in A
+  b: Record<string, AppliedLoad[]>;
+};
+
+export type Expansion = {
+  expandable: boolean;
+  patterns: Record<string, number>;     // load pattern -> effective factor; {} when not expandable
+  reason: string | null;                // why not (envelope, SRSS, response spectrum, ...); null when expandable
+};
+export type LoadDefinitions = {
+  patterns: Record<string, { type: string; selfWeight: number }>;
+  cases: Record<string, { type: string; patterns: Record<string, number>; effective: Expansion }>;
+  combos: Record<string, {
+    type: string;
+    cases: Record<string, number>;      // LOADCASE terms (ETABS may name a combo here too)
+    combos: Record<string, number>;     // LOADCOMBO terms
+    effective: Expansion;
+  }>;
 };
 
 export type ElementDiff = {
@@ -26,12 +60,13 @@ export type ElementDiff = {
   via?: string[];                       // affected only, e.g. ["frameSection:W14X22", "material:A992Fy50"]
   movedTo?: string;                     // removed only: key of the added element this one moved to
   movedFrom?: string;                   // added only: key of the removed element this one moved from
+  loads?: ElementLoads;                 // 0.2: only on elements that carry a load in A or B, any status
 };
 
 export type TableDiff = { added: string[]; removed: string[]; modified: Record<string, Change[]> };
 
 export type DiffOutput = {
-  schemaVersion: '0.1';
+  schemaVersion: '0.2';
   meta: {
     a: { file: string; etabsVersion: string; units: string };
     b: { file: string; etabsVersion: string; units: string };
@@ -47,4 +82,5 @@ export type DiffOutput = {
     diaphragms?: TableDiff; functions?: TableDiff; analysisOptions?: TableDiff;  // diaphragm defs, spectrum / time history functions, PDELTA
   };
   summary: Record<ElementDiff['status'], number>;
+  loadDefinitions?: { a: LoadDefinitions; b: LoadDefinitions };  // 0.2: every pattern, case and combo per model; the engine always writes it, optional so 0.1 files still read
 };

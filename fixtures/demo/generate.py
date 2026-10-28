@@ -6,8 +6,8 @@ Run from the repo root:
 
 Writes before.e2k, after.e2k and seeded-changes.json next to this file. Each seeded change lists the
 elements the engine should report for it (B's label, A's for removed) and the definition table edits.
-Everything not listed must come out unchanged, including the relabeled batch and the within-tolerance
-nudge. backend/diff_engine/tests/test_demo_pair.py holds the engine to exactly that list.
+`renames` lists the label-only changes (the relabeled grid line and the within-tolerance nudge).
+Everything else must come out unchanged. backend/diff_engine/tests/test_demo_pair.py holds the engine to exactly that list.
 """
 
 import copy
@@ -238,8 +238,11 @@ def element(status: str, label: str, story: str, fields: Iterable[str] = (), mov
     return {"status": status, "label": label, "story": story, "fields": sorted(fields), "moved": moved}
 
 
-def reroute(m: Demo, label: str, story: str, new_label: str, dx: float) -> None:
-    """Move one story's copy of a beam by dx in X onto new points, the way ETABS does: a new line object."""
+def reroute(m: Demo, label: str, story: str, new_label: str, dx: float) -> List[Tuple[str, str]]:
+    """Move one story's copy of a beam by dx in X onto new points, the way ETABS does: a new line object.
+
+    Returns (old, new) for each end point nothing else at that story uses any more, which the engine
+    reports as a point rename."""
     _, i, j, n = m["lines"][label]
     ends: List[str] = []
     for p in (i, j):
@@ -248,10 +251,12 @@ def reroute(m: Demo, label: str, story: str, new_label: str, dx: float) -> None:
         m["points"][ends[-1]] = (x + dx, y)
     m["lines"][new_label] = ("BEAM", ends[0], ends[1], n)
     m["line_assigns"][(new_label, story)] = m["line_assigns"].pop((label, story))
+    used = {p for (k, s) in m["line_assigns"] if s == story and k != new_label for p in m["lines"][k][1:3]}
+    return [(old, new) for old, new in zip((i, j), ends) if old not in used]
 
 
-def seed(before: Demo) -> Tuple[Demo, List[Props], List[str]]:
-    """Apply the seeded changes. Returns (after, changes, no-change controls).
+def seed(before: Demo) -> Tuple[Demo, List[Props], List[str], List[Props]]:
+    """Apply the seeded changes. Returns (after, changes, no-change controls, renames).
 
     Each change carries `row`, the line of the change list (1 to 17) it demonstrates. Row 10 (additional
     mass) has no seed: no ETABS export we could find writes a mass assign, so its keyword is unknown.
@@ -412,8 +417,9 @@ def seed(before: Demo) -> Tuple[Demo, List[Props], List[str]]:
         tables={"functions": {"DemoRS": ["TIMEVAL"]}})
 
     b = frame_at(m, "BEAM", mid(2, 0), mid(2, 1))
-    reroute(m, b, "L6", "B45", 0.05)
-    controls.append(f"Infill beam {b} at L6 redrawn as B45 0.05 in along X, inside the 0.1 in merge tolerance")
+    orphaned = reroute(m, b, "L6", "B45", 0.05)
+    controls.append(f"Infill beam {b} at L6 redrawn 0.05 in along X, inside merge tolerance: only the {b} to B45 "
+                    "rename is reported")
 
     # Relabel grid line X=0: its points, columns, Y beams and floors. Applied last; the
     # expected labels above are B's, so map them through the same renames.
@@ -429,9 +435,24 @@ def seed(before: Demo) -> Tuple[Demo, List[Props], List[str]]:
         for e in c["elements"]:
             if e["status"] != "removed":
                 e["label"] = renames.get(e["label"], e["label"])
-    controls.append("Grid line X=0 relabeled (points, columns, beams, floors), same geometry: "
-                    + ", ".join(f"{a}->{b}" for a, b in renames.items()))
-    return m, changes, controls
+    moved = [{"before": old, "after": new, "story": "L6", "kind": "point"} for old, new in orphaned]
+    return m, changes, controls, rename_records(m, {**renames, b: "B45"}) + moved
+
+
+def rename_records(m: Demo, renames: Dict[str, str]) -> List[Props]:
+    """The label changes the engine should report, in the order it lists them: frames then areas by
+    story from the top, then points. Point labels have no story of their own; the relabeled grid points
+    carry a column through every story."""
+    before = {new: old for old, new in renames.items()}
+
+    def records(kind: str, table: str) -> List[Props]:
+        return [{"before": before[label], "after": label, "story": story, "kind": kind}
+                for (label, story), _ in by_story(m, table) if label in before]
+
+    stories = [name for name, _ in m["stories"]]
+    points = [{"before": old, "after": new, "story": s, "kind": "point"}
+              for old, new in renames.items() if old.isdigit() for s in stories]
+    return records("frame", "line_assigns") + records("area", "area_assigns") + points
 
 
 def relabel(m: Demo, renames: Dict[str, str]) -> Demo:
@@ -559,11 +580,11 @@ def by_story(m: Demo, name: str) -> List[Tuple[Key, Any]]:
 
 def main() -> None:
     before = base_model()
-    after, changes, controls = seed(before)
+    after, changes, controls, renames = seed(before)
     for name, model, saved in (("before.e2k", before, "10/6/2026 4:12:51 PM"), ("after.e2k", after, "10/20/2026 9:47:03 AM")):
         with open(HERE / name, "w", encoding="latin-1", newline="") as fh:  # CRLF as ETABS writes it
             fh.write(render(model, saved))
-    seeded = {"before": "before.e2k", "after": "after.e2k", "changes": changes, "unchanged": controls}
+    seeded = {"before": "before.e2k", "after": "after.e2k", "changes": changes, "unchanged": controls, "renames": renames}
     (HERE / "seeded-changes.json").write_text(json.dumps(seeded, indent=1) + "\n", encoding="utf-8")
 
 

@@ -1,3 +1,5 @@
+> This is the original hackathon plan, kept for history. The [README](../../README.md) describes how keepTABS works now.
+
 # ETABS Model Register: Hackathon Plan
 
 Oct 27, 2026 · @Mason Moritz

@@ -14,7 +14,7 @@ Run `just ui` from the repo root (needs node and npm, plus Python 3.9+ for the e
 
 That's keepTABS, the team's React app in `frontend/src/`. It has two pages, picked with **Page** in the top bar:
 
-- **Review**: the 3D view, change table, story strip and details panel for one comparison. The **Source** dropdown picks the data: **Your models** (the default, opens on a start screen where you drop a Model 1 and a Model 2 `.e2k` / `.$et`, diffed by the engine on this machine through the dev server), a diff JSON from the engine, two of the hackathon models (picked with Model 1 and Model 2, starting on `Hack_v01` to `Hack_v01a`; the start screen's **or try a sample comparison** link goes here), the seeded synthetic demo, the team fixture, or a mock.
+- **Review**: the 3D view, change table, story strip and details panel for one comparison. The **Source** dropdown picks the data: **Your models** (the default, opens on a start screen where you drop a Model 1 and a Model 2 `.e2k` / `.$et`, diffed by the engine on this machine through the dev server), a diff JSON from the engine, two of the hackathon models (picked with Model 1 and Model 2, starting on `Hack_v01` to `Hack_v01a`; the start screen's **or try a sample comparison** link goes here), or the seeded synthetic demo.
 - **Revision log**: every hackathon model version, newest first, with a branch graph like `git log --graph` and change counts per version. Click a row to review it against its parent, or tick two to compare them. **Add version** takes a new `.e2k`, suggests a parent from its save log, scrubs Windows user folders out of the file's path lines, writes it into `frontend/demo_viewer/models/`, appends it to `revisions.json` and regenerates the diffs. It doesn't commit anything (see egit below).
 
 ![Revision log page](frontend/revision-log.png)
@@ -35,9 +35,9 @@ With [just](https://github.com/casey/just), from the repo root:
 | `just example` | serves the HTML viewer on the bundled made-up example diff | a small 3-story steel model in every status |
 | `just egit ...` | runs egit (see below) | git-style output |
 | `just typecheck` | runs pyright in strict mode on `backend/diff_engine/` | type errors, if any |
-| `just test` | type-checks, then runs the diff engine tests | the unittest results |
+| `just test` | type-checks, then runs the diff engine tests and the React app's tests | the unittest and vitest results |
 
-The HTML viewer recipes print a URL and try to open your browser. Ctrl+C stops the server. `just typecheck` and `just test` need pyright on your PATH (`npm install -g pyright` or `pip install pyright`); it's a dev tool only.
+The HTML viewer recipes print a URL and try to open your browser. Ctrl+C stops the server. `just typecheck` and `just test` need pyright on your PATH (`npm install -g pyright` or `pip install pyright`); it's a dev tool only. `just test` also needs node and npm, and installs the app's dependencies if they're missing.
 
 In the React UI (`just ui`), load a real model comparison and choose **Append Excel Log** to download an `Analysis Register - v??.xlsx`. The first use starts from the included blank register template; later appends ask you to select the latest downloaded workbook so hand-edited cells are retained. The UI remembers logged model pairs in this browser and offers reject, replace, or add-as-new when a pair is repeated.
 
@@ -119,9 +119,8 @@ Every change carries its row and an `affects` tag (geometry, stiffness, mass, lo
 | `frontend/compareE2k.ts`, `frontend/saveRevision.ts` | the dev-server routes behind upload and Add version (they call the engine) |
 | `frontend/demo_viewer/` | the HTML demo viewer (one static file with three.js), the hackathon models, `revisions.json`, and their precomputed diffs |
 | `fixtures/demo/` | the seeded synthetic before/after pair, its diff, CSV, and generator |
-| `fixtures/` (top level files) | JSON fixtures for the FastAPI scaffold |
-| `backend/src/`, `backend/tests/` | a teammate's FastAPI scaffold, separate from the working engine |
 | `egit` | the egit launcher |
+| `docs/` | the demo GIF, and the original hackathon plan in `docs/history/` |
 
 # Output
 

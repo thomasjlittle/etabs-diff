@@ -58,7 +58,8 @@
      144.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "A/1"
   },
   {
    "key": "column|Base|0|1440|0~Story1|0|1440|0",
@@ -79,7 +80,8 @@
      144.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "A/2"
   },
   {
    "key": "column|Base|2400|0|0~Story1|2400|0|0",
@@ -100,7 +102,8 @@
      144.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "B/1"
   },
   {
    "key": "column|Base|2400|1440|0~Story1|2400|1440|0",
@@ -121,7 +124,8 @@
      144.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "B/2"
   },
   {
    "key": "beam|Story1|0|1440|0~Story1|2400|1440|0",
@@ -143,6 +147,7 @@
     ]
    ],
    "changes": [],
+   "grid": "A-B/2",
    "loads": {
     "a": {
      "Live": [
@@ -209,7 +214,8 @@
      144.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "A/1-2"
   },
   {
    "key": "beam|Story1|2400|0|0~Story1|2400|1440|0",
@@ -230,7 +236,8 @@
      144.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "B/1-2"
   },
   {
    "key": "floor|Story1|0|0|0~Story1|0|1440|0~Story1|2400|0|0~Story1|2400|1440|0",
@@ -261,7 +268,8 @@
      144.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "A-B/1-2"
   },
   {
    "key": "Base|0|0|0",
@@ -277,7 +285,8 @@
      0.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "A/1"
   },
   {
    "key": "Base|0|1440|0",
@@ -293,7 +302,8 @@
      0.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "A/2"
   },
   {
    "key": "Base|2400|0|0",
@@ -309,7 +319,8 @@
      0.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "B/1"
   },
   {
    "key": "Base|2400|1440|0",
@@ -325,7 +336,8 @@
      0.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": "B/2"
   },
   {
    "key": "beam|Story1|0|0|0~Story1|2400|0|0",
@@ -347,6 +359,7 @@
     ]
    ],
    "changes": [],
+   "grid": "A-B/1",
    "loads": {
     "a": {
      "Live": [
@@ -394,6 +407,7 @@
     ]
    ],
    "changes": [],
+   "grid": null,
    "loads": {
     "a": {},
     "b": {
@@ -441,7 +455,8 @@
      144.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": null
   },
   {
    "key": "beam|Story1|2400|1440|0~Story1|2880|1440|0",
@@ -462,7 +477,8 @@
      144.0
     ]
    ],
-   "changes": []
+   "changes": [],
+   "grid": null
   }
  ],
  "tables": {

@@ -18,11 +18,13 @@ class _Change(TypedDict):
     before: Any  # raw e2k value (number, string, list, nested dict), genuinely untyped
     after: Any
     affects: List[Affect]
+    unit: Optional[str]  # normalized display unit, None for unitless/unknown/structured values
 
 
 class Change(_Change, total=False):
     row: Optional[int]  # extension: change list row (1 to 17), None when outside the list
     kind: Literal["renamed"]  # extension: label/name change; status remains modified for compatibility
+    valueUnits: Dict[str, Dict[str, Optional[str]]]  # structured values: before/after -> leaf path -> unit
 
 
 class _ElementDiff(TypedDict):
@@ -48,6 +50,7 @@ class ElementLoads(TypedDict):
 
 
 class ElementDiff(_ElementDiff, total=False):
+    grid: Optional[str]  # extension: global Cartesian plan reference, None when off-grid or ambiguous
     via: List[str]  # e.g. ["frameSection:W14X22", "material:A992Fy50"]
     movedTo: str  # extension: key of the added entry this removed frame moved to
     movedFrom: str  # extension: key of the removed entry this added frame moved from

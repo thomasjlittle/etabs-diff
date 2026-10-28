@@ -12,7 +12,7 @@ import subprocess
 import tempfile
 import unittest
 from pathlib import Path
-from typing import List
+from typing import Any, List, cast
 from unittest import mock
 
 from diff_engine import diff_files
@@ -25,6 +25,13 @@ from diff_engine.egit import (
 
 def rev(file: str, *parents: str) -> Revision:
     return {"file": file, "parents": list(parents), "summary": file, "body": "", "author": "a", "date": ""}
+
+
+run = subprocess.run
+
+
+def quiet_run(*args: Any, **kwargs: Any) -> "subprocess.CompletedProcess[str]":
+    return cast("subprocess.CompletedProcess[str]", run(*args, **{**kwargs, "capture_output": True}))
 
 
 def git(cwd: Path, *args: str) -> str:
@@ -191,6 +198,10 @@ class GitTest(unittest.TestCase):
         env = mock.patch.dict(os.environ, {"GIT_CONFIG_GLOBAL": os.devnull, "GIT_CONFIG_NOSYSTEM": "1"})
         env.start()
         self.addCleanup(env.stop)
+        # egit lets git's own push/pull output through to the terminal; capture it so it stays out of the test log.
+        quiet = mock.patch("diff_engine.egit.subprocess.run", quiet_run)
+        quiet.start()
+        self.addCleanup(quiet.stop)
         self.remote = self.tmp / "remote.git"
         git(self.tmp, "init", "-q", "--bare", "-b", "main", str(self.remote))
         self.root = make_root(self.tmp)

@@ -99,3 +99,11 @@ it('field mapping', () => {
   expect(['SECTION', 'ANG', 'CARDINALPT', 'RELEASE', 'RESTRAINT', 'loads', 'PROPMODI22', 'DIAPH'].map(engineFieldGroup))
     .toEqual(['1A', '1E', '1E', '1E', '2A', '2B', '1D', 'ST']);
 });
+
+it('describes definition renames as names, not reversed member ends', () => {
+  const d = structuredClone(example) as unknown as EngineDiff;
+  d.tables.materials.modified = { Renamed: [{ field: 'name', before: 'A992Fy50', after: 'Renamed', affects: [], kind: 'renamed' }] };
+  const result = adaptEngine(d, { mock: true });
+  const renamed = result.changes.find((c) => c.subject === 'Material Renamed')!;
+  expect(describeChange(renamed, result)).toBe('Material Renamed was renamed from A992Fy50 to Renamed. Label only, not a physical change.');
+});
